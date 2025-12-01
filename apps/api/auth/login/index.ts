@@ -50,8 +50,12 @@ export const loginRoute = new Elysia()
       path: '/'
     })
 
-    // Return tanpa tokens (sudah di cookie)
-    return successResponse(result.message, { user })
+    // Return dengan tokens (untuk API testing) dan user info
+    return successResponse(result.message, { 
+      accessToken,
+      refreshToken,
+      user 
+    })
   }, {
     body: t.Object({
       email: t.String({ format: 'email' }),

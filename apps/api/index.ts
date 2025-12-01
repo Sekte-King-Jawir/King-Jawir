@@ -1,6 +1,9 @@
 import { Elysia } from "elysia"
 import { swagger } from "@elysiajs/swagger"
 import { authRoutes } from "./auth"
+import { storeRoutes, publicStoreRoutes } from "./store"
+import { categoryRoutes } from "./category"
+import { productRoutes, myProductsRoute, storeProductsRoute } from "./product"
 
 const app = new Elysia()
   .use(swagger({
@@ -13,10 +16,11 @@ const app = new Elysia()
       },
       tags: [
         { name: 'Auth', description: 'Authentication endpoints' },
+        { name: 'Store', description: 'Store management' },
+        { name: 'Categories', description: 'Product categories' },
         { name: 'Products', description: 'Product management' },
         { name: 'Cart', description: 'Shopping cart' },
-        { name: 'Orders', description: 'Order management' },
-        { name: 'Store', description: 'Store management' }
+        { name: 'Orders', description: 'Order management' }
       ],
       components: {
         securitySchemes: {
@@ -33,6 +37,12 @@ const app = new Elysia()
     }
   }))
   .use(authRoutes)
+  .use(storeRoutes)
+  .use(publicStoreRoutes)
+  .use(categoryRoutes)
+  .use(productRoutes)
+  .use(myProductsRoute)
+  .use(storeProductsRoute)
   .get("/", () => ({ message: "Marketplace API" }), {
     detail: {
       tags: ['General'],

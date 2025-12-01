@@ -8,8 +8,8 @@ export type Role = 'CUSTOMER' | 'SELLER' | 'ADMIN'
 // JWT payload type
 interface JWTPayload {
   sub: string
-  email: string
   role: Role
+  emailVerified?: boolean
   exp?: number
   iat?: number
 }
@@ -17,7 +17,6 @@ interface JWTPayload {
 // User context dari JWT
 export interface AuthUser {
   id: string
-  email: string
   role: Role
 }
 
@@ -31,38 +30,44 @@ export const authMiddleware = new Elysia({ name: 'auth-middleware' })
     secret: process.env.JWT_SECRET || 'secret-key-min-32-chars-long!!',
     exp: '15m'
   }))
-  .derive(async ({ headers, cookie, jwtAccess }) => {
+  .resolve(async ({ headers, cookie, jwtAccess }) => {
     // Ambil token dari cookie atau Authorization header
+    // headers bisa lowercase atau mixed case tergantung client
+    const authHeader = headers.authorization || headers['Authorization'] as string | undefined
     const token = (cookie.accessToken?.value as string | undefined)
-      || headers.authorization?.replace('Bearer ', '')
+      || authHeader?.replace('Bearer ', '')
+
+    // Debug log (remove in production)
+    console.log('Auth Debug:', { hasToken: !!token, tokenStart: token?.substring(0, 30) })
 
     if (!token) {
-      return { user: null }
+      return { user: null as AuthUser | null }
     }
 
     try {
       const payload = await jwtAccess.verify(token) as JWTPayload | false
       
+      console.log('JWT Verify Result:', { payload: payload ? { sub: payload.sub, role: payload.role } : false })
+      
       if (!payload) {
-        return { user: null }
+        return { user: null as AuthUser | null }
       }
 
       return {
         user: {
           id: payload.sub,
-          email: payload.email,
           role: payload.role
-        } as AuthUser
+        } as AuthUser | null
       }
     } catch {
-      return { user: null }
+      return { user: null as AuthUser | null }
     }
   })
 
 /**
  * Guard: Require authenticated user
  */
-export const requireAuth = async ({ user, set }: { user: AuthUser | null; set: any }) => {
+export const requireAuth = ({ user, set }: { user: AuthUser | null; set: any }) => {
   if (!user) {
     set.status = 401
     return errorResponse('Unauthorized - Please login', ErrorCode.UNAUTHORIZED)
@@ -73,7 +78,7 @@ export const requireAuth = async ({ user, set }: { user: AuthUser | null; set: a
  * Guard: Require specific roles
  */
 export const requireRole = (allowedRoles: Role[]) => {
-  return async ({ user, set }: { user: AuthUser | null; set: any }) => {
+  return ({ user, set }: { user: AuthUser | null; set: any }) => {
     if (!user) {
       set.status = 401
       return errorResponse('Unauthorized - Please login', ErrorCode.UNAUTHORIZED)
