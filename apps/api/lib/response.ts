@@ -71,8 +71,11 @@ export function errorResponse(
 // Common Responses
 export const CommonResponse = {
   unauthorized: () => errorResponse('Unauthorized', ErrorCode.UNAUTHORIZED),
+  forbidden: (message?: string) => errorResponse(message || 'Forbidden - Access denied', ErrorCode.FORBIDDEN),
   tokenInvalid: () => errorResponse('Token tidak valid', ErrorCode.TOKEN_INVALID),
   tokenExpired: () => errorResponse('Token expired', ErrorCode.TOKEN_EXPIRED),
   userNotFound: () => errorResponse('User tidak ditemukan', ErrorCode.USER_NOT_FOUND),
+  notFound: (resource: string) => errorResponse(`${resource} tidak ditemukan`, ErrorCode.NOT_FOUND),
+  notOwner: () => errorResponse('Anda tidak memiliki akses ke resource ini', ErrorCode.NOT_OWNER),
   internalError: () => errorResponse('Terjadi kesalahan server', ErrorCode.INTERNAL_ERROR),
 }
