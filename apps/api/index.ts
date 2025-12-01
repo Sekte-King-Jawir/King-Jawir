@@ -4,6 +4,7 @@ import { authRoutes } from "./auth"
 import { storeRoutes, publicStoreRoutes } from "./store"
 import { categoryRoutes } from "./category"
 import { productRoutes, myProductsRoute, storeProductsRoute } from "./product"
+import { profileRoutes } from "./profile"
 
 const app = new Elysia()
   .use(swagger({
@@ -16,6 +17,7 @@ const app = new Elysia()
       },
       tags: [
         { name: 'Auth', description: 'Authentication endpoints' },
+        { name: 'Profile', description: 'User profile management' },
         { name: 'Store', description: 'Store management' },
         { name: 'Categories', description: 'Product categories' },
         { name: 'Products', description: 'Product management' },
@@ -37,6 +39,7 @@ const app = new Elysia()
     }
   }))
   .use(authRoutes)
+  .use(profileRoutes)
   .use(storeRoutes)
   .use(publicStoreRoutes)
   .use(categoryRoutes)
