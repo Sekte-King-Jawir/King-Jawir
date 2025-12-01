@@ -4,69 +4,35 @@ import { __transformDate__ } from "./__transformDate__";
 
 import { __nullable__ } from "./__nullable__";
 
-export const UserPlain = t.Object(
+export const ProductPlain = t.Object(
   {
     id: t.String(),
-    email: t.String(),
-    password: t.String(),
+    storeId: t.String(),
+    categoryId: t.String(),
     name: t.String(),
-    role: t.Union(
-      [t.Literal("CUSTOMER"), t.Literal("SELLER"), t.Literal("ADMIN")],
-      { additionalProperties: false },
-    ),
+    slug: t.String(),
+    price: t.Number(),
+    stock: t.Integer(),
+    image: __nullable__(t.String()),
     createdAt: t.Date(),
-    updatedAt: t.Date(),
   },
   { additionalProperties: false },
 );
 
-export const UserRelations = t.Object(
+export const ProductRelations = t.Object(
   {
-    tokens: t.Array(
-      t.Object(
-        {
-          id: t.String(),
-          token: t.String(),
-          userId: t.String(),
-          expiresAt: t.Date(),
-          createdAt: t.Date(),
-        },
-        { additionalProperties: false },
-      ),
+    store: t.Object(
+      {
+        id: t.String(),
+        userId: t.String(),
+        name: t.String(),
+        slug: t.String(),
+        createdAt: t.Date(),
+      },
       { additionalProperties: false },
     ),
-    store: __nullable__(
-      t.Object(
-        {
-          id: t.String(),
-          userId: t.String(),
-          name: t.String(),
-          slug: t.String(),
-          createdAt: t.Date(),
-        },
-        { additionalProperties: false },
-      ),
-    ),
-    orders: t.Array(
-      t.Object(
-        {
-          id: t.String(),
-          userId: t.String(),
-          status: t.Union(
-            [
-              t.Literal("PENDING"),
-              t.Literal("PAID"),
-              t.Literal("SHIPPED"),
-              t.Literal("DONE"),
-              t.Literal("CANCELLED"),
-            ],
-            { additionalProperties: false },
-          ),
-          total: t.Number(),
-          createdAt: t.Date(),
-        },
-        { additionalProperties: false },
-      ),
+    category: t.Object(
+      { id: t.String(), name: t.String(), slug: t.String() },
       { additionalProperties: false },
     ),
     cart: t.Array(
@@ -75,6 +41,19 @@ export const UserRelations = t.Object(
           id: t.String(),
           userId: t.String(),
           productId: t.String(),
+          quantity: t.Integer(),
+        },
+        { additionalProperties: false },
+      ),
+      { additionalProperties: false },
+    ),
+    orders: t.Array(
+      t.Object(
+        {
+          id: t.String(),
+          orderId: t.String(),
+          productId: t.String(),
+          price: t.Number(),
           quantity: t.Integer(),
         },
         { additionalProperties: false },
@@ -99,39 +78,53 @@ export const UserRelations = t.Object(
   { additionalProperties: false },
 );
 
-export const UserPlainInputCreate = t.Object(
+export const ProductPlainInputCreate = t.Object(
   {
-    email: t.String(),
-    password: t.String(),
     name: t.String(),
-    role: t.Optional(
-      t.Union(
-        [t.Literal("CUSTOMER"), t.Literal("SELLER"), t.Literal("ADMIN")],
-        { additionalProperties: false },
-      ),
-    ),
+    slug: t.String(),
+    price: t.Number(),
+    stock: t.Optional(t.Integer()),
+    image: t.Optional(__nullable__(t.String())),
   },
   { additionalProperties: false },
 );
 
-export const UserPlainInputUpdate = t.Object(
+export const ProductPlainInputUpdate = t.Object(
   {
-    email: t.Optional(t.String()),
-    password: t.Optional(t.String()),
     name: t.Optional(t.String()),
-    role: t.Optional(
-      t.Union(
-        [t.Literal("CUSTOMER"), t.Literal("SELLER"), t.Literal("ADMIN")],
-        { additionalProperties: false },
-      ),
-    ),
+    slug: t.Optional(t.String()),
+    price: t.Optional(t.Number()),
+    stock: t.Optional(t.Integer()),
+    image: t.Optional(__nullable__(t.String())),
   },
   { additionalProperties: false },
 );
 
-export const UserRelationsInputCreate = t.Object(
+export const ProductRelationsInputCreate = t.Object(
   {
-    tokens: t.Optional(
+    store: t.Object(
+      {
+        connect: t.Object(
+          {
+            id: t.String({ additionalProperties: false }),
+          },
+          { additionalProperties: false },
+        ),
+      },
+      { additionalProperties: false },
+    ),
+    category: t.Object(
+      {
+        connect: t.Object(
+          {
+            id: t.String({ additionalProperties: false }),
+          },
+          { additionalProperties: false },
+        ),
+      },
+      { additionalProperties: false },
+    ),
+    cart: t.Optional(
       t.Object(
         {
           connect: t.Array(
@@ -141,19 +134,6 @@ export const UserRelationsInputCreate = t.Object(
               },
               { additionalProperties: false },
             ),
-            { additionalProperties: false },
-          ),
-        },
-        { additionalProperties: false },
-      ),
-    ),
-    store: t.Optional(
-      t.Object(
-        {
-          connect: t.Object(
-            {
-              id: t.String({ additionalProperties: false }),
-            },
             { additionalProperties: false },
           ),
         },
@@ -161,22 +141,6 @@ export const UserRelationsInputCreate = t.Object(
       ),
     ),
     orders: t.Optional(
-      t.Object(
-        {
-          connect: t.Array(
-            t.Object(
-              {
-                id: t.String({ additionalProperties: false }),
-              },
-              { additionalProperties: false },
-            ),
-            { additionalProperties: false },
-          ),
-        },
-        { additionalProperties: false },
-      ),
-    ),
-    cart: t.Optional(
       t.Object(
         {
           connect: t.Array(
@@ -212,10 +176,32 @@ export const UserRelationsInputCreate = t.Object(
   { additionalProperties: false },
 );
 
-export const UserRelationsInputUpdate = t.Partial(
+export const ProductRelationsInputUpdate = t.Partial(
   t.Object(
     {
-      tokens: t.Partial(
+      store: t.Object(
+        {
+          connect: t.Object(
+            {
+              id: t.String({ additionalProperties: false }),
+            },
+            { additionalProperties: false },
+          ),
+        },
+        { additionalProperties: false },
+      ),
+      category: t.Object(
+        {
+          connect: t.Object(
+            {
+              id: t.String({ additionalProperties: false }),
+            },
+            { additionalProperties: false },
+          ),
+        },
+        { additionalProperties: false },
+      ),
+      cart: t.Partial(
         t.Object(
           {
             connect: t.Array(
@@ -236,50 +222,11 @@ export const UserRelationsInputUpdate = t.Partial(
               ),
               { additionalProperties: false },
             ),
-          },
-          { additionalProperties: false },
-        ),
-      ),
-      store: t.Partial(
-        t.Object(
-          {
-            connect: t.Object(
-              {
-                id: t.String({ additionalProperties: false }),
-              },
-              { additionalProperties: false },
-            ),
-            disconnect: t.Boolean(),
           },
           { additionalProperties: false },
         ),
       ),
       orders: t.Partial(
-        t.Object(
-          {
-            connect: t.Array(
-              t.Object(
-                {
-                  id: t.String({ additionalProperties: false }),
-                },
-                { additionalProperties: false },
-              ),
-              { additionalProperties: false },
-            ),
-            disconnect: t.Array(
-              t.Object(
-                {
-                  id: t.String({ additionalProperties: false }),
-                },
-                { additionalProperties: false },
-              ),
-              { additionalProperties: false },
-            ),
-          },
-          { additionalProperties: false },
-        ),
-      ),
-      cart: t.Partial(
         t.Object(
           {
             connect: t.Array(
@@ -334,7 +281,7 @@ export const UserRelationsInputUpdate = t.Partial(
   ),
 );
 
-export const UserWhere = t.Partial(
+export const ProductWhere = t.Partial(
   t.Recursive(
     (Self) =>
       t.Object(
@@ -343,35 +290,34 @@ export const UserWhere = t.Partial(
           NOT: t.Union([Self, t.Array(Self, { additionalProperties: false })]),
           OR: t.Array(Self, { additionalProperties: false }),
           id: t.String(),
-          email: t.String(),
-          password: t.String(),
+          storeId: t.String(),
+          categoryId: t.String(),
           name: t.String(),
-          role: t.Union(
-            [t.Literal("CUSTOMER"), t.Literal("SELLER"), t.Literal("ADMIN")],
-            { additionalProperties: false },
-          ),
+          slug: t.String(),
+          price: t.Number(),
+          stock: t.Integer(),
+          image: t.String(),
           createdAt: t.Date(),
-          updatedAt: t.Date(),
         },
         { additionalProperties: false },
       ),
-    { $id: "User" },
+    { $id: "Product" },
   ),
 );
 
-export const UserWhereUnique = t.Recursive(
+export const ProductWhereUnique = t.Recursive(
   (Self) =>
     t.Intersect(
       [
         t.Partial(
           t.Object(
-            { id: t.String(), email: t.String() },
+            { id: t.String(), slug: t.String() },
             { additionalProperties: false },
           ),
           { additionalProperties: false },
         ),
         t.Union(
-          [t.Object({ id: t.String() }), t.Object({ email: t.String() })],
+          [t.Object({ id: t.String() }), t.Object({ slug: t.String() })],
           { additionalProperties: false },
         ),
         t.Partial(
@@ -392,19 +338,14 @@ export const UserWhereUnique = t.Recursive(
           t.Object(
             {
               id: t.String(),
-              email: t.String(),
-              password: t.String(),
+              storeId: t.String(),
+              categoryId: t.String(),
               name: t.String(),
-              role: t.Union(
-                [
-                  t.Literal("CUSTOMER"),
-                  t.Literal("SELLER"),
-                  t.Literal("ADMIN"),
-                ],
-                { additionalProperties: false },
-              ),
+              slug: t.String(),
+              price: t.Number(),
+              stock: t.Integer(),
+              image: t.String(),
               createdAt: t.Date(),
-              updatedAt: t.Date(),
             },
             { additionalProperties: false },
           ),
@@ -412,23 +353,25 @@ export const UserWhereUnique = t.Recursive(
       ],
       { additionalProperties: false },
     ),
-  { $id: "User" },
+  { $id: "Product" },
 );
 
-export const UserSelect = t.Partial(
+export const ProductSelect = t.Partial(
   t.Object(
     {
       id: t.Boolean(),
-      email: t.Boolean(),
-      password: t.Boolean(),
+      storeId: t.Boolean(),
+      categoryId: t.Boolean(),
       name: t.Boolean(),
-      role: t.Boolean(),
+      slug: t.Boolean(),
+      price: t.Boolean(),
+      stock: t.Boolean(),
+      image: t.Boolean(),
       createdAt: t.Boolean(),
-      updatedAt: t.Boolean(),
-      tokens: t.Boolean(),
       store: t.Boolean(),
-      orders: t.Boolean(),
+      category: t.Boolean(),
       cart: t.Boolean(),
+      orders: t.Boolean(),
       reviews: t.Boolean(),
       _count: t.Boolean(),
     },
@@ -436,14 +379,13 @@ export const UserSelect = t.Partial(
   ),
 );
 
-export const UserInclude = t.Partial(
+export const ProductInclude = t.Partial(
   t.Object(
     {
-      role: t.Boolean(),
-      tokens: t.Boolean(),
       store: t.Boolean(),
-      orders: t.Boolean(),
+      category: t.Boolean(),
       cart: t.Boolean(),
+      orders: t.Boolean(),
       reviews: t.Boolean(),
       _count: t.Boolean(),
     },
@@ -451,25 +393,34 @@ export const UserInclude = t.Partial(
   ),
 );
 
-export const UserOrderBy = t.Partial(
+export const ProductOrderBy = t.Partial(
   t.Object(
     {
       id: t.Union([t.Literal("asc"), t.Literal("desc")], {
         additionalProperties: false,
       }),
-      email: t.Union([t.Literal("asc"), t.Literal("desc")], {
+      storeId: t.Union([t.Literal("asc"), t.Literal("desc")], {
         additionalProperties: false,
       }),
-      password: t.Union([t.Literal("asc"), t.Literal("desc")], {
+      categoryId: t.Union([t.Literal("asc"), t.Literal("desc")], {
         additionalProperties: false,
       }),
       name: t.Union([t.Literal("asc"), t.Literal("desc")], {
         additionalProperties: false,
       }),
-      createdAt: t.Union([t.Literal("asc"), t.Literal("desc")], {
+      slug: t.Union([t.Literal("asc"), t.Literal("desc")], {
         additionalProperties: false,
       }),
-      updatedAt: t.Union([t.Literal("asc"), t.Literal("desc")], {
+      price: t.Union([t.Literal("asc"), t.Literal("desc")], {
+        additionalProperties: false,
+      }),
+      stock: t.Union([t.Literal("asc"), t.Literal("desc")], {
+        additionalProperties: false,
+      }),
+      image: t.Union([t.Literal("asc"), t.Literal("desc")], {
+        additionalProperties: false,
+      }),
+      createdAt: t.Union([t.Literal("asc"), t.Literal("desc")], {
         additionalProperties: false,
       }),
     },
@@ -477,16 +428,16 @@ export const UserOrderBy = t.Partial(
   ),
 );
 
-export const User = t.Composite([UserPlain, UserRelations], {
+export const Product = t.Composite([ProductPlain, ProductRelations], {
   additionalProperties: false,
 });
 
-export const UserInputCreate = t.Composite(
-  [UserPlainInputCreate, UserRelationsInputCreate],
+export const ProductInputCreate = t.Composite(
+  [ProductPlainInputCreate, ProductRelationsInputCreate],
   { additionalProperties: false },
 );
 
-export const UserInputUpdate = t.Composite(
-  [UserPlainInputUpdate, UserRelationsInputUpdate],
+export const ProductInputUpdate = t.Composite(
+  [ProductPlainInputUpdate, ProductRelationsInputUpdate],
   { additionalProperties: false },
 );
