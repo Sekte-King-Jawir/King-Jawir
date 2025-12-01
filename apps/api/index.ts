@@ -5,6 +5,7 @@ import { storeRoutes, publicStoreRoutes } from "./store"
 import { categoryRoutes } from "./category"
 import { productRoutes, myProductsRoute, storeProductsRoute } from "./product"
 import { profileRoutes } from "./profile"
+import { cartRoutes } from "./cart"
 
 const app = new Elysia()
   .use(swagger({
@@ -46,6 +47,7 @@ const app = new Elysia()
   .use(productRoutes)
   .use(myProductsRoute)
   .use(storeProductsRoute)
+  .use(cartRoutes)
   .get("/", () => ({ message: "Marketplace API" }), {
     detail: {
       tags: ['General'],
