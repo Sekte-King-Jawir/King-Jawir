@@ -4,11 +4,12 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "bun run --watch index.ts",
+    "dev": "nodemon --watch .env --exec \"bun run index.ts\"",
     "start": "bun run index.ts"
   },
   "devDependencies": {
     "@types/bun": "latest",
+    "nodemon": "^3.0.0",
     "prisma": "^7.0.1"
   },
   "peerDependencies": {
