@@ -1,18 +1,15 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client"
   output   = "../generated/prisma"
 }
 
-generator prismabox { 
+generator prismabox {
   provider                     = "prismabox"
   typeboxImportDependencyName  = "elysia"
   typeboxImportVariableName    = "t"
   inputModel                   = true
   output                       = "../generated/prismabox"
-} 
+}
 
 datasource db {
   provider = "mysql"
@@ -20,32 +17,27 @@ datasource db {
 
 // ==================== AUTH ====================
 
-model UserTemporary {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  password  String
-  name      String
-  token     String   @unique
-  expiresAt DateTime
-  createdAt DateTime @default(now())
-
-  @@map("user_temporary")
-}
-
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  password  String
-  name      String
-  role      Role     @default(CUSTOMER)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id            String   @id @default(cuid())
+  email         String   @unique
+  password      String?  // Optional untuk OAuth users
+  name          String
+  emailVerified Boolean  @default(false)
+  googleId      String?  @unique // Google OAuth ID
+  avatar        String?  // Profile picture (custom upload atau dari OAuth)
+  phone         String?  // Nomor HP
+  address       String?  @db.Text // Alamat lengkap
+  bio           String?  @db.VarChar(500) // Bio singkat
+  role          Role     @default(CUSTOMER)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
-  tokens   RefreshToken[]
-  store    Store?
-  orders   Order[]
-  cart     CartItem[]
-  reviews  Review[]
+  refreshTokens  RefreshToken[]
+  verifications  Verification[]
+  store          Store?
+  orders         Order[]
+  cart           CartItem[]
+  reviews        Review[]
 
   @@map("users")
 }
@@ -66,6 +58,19 @@ model RefreshToken {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("refresh_tokens")
+}
+
+model Verification {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  type      String   // "email" atau "reset_password"
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("verifications")
 }
 
 // ==================== STORE & PRODUCT ====================

@@ -8,8 +8,14 @@ export const UserPlain = t.Object(
   {
     id: t.String(),
     email: t.String(),
-    password: t.String(),
+    password: __nullable__(t.String()),
     name: t.String(),
+    emailVerified: t.Boolean(),
+    googleId: __nullable__(t.String()),
+    avatar: __nullable__(t.String()),
+    phone: __nullable__(t.String()),
+    address: __nullable__(t.String()),
+    bio: __nullable__(t.String()),
     role: t.Union(
       [t.Literal("CUSTOMER"), t.Literal("SELLER"), t.Literal("ADMIN")],
       { additionalProperties: false },
@@ -22,12 +28,26 @@ export const UserPlain = t.Object(
 
 export const UserRelations = t.Object(
   {
-    tokens: t.Array(
+    refreshTokens: t.Array(
       t.Object(
         {
           id: t.String(),
           token: t.String(),
           userId: t.String(),
+          expiresAt: t.Date(),
+          createdAt: t.Date(),
+        },
+        { additionalProperties: false },
+      ),
+      { additionalProperties: false },
+    ),
+    verifications: t.Array(
+      t.Object(
+        {
+          id: t.String(),
+          userId: t.String(),
+          token: t.String(),
+          type: t.String(),
           expiresAt: t.Date(),
           createdAt: t.Date(),
         },
@@ -102,8 +122,13 @@ export const UserRelations = t.Object(
 export const UserPlainInputCreate = t.Object(
   {
     email: t.String(),
-    password: t.String(),
+    password: t.Optional(__nullable__(t.String())),
     name: t.String(),
+    emailVerified: t.Optional(t.Boolean()),
+    avatar: t.Optional(__nullable__(t.String())),
+    phone: t.Optional(__nullable__(t.String())),
+    address: t.Optional(__nullable__(t.String())),
+    bio: t.Optional(__nullable__(t.String())),
     role: t.Optional(
       t.Union(
         [t.Literal("CUSTOMER"), t.Literal("SELLER"), t.Literal("ADMIN")],
@@ -117,8 +142,13 @@ export const UserPlainInputCreate = t.Object(
 export const UserPlainInputUpdate = t.Object(
   {
     email: t.Optional(t.String()),
-    password: t.Optional(t.String()),
+    password: t.Optional(__nullable__(t.String())),
     name: t.Optional(t.String()),
+    emailVerified: t.Optional(t.Boolean()),
+    avatar: t.Optional(__nullable__(t.String())),
+    phone: t.Optional(__nullable__(t.String())),
+    address: t.Optional(__nullable__(t.String())),
+    bio: t.Optional(__nullable__(t.String())),
     role: t.Optional(
       t.Union(
         [t.Literal("CUSTOMER"), t.Literal("SELLER"), t.Literal("ADMIN")],
@@ -131,7 +161,23 @@ export const UserPlainInputUpdate = t.Object(
 
 export const UserRelationsInputCreate = t.Object(
   {
-    tokens: t.Optional(
+    refreshTokens: t.Optional(
+      t.Object(
+        {
+          connect: t.Array(
+            t.Object(
+              {
+                id: t.String({ additionalProperties: false }),
+              },
+              { additionalProperties: false },
+            ),
+            { additionalProperties: false },
+          ),
+        },
+        { additionalProperties: false },
+      ),
+    ),
+    verifications: t.Optional(
       t.Object(
         {
           connect: t.Array(
@@ -215,7 +261,32 @@ export const UserRelationsInputCreate = t.Object(
 export const UserRelationsInputUpdate = t.Partial(
   t.Object(
     {
-      tokens: t.Partial(
+      refreshTokens: t.Partial(
+        t.Object(
+          {
+            connect: t.Array(
+              t.Object(
+                {
+                  id: t.String({ additionalProperties: false }),
+                },
+                { additionalProperties: false },
+              ),
+              { additionalProperties: false },
+            ),
+            disconnect: t.Array(
+              t.Object(
+                {
+                  id: t.String({ additionalProperties: false }),
+                },
+                { additionalProperties: false },
+              ),
+              { additionalProperties: false },
+            ),
+          },
+          { additionalProperties: false },
+        ),
+      ),
+      verifications: t.Partial(
         t.Object(
           {
             connect: t.Array(
@@ -346,6 +417,12 @@ export const UserWhere = t.Partial(
           email: t.String(),
           password: t.String(),
           name: t.String(),
+          emailVerified: t.Boolean(),
+          googleId: t.String(),
+          avatar: t.String(),
+          phone: t.String(),
+          address: t.String(),
+          bio: t.String(),
           role: t.Union(
             [t.Literal("CUSTOMER"), t.Literal("SELLER"), t.Literal("ADMIN")],
             { additionalProperties: false },
@@ -365,13 +442,17 @@ export const UserWhereUnique = t.Recursive(
       [
         t.Partial(
           t.Object(
-            { id: t.String(), email: t.String() },
+            { id: t.String(), email: t.String(), googleId: t.String() },
             { additionalProperties: false },
           ),
           { additionalProperties: false },
         ),
         t.Union(
-          [t.Object({ id: t.String() }), t.Object({ email: t.String() })],
+          [
+            t.Object({ id: t.String() }),
+            t.Object({ email: t.String() }),
+            t.Object({ googleId: t.String() }),
+          ],
           { additionalProperties: false },
         ),
         t.Partial(
@@ -395,6 +476,12 @@ export const UserWhereUnique = t.Recursive(
               email: t.String(),
               password: t.String(),
               name: t.String(),
+              emailVerified: t.Boolean(),
+              googleId: t.String(),
+              avatar: t.String(),
+              phone: t.String(),
+              address: t.String(),
+              bio: t.String(),
               role: t.Union(
                 [
                   t.Literal("CUSTOMER"),
@@ -422,10 +509,17 @@ export const UserSelect = t.Partial(
       email: t.Boolean(),
       password: t.Boolean(),
       name: t.Boolean(),
+      emailVerified: t.Boolean(),
+      googleId: t.Boolean(),
+      avatar: t.Boolean(),
+      phone: t.Boolean(),
+      address: t.Boolean(),
+      bio: t.Boolean(),
       role: t.Boolean(),
       createdAt: t.Boolean(),
       updatedAt: t.Boolean(),
-      tokens: t.Boolean(),
+      refreshTokens: t.Boolean(),
+      verifications: t.Boolean(),
       store: t.Boolean(),
       orders: t.Boolean(),
       cart: t.Boolean(),
@@ -440,7 +534,8 @@ export const UserInclude = t.Partial(
   t.Object(
     {
       role: t.Boolean(),
-      tokens: t.Boolean(),
+      refreshTokens: t.Boolean(),
+      verifications: t.Boolean(),
       store: t.Boolean(),
       orders: t.Boolean(),
       cart: t.Boolean(),
@@ -464,6 +559,24 @@ export const UserOrderBy = t.Partial(
         additionalProperties: false,
       }),
       name: t.Union([t.Literal("asc"), t.Literal("desc")], {
+        additionalProperties: false,
+      }),
+      emailVerified: t.Union([t.Literal("asc"), t.Literal("desc")], {
+        additionalProperties: false,
+      }),
+      googleId: t.Union([t.Literal("asc"), t.Literal("desc")], {
+        additionalProperties: false,
+      }),
+      avatar: t.Union([t.Literal("asc"), t.Literal("desc")], {
+        additionalProperties: false,
+      }),
+      phone: t.Union([t.Literal("asc"), t.Literal("desc")], {
+        additionalProperties: false,
+      }),
+      address: t.Union([t.Literal("asc"), t.Literal("desc")], {
+        additionalProperties: false,
+      }),
+      bio: t.Union([t.Literal("asc"), t.Literal("desc")], {
         additionalProperties: false,
       }),
       createdAt: t.Union([t.Literal("asc"), t.Literal("desc")], {

@@ -18,11 +18,6 @@ export { Prisma }
 export * as $Enums from './enums.ts'
 export * from './enums.ts';
 /**
- * Model UserTemporary
- * 
- */
-export type UserTemporary = Prisma.UserTemporaryModel
-/**
  * Model User
  * 
  */
@@ -32,6 +27,11 @@ export type User = Prisma.UserModel
  * 
  */
 export type RefreshToken = Prisma.RefreshTokenModel
+/**
+ * Model Verification
+ * 
+ */
+export type Verification = Prisma.VerificationModel
 /**
  * Model Store
  * 

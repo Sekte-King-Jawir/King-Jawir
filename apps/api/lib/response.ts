@@ -1,0 +1,72 @@
+// Error Codes
+export const ErrorCode = {
+  // Auth Errors
+  INVALID_CREDENTIALS: 'INVALID_CREDENTIALS',
+  UNAUTHORIZED: 'UNAUTHORIZED',
+  TOKEN_INVALID: 'TOKEN_INVALID',
+  TOKEN_EXPIRED: 'TOKEN_EXPIRED',
+  
+  // User Errors
+  USER_NOT_FOUND: 'USER_NOT_FOUND',
+  USER_ALREADY_EXISTS: 'USER_ALREADY_EXISTS',
+  EMAIL_NOT_VERIFIED: 'EMAIL_NOT_VERIFIED',
+  EMAIL_ALREADY_VERIFIED: 'EMAIL_ALREADY_VERIFIED',
+  
+  // Password Errors
+  INVALID_PASSWORD: 'INVALID_PASSWORD',
+  SAME_PASSWORD: 'SAME_PASSWORD',
+  OAUTH_NO_PASSWORD: 'OAUTH_NO_PASSWORD',
+  
+  // Validation Errors
+  VALIDATION_ERROR: 'VALIDATION_ERROR',
+  
+  // Server Errors
+  INTERNAL_ERROR: 'INTERNAL_ERROR',
+} as const
+
+export type ErrorCodeType = typeof ErrorCode[keyof typeof ErrorCode]
+
+// Response Types
+export interface ApiResponse<T = unknown> {
+  success: boolean
+  message: string
+  data?: T
+  error?: {
+    code: ErrorCodeType
+    details?: Record<string, string> | null
+  }
+}
+
+// Success Response Helper
+export function successResponse<T>(message: string, data?: T): ApiResponse<T> {
+  return {
+    success: true,
+    message,
+    data
+  }
+}
+
+// Error Response Helper
+export function errorResponse(
+  message: string, 
+  code: ErrorCodeType, 
+  details?: Record<string, string> | null
+): ApiResponse<never> {
+  return {
+    success: false,
+    message,
+    error: {
+      code,
+      details: details || null
+    }
+  }
+}
+
+// Common Responses
+export const CommonResponse = {
+  unauthorized: () => errorResponse('Unauthorized', ErrorCode.UNAUTHORIZED),
+  tokenInvalid: () => errorResponse('Token tidak valid', ErrorCode.TOKEN_INVALID),
+  tokenExpired: () => errorResponse('Token expired', ErrorCode.TOKEN_EXPIRED),
+  userNotFound: () => errorResponse('User tidak ditemukan', ErrorCode.USER_NOT_FOUND),
+  internalError: () => errorResponse('Terjadi kesalahan server', ErrorCode.INTERNAL_ERROR),
+}
