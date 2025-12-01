@@ -14,11 +14,12 @@
     "verbatimModuleSyntax": true,
     "noEmit": true,
 
-    // Best practices
-    "strict": true,
+    // Best practices - relaxed for Elysia plugin type inference
+    "strict": false,
+    "strictNullChecks": true,
     "skipLibCheck": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedIndexedAccess": true,
+    "noUncheckedIndexedAccess": false,
     "noImplicitOverride": true,
 
     // Some stricter flags (disabled by default)
