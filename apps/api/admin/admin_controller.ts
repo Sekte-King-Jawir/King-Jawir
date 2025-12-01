@@ -40,7 +40,6 @@ export const adminController = {
       }
     }
 
-    //return
     return {
       success: true,
       message: 'Detail user berhasil diambil',
