@@ -22,8 +22,14 @@ export const ReviewRelations = t.Object(
       {
         id: t.String(),
         email: t.String(),
-        password: t.String(),
+        password: __nullable__(t.String()),
         name: t.String(),
+        emailVerified: t.Boolean(),
+        googleId: __nullable__(t.String()),
+        avatar: __nullable__(t.String()),
+        phone: __nullable__(t.String()),
+        address: __nullable__(t.String()),
+        bio: __nullable__(t.String()),
         role: t.Union(
           [t.Literal("CUSTOMER"), t.Literal("SELLER"), t.Literal("ADMIN")],
           { additionalProperties: false },

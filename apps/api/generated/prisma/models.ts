@@ -8,9 +8,9 @@
  *
  * 🟢 You can import this file directly.
  */
-export type * from './models/UserTemporary.ts'
 export type * from './models/User.ts'
 export type * from './models/RefreshToken.ts'
+export type * from './models/Verification.ts'
 export type * from './models/Store.ts'
 export type * from './models/Category.ts'
 export type * from './models/Product.ts'
