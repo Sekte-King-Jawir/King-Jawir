@@ -119,5 +119,41 @@ export const storeService = {
         createdAt: store.createdAt
       }
     })
+  },
+
+  // Delete store (downgrade SELLER -> CUSTOMER)
+  async deleteStore(userId: string) {
+    const store = await storeRepository.findByUserId(userId)
+    
+    if (!store) {
+      return errorResponse('Anda belum memiliki toko', ErrorCode.NOT_FOUND)
+    }
+
+    // Check if store has active orders
+    const hasActiveOrders = await storeRepository.hasActiveOrders(store.id)
+    if (hasActiveOrders) {
+      return errorResponse('Tidak dapat menghapus toko. Masih ada pesanan yang belum selesai', ErrorCode.BAD_REQUEST)
+    }
+
+    // Delete store and downgrade role dalam transaction
+    await prisma.$transaction(async (tx) => {
+      // Delete all products first (cascade)
+      await tx.product.deleteMany({
+        where: { storeId: store.id }
+      })
+
+      // Delete store
+      await tx.store.delete({
+        where: { id: store.id }
+      })
+
+      // Downgrade user role ke CUSTOMER
+      await tx.user.update({
+        where: { id: userId },
+        data: { role: 'CUSTOMER' }
+      })
+    })
+
+    return successResponse('Toko berhasil dihapus. Role Anda sekarang CUSTOMER', null)
   }
 }

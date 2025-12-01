@@ -52,5 +52,34 @@ export const storeRepository = {
     if (!store) return false
     if (excludeId && store.id === excludeId) return false
     return true
+  },
+
+  async delete(id: string) {
+    return prisma.store.delete({
+      where: { id }
+    })
+  },
+
+  async hasProducts(storeId: string) {
+    const count = await prisma.product.count({
+      where: { storeId }
+    })
+    return count > 0
+  },
+
+  async hasActiveOrders(storeId: string) {
+    const count = await prisma.order.count({
+      where: {
+        items: {
+          some: {
+            product: { storeId }
+          }
+        },
+        status: {
+          in: ['PENDING', 'PAID', 'SHIPPED']
+        }
+      }
+    })
+    return count > 0
   }
 }

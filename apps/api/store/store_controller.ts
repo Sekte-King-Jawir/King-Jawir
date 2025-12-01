@@ -15,5 +15,9 @@ export const storeController = {
 
   async getBySlug(slug: string) {
     return storeService.getStoreBySlug(slug)
+  },
+
+  async delete(userId: string) {
+    return storeService.deleteStore(userId)
   }
 }

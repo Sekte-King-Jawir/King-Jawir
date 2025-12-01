@@ -89,6 +89,32 @@ export const storeRoutes = new Elysia({ prefix: '/store' })
     }
   })
 
+  // DELETE /store - Delete my store
+  .delete('/', async ({ user, set }) => {
+    if (!user) {
+      set.status = 401
+      return errorResponse('Unauthorized - Please login', ErrorCode.UNAUTHORIZED)
+    }
+    if (!isSeller(user)) {
+      set.status = 403
+      return errorResponse('Forbidden - Seller only', ErrorCode.FORBIDDEN)
+    }
+    
+    const result = await storeController.delete(user.id)
+    
+    if (!result.success) {
+      set.status = 400
+    }
+    
+    return result
+  }, {
+    detail: {
+      tags: ['Store'],
+      summary: 'Delete my store',
+      description: 'Delete your store. This will delete all products and downgrade your role to CUSTOMER. Cannot delete if there are active orders.'
+    }
+  })
+
 // Public routes untuk melihat store
 export const publicStoreRoutes = new Elysia({ prefix: '/stores' })
   
