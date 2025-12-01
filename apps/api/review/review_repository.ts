@@ -1,11 +1,11 @@
 import { prisma } from '../lib/db'
 
 export const reviewRepository = {
-  // Get product reviews
+  // Get reviews for a product
   async getProductReviews(productId: string, page = 1, limit = 10) {
     const skip = (page - 1) * limit
 
-    const [reviews, total] = await Promise.all([
+    const [reviews, total, stats] = await Promise.all([
       prisma.review.findMany({
         where: { productId },
         include: {
@@ -13,23 +13,21 @@ export const reviewRepository = {
             select: {
               id: true,
               name: true,
-              avatar: true,
+              avatar: true
             }
           }
         },
-        orderBy: { createdAt: 'desc' },
         skip,
         take: limit,
+        orderBy: { createdAt: 'desc' }
       }),
-      prisma.review.count({ where: { productId } })
+      prisma.review.count({ where: { productId } }),
+      prisma.review.aggregate({
+        where: { productId },
+        _avg: { rating: true },
+        _count: true
+      })
     ])
-
-    // Calculate average rating
-    const avgResult = await prisma.review.aggregate({
-      where: { productId },
-      _avg: { rating: true },
-      _count: { rating: true }
-    })
 
     return {
       reviews,
@@ -37,8 +35,8 @@ export const reviewRepository = {
       page,
       limit,
       totalPages: Math.ceil(total / limit),
-      averageRating: avgResult._avg.rating || 0,
-      reviewCount: avgResult._count.rating
+      averageRating: stats._avg.rating || 0,
+      reviewCount: stats._count
     }
   },
 
@@ -51,7 +49,7 @@ export const reviewRepository = {
     })
   },
 
-  // Get review by id
+  // Get review by ID
   async getReviewById(id: string) {
     return prisma.review.findUnique({
       where: { id },
@@ -59,15 +57,7 @@ export const reviewRepository = {
         user: {
           select: {
             id: true,
-            name: true,
-            avatar: true,
-          }
-        },
-        product: {
-          select: {
-            id: true,
-            name: true,
-            slug: true,
+            name: true
           }
         }
       }
@@ -88,7 +78,7 @@ export const reviewRepository = {
           select: {
             id: true,
             name: true,
-            avatar: true,
+            avatar: true
           }
         }
       }
@@ -108,7 +98,7 @@ export const reviewRepository = {
           select: {
             id: true,
             name: true,
-            avatar: true,
+            avatar: true
           }
         }
       }
@@ -132,13 +122,11 @@ export const reviewRepository = {
 
   // Get product by ID or slug
   async getProductByIdOrSlug(idOrSlug: string) {
-    // Try by ID first
     let product = await prisma.product.findUnique({
       where: { id: idOrSlug },
       select: { id: true, name: true }
     })
     
-    // If not found, try by slug
     if (!product) {
       product = await prisma.product.findUnique({
         where: { slug: idOrSlug },
@@ -149,16 +137,14 @@ export const reviewRepository = {
     return product
   },
 
-  // Check if user has purchased the product (has completed order with this product)
+  // Check if user has purchased the product (completed order)
   async hasUserPurchasedProduct(userId: string, productId: string) {
     const order = await prisma.order.findFirst({
       where: {
         userId,
         status: 'DONE',
         items: {
-          some: {
-            productId
-          }
+          some: { productId }
         }
       }
     })
