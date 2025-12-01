@@ -8,6 +8,7 @@ import { profileRoutes } from "./profile"
 import { cartRoutes } from "./cart"
 import { orderRoutes, sellerOrderRoutes } from "./order"
 import { reviewRoutes, productReviewsRoute } from "./review"
+import { adminRoutes } from "./admin"
 
 const app = new Elysia()
   .use(swagger({
@@ -26,7 +27,8 @@ const app = new Elysia()
         { name: 'Products', description: 'Product management' },
         { name: 'Cart', description: 'Shopping cart' },
         { name: 'Orders', description: 'Order management' },
-        { name: 'Reviews', description: 'Product reviews' }
+        { name: 'Reviews', description: 'Product reviews' },
+        { name: 'Admin', description: 'Admin management' }
       ],
       components: {
         securitySchemes: {
@@ -55,6 +57,7 @@ const app = new Elysia()
   .use(sellerOrderRoutes)
   .use(reviewRoutes)
   .use(productReviewsRoute)
+  .use(adminRoutes)
   .get("/", () => ({ message: "Marketplace API" }), {
     detail: {
       tags: ['General'],
