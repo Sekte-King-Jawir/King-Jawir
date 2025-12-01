@@ -3,6 +3,7 @@ export const ErrorCode = {
   // Auth Errors
   INVALID_CREDENTIALS: 'INVALID_CREDENTIALS',
   UNAUTHORIZED: 'UNAUTHORIZED',
+  FORBIDDEN: 'FORBIDDEN',
   TOKEN_INVALID: 'TOKEN_INVALID',
   TOKEN_EXPIRED: 'TOKEN_EXPIRED',
   
@@ -16,6 +17,11 @@ export const ErrorCode = {
   INVALID_PASSWORD: 'INVALID_PASSWORD',
   SAME_PASSWORD: 'SAME_PASSWORD',
   OAUTH_NO_PASSWORD: 'OAUTH_NO_PASSWORD',
+  
+  // Resource Errors
+  NOT_FOUND: 'NOT_FOUND',
+  ALREADY_EXISTS: 'ALREADY_EXISTS',
+  NOT_OWNER: 'NOT_OWNER',
   
   // Validation Errors
   VALIDATION_ERROR: 'VALIDATION_ERROR',
@@ -65,8 +71,11 @@ export function errorResponse(
 // Common Responses
 export const CommonResponse = {
   unauthorized: () => errorResponse('Unauthorized', ErrorCode.UNAUTHORIZED),
+  forbidden: (message?: string) => errorResponse(message || 'Forbidden - Access denied', ErrorCode.FORBIDDEN),
   tokenInvalid: () => errorResponse('Token tidak valid', ErrorCode.TOKEN_INVALID),
   tokenExpired: () => errorResponse('Token expired', ErrorCode.TOKEN_EXPIRED),
   userNotFound: () => errorResponse('User tidak ditemukan', ErrorCode.USER_NOT_FOUND),
+  notFound: (resource: string) => errorResponse(`${resource} tidak ditemukan`, ErrorCode.NOT_FOUND),
+  notOwner: () => errorResponse('Anda tidak memiliki akses ke resource ini', ErrorCode.NOT_OWNER),
   internalError: () => errorResponse('Terjadi kesalahan server', ErrorCode.INTERNAL_ERROR),
 }
