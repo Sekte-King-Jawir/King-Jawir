@@ -40,7 +40,7 @@ const app = new Elysia()
       description: 'Check if API is running'
     }
   })
-  .listen(3001)
+  .listen(3000)
 
-console.log(`🚀 Server running at http://localhost:3001`)
-console.log(`📚 Swagger docs at http://localhost:3001/docs`)
+console.log(`🚀 Server running at http://localhost:3000`)
+console.log(`📚 Swagger docs at http://localhost:3000/docs`)
