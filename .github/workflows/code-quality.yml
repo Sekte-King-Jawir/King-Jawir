@@ -159,17 +159,23 @@ jobs:
         continue-on-error: true
         run: |
           echo "🔍 Running TypeScript type check..."
-          bun run check-types 2>&1 | tee typecheck-report.txt || true
+          TYPE_OUTPUT=$(bun run check-types 2>&1)
+          TYPE_ERRORS=$(echo "$TYPE_OUTPUT" | grep "error TS" || true)
           
-          if grep -q "error TS" typecheck-report.txt; then
+          if [ -n "$TYPE_ERRORS" ]; then
             echo "⚠️ TypeScript errors found"
             echo "has_errors=true" >> $GITHUB_OUTPUT
             
             # Add to step summary
-            echo "### ⚠️ TypeScript Errors" >> $GITHUB_STEP_SUMMARY
+            echo "### ⚠️ TypeScript Errors Found" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "Please review and fix the following type errors:" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "\`\`\`typescript" >> $GITHUB_STEP_SUMMARY
+            echo "$TYPE_ERRORS" | head -n 30 >> $GITHUB_STEP_SUMMARY
             echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
-            grep "error TS" typecheck-report.txt | head -n 30 >> $GITHUB_STEP_SUMMARY
-            echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "💡 These errors are reported for tracking purposes only. Code changes will still be committed." >> $GITHUB_STEP_SUMMARY
           else
             echo "has_errors=false" >> $GITHUB_OUTPUT
             echo "✅ No TypeScript errors!"
@@ -257,5 +263,5 @@ jobs:
       - name: Cleanup Artifacts
         if: always()
         run: |
-          rm -f depcheck-*.json cleanup-deps.js typecheck-report.txt || true
+          rm -f depcheck-*.json cleanup-deps.js || true
           echo "🧹 Cleaned up temporary files"
