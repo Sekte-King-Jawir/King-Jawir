@@ -1,16 +1,16 @@
 use anyhow::Result;
 
 use crate::config::*;
-use crate::scraper::scraper_model::Product;
-use crate::scraper::scraper_repository::ScraperRepository;
+use crate::tokopedia::tokopedia_model::Product;
+use crate::tokopedia::tokopedia_repository::TokopediaRepository;
 
-pub struct ScraperService {
-    repository: ScraperRepository,
+pub struct TokopediaService {
+    repository: TokopediaRepository,
 }
 
-impl ScraperService {
+impl TokopediaService {
     pub fn new() -> Result<Self> {
-        let repository = ScraperRepository::new()?;
+        let repository = TokopediaRepository::new()?;
         Ok(Self { repository })
     }
 

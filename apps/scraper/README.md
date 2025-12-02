@@ -44,7 +44,7 @@ Server will start on `http://0.0.0.0:4103`
 ### API Endpoint
 
 ```
-GET /api/scraper?query={search_term}&limit={number}
+GET /api/scraper/tokopedia?query={search_term}&limit={number}
 ```
 
 **Parameters:**
@@ -55,13 +55,13 @@ GET /api/scraper?query={search_term}&limit={number}
 
 ```bash
 # Search for laptops (limit 5)
-curl "http://localhost:4103/api/scraper?query=laptop&limit=5"
+curl "http://localhost:4103/api/scraper/tokopedia?query=laptop&limit=5"
 
 # Search for phones (default limit 10)
-curl "http://localhost:4103/api/scraper?query=samsung"
+curl "http://localhost:4103/api/scraper/tokopedia?query=samsung"
 
 # Use default search (iphone)
-curl "http://localhost:4103/api/scraper"
+curl "http://localhost:4103/api/scraper/tokopedia"
 ```
 
 ### Response Format
@@ -165,7 +165,7 @@ cargo build --release
 cargo run --release &
 
 # Test endpoint
-curl "http://localhost:4103/api/scraper?query=test&limit=3"
+curl "http://localhost:4103/api/scraper/tokopedia?query=test&limit=3"
 ```
 
 ## 🛠️ Development

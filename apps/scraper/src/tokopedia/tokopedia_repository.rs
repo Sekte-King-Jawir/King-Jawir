@@ -5,13 +5,13 @@ use std::thread;
 
 use crate::browser::BrowserClient;
 use crate::config::*;
-use crate::scraper::scraper_model::Product;
+use crate::tokopedia::tokopedia_model::Product;
 
-pub struct ScraperRepository {
+pub struct TokopediaRepository {
     browser: BrowserClient,
 }
 
-impl ScraperRepository {
+impl TokopediaRepository {
     pub fn new() -> Result<Self> {
         let browser = BrowserClient::new()?;
         Ok(Self { browser })

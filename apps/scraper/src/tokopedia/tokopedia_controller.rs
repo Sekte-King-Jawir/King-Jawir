@@ -1,19 +1,19 @@
 use axum::{extract::Query, Json};
 
-use crate::scraper::scraper_dto::{ApiResponse, ScraperQuery};
-use crate::scraper::scraper_model::Product;
-use crate::scraper::scraper_service::ScraperService;
+use crate::tokopedia::tokopedia_dto::{ApiResponse, TokopediaQuery};
+use crate::tokopedia::tokopedia_model::Product;
+use crate::tokopedia::tokopedia_service::TokopediaService;
 
-/// HTTP handler for the scraper API endpoint
-pub async fn scraper_handler(
-    Query(params): Query<ScraperQuery>,
+/// HTTP handler for the Tokopedia scraper API endpoint
+pub async fn tokopedia_handler(
+    Query(params): Query<TokopediaQuery>,
 ) -> Json<ApiResponse<Vec<Product>>> {
     let query = params.query;
     let limit = params.limit;
 
     println!("📥 Received request: query='{}', limit={}", query, limit);
 
-    match ScraperService::new() {
+    match TokopediaService::new() {
         Ok(service) => match service.scrape_tokopedia(&query, limit) {
             Ok(products) => {
                 let count = products.len();
