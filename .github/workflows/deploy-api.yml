@@ -1,0 +1,132 @@
+name: Deploy API Store to VPS
+
+on:
+  workflow_dispatch: # Manual trigger
+  push:
+    branches:
+      - main
+    paths:
+      - 'apps/api/**'
+      - '.github/workflows/deploy-api.yml'
+
+jobs:
+  build-and-deploy-api:
+    name: Build and Deploy API Store
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Get Bun cache directory
+        id: bun-cache
+        shell: bash
+        run: |
+          echo "BUN_INSTALL_CACHE_DIR=$(bun pm cache)" >> $GITHUB_OUTPUT
+
+      - name: Setup Bun cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.bun-cache.outputs.BUN_INSTALL_CACHE_DIR }}
+          key: ${{ runner.os }}-bun-${{ hashFiles('apps/api/bun.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-bun-
+
+      - name: Prepare .env file for production
+        env:
+          ENV_FILE_PRODUCTION: ${{ secrets.ENV_FILE_PRODUCTION }}
+        run: |
+          if [ -n "$ENV_FILE_PRODUCTION" ]; then
+            echo "$ENV_FILE_PRODUCTION" > apps/api/.env
+          fi
+
+      - name: Install Dependencies
+        working-directory: apps/api
+        run: bun install
+
+      - name: Generate Prisma Client
+        working-directory: apps/api
+        run: bunx prisma generate
+
+      - name: Build API Application
+        working-directory: apps/api
+        run: bun run build
+
+      - name: Sync Build Artifacts to VPS
+        env:
+          SSH_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          echo "$SSH_KEY" > /tmp/deploy_key && chmod 600 /tmp/deploy_key
+
+          # Create necessary directories on VPS
+          ssh -o StrictHostKeyChecking=no -i /tmp/deploy_key ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} "mkdir -p ${{ secrets.VPS_TARGET_DIR }}/apps/api/{dist,generated,prisma}"
+
+          # Sync build output (dist folder)
+          rsync -avz --progress -e "ssh -o StrictHostKeyChecking=no -i /tmp/deploy_key" \
+            apps/api/dist/ \
+            ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_TARGET_DIR }}/apps/api/dist/
+
+          # Sync generated Prisma client
+          rsync -avz --progress -e "ssh -o StrictHostKeyChecking=no -i /tmp/deploy_key" \
+            apps/api/generated/ \
+            ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_TARGET_DIR }}/apps/api/generated/
+
+          # Sync Prisma schema
+          rsync -avz -e "ssh -o StrictHostKeyChecking=no -i /tmp/deploy_key" \
+            apps/api/prisma/ \
+            ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_TARGET_DIR }}/apps/api/prisma/
+
+          # Sync package.json
+          rsync -avz -e "ssh -o StrictHostKeyChecking=no -i /tmp/deploy_key" \
+            apps/api/package.json \
+            ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_TARGET_DIR }}/apps/api/package.json
+
+          # Sync prisma.config.ts
+          rsync -avz -e "ssh -o StrictHostKeyChecking=no -i /tmp/deploy_key" \
+            apps/api/prisma.config.ts \
+            ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_TARGET_DIR }}/apps/api/prisma.config.ts
+
+          # Sync ecosystem config if exists
+          if [ -f apps/api/ecosystem.config.cjs ]; then
+            rsync -avz -e "ssh -o StrictHostKeyChecking=no -i /tmp/deploy_key" \
+              apps/api/ecosystem.config.cjs \
+              ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_TARGET_DIR }}/apps/api/ecosystem.config.cjs
+          fi
+
+          # Sync .env file
+          rsync -avz -e "ssh -o StrictHostKeyChecking=no -i /tmp/deploy_key" \
+            apps/api/.env \
+            ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_TARGET_DIR }}/apps/api/.env
+
+          rm -f /tmp/deploy_key
+
+      - name: Restart API Store with PM2
+        env:
+          SSH_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          echo "$SSH_KEY" > /tmp/deploy_key && chmod 600 /tmp/deploy_key
+          ssh -o StrictHostKeyChecking=no -i /tmp/deploy_key ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} '
+            # Ensure bun and node global bin are available for PM2
+            export PATH=$PATH:/home/asephs/.bun/bin:/home/asephs/.nvm/versions/node/v22.17.1/bin
+            cd ${{ secrets.VPS_TARGET_DIR }}/apps/api
+
+            # Stop existing PM2 process
+            pm2 delete api_store || true
+
+            # Start API Store with PM2
+            if [ -f ecosystem.config.cjs ]; then
+              pm2 start ecosystem.config.cjs --env production
+            else
+              # Start directly if no ecosystem config
+              pm2 start dist/index.js --name api_store --env production
+            fi
+            
+            pm2 save
+
+            echo "✅ API Store deployment successful!"
+          '
+          rm -f /tmp/deploy_key

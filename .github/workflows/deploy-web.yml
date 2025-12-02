@@ -1,0 +1,128 @@
+name: Deploy Web Store to VPS
+
+on:
+  workflow_dispatch: # Manual trigger
+  push:
+    branches:
+      - main
+    paths:
+      - "apps/web/**"
+      - ".github/workflows/deploy-web.yml"
+
+jobs:
+  build-and-deploy-web:
+    name: Build and Deploy Web Store
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Get Bun cache directory
+        id: bun-cache
+        shell: bash
+        run: |
+          echo "BUN_INSTALL_CACHE_DIR=$(bun pm cache)" >> $GITHUB_OUTPUT
+
+      - name: Setup Bun cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.bun-cache.outputs.BUN_INSTALL_CACHE_DIR }}
+          key: ${{ runner.os }}-bun-${{ hashFiles('apps/web/bun.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-bun-
+
+      - name: Prepare .env file for production
+        env:
+          ENV_FILE_PRODUCTION: ${{ secrets.ENV_FILE_PRODUCTION }}
+        run: |
+          if [ -n "$ENV_FILE_PRODUCTION" ]; then
+            echo "$ENV_FILE_PRODUCTION" > apps/web/.env.production
+          fi
+
+      - name: Install Dependencies
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: 'true'
+          PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: 'true'
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
+        run: bun install
+
+      - name: Build Next.js
+        working-directory: apps/web
+        run: bun run build
+
+      - name: Sync Build Artifacts to VPS
+        env:
+          SSH_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          echo "$SSH_KEY" > /tmp/deploy_key && chmod 600 /tmp/deploy_key
+
+          # Create necessary directories on VPS
+          ssh -o StrictHostKeyChecking=no -i /tmp/deploy_key ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} "mkdir -p ${{ secrets.VPS_TARGET_DIR }}/apps/web/{.next,public}"
+
+          # Sync build output (.next folder)
+          rsync -avz --progress --delete -e "ssh -o StrictHostKeyChecking=no -i /tmp/deploy_key" \
+            apps/web/.next/ \
+            ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_TARGET_DIR }}/apps/web/.next/
+
+          # Sync public folder if exists
+          if [ -d apps/web/public ]; then
+            rsync -avz --progress -e "ssh -o StrictHostKeyChecking=no -i /tmp/deploy_key" \
+              apps/web/public/ \
+              ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_TARGET_DIR }}/apps/web/public/
+          fi
+
+          # Sync package.json
+          rsync -avz -e "ssh -o StrictHostKeyChecking=no -i /tmp/deploy_key" \
+            apps/web/package.json \
+            ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_TARGET_DIR }}/apps/web/package.json
+
+          # Sync next.config.js
+          rsync -avz -e "ssh -o StrictHostKeyChecking=no -i /tmp/deploy_key" \
+            apps/web/next.config.js \
+            ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_TARGET_DIR }}/apps/web/next.config.js
+
+          # Sync ecosystem config if exists
+          if [ -f apps/web/ecosystem.config.cjs ]; then
+            rsync -avz -e "ssh -o StrictHostKeyChecking=no -i /tmp/deploy_key" \
+              apps/web/ecosystem.config.cjs \
+              ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_TARGET_DIR }}/apps/web/ecosystem.config.cjs
+          fi
+
+          # Sync .env file
+          rsync -avz -e "ssh -o StrictHostKeyChecking=no -i /tmp/deploy_key" \
+            apps/web/.env.production \
+            ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_TARGET_DIR }}/apps/web/.env.production
+
+          rm -f /tmp/deploy_key
+
+      - name: Restart Web Store with PM2
+        env:
+          SSH_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          echo "$SSH_KEY" > /tmp/deploy_key && chmod 600 /tmp/deploy_key
+          ssh -o StrictHostKeyChecking=no -i /tmp/deploy_key ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} '
+            # Ensure bun and node global bin are available for PM2
+            export PATH=$PATH:/home/asephs/.bun/bin:/home/asephs/.nvm/versions/node/v22.17.1/bin
+            cd ${{ secrets.VPS_TARGET_DIR }}/apps/web
+
+            # Stop existing PM2 process
+            pm2 delete web_store || true
+
+            # Start Web Store with PM2
+            if [ -f ecosystem.config.cjs ]; then
+              pm2 start ecosystem.config.cjs --env production
+            else
+              # Start directly if no ecosystem config
+              pm2 start "bun run start" --name web_store --env production
+            fi
+            
+            pm2 save
+
+            echo "✅ Web Store deployment successful!"
+          '
+          rm -f /tmp/deploy_key

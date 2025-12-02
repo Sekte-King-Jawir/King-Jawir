@@ -5,7 +5,8 @@
   "private": true,
   "scripts": {
     "dev": "nodemon --watch .env --exec \"bun run index.ts\"",
-    "start": "bun run index.ts"
+    "start": "bun run index.ts",
+    "build": "bun build index.ts --outdir dist --target bun --minify"
   },
   "devDependencies": {
     "@types/bcryptjs": "^3.0.0",
