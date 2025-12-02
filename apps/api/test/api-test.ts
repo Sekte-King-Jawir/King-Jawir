@@ -5,7 +5,7 @@
  * Run: bun run test/api-test.ts
  */
 
-const BASE_URL = 'http://localhost:3000'
+const BASE_URL = `http://localhost:${process.env.API_PORT || 4101}`
 
 // Store cookies/tokens
 let accessToken = ''

@@ -65,14 +65,9 @@ export const reviewRepository = {
   },
 
   // Create review
-  async createReview(userId: string, productId: string, rating: number, comment?: string) {
+  async create(data: { userId: string; productId: string; rating: number; comment?: string }) {
     return prisma.review.create({
-      data: {
-        userId,
-        productId,
-        rating,
-        comment,
-      },
+      data,
       include: {
         user: {
           select: {
@@ -86,12 +81,12 @@ export const reviewRepository = {
   },
 
   // Update review
-  async updateReview(id: string, rating?: number, comment?: string) {
+  async update(id: string, data: { rating?: number; comment?: string }) {
     return prisma.review.update({
       where: { id },
       data: {
-        ...(rating !== undefined && { rating }),
-        ...(comment !== undefined && { comment }),
+        ...(data.rating !== undefined && { rating: data.rating }),
+        ...(data.comment !== undefined && { comment: data.comment }),
       },
       include: {
         user: {
@@ -106,7 +101,7 @@ export const reviewRepository = {
   },
 
   // Delete review
-  async deleteReview(id: string) {
+  async delete(id: string) {
     return prisma.review.delete({
       where: { id },
     })
@@ -138,7 +133,7 @@ export const reviewRepository = {
   },
 
   // Check if user has purchased the product (completed order)
-  async hasUserPurchasedProduct(userId: string, productId: string) {
+  async hasUserPurchased(userId: string, productId: string) {
     const order = await prisma.order.findFirst({
       where: {
         userId,
@@ -149,5 +144,15 @@ export const reviewRepository = {
       },
     })
     return !!order
+  },
+
+  // Check if user has reviewed the product
+  async hasUserReviewed(userId: string, productId: string) {
+    const review = await prisma.review.findUnique({
+      where: {
+        userId_productId: { userId, productId },
+      },
+    })
+    return !!review
   },
 }

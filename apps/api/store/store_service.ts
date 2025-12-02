@@ -12,15 +12,20 @@ function generateSlug(name: string): string {
 
 export const storeService = {
   // Create store (CUSTOMER -> SELLER upgrade)
-  async createStore(userId: string, name: string, slug?: string) {
+  async create(userId: string, data: { name: string; slug?: string; description?: string }) {
     // Check apakah user sudah punya store
     const existingStore = await storeRepository.findByUserId(userId)
     if (existingStore) {
       return errorResponse('Anda sudah memiliki toko', ErrorCode.ALREADY_EXISTS)
     }
 
+    // Validasi name
+    if (!data.name || data.name.trim().length === 0) {
+      return errorResponse('Nama toko tidak boleh kosong', ErrorCode.VALIDATION_ERROR)
+    }
+
     // Generate atau validate slug
-    const storeSlug = slug || generateSlug(name)
+    const storeSlug = data.slug || generateSlug(data.name)
 
     // Check slug unique
     if (await storeRepository.slugExists(storeSlug)) {
@@ -33,8 +38,9 @@ export const storeService = {
       const newStore = await tx.store.create({
         data: {
           userId,
-          name,
+          name: data.name,
           slug: storeSlug,
+          description: data.description,
         },
       })
 
@@ -70,14 +76,14 @@ export const storeService = {
         id: store.id,
         name: store.name,
         slug: store.slug,
-        productCount: store._count.products,
+        productCount: store._count?.products || 0,
         createdAt: store.createdAt,
       },
     })
   },
 
   // Update my store
-  async updateStore(userId: string, data: { name?: string; slug?: string }) {
+  async update(userId: string, data: { name?: string; slug?: string; description?: string }) {
     const store = await storeRepository.findByUserId(userId)
 
     if (!store) {
@@ -102,7 +108,7 @@ export const storeService = {
   },
 
   // Get store by slug (public)
-  async getStoreBySlug(slug: string) {
+  async getBySlug(slug: string) {
     const store = await storeRepository.findBySlug(slug)
 
     if (!store) {
@@ -114,7 +120,7 @@ export const storeService = {
         id: store.id,
         name: store.name,
         slug: store.slug,
-        productCount: store._count.products,
+        productCount: store._count?.products || 0,
         owner: store.user,
         createdAt: store.createdAt,
       },

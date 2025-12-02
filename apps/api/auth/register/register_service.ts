@@ -7,6 +7,20 @@ import { randomBytes } from 'crypto'
 
 export const registerService = {
   async register(email: string, password: string, name: string) {
+    // Validasi input
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(email)) {
+      return errorResponse('Format email tidak valid', ErrorCode.VALIDATION_ERROR)
+    }
+
+    if (!name || name.trim().length === 0) {
+      return errorResponse('Nama tidak boleh kosong', ErrorCode.VALIDATION_ERROR)
+    }
+
+    if (password.length < 8) {
+      return errorResponse('Password minimal 8 karakter', ErrorCode.VALIDATION_ERROR)
+    }
+
     // Cek email sudah ada
     const exists = await userRepository.findByEmail(email)
     if (exists) {
@@ -20,6 +34,11 @@ export const registerService = {
       password: hashedPassword,
       name,
     })
+
+    // Guard: user bisa null jika creation gagal
+    if (!user) {
+      return errorResponse('Gagal membuat user', ErrorCode.BAD_REQUEST)
+    }
 
     // Buat token verifikasi
     const token = randomBytes(32).toString('hex')

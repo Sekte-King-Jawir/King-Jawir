@@ -44,6 +44,11 @@ export const categoryService = {
 
   // Create category (ADMIN only)
   async create(name: string, slug?: string) {
+    // Validasi name tidak kosong
+    if (!name || name.trim().length === 0) {
+      return errorResponse('Nama category tidak boleh kosong', ErrorCode.VALIDATION_ERROR)
+    }
+
     // Check name unique
     if (await categoryRepository.nameExists(name)) {
       return errorResponse('Nama category sudah ada', ErrorCode.ALREADY_EXISTS)

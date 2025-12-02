@@ -1,0 +1,16 @@
+[test]
+# Bun test configuration for King Jawir API
+
+# Test file patterns
+# Bun will look for:
+# - *.test.ts
+# - *.test.tsx
+# - *.test.js
+# - *.test.jsx
+
+# Preload files before running tests (if needed)
+# preload = ["./test/setup.ts"]
+
+# Coverage settings
+# coverage = true
+# coverageThreshold = 80
