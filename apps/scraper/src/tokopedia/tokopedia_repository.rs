@@ -26,7 +26,7 @@ impl TokopediaRepository {
 
         // Wait for network idle - simpler approach: wait for main content to load
         println!("⏳ Waiting for page to load...");
-        thread::sleep(std::time::Duration::from_secs(3)); // Wait 3 seconds for initial load
+        thread::sleep(std::time::Duration::from_secs(2)); // Reduced from 3 seconds
 
         // Check if main content container exists (network idle indicator)
         let container_check_script = r#"
@@ -43,33 +43,33 @@ impl TokopediaRepository {
 
         if !container_exists {
             println!("⚠️  Container not found, waiting a bit more...");
-            thread::sleep(std::time::Duration::from_secs(2));
+            thread::sleep(std::time::Duration::from_millis(500)); // Reduced from 2 seconds
         }
 
         println!("✅ Page loaded, proceeding with scrolling");
 
-        // Wait for initial page load
+        // Wait for initial page load (reduced from 8 seconds to 1 second)
         thread::sleep(get_page_render_wait());
 
         // Aggressive scrolling to trigger lazy loading of all products
         println!("🔄 Scrolling to load all products...");
 
-        // Scroll to bottom multiple times to trigger lazy loading
-        for i in 1..=5 {
-            let scroll_script = format!("window.scrollTo(0, document.body.scrollHeight * {} / 5);", i);
+        // Faster scrolling: scroll to bottom in larger steps with shorter delays
+        for i in 1..=3 {
+            let scroll_script = format!("window.scrollTo(0, document.body.scrollHeight * {} / 3);", i);
             let _ = tab.evaluate(&scroll_script, false);
-            thread::sleep(std::time::Duration::from_secs(1));
+            thread::sleep(std::time::Duration::from_millis(300));
         }
 
         // Final scroll to very bottom
         let _ = tab.evaluate("window.scrollTo(0, document.body.scrollHeight);", false);
-        thread::sleep(std::time::Duration::from_secs(2));
+        thread::sleep(std::time::Duration::from_millis(500));
 
-        // Scroll back to top to ensure all elements are rendered
+        // Quick scroll back to top to ensure all elements are rendered
         let _ = tab.evaluate("window.scrollTo(0, 0);", false);
-        thread::sleep(std::time::Duration::from_secs(1));
+        thread::sleep(std::time::Duration::from_millis(200));
 
-        // Wait for final rendering
+        // Wait for final rendering (reduced from 500ms to 200ms)
         thread::sleep(get_additional_wait());
 
         let html_content = tab.get_content().context("Failed to get page content")?;
