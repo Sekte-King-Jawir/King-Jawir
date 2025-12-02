@@ -150,49 +150,26 @@ jobs:
           
           node cleanup-deps.js
 
-      # ===== 3. ANALYZE UNUSED EXPORTS (REPORT ONLY) =====
-      - name: Create Root TSConfig
-        run: |
-          cat > tsconfig.json << 'EOF'
-          {
-            "compilerOptions": {
-              "target": "ESNext",
-              "module": "ESNext",
-              "moduleResolution": "bundler",
-              "strict": false,
-              "skipLibCheck": true,
-              "noEmit": true
-            },
-            "references": [
-              { "path": "./apps/api" },
-              { "path": "./apps/web" },
-              { "path": "./packages/ui" }
-            ]
-          }
-          EOF
-
-      - name: Install TS-Prune
-        run: bun add -D ts-prune
-
-      - name: Run TS-Prune Analysis (Report Only)
-        id: ts-prune
+      # ===== 3. TYPE CHECK WITH STRICT CONFIG =====
+      - name: Run TypeScript Type Check
+        id: typecheck
         continue-on-error: true
         run: |
-          echo "🧹 Running ts-prune analysis..."
-          bun run ts-prune > ts-prune-report.txt 2>&1 || true
+          echo "🔍 Running TypeScript type check..."
+          bun run check-types 2>&1 | tee typecheck-report.txt || true
           
-          if [ -s ts-prune-report.txt ]; then
-            echo "📊 Unused exports report generated"
-            echo "cleaned_exports=false" >> $GITHUB_OUTPUT
+          if grep -q "error TS" typecheck-report.txt; then
+            echo "⚠️ TypeScript errors found"
+            echo "has_errors=true" >> $GITHUB_OUTPUT
             
-            # Add to step summary (read-only report)
-            echo "### 🔍 Unused Exports Found" >> $GITHUB_STEP_SUMMARY
+            # Add to step summary
+            echo "### ⚠️ TypeScript Errors" >> $GITHUB_STEP_SUMMARY
             echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
-            head -n 50 ts-prune-report.txt >> $GITHUB_STEP_SUMMARY
+            grep "error TS" typecheck-report.txt | head -n 30 >> $GITHUB_STEP_SUMMARY
             echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
           else
-            echo "cleaned_exports=false" >> $GITHUB_OUTPUT
-            echo "✅ No unused exports found!"
+            echo "has_errors=false" >> $GITHUB_OUTPUT
+            echo "✅ No TypeScript errors!"
           fi
 
       # ===== 4. COMMIT ALL CHANGES =====
@@ -260,7 +237,11 @@ jobs:
             echo "ℹ️ **Depcheck**: No unused dependencies" >> $GITHUB_STEP_SUMMARY
           fi
           
-          echo "ℹ️ **TS-Prune**: Analysis report generated (review manually)" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ steps.typecheck.outputs.has_errors }}" == "true" ]; then
+            echo "⚠️ **TypeScript**: Errors found (see details above)" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "✅ **TypeScript**: No type errors" >> $GITHUB_STEP_SUMMARY
+          fi
           
           echo "" >> $GITHUB_STEP_SUMMARY
           if [ "${{ steps.changes-check.outputs.has_changes }}" == "true" ]; then

@@ -21,7 +21,6 @@
   "devDependencies": {
     "depcheck": "^1.4.7",
     "prettier": "^3.6.2",
-    "ts-prune": "^0.10.3",
     "turbo": "^2.6.1",
     "typescript": "5.9.2"
   },
