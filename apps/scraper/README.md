@@ -48,6 +48,7 @@ GET /api/scraper?query={search_term}&limit={number}
 ```
 
 **Parameters:**
+
 - `query` (optional): Search term (default: "iphone")
 - `limit` (optional): Number of products to return (default: 10)
 
@@ -115,6 +116,7 @@ git push origin main
 ```
 
 The workflow will:
+
 1. Build the Rust binary in release mode
 2. Sync binary to VPS
 3. Restart PM2 service automatically
@@ -141,6 +143,7 @@ pm2 logs rust_store
 ### Server Requirements
 
 #### Install Chrome on Ubuntu/Debian
+
 ```bash
 wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
 sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
@@ -149,6 +152,7 @@ sudo apt install -y google-chrome-stable
 ```
 
 #### Install required libraries
+
 ```bash
 sudo apt install -y libglib2.0-0 libnss3 libatk1.0-0 libatk-bridge2.0-0 \
     libcups2 libdrm2 libxkbcommon0 libxcomposite1 libxdamage1 libxrandr2 \
@@ -212,15 +216,19 @@ Edit `src/config.rs` to customize:
 ## 🐛 Troubleshooting
 
 ### Chrome not found
+
 Install Chrome/Chromium and ensure it's in PATH
 
 ### Timeout errors
+
 Increase `PAGE_RENDER_WAIT_SECS` in `config.rs`
 
 ### No products found
+
 Check if Tokopedia HTML structure changed, update selectors
 
 ### Port already in use
+
 Change `SERVER_PORT` in `config.rs` or kill existing process
 
 ## 📝 License
