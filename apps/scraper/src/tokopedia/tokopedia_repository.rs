@@ -46,6 +46,13 @@ impl TokopediaRepository {
             thread::sleep(std::time::Duration::from_millis(500)); // Reduced from 2 seconds
         }
 
+        let hide_images_css = r#"
+            var style = document.createElement('style');
+            style.innerHTML = 'img, picture, svg, canvas { display: none !important; visibility: hidden !important; }';
+            document.head.appendChild(style);
+        "#;
+        let _ = tab.evaluate(hide_images_css, false);
+
         println!("✅ Page loaded, proceeding with scrolling");
 
         // Wait for initial page load (reduced from 8 seconds to 1 second)
@@ -85,7 +92,6 @@ impl TokopediaRepository {
         let link_selector = Selector::parse("a[href*='tokopedia.com']").unwrap();
         let img_selector = Selector::parse("img[alt='product-image']").unwrap();
         let span_selector = Selector::parse("span").unwrap();
-        let div_selector = Selector::parse("div").unwrap();
 
         let mut products = Vec::new();
         let mut seen_urls = std::collections::HashSet::new();
@@ -228,6 +234,10 @@ impl TokopediaRepository {
             });
             
             println!("  ✓ Found: {} - {}", products.last().unwrap().name, products.last().unwrap().price);
+
+            if products.len() >= limit {
+                break;
+            }
         }
 
         println!("📦 DOM parsing extracted {} products", products.len());

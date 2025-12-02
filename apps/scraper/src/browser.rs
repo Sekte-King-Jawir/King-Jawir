@@ -22,7 +22,7 @@ impl BrowserClient {
         let user_agent_arg = Box::leak(format!("--user-agent={}", USER_AGENT).into_boxed_str());
         
         LaunchOptions::default_builder()
-            .headless(false)
+            .headless(true)
             .window_size(Some((BROWSER_WINDOW_WIDTH, BROWSER_WINDOW_HEIGHT)))
             .args(vec![
                 OsStr::new(user_agent_arg),
@@ -31,6 +31,8 @@ impl BrowserClient {
                 OsStr::new("--accept-lang=id-ID"),
                 OsStr::new("--disable-gpu"),
                 OsStr::new("--no-sandbox"),
+                
+                OsStr::new("--disable-images"),
             ])
             .build()
             .expect("Failed to build launch options")

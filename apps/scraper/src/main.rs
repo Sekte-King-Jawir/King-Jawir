@@ -40,7 +40,7 @@ async fn main() {
     // Build router with all routes from modules
     let app = Router::new()
         .merge(tokopedia::router())
-        .merge(SwaggerUi::new("/swagger-ui").url("/api-docs/openapi.json", ApiDoc::openapi()))
+        .merge(SwaggerUi::new("/docs").url("/api-docs/openapi.json", ApiDoc::openapi()))
         .layer(cors);
 
     // Start server
@@ -51,7 +51,7 @@ async fn main() {
 
     println!("🚀 Tokopedia Scraper API running on http://{}", addr);
     println!("📡 Endpoint: GET http://{}/api/scraper/tokopedia?query=iphone&limit=10", addr);
-    println!("📚 Swagger UI: http://{}/swagger-ui", addr);
+    println!("📚 Swagger UI: http://{}/docs", addr);
 
     axum::serve(listener, app)
         .await
