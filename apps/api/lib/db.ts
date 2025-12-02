@@ -3,12 +3,12 @@ import { PrismaClient } from '../generated/prisma/client'
 import { PrismaMariaDb } from '@prisma/adapter-mariadb'
 
 // Parse DATABASE_URL to extract connection details
-const databaseUrl = process.env.DATABASE_URL || ''
+const databaseUrl = process.env['DATABASE_URL'] || ''
 
 // Skip DB adapter if in test environment (use default connection)
 let prisma: PrismaClient
 
-if (process.env.NODE_ENV === 'test') {
+if (process.env['NODE_ENV'] === 'test') {
   // For testing, create a basic PrismaClient without adapter
   // Tests should mock prisma methods as needed
   prisma = { $transaction: async (cb: any) => cb({}) } as any
@@ -23,14 +23,16 @@ if (process.env.NODE_ENV === 'test') {
     )
   }
 
-  const [, user, password, host, port, database] = urlMatch
+  const [, user, passwordEncoded, host, port, database] = urlMatch
+  // Decode URL-encoded password (e.g., %21 -> !)
+  const password = decodeURIComponent(passwordEncoded!)
 
   const adapter = new PrismaMariaDb({
-    host,
+    host: host!,
     port: Number(port),
-    user,
+    user: user!,
     password,
-    database,
+    database: database!,
   })
 
   prisma = new PrismaClient({ adapter })
