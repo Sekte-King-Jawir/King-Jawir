@@ -1,6 +1,7 @@
 import 'dotenv/config'
 import { PrismaClient } from '../generated/prisma/client'
 import { PrismaMariaDb } from '@prisma/adapter-mariadb'
+import { createPool } from 'mariadb'
 
 // Parse DATABASE_URL to extract connection details
 const databaseUrl = process.env['DATABASE_URL'] || ''
@@ -27,13 +28,18 @@ if (process.env['NODE_ENV'] === 'test') {
   // Decode URL-encoded password (e.g., %21 -> !)
   const password = decodeURIComponent(passwordEncoded!)
 
-  const adapter = new PrismaMariaDb({
+  // Create MariaDB connection pool
+  const pool = createPool({
     host: host!,
     port: Number(port),
     user: user!,
     password,
     database: database!,
+    connectionLimit: 10,
+    acquireTimeout: 30000,
   })
+
+  const adapter = new PrismaMariaDb(pool)
 
   prisma = new PrismaClient({ adapter })
 }
