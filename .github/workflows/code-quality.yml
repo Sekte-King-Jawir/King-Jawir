@@ -251,5 +251,6 @@ jobs:
       - name: Cleanup Artifacts
         if: always()
         run: |
+          git rm --cached cleanup-deps.js 2>/dev/null || true
           rm -f cleanup-deps.js || true
           echo "🧹 Cleaned up temporary files"
