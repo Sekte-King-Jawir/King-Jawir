@@ -3,7 +3,7 @@ module.exports = {
     {
       name: 'api_store',
       script: 'dist/index.js',
-      interpreter: 'bun',
+      interpreter: '/home/asephs/.bun/bin/bun',
       instances: 1,
       exec_mode: 'fork',
       autorestart: true,
