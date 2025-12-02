@@ -1,14 +1,14 @@
 export * from "./Role";
-// [unused] // [unused] export * from "./OrderStatus";
+export * from "./OrderStatus";
 export * from "./User";
 export * from "./RefreshToken";
 export * from "./Verification";
 export * from "./Store";
-// [unused] // [unused] // [unused] // [unused] // [unused] // [unused] // [unused] // [unused] // [unused] // [unused] // [unused] // [unused] export * from "./Category";
+export * from "./Category";
 export * from "./Product";
 export * from "./CartItem";
 export * from "./Order";
 export * from "./OrderItem";
-// [unused] export * from "./Review";
+export * from "./Review";
 export * from "./__nullable__";
 export * from "./__transformDate__";

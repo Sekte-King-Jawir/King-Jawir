@@ -1,6 +1,6 @@
 import { type JSX } from 'react'
 
-// [unused] export function Card({
+export function Card({
   className,
   title,
   children,

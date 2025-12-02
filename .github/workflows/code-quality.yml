@@ -150,7 +150,7 @@ jobs:
           
           node cleanup-deps.js
 
-      # ===== 3. CLEAN UNUSED EXPORTS =====
+      # ===== 3. ANALYZE UNUSED EXPORTS (REPORT ONLY) =====
       - name: Create Root TSConfig
         run: |
           cat > tsconfig.json << 'EOF'
@@ -174,7 +174,7 @@ jobs:
       - name: Install TS-Prune
         run: bun add -D ts-prune
 
-      - name: Run TS-Prune and Clean Exports
+      - name: Run TS-Prune Analysis (Report Only)
         id: ts-prune
         continue-on-error: true
         run: |
@@ -182,30 +182,14 @@ jobs:
           bun run ts-prune > ts-prune-report.txt 2>&1 || true
           
           if [ -s ts-prune-report.txt ]; then
-            echo "🧹 Unused exports found, cleaning up..."
-            cat ts-prune-report.txt
+            echo "📊 Unused exports report generated"
+            echo "cleaned_exports=false" >> $GITHUB_OUTPUT
             
-            # Parse and remove unused exports
-            while IFS= read -r line; do
-              if [[ $line =~ ^(.+):([0-9]+)\ -\ (.+)$ ]]; then
-                file="${BASH_REMATCH[1]}"
-                line_num="${BASH_REMATCH[2]}"
-                export_name="${BASH_REMATCH[3]}"
-                
-                # Skip if file doesn't exist or is in node_modules
-                if [[ ! -f "$file" ]] || [[ "$file" == *"node_modules"* ]]; then
-                  continue
-                fi
-                
-                echo "Removing unused export from $file:$line_num - $export_name"
-                
-                # Comment out the export line
-                sed -i "${line_num}s/^/\/\/ [unused] /" "$file"
-              fi
-            done < ts-prune-report.txt
-            
-            echo "cleaned_exports=true" >> $GITHUB_OUTPUT
-            echo "✅ Cleaned up unused exports!"
+            # Add to step summary (read-only report)
+            echo "### 🔍 Unused Exports Found" >> $GITHUB_STEP_SUMMARY
+            echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+            head -n 50 ts-prune-report.txt >> $GITHUB_STEP_SUMMARY
+            echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
           else
             echo "cleaned_exports=false" >> $GITHUB_OUTPUT
             echo "✅ No unused exports found!"
@@ -249,10 +233,6 @@ jobs:
             COMMIT_BODY="${COMMIT_BODY}\n- Removed unused dependencies"
           fi
           
-          if [ "${{ steps.ts-prune.outputs.cleaned_exports }}" == "true" ]; then
-            COMMIT_BODY="${COMMIT_BODY}\n- Cleaned unused exports"
-          fi
-          
           if [ -n "$COMMIT_BODY" ]; then
             echo -e "$COMMIT_MSG\n$COMMIT_BODY" | git commit -F -
           else
@@ -280,11 +260,7 @@ jobs:
             echo "ℹ️ **Depcheck**: No unused dependencies" >> $GITHUB_STEP_SUMMARY
           fi
           
-          if [ "${{ steps.ts-prune.outputs.cleaned_exports }}" == "true" ]; then
-            echo "✅ **TS-Prune**: Cleaned unused exports" >> $GITHUB_STEP_SUMMARY
-          else
-            echo "ℹ️ **TS-Prune**: No unused exports" >> $GITHUB_STEP_SUMMARY
-          fi
+          echo "ℹ️ **TS-Prune**: Analysis report generated (review manually)" >> $GITHUB_STEP_SUMMARY
           
           echo "" >> $GITHUB_STEP_SUMMARY
           if [ "${{ steps.changes-check.outputs.has_changes }}" == "true" ]; then

@@ -1,7 +1,7 @@
 import { Elysia, t } from 'elysia'
 import { resendVerificationController } from './resend_verification_controller'
 
-// [unused] export const resendVerificationRoute = new Elysia().post(
+export const resendVerificationRoute = new Elysia().post(
   '/resend-verification',
   async ({ body, set }) => {
     const result = await resendVerificationController.handle(body.email)

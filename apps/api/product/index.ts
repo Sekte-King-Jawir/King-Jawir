@@ -3,7 +3,7 @@ import { productController } from './product_controller'
 import { jwtPlugin, authDerive, isSeller, type AuthUser } from '../lib/auth-helper'
 import { errorResponse, ErrorCode } from '../lib/response'
 
-// [unused] export const productRoutes = new Elysia({ prefix: '/products' })
+export const productRoutes = new Elysia({ prefix: '/products' })
   .use(jwtPlugin)
   .derive(authDerive)
 
@@ -185,7 +185,7 @@ import { errorResponse, ErrorCode } from '../lib/response'
   )
 
 // My products route
-// [unused] export const myProductsRoute = new Elysia()
+export const myProductsRoute = new Elysia()
   .use(jwtPlugin)
   .derive(authDerive)
 
@@ -228,7 +228,7 @@ import { errorResponse, ErrorCode } from '../lib/response'
   )
 
 // Store products (add to public store routes)
-// [unused] export const storeProductsRoute = new Elysia()
+export const storeProductsRoute = new Elysia()
 
   // GET /stores/:slug/products - Get products by store (public)
   .get(

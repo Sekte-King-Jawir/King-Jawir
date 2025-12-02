@@ -16,15 +16,15 @@ import type * as Prisma from "../internal/prismaNamespace.ts"
  * Model User
  * 
  */
-// [unused] export type UserModel = runtime.Types.Result.DefaultSelection<Prisma.$UserPayload>
+export type UserModel = runtime.Types.Result.DefaultSelection<Prisma.$UserPayload>
 
-// [unused] export type AggregateUser = {
+export type AggregateUser = {
   _count: UserCountAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
   _max: UserMaxAggregateOutputType | null
 }
 
-// [unused] export type UserMinAggregateOutputType = {
+export type UserMinAggregateOutputType = {
   id: string | null
   email: string | null
   password: string | null
@@ -40,7 +40,7 @@ import type * as Prisma from "../internal/prismaNamespace.ts"
   updatedAt: Date | null
 }
 
-// [unused] export type UserMaxAggregateOutputType = {
+export type UserMaxAggregateOutputType = {
   id: string | null
   email: string | null
   password: string | null
@@ -56,7 +56,7 @@ import type * as Prisma from "../internal/prismaNamespace.ts"
   updatedAt: Date | null
 }
 
-// [unused] export type UserCountAggregateOutputType = {
+export type UserCountAggregateOutputType = {
   id: number
   email: number
   password: number
@@ -74,7 +74,7 @@ import type * as Prisma from "../internal/prismaNamespace.ts"
 }
 
 
-// [unused] export type UserMinAggregateInputType = {
+export type UserMinAggregateInputType = {
   id?: true
   email?: true
   password?: true
@@ -90,7 +90,7 @@ import type * as Prisma from "../internal/prismaNamespace.ts"
   updatedAt?: true
 }
 
-// [unused] export type UserMaxAggregateInputType = {
+export type UserMaxAggregateInputType = {
   id?: true
   email?: true
   password?: true
@@ -106,7 +106,7 @@ import type * as Prisma from "../internal/prismaNamespace.ts"
   updatedAt?: true
 }
 
-// [unused] export type UserCountAggregateInputType = {
+export type UserCountAggregateInputType = {
   id?: true
   email?: true
   password?: true
@@ -123,7 +123,7 @@ import type * as Prisma from "../internal/prismaNamespace.ts"
   _all?: true
 }
 
-// [unused] export type UserAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type UserAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Filter which User to aggregate.
    */
@@ -172,7 +172,7 @@ import type * as Prisma from "../internal/prismaNamespace.ts"
   _max?: UserMaxAggregateInputType
 }
 
-// [unused] export type GetUserAggregateType<T extends UserAggregateArgs> = {
+export type GetUserAggregateType<T extends UserAggregateArgs> = {
       [P in keyof T & keyof AggregateUser]: P extends '_count' | 'count'
     ? T[P] extends true
       ? number
@@ -183,7 +183,7 @@ import type * as Prisma from "../internal/prismaNamespace.ts"
 
 
 
-// [unused] export type UserGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type UserGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.UserWhereInput
   orderBy?: Prisma.UserOrderByWithAggregationInput | Prisma.UserOrderByWithAggregationInput[]
   by: Prisma.UserScalarFieldEnum[] | Prisma.UserScalarFieldEnum
@@ -195,7 +195,7 @@ import type * as Prisma from "../internal/prismaNamespace.ts"
   _max?: UserMaxAggregateInputType
 }
 
-// [unused] export type UserGroupByOutputType = {
+export type UserGroupByOutputType = {
   id: string
   email: string
   password: string | null
@@ -229,7 +229,7 @@ type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
 
 
 
-// [unused] export type UserWhereInput = {
+export type UserWhereInput = {
   AND?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   OR?: Prisma.UserWhereInput[]
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
@@ -254,7 +254,7 @@ type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
   reviews?: Prisma.ReviewListRelationFilter
 }
 
-// [unused] export type UserOrderByWithRelationInput = {
+export type UserOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
   password?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -277,7 +277,7 @@ type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
   _relevance?: Prisma.UserOrderByRelevanceInput
 }
 
-// [unused] export type UserWhereUniqueInput = Prisma.AtLeast<{
+export type UserWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   email?: string
   googleId?: string
@@ -302,7 +302,7 @@ type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
   reviews?: Prisma.ReviewListRelationFilter
 }, "id" | "email" | "googleId">
 
-// [unused] export type UserOrderByWithAggregationInput = {
+export type UserOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
   password?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -321,7 +321,7 @@ type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
   _min?: Prisma.UserMinOrderByAggregateInput
 }
 
-// [unused] export type UserScalarWhereWithAggregatesInput = {
+export type UserScalarWhereWithAggregatesInput = {
   AND?: Prisma.UserScalarWhereWithAggregatesInput | Prisma.UserScalarWhereWithAggregatesInput[]
   OR?: Prisma.UserScalarWhereWithAggregatesInput[]
   NOT?: Prisma.UserScalarWhereWithAggregatesInput | Prisma.UserScalarWhereWithAggregatesInput[]
@@ -340,7 +340,7 @@ type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
 }
 
-// [unused] export type UserCreateInput = {
+export type UserCreateInput = {
   id?: string
   email: string
   password?: string | null
@@ -362,7 +362,7 @@ type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
 }
 
-// [unused] export type UserUncheckedCreateInput = {
+export type UserUncheckedCreateInput = {
   id?: string
   email: string
   password?: string | null
@@ -384,7 +384,7 @@ type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
 }
 
-// [unused] export type UserUpdateInput = {
+export type UserUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -406,7 +406,7 @@ type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
 }
 
-// [unused] export type UserUncheckedUpdateInput = {
+export type UserUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -428,7 +428,7 @@ type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
 }
 
-// [unused] export type UserCreateManyInput = {
+export type UserCreateManyInput = {
   id?: string
   email: string
   password?: string | null
@@ -444,7 +444,7 @@ type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
   updatedAt?: Date | string
 }
 
-// [unused] export type UserUpdateManyMutationInput = {
+export type UserUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -460,7 +460,7 @@ type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-// [unused] export type UserUncheckedUpdateManyInput = {
+export type UserUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -476,13 +476,13 @@ type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-// [unused] export type UserOrderByRelevanceInput = {
+export type UserOrderByRelevanceInput = {
   fields: Prisma.UserOrderByRelevanceFieldEnum | Prisma.UserOrderByRelevanceFieldEnum[]
   sort: Prisma.SortOrder
   search: string
 }
 
-// [unused] export type UserCountOrderByAggregateInput = {
+export type UserCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
@@ -498,7 +498,7 @@ type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
   updatedAt?: Prisma.SortOrder
 }
 
-// [unused] export type UserMaxOrderByAggregateInput = {
+export type UserMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
@@ -514,7 +514,7 @@ type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
   updatedAt?: Prisma.SortOrder
 }
 
-// [unused] export type UserMinOrderByAggregateInput = {
+export type UserMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
@@ -530,38 +530,38 @@ type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
   updatedAt?: Prisma.SortOrder
 }
 
-// [unused] export type UserScalarRelationFilter = {
+export type UserScalarRelationFilter = {
   is?: Prisma.UserWhereInput
   isNot?: Prisma.UserWhereInput
 }
 
-// [unused] export type StringFieldUpdateOperationsInput = {
+export type StringFieldUpdateOperationsInput = {
   set?: string
 }
 
-// [unused] export type NullableStringFieldUpdateOperationsInput = {
+export type NullableStringFieldUpdateOperationsInput = {
   set?: string | null
 }
 
-// [unused] export type BoolFieldUpdateOperationsInput = {
+export type BoolFieldUpdateOperationsInput = {
   set?: boolean
 }
 
-// [unused] export type EnumRoleFieldUpdateOperationsInput = {
+export type EnumRoleFieldUpdateOperationsInput = {
   set?: $Enums.Role
 }
 
-// [unused] export type DateTimeFieldUpdateOperationsInput = {
+export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
 }
 
-// [unused] export type UserCreateNestedOneWithoutRefreshTokensInput = {
+export type UserCreateNestedOneWithoutRefreshTokensInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutRefreshTokensInput, Prisma.UserUncheckedCreateWithoutRefreshTokensInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutRefreshTokensInput
   connect?: Prisma.UserWhereUniqueInput
 }
 
-// [unused] export type UserUpdateOneRequiredWithoutRefreshTokensNestedInput = {
+export type UserUpdateOneRequiredWithoutRefreshTokensNestedInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutRefreshTokensInput, Prisma.UserUncheckedCreateWithoutRefreshTokensInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutRefreshTokensInput
   upsert?: Prisma.UserUpsertWithoutRefreshTokensInput
@@ -569,13 +569,13 @@ type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutRefreshTokensInput, Prisma.UserUpdateWithoutRefreshTokensInput>, Prisma.UserUncheckedUpdateWithoutRefreshTokensInput>
 }
 
-// [unused] export type UserCreateNestedOneWithoutVerificationsInput = {
+export type UserCreateNestedOneWithoutVerificationsInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutVerificationsInput, Prisma.UserUncheckedCreateWithoutVerificationsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutVerificationsInput
   connect?: Prisma.UserWhereUniqueInput
 }
 
-// [unused] export type UserUpdateOneRequiredWithoutVerificationsNestedInput = {
+export type UserUpdateOneRequiredWithoutVerificationsNestedInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutVerificationsInput, Prisma.UserUncheckedCreateWithoutVerificationsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutVerificationsInput
   upsert?: Prisma.UserUpsertWithoutVerificationsInput
@@ -583,13 +583,13 @@ type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutVerificationsInput, Prisma.UserUpdateWithoutVerificationsInput>, Prisma.UserUncheckedUpdateWithoutVerificationsInput>
 }
 
-// [unused] export type UserCreateNestedOneWithoutStoreInput = {
+export type UserCreateNestedOneWithoutStoreInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutStoreInput, Prisma.UserUncheckedCreateWithoutStoreInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutStoreInput
   connect?: Prisma.UserWhereUniqueInput
 }
 
-// [unused] export type UserUpdateOneRequiredWithoutStoreNestedInput = {
+export type UserUpdateOneRequiredWithoutStoreNestedInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutStoreInput, Prisma.UserUncheckedCreateWithoutStoreInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutStoreInput
   upsert?: Prisma.UserUpsertWithoutStoreInput
@@ -597,13 +597,13 @@ type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutStoreInput, Prisma.UserUpdateWithoutStoreInput>, Prisma.UserUncheckedUpdateWithoutStoreInput>
 }
 
-// [unused] export type UserCreateNestedOneWithoutCartInput = {
+export type UserCreateNestedOneWithoutCartInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutCartInput, Prisma.UserUncheckedCreateWithoutCartInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutCartInput
   connect?: Prisma.UserWhereUniqueInput
 }
 
-// [unused] export type UserUpdateOneRequiredWithoutCartNestedInput = {
+export type UserUpdateOneRequiredWithoutCartNestedInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutCartInput, Prisma.UserUncheckedCreateWithoutCartInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutCartInput
   upsert?: Prisma.UserUpsertWithoutCartInput
@@ -611,13 +611,13 @@ type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCartInput, Prisma.UserUpdateWithoutCartInput>, Prisma.UserUncheckedUpdateWithoutCartInput>
 }
 
-// [unused] export type UserCreateNestedOneWithoutOrdersInput = {
+export type UserCreateNestedOneWithoutOrdersInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutOrdersInput, Prisma.UserUncheckedCreateWithoutOrdersInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutOrdersInput
   connect?: Prisma.UserWhereUniqueInput
 }
 
-// [unused] export type UserUpdateOneRequiredWithoutOrdersNestedInput = {
+export type UserUpdateOneRequiredWithoutOrdersNestedInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutOrdersInput, Prisma.UserUncheckedCreateWithoutOrdersInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutOrdersInput
   upsert?: Prisma.UserUpsertWithoutOrdersInput
@@ -625,13 +625,13 @@ type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutOrdersInput, Prisma.UserUpdateWithoutOrdersInput>, Prisma.UserUncheckedUpdateWithoutOrdersInput>
 }
 
-// [unused] export type UserCreateNestedOneWithoutReviewsInput = {
+export type UserCreateNestedOneWithoutReviewsInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutReviewsInput, Prisma.UserUncheckedCreateWithoutReviewsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutReviewsInput
   connect?: Prisma.UserWhereUniqueInput
 }
 
-// [unused] export type UserUpdateOneRequiredWithoutReviewsNestedInput = {
+export type UserUpdateOneRequiredWithoutReviewsNestedInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutReviewsInput, Prisma.UserUncheckedCreateWithoutReviewsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutReviewsInput
   upsert?: Prisma.UserUpsertWithoutReviewsInput
@@ -639,7 +639,7 @@ type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutReviewsInput, Prisma.UserUpdateWithoutReviewsInput>, Prisma.UserUncheckedUpdateWithoutReviewsInput>
 }
 
-// [unused] export type UserCreateWithoutRefreshTokensInput = {
+export type UserCreateWithoutRefreshTokensInput = {
   id?: string
   email: string
   password?: string | null
@@ -660,7 +660,7 @@ type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
 }
 
-// [unused] export type UserUncheckedCreateWithoutRefreshTokensInput = {
+export type UserUncheckedCreateWithoutRefreshTokensInput = {
   id?: string
   email: string
   password?: string | null
@@ -681,23 +681,23 @@ type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
 }
 
-// [unused] export type UserCreateOrConnectWithoutRefreshTokensInput = {
+export type UserCreateOrConnectWithoutRefreshTokensInput = {
   where: Prisma.UserWhereUniqueInput
   create: Prisma.XOR<Prisma.UserCreateWithoutRefreshTokensInput, Prisma.UserUncheckedCreateWithoutRefreshTokensInput>
 }
 
-// [unused] export type UserUpsertWithoutRefreshTokensInput = {
+export type UserUpsertWithoutRefreshTokensInput = {
   update: Prisma.XOR<Prisma.UserUpdateWithoutRefreshTokensInput, Prisma.UserUncheckedUpdateWithoutRefreshTokensInput>
   create: Prisma.XOR<Prisma.UserCreateWithoutRefreshTokensInput, Prisma.UserUncheckedCreateWithoutRefreshTokensInput>
   where?: Prisma.UserWhereInput
 }
 
-// [unused] export type UserUpdateToOneWithWhereWithoutRefreshTokensInput = {
+export type UserUpdateToOneWithWhereWithoutRefreshTokensInput = {
   where?: Prisma.UserWhereInput
   data: Prisma.XOR<Prisma.UserUpdateWithoutRefreshTokensInput, Prisma.UserUncheckedUpdateWithoutRefreshTokensInput>
 }
 
-// [unused] export type UserUpdateWithoutRefreshTokensInput = {
+export type UserUpdateWithoutRefreshTokensInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -718,7 +718,7 @@ type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
 }
 
-// [unused] export type UserUncheckedUpdateWithoutRefreshTokensInput = {
+export type UserUncheckedUpdateWithoutRefreshTokensInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -739,7 +739,7 @@ type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
 }
 
-// [unused] export type UserCreateWithoutVerificationsInput = {
+export type UserCreateWithoutVerificationsInput = {
   id?: string
   email: string
   password?: string | null
@@ -760,7 +760,7 @@ type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
 }
 
-// [unused] export type UserUncheckedCreateWithoutVerificationsInput = {
+export type UserUncheckedCreateWithoutVerificationsInput = {
   id?: string
   email: string
   password?: string | null
@@ -781,23 +781,23 @@ type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
 }
 
-// [unused] export type UserCreateOrConnectWithoutVerificationsInput = {
+export type UserCreateOrConnectWithoutVerificationsInput = {
   where: Prisma.UserWhereUniqueInput
   create: Prisma.XOR<Prisma.UserCreateWithoutVerificationsInput, Prisma.UserUncheckedCreateWithoutVerificationsInput>
 }
 
-// [unused] export type UserUpsertWithoutVerificationsInput = {
+export type UserUpsertWithoutVerificationsInput = {
   update: Prisma.XOR<Prisma.UserUpdateWithoutVerificationsInput, Prisma.UserUncheckedUpdateWithoutVerificationsInput>
   create: Prisma.XOR<Prisma.UserCreateWithoutVerificationsInput, Prisma.UserUncheckedCreateWithoutVerificationsInput>
   where?: Prisma.UserWhereInput
 }
 
-// [unused] export type UserUpdateToOneWithWhereWithoutVerificationsInput = {
+export type UserUpdateToOneWithWhereWithoutVerificationsInput = {
   where?: Prisma.UserWhereInput
   data: Prisma.XOR<Prisma.UserUpdateWithoutVerificationsInput, Prisma.UserUncheckedUpdateWithoutVerificationsInput>
 }
 
-// [unused] export type UserUpdateWithoutVerificationsInput = {
+export type UserUpdateWithoutVerificationsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -818,7 +818,7 @@ type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
 }
 
-// [unused] export type UserUncheckedUpdateWithoutVerificationsInput = {
+export type UserUncheckedUpdateWithoutVerificationsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -839,7 +839,7 @@ type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
 }
 
-// [unused] export type UserCreateWithoutStoreInput = {
+export type UserCreateWithoutStoreInput = {
   id?: string
   email: string
   password?: string | null
@@ -860,7 +860,7 @@ type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
 }
 
-// [unused] export type UserUncheckedCreateWithoutStoreInput = {
+export type UserUncheckedCreateWithoutStoreInput = {
   id?: string
   email: string
   password?: string | null
@@ -881,23 +881,23 @@ type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
 }
 
-// [unused] export type UserCreateOrConnectWithoutStoreInput = {
+export type UserCreateOrConnectWithoutStoreInput = {
   where: Prisma.UserWhereUniqueInput
   create: Prisma.XOR<Prisma.UserCreateWithoutStoreInput, Prisma.UserUncheckedCreateWithoutStoreInput>
 }
 
-// [unused] export type UserUpsertWithoutStoreInput = {
+export type UserUpsertWithoutStoreInput = {
   update: Prisma.XOR<Prisma.UserUpdateWithoutStoreInput, Prisma.UserUncheckedUpdateWithoutStoreInput>
   create: Prisma.XOR<Prisma.UserCreateWithoutStoreInput, Prisma.UserUncheckedCreateWithoutStoreInput>
   where?: Prisma.UserWhereInput
 }
 
-// [unused] export type UserUpdateToOneWithWhereWithoutStoreInput = {
+export type UserUpdateToOneWithWhereWithoutStoreInput = {
   where?: Prisma.UserWhereInput
   data: Prisma.XOR<Prisma.UserUpdateWithoutStoreInput, Prisma.UserUncheckedUpdateWithoutStoreInput>
 }
 
-// [unused] export type UserUpdateWithoutStoreInput = {
+export type UserUpdateWithoutStoreInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -918,7 +918,7 @@ type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
 }
 
-// [unused] export type UserUncheckedUpdateWithoutStoreInput = {
+export type UserUncheckedUpdateWithoutStoreInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -939,7 +939,7 @@ type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
 }
 
-// [unused] export type UserCreateWithoutCartInput = {
+export type UserCreateWithoutCartInput = {
   id?: string
   email: string
   password?: string | null
@@ -960,7 +960,7 @@ type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
 }
 
-// [unused] export type UserUncheckedCreateWithoutCartInput = {
+export type UserUncheckedCreateWithoutCartInput = {
   id?: string
   email: string
   password?: string | null
@@ -981,23 +981,23 @@ type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
 }
 
-// [unused] export type UserCreateOrConnectWithoutCartInput = {
+export type UserCreateOrConnectWithoutCartInput = {
   where: Prisma.UserWhereUniqueInput
   create: Prisma.XOR<Prisma.UserCreateWithoutCartInput, Prisma.UserUncheckedCreateWithoutCartInput>
 }
 
-// [unused] export type UserUpsertWithoutCartInput = {
+export type UserUpsertWithoutCartInput = {
   update: Prisma.XOR<Prisma.UserUpdateWithoutCartInput, Prisma.UserUncheckedUpdateWithoutCartInput>
   create: Prisma.XOR<Prisma.UserCreateWithoutCartInput, Prisma.UserUncheckedCreateWithoutCartInput>
   where?: Prisma.UserWhereInput
 }
 
-// [unused] export type UserUpdateToOneWithWhereWithoutCartInput = {
+export type UserUpdateToOneWithWhereWithoutCartInput = {
   where?: Prisma.UserWhereInput
   data: Prisma.XOR<Prisma.UserUpdateWithoutCartInput, Prisma.UserUncheckedUpdateWithoutCartInput>
 }
 
-// [unused] export type UserUpdateWithoutCartInput = {
+export type UserUpdateWithoutCartInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1018,7 +1018,7 @@ type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
 }
 
-// [unused] export type UserUncheckedUpdateWithoutCartInput = {
+export type UserUncheckedUpdateWithoutCartInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1039,7 +1039,7 @@ type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
 }
 
-// [unused] export type UserCreateWithoutOrdersInput = {
+export type UserCreateWithoutOrdersInput = {
   id?: string
   email: string
   password?: string | null
@@ -1060,7 +1060,7 @@ type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
 }
 
-// [unused] export type UserUncheckedCreateWithoutOrdersInput = {
+export type UserUncheckedCreateWithoutOrdersInput = {
   id?: string
   email: string
   password?: string | null
@@ -1081,23 +1081,23 @@ type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
 }
 
-// [unused] export type UserCreateOrConnectWithoutOrdersInput = {
+export type UserCreateOrConnectWithoutOrdersInput = {
   where: Prisma.UserWhereUniqueInput
   create: Prisma.XOR<Prisma.UserCreateWithoutOrdersInput, Prisma.UserUncheckedCreateWithoutOrdersInput>
 }
 
-// [unused] export type UserUpsertWithoutOrdersInput = {
+export type UserUpsertWithoutOrdersInput = {
   update: Prisma.XOR<Prisma.UserUpdateWithoutOrdersInput, Prisma.UserUncheckedUpdateWithoutOrdersInput>
   create: Prisma.XOR<Prisma.UserCreateWithoutOrdersInput, Prisma.UserUncheckedCreateWithoutOrdersInput>
   where?: Prisma.UserWhereInput
 }
 
-// [unused] export type UserUpdateToOneWithWhereWithoutOrdersInput = {
+export type UserUpdateToOneWithWhereWithoutOrdersInput = {
   where?: Prisma.UserWhereInput
   data: Prisma.XOR<Prisma.UserUpdateWithoutOrdersInput, Prisma.UserUncheckedUpdateWithoutOrdersInput>
 }
 
-// [unused] export type UserUpdateWithoutOrdersInput = {
+export type UserUpdateWithoutOrdersInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1118,7 +1118,7 @@ type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
 }
 
-// [unused] export type UserUncheckedUpdateWithoutOrdersInput = {
+export type UserUncheckedUpdateWithoutOrdersInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1139,7 +1139,7 @@ type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
 }
 
-// [unused] export type UserCreateWithoutReviewsInput = {
+export type UserCreateWithoutReviewsInput = {
   id?: string
   email: string
   password?: string | null
@@ -1160,7 +1160,7 @@ type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
   cart?: Prisma.CartItemCreateNestedManyWithoutUserInput
 }
 
-// [unused] export type UserUncheckedCreateWithoutReviewsInput = {
+export type UserUncheckedCreateWithoutReviewsInput = {
   id?: string
   email: string
   password?: string | null
@@ -1181,23 +1181,23 @@ type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
   cart?: Prisma.CartItemUncheckedCreateNestedManyWithoutUserInput
 }
 
-// [unused] export type UserCreateOrConnectWithoutReviewsInput = {
+export type UserCreateOrConnectWithoutReviewsInput = {
   where: Prisma.UserWhereUniqueInput
   create: Prisma.XOR<Prisma.UserCreateWithoutReviewsInput, Prisma.UserUncheckedCreateWithoutReviewsInput>
 }
 
-// [unused] export type UserUpsertWithoutReviewsInput = {
+export type UserUpsertWithoutReviewsInput = {
   update: Prisma.XOR<Prisma.UserUpdateWithoutReviewsInput, Prisma.UserUncheckedUpdateWithoutReviewsInput>
   create: Prisma.XOR<Prisma.UserCreateWithoutReviewsInput, Prisma.UserUncheckedCreateWithoutReviewsInput>
   where?: Prisma.UserWhereInput
 }
 
-// [unused] export type UserUpdateToOneWithWhereWithoutReviewsInput = {
+export type UserUpdateToOneWithWhereWithoutReviewsInput = {
   where?: Prisma.UserWhereInput
   data: Prisma.XOR<Prisma.UserUpdateWithoutReviewsInput, Prisma.UserUncheckedUpdateWithoutReviewsInput>
 }
 
-// [unused] export type UserUpdateWithoutReviewsInput = {
+export type UserUpdateWithoutReviewsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1218,7 +1218,7 @@ type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
   cart?: Prisma.CartItemUpdateManyWithoutUserNestedInput
 }
 
-// [unused] export type UserUncheckedUpdateWithoutReviewsInput = {
+export type UserUncheckedUpdateWithoutReviewsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1244,7 +1244,7 @@ type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
  * Count Type UserCountOutputType
  */
 
-// [unused] export type UserCountOutputType = {
+export type UserCountOutputType = {
   refreshTokens: number
   verifications: number
   orders: number
@@ -1252,7 +1252,7 @@ type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
   reviews: number
 }
 
-// [unused] export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   refreshTokens?: boolean | UserCountOutputTypeCountRefreshTokensArgs
   verifications?: boolean | UserCountOutputTypeCountVerificationsArgs
   orders?: boolean | UserCountOutputTypeCountOrdersArgs
@@ -1263,7 +1263,7 @@ type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
 /**
  * UserCountOutputType without action
  */
-// [unused] export type UserCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type UserCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the UserCountOutputType
    */
@@ -1273,40 +1273,40 @@ type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
 /**
  * UserCountOutputType without action
  */
-// [unused] export type UserCountOutputTypeCountRefreshTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type UserCountOutputTypeCountRefreshTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.RefreshTokenWhereInput
 }
 
 /**
  * UserCountOutputType without action
  */
-// [unused] export type UserCountOutputTypeCountVerificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type UserCountOutputTypeCountVerificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.VerificationWhereInput
 }
 
 /**
  * UserCountOutputType without action
  */
-// [unused] export type UserCountOutputTypeCountOrdersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type UserCountOutputTypeCountOrdersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.OrderWhereInput
 }
 
 /**
  * UserCountOutputType without action
  */
-// [unused] export type UserCountOutputTypeCountCartArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type UserCountOutputTypeCountCartArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.CartItemWhereInput
 }
 
 /**
  * UserCountOutputType without action
  */
-// [unused] export type UserCountOutputTypeCountReviewsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type UserCountOutputTypeCountReviewsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.ReviewWhereInput
 }
 
 
-// [unused] export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   email?: boolean
   password?: boolean
@@ -1331,7 +1331,7 @@ type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
 
 
 
-// [unused] export type UserSelectScalar = {
+export type UserSelectScalar = {
   id?: boolean
   email?: boolean
   password?: boolean
@@ -1347,8 +1347,8 @@ type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
   updatedAt?: boolean
 }
 
-// [unused] export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "password" | "name" | "emailVerified" | "googleId" | "avatar" | "phone" | "address" | "bio" | "role" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
-// [unused] export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "password" | "name" | "emailVerified" | "googleId" | "avatar" | "phone" | "address" | "bio" | "role" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   refreshTokens?: boolean | Prisma.User$refreshTokensArgs<ExtArgs>
   verifications?: boolean | Prisma.User$verificationsArgs<ExtArgs>
   store?: boolean | Prisma.User$storeArgs<ExtArgs>
@@ -1358,7 +1358,7 @@ type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 
-// [unused] export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "User"
   objects: {
     refreshTokens: Prisma.$RefreshTokenPayload<ExtArgs>[]
@@ -1386,14 +1386,14 @@ type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
   composites: {}
 }
 
-// [unused] export type UserGetPayload<S extends boolean | null | undefined | UserDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$UserPayload, S>
+export type UserGetPayload<S extends boolean | null | undefined | UserDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$UserPayload, S>
 
-// [unused] export type UserCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
+export type UserCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
   Omit<UserFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
     select?: UserCountAggregateInputType | true
   }
 
-// [unused] export interface UserDelegate<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+export interface UserDelegate<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> {
   [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['User'], meta: { name: 'User' } }
   /**
    * Find zero or one User that matches the filter.
@@ -1720,7 +1720,7 @@ readonly fields: UserFieldRefs;
  * Because we want to prevent naming conflicts as mentioned in
  * https://github.com/prisma/prisma-client-js/issues/707
  */
-// [unused] export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   refreshTokens<T extends Prisma.User$refreshTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$refreshTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RefreshTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   verifications<T extends Prisma.User$verificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$verificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VerificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -1756,7 +1756,7 @@ readonly fields: UserFieldRefs;
 /**
  * Fields of the User model
  */
-// [unused] export interface UserFieldRefs {
+export interface UserFieldRefs {
   readonly id: Prisma.FieldRef<"User", 'String'>
   readonly email: Prisma.FieldRef<"User", 'String'>
   readonly password: Prisma.FieldRef<"User", 'String'>
@@ -1777,7 +1777,7 @@ readonly fields: UserFieldRefs;
 /**
  * User findUnique
  */
-// [unused] export type UserFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type UserFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the User
    */
@@ -1799,7 +1799,7 @@ readonly fields: UserFieldRefs;
 /**
  * User findUniqueOrThrow
  */
-// [unused] export type UserFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type UserFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the User
    */
@@ -1821,7 +1821,7 @@ readonly fields: UserFieldRefs;
 /**
  * User findFirst
  */
-// [unused] export type UserFindFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type UserFindFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the User
    */
@@ -1873,7 +1873,7 @@ readonly fields: UserFieldRefs;
 /**
  * User findFirstOrThrow
  */
-// [unused] export type UserFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type UserFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the User
    */
@@ -1925,7 +1925,7 @@ readonly fields: UserFieldRefs;
 /**
  * User findMany
  */
-// [unused] export type UserFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type UserFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the User
    */
@@ -1972,7 +1972,7 @@ readonly fields: UserFieldRefs;
 /**
  * User create
  */
-// [unused] export type UserCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type UserCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the User
    */
@@ -1994,7 +1994,7 @@ readonly fields: UserFieldRefs;
 /**
  * User createMany
  */
-// [unused] export type UserCreateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type UserCreateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * The data used to create many Users.
    */
@@ -2005,7 +2005,7 @@ readonly fields: UserFieldRefs;
 /**
  * User update
  */
-// [unused] export type UserUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type UserUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the User
    */
@@ -2031,7 +2031,7 @@ readonly fields: UserFieldRefs;
 /**
  * User updateMany
  */
-// [unused] export type UserUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type UserUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * The data used to update Users.
    */
@@ -2049,7 +2049,7 @@ readonly fields: UserFieldRefs;
 /**
  * User upsert
  */
-// [unused] export type UserUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type UserUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the User
    */
@@ -2079,7 +2079,7 @@ readonly fields: UserFieldRefs;
 /**
  * User delete
  */
-// [unused] export type UserDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type UserDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the User
    */
@@ -2101,7 +2101,7 @@ readonly fields: UserFieldRefs;
 /**
  * User deleteMany
  */
-// [unused] export type UserDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type UserDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Filter which Users to delete
    */
@@ -2115,7 +2115,7 @@ readonly fields: UserFieldRefs;
 /**
  * User.refreshTokens
  */
-// [unused] export type User$refreshTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type User$refreshTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the RefreshToken
    */
@@ -2139,7 +2139,7 @@ readonly fields: UserFieldRefs;
 /**
  * User.verifications
  */
-// [unused] export type User$verificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type User$verificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the Verification
    */
@@ -2163,7 +2163,7 @@ readonly fields: UserFieldRefs;
 /**
  * User.store
  */
-// [unused] export type User$storeArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type User$storeArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the Store
    */
@@ -2182,7 +2182,7 @@ readonly fields: UserFieldRefs;
 /**
  * User.orders
  */
-// [unused] export type User$ordersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type User$ordersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the Order
    */
@@ -2206,7 +2206,7 @@ readonly fields: UserFieldRefs;
 /**
  * User.cart
  */
-// [unused] export type User$cartArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type User$cartArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the CartItem
    */
@@ -2230,7 +2230,7 @@ readonly fields: UserFieldRefs;
 /**
  * User.reviews
  */
-// [unused] export type User$reviewsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type User$reviewsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the Review
    */
@@ -2254,7 +2254,7 @@ readonly fields: UserFieldRefs;
 /**
  * User without action
  */
-// [unused] export type UserDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type UserDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the User
    */

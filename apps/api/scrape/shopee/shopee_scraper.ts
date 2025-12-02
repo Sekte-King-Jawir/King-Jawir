@@ -1,7 +1,7 @@
 import puppeteer, { Browser, Page } from 'puppeteer'
 import { ScrapedProduct, ScrapingOptions } from '../scrape_service'
 
-// [unused] export class ShopeeScraper {
+export class ShopeeScraper {
   private browser: Browser | null = null
 
   async scrapeProducts(options: ScrapingOptions): Promise<ScrapedProduct[]> {

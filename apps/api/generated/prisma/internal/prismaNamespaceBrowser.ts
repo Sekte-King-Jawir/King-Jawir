@@ -20,10 +20,10 @@ import * as runtime from "@prisma/client/runtime/index-browser"
 export type * from '../models.ts'
 export type * from './prismaNamespace.ts'
 
-// [unused] export const Decimal = runtime.Decimal
+export const Decimal = runtime.Decimal
 
 
-// [unused] export const NullTypes = {
+export const NullTypes = {
   DbNull: runtime.NullTypes.DbNull as (new (secret: never) => typeof runtime.DbNull),
   JsonNull: runtime.NullTypes.JsonNull as (new (secret: never) => typeof runtime.JsonNull),
   AnyNull: runtime.NullTypes.AnyNull as (new (secret: never) => typeof runtime.AnyNull),
@@ -33,24 +33,24 @@ export type * from './prismaNamespace.ts'
  *
  * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
  */
-// [unused] export const DbNull = runtime.DbNull
+export const DbNull = runtime.DbNull
 
 /**
  * Helper for filtering JSON entries that have JSON `null` values (not empty on the db)
  *
  * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
  */
-// [unused] export const JsonNull = runtime.JsonNull
+export const JsonNull = runtime.JsonNull
 
 /**
  * Helper for filtering JSON entries that are `Prisma.DbNull` or `Prisma.JsonNull`
  *
  * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
  */
-// [unused] export const AnyNull = runtime.AnyNull
+export const AnyNull = runtime.AnyNull
 
 
-// [unused] export const ModelName = {
+export const ModelName = {
   User: 'User',
   RefreshToken: 'RefreshToken',
   Verification: 'Verification',
@@ -69,7 +69,7 @@ export type ModelName = (typeof ModelName)[keyof typeof ModelName]
  * Enums
  */
 
-// [unused] export const TransactionIsolationLevel = {
+export const TransactionIsolationLevel = {
   ReadUncommitted: 'ReadUncommitted',
   ReadCommitted: 'ReadCommitted',
   RepeatableRead: 'RepeatableRead',
@@ -79,7 +79,7 @@ export type ModelName = (typeof ModelName)[keyof typeof ModelName]
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
-// [unused] export const UserScalarFieldEnum = {
+export const UserScalarFieldEnum = {
   id: 'id',
   email: 'email',
   password: 'password',
@@ -98,7 +98,7 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
-// [unused] export const RefreshTokenScalarFieldEnum = {
+export const RefreshTokenScalarFieldEnum = {
   id: 'id',
   token: 'token',
   userId: 'userId',
@@ -109,7 +109,7 @@ export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof User
 export type RefreshTokenScalarFieldEnum = (typeof RefreshTokenScalarFieldEnum)[keyof typeof RefreshTokenScalarFieldEnum]
 
 
-// [unused] export const VerificationScalarFieldEnum = {
+export const VerificationScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   token: 'token',
@@ -121,7 +121,7 @@ export type RefreshTokenScalarFieldEnum = (typeof RefreshTokenScalarFieldEnum)[k
 export type VerificationScalarFieldEnum = (typeof VerificationScalarFieldEnum)[keyof typeof VerificationScalarFieldEnum]
 
 
-// [unused] export const StoreScalarFieldEnum = {
+export const StoreScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   name: 'name',
@@ -132,7 +132,7 @@ export type VerificationScalarFieldEnum = (typeof VerificationScalarFieldEnum)[k
 export type StoreScalarFieldEnum = (typeof StoreScalarFieldEnum)[keyof typeof StoreScalarFieldEnum]
 
 
-// [unused] export const CategoryScalarFieldEnum = {
+export const CategoryScalarFieldEnum = {
   id: 'id',
   name: 'name',
   slug: 'slug'
@@ -141,7 +141,7 @@ export type StoreScalarFieldEnum = (typeof StoreScalarFieldEnum)[keyof typeof St
 export type CategoryScalarFieldEnum = (typeof CategoryScalarFieldEnum)[keyof typeof CategoryScalarFieldEnum]
 
 
-// [unused] export const ProductScalarFieldEnum = {
+export const ProductScalarFieldEnum = {
   id: 'id',
   storeId: 'storeId',
   categoryId: 'categoryId',
@@ -156,7 +156,7 @@ export type CategoryScalarFieldEnum = (typeof CategoryScalarFieldEnum)[keyof typ
 export type ProductScalarFieldEnum = (typeof ProductScalarFieldEnum)[keyof typeof ProductScalarFieldEnum]
 
 
-// [unused] export const CartItemScalarFieldEnum = {
+export const CartItemScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   productId: 'productId',
@@ -166,7 +166,7 @@ export type ProductScalarFieldEnum = (typeof ProductScalarFieldEnum)[keyof typeo
 export type CartItemScalarFieldEnum = (typeof CartItemScalarFieldEnum)[keyof typeof CartItemScalarFieldEnum]
 
 
-// [unused] export const OrderScalarFieldEnum = {
+export const OrderScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   status: 'status',
@@ -177,7 +177,7 @@ export type CartItemScalarFieldEnum = (typeof CartItemScalarFieldEnum)[keyof typ
 export type OrderScalarFieldEnum = (typeof OrderScalarFieldEnum)[keyof typeof OrderScalarFieldEnum]
 
 
-// [unused] export const OrderItemScalarFieldEnum = {
+export const OrderItemScalarFieldEnum = {
   id: 'id',
   orderId: 'orderId',
   productId: 'productId',
@@ -188,7 +188,7 @@ export type OrderScalarFieldEnum = (typeof OrderScalarFieldEnum)[keyof typeof Or
 export type OrderItemScalarFieldEnum = (typeof OrderItemScalarFieldEnum)[keyof typeof OrderItemScalarFieldEnum]
 
 
-// [unused] export const ReviewScalarFieldEnum = {
+export const ReviewScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   productId: 'productId',
@@ -200,7 +200,7 @@ export type OrderItemScalarFieldEnum = (typeof OrderItemScalarFieldEnum)[keyof t
 export type ReviewScalarFieldEnum = (typeof ReviewScalarFieldEnum)[keyof typeof ReviewScalarFieldEnum]
 
 
-// [unused] export const SortOrder = {
+export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
 } as const
@@ -208,7 +208,7 @@ export type ReviewScalarFieldEnum = (typeof ReviewScalarFieldEnum)[keyof typeof 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
-// [unused] export const NullsOrder = {
+export const NullsOrder = {
   first: 'first',
   last: 'last'
 } as const
@@ -216,7 +216,7 @@ export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
 
-// [unused] export const UserOrderByRelevanceFieldEnum = {
+export const UserOrderByRelevanceFieldEnum = {
   id: 'id',
   email: 'email',
   password: 'password',
@@ -231,7 +231,7 @@ export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 export type UserOrderByRelevanceFieldEnum = (typeof UserOrderByRelevanceFieldEnum)[keyof typeof UserOrderByRelevanceFieldEnum]
 
 
-// [unused] export const RefreshTokenOrderByRelevanceFieldEnum = {
+export const RefreshTokenOrderByRelevanceFieldEnum = {
   id: 'id',
   token: 'token',
   userId: 'userId'
@@ -240,7 +240,7 @@ export type UserOrderByRelevanceFieldEnum = (typeof UserOrderByRelevanceFieldEnu
 export type RefreshTokenOrderByRelevanceFieldEnum = (typeof RefreshTokenOrderByRelevanceFieldEnum)[keyof typeof RefreshTokenOrderByRelevanceFieldEnum]
 
 
-// [unused] export const VerificationOrderByRelevanceFieldEnum = {
+export const VerificationOrderByRelevanceFieldEnum = {
   id: 'id',
   userId: 'userId',
   token: 'token',
@@ -250,7 +250,7 @@ export type RefreshTokenOrderByRelevanceFieldEnum = (typeof RefreshTokenOrderByR
 export type VerificationOrderByRelevanceFieldEnum = (typeof VerificationOrderByRelevanceFieldEnum)[keyof typeof VerificationOrderByRelevanceFieldEnum]
 
 
-// [unused] export const StoreOrderByRelevanceFieldEnum = {
+export const StoreOrderByRelevanceFieldEnum = {
   id: 'id',
   userId: 'userId',
   name: 'name',
@@ -260,7 +260,7 @@ export type VerificationOrderByRelevanceFieldEnum = (typeof VerificationOrderByR
 export type StoreOrderByRelevanceFieldEnum = (typeof StoreOrderByRelevanceFieldEnum)[keyof typeof StoreOrderByRelevanceFieldEnum]
 
 
-// [unused] export const CategoryOrderByRelevanceFieldEnum = {
+export const CategoryOrderByRelevanceFieldEnum = {
   id: 'id',
   name: 'name',
   slug: 'slug'
@@ -269,7 +269,7 @@ export type StoreOrderByRelevanceFieldEnum = (typeof StoreOrderByRelevanceFieldE
 export type CategoryOrderByRelevanceFieldEnum = (typeof CategoryOrderByRelevanceFieldEnum)[keyof typeof CategoryOrderByRelevanceFieldEnum]
 
 
-// [unused] export const ProductOrderByRelevanceFieldEnum = {
+export const ProductOrderByRelevanceFieldEnum = {
   id: 'id',
   storeId: 'storeId',
   categoryId: 'categoryId',
@@ -281,7 +281,7 @@ export type CategoryOrderByRelevanceFieldEnum = (typeof CategoryOrderByRelevance
 export type ProductOrderByRelevanceFieldEnum = (typeof ProductOrderByRelevanceFieldEnum)[keyof typeof ProductOrderByRelevanceFieldEnum]
 
 
-// [unused] export const CartItemOrderByRelevanceFieldEnum = {
+export const CartItemOrderByRelevanceFieldEnum = {
   id: 'id',
   userId: 'userId',
   productId: 'productId'
@@ -290,7 +290,7 @@ export type ProductOrderByRelevanceFieldEnum = (typeof ProductOrderByRelevanceFi
 export type CartItemOrderByRelevanceFieldEnum = (typeof CartItemOrderByRelevanceFieldEnum)[keyof typeof CartItemOrderByRelevanceFieldEnum]
 
 
-// [unused] export const OrderOrderByRelevanceFieldEnum = {
+export const OrderOrderByRelevanceFieldEnum = {
   id: 'id',
   userId: 'userId'
 } as const
@@ -298,7 +298,7 @@ export type CartItemOrderByRelevanceFieldEnum = (typeof CartItemOrderByRelevance
 export type OrderOrderByRelevanceFieldEnum = (typeof OrderOrderByRelevanceFieldEnum)[keyof typeof OrderOrderByRelevanceFieldEnum]
 
 
-// [unused] export const OrderItemOrderByRelevanceFieldEnum = {
+export const OrderItemOrderByRelevanceFieldEnum = {
   id: 'id',
   orderId: 'orderId',
   productId: 'productId'
@@ -307,7 +307,7 @@ export type OrderOrderByRelevanceFieldEnum = (typeof OrderOrderByRelevanceFieldE
 export type OrderItemOrderByRelevanceFieldEnum = (typeof OrderItemOrderByRelevanceFieldEnum)[keyof typeof OrderItemOrderByRelevanceFieldEnum]
 
 
-// [unused] export const ReviewOrderByRelevanceFieldEnum = {
+export const ReviewOrderByRelevanceFieldEnum = {
   id: 'id',
   userId: 'userId',
   productId: 'productId',

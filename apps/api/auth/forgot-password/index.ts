@@ -1,7 +1,7 @@
 import { Elysia, t } from 'elysia'
 import { forgotPasswordController } from './forgot_password_controller'
 
-// [unused] export const forgotPasswordRoute = new Elysia()
+export const forgotPasswordRoute = new Elysia()
   // Request reset password
   .post(
     '/forgot-password',

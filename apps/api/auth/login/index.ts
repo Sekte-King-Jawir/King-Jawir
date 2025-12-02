@@ -5,7 +5,7 @@ import { successResponse } from '../../lib/response'
 
 const isProduction = process.env.NODE_ENV === 'production'
 
-// [unused] export const loginRoute = new Elysia()
+export const loginRoute = new Elysia()
   .use(
     jwt({
       name: 'jwtAccess',

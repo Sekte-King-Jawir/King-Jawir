@@ -1,7 +1,7 @@
 import { Elysia } from 'elysia'
 import { logoutController } from './logout_controller'
 
-// [unused] export const logoutRoute = new Elysia().post(
+export const logoutRoute = new Elysia().post(
   '/logout',
   async ({ cookie }) => {
     const refreshToken = cookie.refreshToken?.value as string | undefined

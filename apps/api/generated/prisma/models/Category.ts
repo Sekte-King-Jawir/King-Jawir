@@ -16,27 +16,27 @@ import type * as Prisma from "../internal/prismaNamespace.ts"
  * Model Category
  * 
  */
-// [unused] export type CategoryModel = runtime.Types.Result.DefaultSelection<Prisma.$CategoryPayload>
+export type CategoryModel = runtime.Types.Result.DefaultSelection<Prisma.$CategoryPayload>
 
-// [unused] export type AggregateCategory = {
+export type AggregateCategory = {
   _count: CategoryCountAggregateOutputType | null
   _min: CategoryMinAggregateOutputType | null
   _max: CategoryMaxAggregateOutputType | null
 }
 
-// [unused] export type CategoryMinAggregateOutputType = {
+export type CategoryMinAggregateOutputType = {
   id: string | null
   name: string | null
   slug: string | null
 }
 
-// [unused] export type CategoryMaxAggregateOutputType = {
+export type CategoryMaxAggregateOutputType = {
   id: string | null
   name: string | null
   slug: string | null
 }
 
-// [unused] export type CategoryCountAggregateOutputType = {
+export type CategoryCountAggregateOutputType = {
   id: number
   name: number
   slug: number
@@ -44,26 +44,26 @@ import type * as Prisma from "../internal/prismaNamespace.ts"
 }
 
 
-// [unused] export type CategoryMinAggregateInputType = {
+export type CategoryMinAggregateInputType = {
   id?: true
   name?: true
   slug?: true
 }
 
-// [unused] export type CategoryMaxAggregateInputType = {
+export type CategoryMaxAggregateInputType = {
   id?: true
   name?: true
   slug?: true
 }
 
-// [unused] export type CategoryCountAggregateInputType = {
+export type CategoryCountAggregateInputType = {
   id?: true
   name?: true
   slug?: true
   _all?: true
 }
 
-// [unused] export type CategoryAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type CategoryAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Filter which Category to aggregate.
    */
@@ -112,7 +112,7 @@ import type * as Prisma from "../internal/prismaNamespace.ts"
   _max?: CategoryMaxAggregateInputType
 }
 
-// [unused] export type GetCategoryAggregateType<T extends CategoryAggregateArgs> = {
+export type GetCategoryAggregateType<T extends CategoryAggregateArgs> = {
       [P in keyof T & keyof AggregateCategory]: P extends '_count' | 'count'
     ? T[P] extends true
       ? number
@@ -123,7 +123,7 @@ import type * as Prisma from "../internal/prismaNamespace.ts"
 
 
 
-// [unused] export type CategoryGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type CategoryGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.CategoryWhereInput
   orderBy?: Prisma.CategoryOrderByWithAggregationInput | Prisma.CategoryOrderByWithAggregationInput[]
   by: Prisma.CategoryScalarFieldEnum[] | Prisma.CategoryScalarFieldEnum
@@ -135,7 +135,7 @@ import type * as Prisma from "../internal/prismaNamespace.ts"
   _max?: CategoryMaxAggregateInputType
 }
 
-// [unused] export type CategoryGroupByOutputType = {
+export type CategoryGroupByOutputType = {
   id: string
   name: string
   slug: string
@@ -159,7 +159,7 @@ type GetCategoryGroupByPayload<T extends CategoryGroupByArgs> = Prisma.PrismaPro
 
 
 
-// [unused] export type CategoryWhereInput = {
+export type CategoryWhereInput = {
   AND?: Prisma.CategoryWhereInput | Prisma.CategoryWhereInput[]
   OR?: Prisma.CategoryWhereInput[]
   NOT?: Prisma.CategoryWhereInput | Prisma.CategoryWhereInput[]
@@ -169,7 +169,7 @@ type GetCategoryGroupByPayload<T extends CategoryGroupByArgs> = Prisma.PrismaPro
   products?: Prisma.ProductListRelationFilter
 }
 
-// [unused] export type CategoryOrderByWithRelationInput = {
+export type CategoryOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
@@ -177,7 +177,7 @@ type GetCategoryGroupByPayload<T extends CategoryGroupByArgs> = Prisma.PrismaPro
   _relevance?: Prisma.CategoryOrderByRelevanceInput
 }
 
-// [unused] export type CategoryWhereUniqueInput = Prisma.AtLeast<{
+export type CategoryWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   name?: string
   slug?: string
@@ -187,7 +187,7 @@ type GetCategoryGroupByPayload<T extends CategoryGroupByArgs> = Prisma.PrismaPro
   products?: Prisma.ProductListRelationFilter
 }, "id" | "name" | "slug">
 
-// [unused] export type CategoryOrderByWithAggregationInput = {
+export type CategoryOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
@@ -196,7 +196,7 @@ type GetCategoryGroupByPayload<T extends CategoryGroupByArgs> = Prisma.PrismaPro
   _min?: Prisma.CategoryMinOrderByAggregateInput
 }
 
-// [unused] export type CategoryScalarWhereWithAggregatesInput = {
+export type CategoryScalarWhereWithAggregatesInput = {
   AND?: Prisma.CategoryScalarWhereWithAggregatesInput | Prisma.CategoryScalarWhereWithAggregatesInput[]
   OR?: Prisma.CategoryScalarWhereWithAggregatesInput[]
   NOT?: Prisma.CategoryScalarWhereWithAggregatesInput | Prisma.CategoryScalarWhereWithAggregatesInput[]
@@ -205,88 +205,88 @@ type GetCategoryGroupByPayload<T extends CategoryGroupByArgs> = Prisma.PrismaPro
   slug?: Prisma.StringWithAggregatesFilter<"Category"> | string
 }
 
-// [unused] export type CategoryCreateInput = {
+export type CategoryCreateInput = {
   id?: string
   name: string
   slug: string
   products?: Prisma.ProductCreateNestedManyWithoutCategoryInput
 }
 
-// [unused] export type CategoryUncheckedCreateInput = {
+export type CategoryUncheckedCreateInput = {
   id?: string
   name: string
   slug: string
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutCategoryInput
 }
 
-// [unused] export type CategoryUpdateInput = {
+export type CategoryUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   products?: Prisma.ProductUpdateManyWithoutCategoryNestedInput
 }
 
-// [unused] export type CategoryUncheckedUpdateInput = {
+export type CategoryUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   products?: Prisma.ProductUncheckedUpdateManyWithoutCategoryNestedInput
 }
 
-// [unused] export type CategoryCreateManyInput = {
+export type CategoryCreateManyInput = {
   id?: string
   name: string
   slug: string
 }
 
-// [unused] export type CategoryUpdateManyMutationInput = {
+export type CategoryUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
-// [unused] export type CategoryUncheckedUpdateManyInput = {
+export type CategoryUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
-// [unused] export type CategoryOrderByRelevanceInput = {
+export type CategoryOrderByRelevanceInput = {
   fields: Prisma.CategoryOrderByRelevanceFieldEnum | Prisma.CategoryOrderByRelevanceFieldEnum[]
   sort: Prisma.SortOrder
   search: string
 }
 
-// [unused] export type CategoryCountOrderByAggregateInput = {
+export type CategoryCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
 }
 
-// [unused] export type CategoryMaxOrderByAggregateInput = {
+export type CategoryMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
 }
 
-// [unused] export type CategoryMinOrderByAggregateInput = {
+export type CategoryMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
 }
 
-// [unused] export type CategoryScalarRelationFilter = {
+export type CategoryScalarRelationFilter = {
   is?: Prisma.CategoryWhereInput
   isNot?: Prisma.CategoryWhereInput
 }
 
-// [unused] export type CategoryCreateNestedOneWithoutProductsInput = {
+export type CategoryCreateNestedOneWithoutProductsInput = {
   create?: Prisma.XOR<Prisma.CategoryCreateWithoutProductsInput, Prisma.CategoryUncheckedCreateWithoutProductsInput>
   connectOrCreate?: Prisma.CategoryCreateOrConnectWithoutProductsInput
   connect?: Prisma.CategoryWhereUniqueInput
 }
 
-// [unused] export type CategoryUpdateOneRequiredWithoutProductsNestedInput = {
+export type CategoryUpdateOneRequiredWithoutProductsNestedInput = {
   create?: Prisma.XOR<Prisma.CategoryCreateWithoutProductsInput, Prisma.CategoryUncheckedCreateWithoutProductsInput>
   connectOrCreate?: Prisma.CategoryCreateOrConnectWithoutProductsInput
   upsert?: Prisma.CategoryUpsertWithoutProductsInput
@@ -294,41 +294,41 @@ type GetCategoryGroupByPayload<T extends CategoryGroupByArgs> = Prisma.PrismaPro
   update?: Prisma.XOR<Prisma.XOR<Prisma.CategoryUpdateToOneWithWhereWithoutProductsInput, Prisma.CategoryUpdateWithoutProductsInput>, Prisma.CategoryUncheckedUpdateWithoutProductsInput>
 }
 
-// [unused] export type CategoryCreateWithoutProductsInput = {
+export type CategoryCreateWithoutProductsInput = {
   id?: string
   name: string
   slug: string
 }
 
-// [unused] export type CategoryUncheckedCreateWithoutProductsInput = {
+export type CategoryUncheckedCreateWithoutProductsInput = {
   id?: string
   name: string
   slug: string
 }
 
-// [unused] export type CategoryCreateOrConnectWithoutProductsInput = {
+export type CategoryCreateOrConnectWithoutProductsInput = {
   where: Prisma.CategoryWhereUniqueInput
   create: Prisma.XOR<Prisma.CategoryCreateWithoutProductsInput, Prisma.CategoryUncheckedCreateWithoutProductsInput>
 }
 
-// [unused] export type CategoryUpsertWithoutProductsInput = {
+export type CategoryUpsertWithoutProductsInput = {
   update: Prisma.XOR<Prisma.CategoryUpdateWithoutProductsInput, Prisma.CategoryUncheckedUpdateWithoutProductsInput>
   create: Prisma.XOR<Prisma.CategoryCreateWithoutProductsInput, Prisma.CategoryUncheckedCreateWithoutProductsInput>
   where?: Prisma.CategoryWhereInput
 }
 
-// [unused] export type CategoryUpdateToOneWithWhereWithoutProductsInput = {
+export type CategoryUpdateToOneWithWhereWithoutProductsInput = {
   where?: Prisma.CategoryWhereInput
   data: Prisma.XOR<Prisma.CategoryUpdateWithoutProductsInput, Prisma.CategoryUncheckedUpdateWithoutProductsInput>
 }
 
-// [unused] export type CategoryUpdateWithoutProductsInput = {
+export type CategoryUpdateWithoutProductsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
-// [unused] export type CategoryUncheckedUpdateWithoutProductsInput = {
+export type CategoryUncheckedUpdateWithoutProductsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
@@ -339,18 +339,18 @@ type GetCategoryGroupByPayload<T extends CategoryGroupByArgs> = Prisma.PrismaPro
  * Count Type CategoryCountOutputType
  */
 
-// [unused] export type CategoryCountOutputType = {
+export type CategoryCountOutputType = {
   products: number
 }
 
-// [unused] export type CategoryCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type CategoryCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   products?: boolean | CategoryCountOutputTypeCountProductsArgs
 }
 
 /**
  * CategoryCountOutputType without action
  */
-// [unused] export type CategoryCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type CategoryCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the CategoryCountOutputType
    */
@@ -360,12 +360,12 @@ type GetCategoryGroupByPayload<T extends CategoryGroupByArgs> = Prisma.PrismaPro
 /**
  * CategoryCountOutputType without action
  */
-// [unused] export type CategoryCountOutputTypeCountProductsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type CategoryCountOutputTypeCountProductsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.ProductWhereInput
 }
 
 
-// [unused] export type CategorySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+export type CategorySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
   slug?: boolean
@@ -375,19 +375,19 @@ type GetCategoryGroupByPayload<T extends CategoryGroupByArgs> = Prisma.PrismaPro
 
 
 
-// [unused] export type CategorySelectScalar = {
+export type CategorySelectScalar = {
   id?: boolean
   name?: boolean
   slug?: boolean
 }
 
-// [unused] export type CategoryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "slug", ExtArgs["result"]["category"]>
-// [unused] export type CategoryInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type CategoryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "slug", ExtArgs["result"]["category"]>
+export type CategoryInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   products?: boolean | Prisma.Category$productsArgs<ExtArgs>
   _count?: boolean | Prisma.CategoryCountOutputTypeDefaultArgs<ExtArgs>
 }
 
-// [unused] export type $CategoryPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type $CategoryPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Category"
   objects: {
     products: Prisma.$ProductPayload<ExtArgs>[]
@@ -400,14 +400,14 @@ type GetCategoryGroupByPayload<T extends CategoryGroupByArgs> = Prisma.PrismaPro
   composites: {}
 }
 
-// [unused] export type CategoryGetPayload<S extends boolean | null | undefined | CategoryDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$CategoryPayload, S>
+export type CategoryGetPayload<S extends boolean | null | undefined | CategoryDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$CategoryPayload, S>
 
-// [unused] export type CategoryCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
+export type CategoryCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
   Omit<CategoryFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
     select?: CategoryCountAggregateInputType | true
   }
 
-// [unused] export interface CategoryDelegate<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+export interface CategoryDelegate<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> {
   [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Category'], meta: { name: 'Category' } }
   /**
    * Find zero or one Category that matches the filter.
@@ -734,7 +734,7 @@ readonly fields: CategoryFieldRefs;
  * Because we want to prevent naming conflicts as mentioned in
  * https://github.com/prisma/prisma-client-js/issues/707
  */
-// [unused] export interface Prisma__CategoryClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+export interface Prisma__CategoryClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   products<T extends Prisma.Category$productsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Category$productsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
@@ -765,7 +765,7 @@ readonly fields: CategoryFieldRefs;
 /**
  * Fields of the Category model
  */
-// [unused] export interface CategoryFieldRefs {
+export interface CategoryFieldRefs {
   readonly id: Prisma.FieldRef<"Category", 'String'>
   readonly name: Prisma.FieldRef<"Category", 'String'>
   readonly slug: Prisma.FieldRef<"Category", 'String'>
@@ -776,7 +776,7 @@ readonly fields: CategoryFieldRefs;
 /**
  * Category findUnique
  */
-// [unused] export type CategoryFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type CategoryFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the Category
    */
@@ -798,7 +798,7 @@ readonly fields: CategoryFieldRefs;
 /**
  * Category findUniqueOrThrow
  */
-// [unused] export type CategoryFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type CategoryFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the Category
    */
@@ -820,7 +820,7 @@ readonly fields: CategoryFieldRefs;
 /**
  * Category findFirst
  */
-// [unused] export type CategoryFindFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type CategoryFindFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the Category
    */
@@ -872,7 +872,7 @@ readonly fields: CategoryFieldRefs;
 /**
  * Category findFirstOrThrow
  */
-// [unused] export type CategoryFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type CategoryFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the Category
    */
@@ -924,7 +924,7 @@ readonly fields: CategoryFieldRefs;
 /**
  * Category findMany
  */
-// [unused] export type CategoryFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type CategoryFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the Category
    */
@@ -971,7 +971,7 @@ readonly fields: CategoryFieldRefs;
 /**
  * Category create
  */
-// [unused] export type CategoryCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type CategoryCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the Category
    */
@@ -993,7 +993,7 @@ readonly fields: CategoryFieldRefs;
 /**
  * Category createMany
  */
-// [unused] export type CategoryCreateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type CategoryCreateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * The data used to create many Categories.
    */
@@ -1004,7 +1004,7 @@ readonly fields: CategoryFieldRefs;
 /**
  * Category update
  */
-// [unused] export type CategoryUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type CategoryUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the Category
    */
@@ -1030,7 +1030,7 @@ readonly fields: CategoryFieldRefs;
 /**
  * Category updateMany
  */
-// [unused] export type CategoryUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type CategoryUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * The data used to update Categories.
    */
@@ -1048,7 +1048,7 @@ readonly fields: CategoryFieldRefs;
 /**
  * Category upsert
  */
-// [unused] export type CategoryUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type CategoryUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the Category
    */
@@ -1078,7 +1078,7 @@ readonly fields: CategoryFieldRefs;
 /**
  * Category delete
  */
-// [unused] export type CategoryDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type CategoryDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the Category
    */
@@ -1100,7 +1100,7 @@ readonly fields: CategoryFieldRefs;
 /**
  * Category deleteMany
  */
-// [unused] export type CategoryDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type CategoryDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Filter which Categories to delete
    */
@@ -1114,7 +1114,7 @@ readonly fields: CategoryFieldRefs;
 /**
  * Category.products
  */
-// [unused] export type Category$productsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Category$productsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the Product
    */
@@ -1138,7 +1138,7 @@ readonly fields: CategoryFieldRefs;
 /**
  * Category without action
  */
-// [unused] export type CategoryDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type CategoryDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the Category
    */

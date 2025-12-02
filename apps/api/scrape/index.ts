@@ -1,7 +1,7 @@
 import { Elysia, t } from 'elysia'
 import { scrapeController } from './scrape_controller'
 
-// [unused] export const scrapeRoutes = new Elysia({ prefix: '/scrape' })
+export const scrapeRoutes = new Elysia({ prefix: '/scrape' })
   .get(
     '/shopee',
     async ({ query }) => {

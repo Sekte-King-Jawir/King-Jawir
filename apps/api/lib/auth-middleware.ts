@@ -15,7 +15,7 @@ interface JWTPayload {
 }
 
 // User context dari JWT
-// [unused] export interface AuthUser {
+export interface AuthUser {
   id: string
   role: Role
 }
@@ -24,7 +24,7 @@ interface JWTPayload {
  * Auth middleware plugin
  * Verifikasi JWT dan extract user info
  */
-// [unused] export const authMiddleware = new Elysia({ name: 'auth-middleware' })
+export const authMiddleware = new Elysia({ name: 'auth-middleware' })
   .use(
     jwt({
       name: 'jwtAccess',
@@ -71,7 +71,7 @@ interface JWTPayload {
 /**
  * Guard: Require authenticated user
  */
-// [unused] export const requireAuth = ({ user, set }: { user: AuthUser | null; set: any }) => {
+export const requireAuth = ({ user, set }: { user: AuthUser | null; set: any }) => {
   if (!user) {
     set.status = 401
     return errorResponse('Unauthorized - Please login', ErrorCode.UNAUTHORIZED)
@@ -81,7 +81,7 @@ interface JWTPayload {
 /**
  * Guard: Require specific roles
  */
-// [unused] export const requireRole = (allowedRoles: Role[]) => {
+export const requireRole = (allowedRoles: Role[]) => {
   return ({ user, set }: { user: AuthUser | null; set: any }) => {
     if (!user) {
       set.status = 401
@@ -101,7 +101,7 @@ interface JWTPayload {
 /**
  * Pre-configured guards untuk kemudahan
  */
-// [unused] export const guards = {
+export const guards = {
   // Semua authenticated user
   auth: requireAuth,
 
@@ -119,13 +119,13 @@ interface JWTPayload {
  * Helper untuk check ownership
  * Misal: apakah product ini milik store user ini?
  */
-// [unused] export const isOwner = (resourceUserId: string, currentUserId: string): boolean => {
+export const isOwner = (resourceUserId: string, currentUserId: string): boolean => {
   return resourceUserId === currentUserId
 }
 
 /**
  * Helper untuk check apakah user adalah admin
  */
-// [unused] export const isAdmin = (user: AuthUser | null): boolean => {
+export const isAdmin = (user: AuthUser | null): boolean => {
   return user?.role === 'ADMIN'
 }

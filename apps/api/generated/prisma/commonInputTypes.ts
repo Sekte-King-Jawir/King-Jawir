@@ -14,7 +14,7 @@ import * as $Enums from "./enums.ts"
 import type * as Prisma from "./internal/prismaNamespace.ts"
 
 
-// [unused] export type StringFilter<$PrismaModel = never> = {
+export type StringFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel>
   in?: string[]
   notIn?: string[]
@@ -29,7 +29,7 @@ import type * as Prisma from "./internal/prismaNamespace.ts"
   not?: Prisma.NestedStringFilter<$PrismaModel> | string
 }
 
-// [unused] export type StringNullableFilter<$PrismaModel = never> = {
+export type StringNullableFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel> | null
   in?: string[] | null
   notIn?: string[] | null
@@ -44,19 +44,19 @@ import type * as Prisma from "./internal/prismaNamespace.ts"
   not?: Prisma.NestedStringNullableFilter<$PrismaModel> | string | null
 }
 
-// [unused] export type BoolFilter<$PrismaModel = never> = {
+export type BoolFilter<$PrismaModel = never> = {
   equals?: boolean | Prisma.BooleanFieldRefInput<$PrismaModel>
   not?: Prisma.NestedBoolFilter<$PrismaModel> | boolean
 }
 
-// [unused] export type EnumRoleFilter<$PrismaModel = never> = {
+export type EnumRoleFilter<$PrismaModel = never> = {
   equals?: $Enums.Role | Prisma.EnumRoleFieldRefInput<$PrismaModel>
   in?: $Enums.Role[]
   notIn?: $Enums.Role[]
   not?: Prisma.NestedEnumRoleFilter<$PrismaModel> | $Enums.Role
 }
 
-// [unused] export type DateTimeFilter<$PrismaModel = never> = {
+export type DateTimeFilter<$PrismaModel = never> = {
   equals?: Date | string | Prisma.DateTimeFieldRefInput<$PrismaModel>
   in?: Date[] | string[]
   notIn?: Date[] | string[]
@@ -67,12 +67,12 @@ import type * as Prisma from "./internal/prismaNamespace.ts"
   not?: Prisma.NestedDateTimeFilter<$PrismaModel> | Date | string
 }
 
-// [unused] export type SortOrderInput = {
+export type SortOrderInput = {
   sort: Prisma.SortOrder
   nulls?: Prisma.NullsOrder
 }
 
-// [unused] export type StringWithAggregatesFilter<$PrismaModel = never> = {
+export type StringWithAggregatesFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel>
   in?: string[]
   notIn?: string[]
@@ -90,7 +90,7 @@ import type * as Prisma from "./internal/prismaNamespace.ts"
   _max?: Prisma.NestedStringFilter<$PrismaModel>
 }
 
-// [unused] export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
+export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel> | null
   in?: string[] | null
   notIn?: string[] | null
@@ -108,7 +108,7 @@ import type * as Prisma from "./internal/prismaNamespace.ts"
   _max?: Prisma.NestedStringNullableFilter<$PrismaModel>
 }
 
-// [unused] export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+export type BoolWithAggregatesFilter<$PrismaModel = never> = {
   equals?: boolean | Prisma.BooleanFieldRefInput<$PrismaModel>
   not?: Prisma.NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
   _count?: Prisma.NestedIntFilter<$PrismaModel>
@@ -116,7 +116,7 @@ import type * as Prisma from "./internal/prismaNamespace.ts"
   _max?: Prisma.NestedBoolFilter<$PrismaModel>
 }
 
-// [unused] export type EnumRoleWithAggregatesFilter<$PrismaModel = never> = {
+export type EnumRoleWithAggregatesFilter<$PrismaModel = never> = {
   equals?: $Enums.Role | Prisma.EnumRoleFieldRefInput<$PrismaModel>
   in?: $Enums.Role[]
   notIn?: $Enums.Role[]
@@ -126,7 +126,7 @@ import type * as Prisma from "./internal/prismaNamespace.ts"
   _max?: Prisma.NestedEnumRoleFilter<$PrismaModel>
 }
 
-// [unused] export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
+export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
   equals?: Date | string | Prisma.DateTimeFieldRefInput<$PrismaModel>
   in?: Date[] | string[]
   notIn?: Date[] | string[]
@@ -140,7 +140,7 @@ import type * as Prisma from "./internal/prismaNamespace.ts"
   _max?: Prisma.NestedDateTimeFilter<$PrismaModel>
 }
 
-// [unused] export type DecimalFilter<$PrismaModel = never> = {
+export type DecimalFilter<$PrismaModel = never> = {
   equals?: runtime.Decimal | runtime.DecimalJsLike | number | string | Prisma.DecimalFieldRefInput<$PrismaModel>
   in?: runtime.Decimal[] | runtime.DecimalJsLike[] | number[] | string[]
   notIn?: runtime.Decimal[] | runtime.DecimalJsLike[] | number[] | string[]
@@ -151,7 +151,7 @@ import type * as Prisma from "./internal/prismaNamespace.ts"
   not?: Prisma.NestedDecimalFilter<$PrismaModel> | runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
-// [unused] export type IntFilter<$PrismaModel = never> = {
+export type IntFilter<$PrismaModel = never> = {
   equals?: number | Prisma.IntFieldRefInput<$PrismaModel>
   in?: number[]
   notIn?: number[]
@@ -162,7 +162,7 @@ import type * as Prisma from "./internal/prismaNamespace.ts"
   not?: Prisma.NestedIntFilter<$PrismaModel> | number
 }
 
-// [unused] export type DecimalWithAggregatesFilter<$PrismaModel = never> = {
+export type DecimalWithAggregatesFilter<$PrismaModel = never> = {
   equals?: runtime.Decimal | runtime.DecimalJsLike | number | string | Prisma.DecimalFieldRefInput<$PrismaModel>
   in?: runtime.Decimal[] | runtime.DecimalJsLike[] | number[] | string[]
   notIn?: runtime.Decimal[] | runtime.DecimalJsLike[] | number[] | string[]
@@ -178,7 +178,7 @@ import type * as Prisma from "./internal/prismaNamespace.ts"
   _max?: Prisma.NestedDecimalFilter<$PrismaModel>
 }
 
-// [unused] export type IntWithAggregatesFilter<$PrismaModel = never> = {
+export type IntWithAggregatesFilter<$PrismaModel = never> = {
   equals?: number | Prisma.IntFieldRefInput<$PrismaModel>
   in?: number[]
   notIn?: number[]
@@ -194,14 +194,14 @@ import type * as Prisma from "./internal/prismaNamespace.ts"
   _max?: Prisma.NestedIntFilter<$PrismaModel>
 }
 
-// [unused] export type EnumOrderStatusFilter<$PrismaModel = never> = {
+export type EnumOrderStatusFilter<$PrismaModel = never> = {
   equals?: $Enums.OrderStatus | Prisma.EnumOrderStatusFieldRefInput<$PrismaModel>
   in?: $Enums.OrderStatus[]
   notIn?: $Enums.OrderStatus[]
   not?: Prisma.NestedEnumOrderStatusFilter<$PrismaModel> | $Enums.OrderStatus
 }
 
-// [unused] export type EnumOrderStatusWithAggregatesFilter<$PrismaModel = never> = {
+export type EnumOrderStatusWithAggregatesFilter<$PrismaModel = never> = {
   equals?: $Enums.OrderStatus | Prisma.EnumOrderStatusFieldRefInput<$PrismaModel>
   in?: $Enums.OrderStatus[]
   notIn?: $Enums.OrderStatus[]
@@ -211,7 +211,7 @@ import type * as Prisma from "./internal/prismaNamespace.ts"
   _max?: Prisma.NestedEnumOrderStatusFilter<$PrismaModel>
 }
 
-// [unused] export type NestedStringFilter<$PrismaModel = never> = {
+export type NestedStringFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel>
   in?: string[]
   notIn?: string[]
@@ -226,7 +226,7 @@ import type * as Prisma from "./internal/prismaNamespace.ts"
   not?: Prisma.NestedStringFilter<$PrismaModel> | string
 }
 
-// [unused] export type NestedStringNullableFilter<$PrismaModel = never> = {
+export type NestedStringNullableFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel> | null
   in?: string[] | null
   notIn?: string[] | null
@@ -241,19 +241,19 @@ import type * as Prisma from "./internal/prismaNamespace.ts"
   not?: Prisma.NestedStringNullableFilter<$PrismaModel> | string | null
 }
 
-// [unused] export type NestedBoolFilter<$PrismaModel = never> = {
+export type NestedBoolFilter<$PrismaModel = never> = {
   equals?: boolean | Prisma.BooleanFieldRefInput<$PrismaModel>
   not?: Prisma.NestedBoolFilter<$PrismaModel> | boolean
 }
 
-// [unused] export type NestedEnumRoleFilter<$PrismaModel = never> = {
+export type NestedEnumRoleFilter<$PrismaModel = never> = {
   equals?: $Enums.Role | Prisma.EnumRoleFieldRefInput<$PrismaModel>
   in?: $Enums.Role[]
   notIn?: $Enums.Role[]
   not?: Prisma.NestedEnumRoleFilter<$PrismaModel> | $Enums.Role
 }
 
-// [unused] export type NestedDateTimeFilter<$PrismaModel = never> = {
+export type NestedDateTimeFilter<$PrismaModel = never> = {
   equals?: Date | string | Prisma.DateTimeFieldRefInput<$PrismaModel>
   in?: Date[] | string[]
   notIn?: Date[] | string[]
@@ -264,7 +264,7 @@ import type * as Prisma from "./internal/prismaNamespace.ts"
   not?: Prisma.NestedDateTimeFilter<$PrismaModel> | Date | string
 }
 
-// [unused] export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
+export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel>
   in?: string[]
   notIn?: string[]
@@ -282,7 +282,7 @@ import type * as Prisma from "./internal/prismaNamespace.ts"
   _max?: Prisma.NestedStringFilter<$PrismaModel>
 }
 
-// [unused] export type NestedIntFilter<$PrismaModel = never> = {
+export type NestedIntFilter<$PrismaModel = never> = {
   equals?: number | Prisma.IntFieldRefInput<$PrismaModel>
   in?: number[]
   notIn?: number[]
@@ -293,7 +293,7 @@ import type * as Prisma from "./internal/prismaNamespace.ts"
   not?: Prisma.NestedIntFilter<$PrismaModel> | number
 }
 
-// [unused] export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
+export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel> | null
   in?: string[] | null
   notIn?: string[] | null
@@ -311,7 +311,7 @@ import type * as Prisma from "./internal/prismaNamespace.ts"
   _max?: Prisma.NestedStringNullableFilter<$PrismaModel>
 }
 
-// [unused] export type NestedIntNullableFilter<$PrismaModel = never> = {
+export type NestedIntNullableFilter<$PrismaModel = never> = {
   equals?: number | Prisma.IntFieldRefInput<$PrismaModel> | null
   in?: number[] | null
   notIn?: number[] | null
@@ -322,7 +322,7 @@ import type * as Prisma from "./internal/prismaNamespace.ts"
   not?: Prisma.NestedIntNullableFilter<$PrismaModel> | number | null
 }
 
-// [unused] export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
   equals?: boolean | Prisma.BooleanFieldRefInput<$PrismaModel>
   not?: Prisma.NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
   _count?: Prisma.NestedIntFilter<$PrismaModel>
@@ -330,7 +330,7 @@ import type * as Prisma from "./internal/prismaNamespace.ts"
   _max?: Prisma.NestedBoolFilter<$PrismaModel>
 }
 
-// [unused] export type NestedEnumRoleWithAggregatesFilter<$PrismaModel = never> = {
+export type NestedEnumRoleWithAggregatesFilter<$PrismaModel = never> = {
   equals?: $Enums.Role | Prisma.EnumRoleFieldRefInput<$PrismaModel>
   in?: $Enums.Role[]
   notIn?: $Enums.Role[]
@@ -340,7 +340,7 @@ import type * as Prisma from "./internal/prismaNamespace.ts"
   _max?: Prisma.NestedEnumRoleFilter<$PrismaModel>
 }
 
-// [unused] export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
+export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
   equals?: Date | string | Prisma.DateTimeFieldRefInput<$PrismaModel>
   in?: Date[] | string[]
   notIn?: Date[] | string[]
@@ -354,7 +354,7 @@ import type * as Prisma from "./internal/prismaNamespace.ts"
   _max?: Prisma.NestedDateTimeFilter<$PrismaModel>
 }
 
-// [unused] export type NestedDecimalFilter<$PrismaModel = never> = {
+export type NestedDecimalFilter<$PrismaModel = never> = {
   equals?: runtime.Decimal | runtime.DecimalJsLike | number | string | Prisma.DecimalFieldRefInput<$PrismaModel>
   in?: runtime.Decimal[] | runtime.DecimalJsLike[] | number[] | string[]
   notIn?: runtime.Decimal[] | runtime.DecimalJsLike[] | number[] | string[]
@@ -365,7 +365,7 @@ import type * as Prisma from "./internal/prismaNamespace.ts"
   not?: Prisma.NestedDecimalFilter<$PrismaModel> | runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
-// [unused] export type NestedDecimalWithAggregatesFilter<$PrismaModel = never> = {
+export type NestedDecimalWithAggregatesFilter<$PrismaModel = never> = {
   equals?: runtime.Decimal | runtime.DecimalJsLike | number | string | Prisma.DecimalFieldRefInput<$PrismaModel>
   in?: runtime.Decimal[] | runtime.DecimalJsLike[] | number[] | string[]
   notIn?: runtime.Decimal[] | runtime.DecimalJsLike[] | number[] | string[]
@@ -381,7 +381,7 @@ import type * as Prisma from "./internal/prismaNamespace.ts"
   _max?: Prisma.NestedDecimalFilter<$PrismaModel>
 }
 
-// [unused] export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
+export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
   equals?: number | Prisma.IntFieldRefInput<$PrismaModel>
   in?: number[]
   notIn?: number[]
@@ -397,7 +397,7 @@ import type * as Prisma from "./internal/prismaNamespace.ts"
   _max?: Prisma.NestedIntFilter<$PrismaModel>
 }
 
-// [unused] export type NestedFloatFilter<$PrismaModel = never> = {
+export type NestedFloatFilter<$PrismaModel = never> = {
   equals?: number | Prisma.FloatFieldRefInput<$PrismaModel>
   in?: number[]
   notIn?: number[]
@@ -408,14 +408,14 @@ import type * as Prisma from "./internal/prismaNamespace.ts"
   not?: Prisma.NestedFloatFilter<$PrismaModel> | number
 }
 
-// [unused] export type NestedEnumOrderStatusFilter<$PrismaModel = never> = {
+export type NestedEnumOrderStatusFilter<$PrismaModel = never> = {
   equals?: $Enums.OrderStatus | Prisma.EnumOrderStatusFieldRefInput<$PrismaModel>
   in?: $Enums.OrderStatus[]
   notIn?: $Enums.OrderStatus[]
   not?: Prisma.NestedEnumOrderStatusFilter<$PrismaModel> | $Enums.OrderStatus
 }
 
-// [unused] export type NestedEnumOrderStatusWithAggregatesFilter<$PrismaModel = never> = {
+export type NestedEnumOrderStatusWithAggregatesFilter<$PrismaModel = never> = {
   equals?: $Enums.OrderStatus | Prisma.EnumOrderStatusFieldRefInput<$PrismaModel>
   in?: $Enums.OrderStatus[]
   notIn?: $Enums.OrderStatus[]

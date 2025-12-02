@@ -1,7 +1,7 @@
 import { Elysia, t } from 'elysia'
 import { registerController } from './register_controller'
 
-// [unused] export const registerRoute = new Elysia().post(
+export const registerRoute = new Elysia().post(
   '/register',
   async ({ body, set }) => {
     const result = await registerController.handle(body.email, body.password, body.name)

@@ -3,7 +3,7 @@
 import 'dotenv/config'
 import { defineConfig, env } from 'prisma/config'
 
-// [unused] export default defineConfig({
+export default defineConfig({
   schema: 'prisma/schema.prisma',
   migrations: {
     path: 'prisma/migrations',

@@ -1,6 +1,6 @@
 import { type JSX } from 'react'
 
-// [unused] export function Code({
+export function Code({
   children,
   className,
 }: {

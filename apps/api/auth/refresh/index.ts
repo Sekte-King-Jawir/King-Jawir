@@ -5,7 +5,7 @@ import { successResponse, errorResponse, ErrorCode } from '../../lib/response'
 
 const isProduction = process.env.NODE_ENV === 'production'
 
-// [unused] export const refreshRoute = new Elysia()
+export const refreshRoute = new Elysia()
   .use(
     jwt({
       name: 'jwtAccess',

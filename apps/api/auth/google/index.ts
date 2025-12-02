@@ -21,7 +21,7 @@ setInterval(
   5 * 60 * 1000
 )
 
-// [unused] export const googleRoute = new Elysia()
+export const googleRoute = new Elysia()
   .use(
     jwt({
       name: 'jwtAccess',

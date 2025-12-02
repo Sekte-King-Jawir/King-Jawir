@@ -2,7 +2,7 @@ import { Elysia, t } from 'elysia'
 import { profileController } from './profile_controller'
 import { jwtPlugin, authDerive } from '../lib/auth-helper'
 
-// [unused] export const profileRoutes = new Elysia({ prefix: '/profile' })
+export const profileRoutes = new Elysia({ prefix: '/profile' })
   .use(jwtPlugin)
   .derive(authDerive)
   // GET /profile - Get current user profile

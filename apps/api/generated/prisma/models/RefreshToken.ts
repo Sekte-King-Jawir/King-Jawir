@@ -16,15 +16,15 @@ import type * as Prisma from "../internal/prismaNamespace.ts"
  * Model RefreshToken
  * 
  */
-// [unused] export type RefreshTokenModel = runtime.Types.Result.DefaultSelection<Prisma.$RefreshTokenPayload>
+export type RefreshTokenModel = runtime.Types.Result.DefaultSelection<Prisma.$RefreshTokenPayload>
 
-// [unused] export type AggregateRefreshToken = {
+export type AggregateRefreshToken = {
   _count: RefreshTokenCountAggregateOutputType | null
   _min: RefreshTokenMinAggregateOutputType | null
   _max: RefreshTokenMaxAggregateOutputType | null
 }
 
-// [unused] export type RefreshTokenMinAggregateOutputType = {
+export type RefreshTokenMinAggregateOutputType = {
   id: string | null
   token: string | null
   userId: string | null
@@ -32,7 +32,7 @@ import type * as Prisma from "../internal/prismaNamespace.ts"
   createdAt: Date | null
 }
 
-// [unused] export type RefreshTokenMaxAggregateOutputType = {
+export type RefreshTokenMaxAggregateOutputType = {
   id: string | null
   token: string | null
   userId: string | null
@@ -40,7 +40,7 @@ import type * as Prisma from "../internal/prismaNamespace.ts"
   createdAt: Date | null
 }
 
-// [unused] export type RefreshTokenCountAggregateOutputType = {
+export type RefreshTokenCountAggregateOutputType = {
   id: number
   token: number
   userId: number
@@ -50,7 +50,7 @@ import type * as Prisma from "../internal/prismaNamespace.ts"
 }
 
 
-// [unused] export type RefreshTokenMinAggregateInputType = {
+export type RefreshTokenMinAggregateInputType = {
   id?: true
   token?: true
   userId?: true
@@ -58,7 +58,7 @@ import type * as Prisma from "../internal/prismaNamespace.ts"
   createdAt?: true
 }
 
-// [unused] export type RefreshTokenMaxAggregateInputType = {
+export type RefreshTokenMaxAggregateInputType = {
   id?: true
   token?: true
   userId?: true
@@ -66,7 +66,7 @@ import type * as Prisma from "../internal/prismaNamespace.ts"
   createdAt?: true
 }
 
-// [unused] export type RefreshTokenCountAggregateInputType = {
+export type RefreshTokenCountAggregateInputType = {
   id?: true
   token?: true
   userId?: true
@@ -75,7 +75,7 @@ import type * as Prisma from "../internal/prismaNamespace.ts"
   _all?: true
 }
 
-// [unused] export type RefreshTokenAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type RefreshTokenAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Filter which RefreshToken to aggregate.
    */
@@ -124,7 +124,7 @@ import type * as Prisma from "../internal/prismaNamespace.ts"
   _max?: RefreshTokenMaxAggregateInputType
 }
 
-// [unused] export type GetRefreshTokenAggregateType<T extends RefreshTokenAggregateArgs> = {
+export type GetRefreshTokenAggregateType<T extends RefreshTokenAggregateArgs> = {
       [P in keyof T & keyof AggregateRefreshToken]: P extends '_count' | 'count'
     ? T[P] extends true
       ? number
@@ -135,7 +135,7 @@ import type * as Prisma from "../internal/prismaNamespace.ts"
 
 
 
-// [unused] export type RefreshTokenGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type RefreshTokenGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.RefreshTokenWhereInput
   orderBy?: Prisma.RefreshTokenOrderByWithAggregationInput | Prisma.RefreshTokenOrderByWithAggregationInput[]
   by: Prisma.RefreshTokenScalarFieldEnum[] | Prisma.RefreshTokenScalarFieldEnum
@@ -147,7 +147,7 @@ import type * as Prisma from "../internal/prismaNamespace.ts"
   _max?: RefreshTokenMaxAggregateInputType
 }
 
-// [unused] export type RefreshTokenGroupByOutputType = {
+export type RefreshTokenGroupByOutputType = {
   id: string
   token: string
   userId: string
@@ -173,7 +173,7 @@ type GetRefreshTokenGroupByPayload<T extends RefreshTokenGroupByArgs> = Prisma.P
 
 
 
-// [unused] export type RefreshTokenWhereInput = {
+export type RefreshTokenWhereInput = {
   AND?: Prisma.RefreshTokenWhereInput | Prisma.RefreshTokenWhereInput[]
   OR?: Prisma.RefreshTokenWhereInput[]
   NOT?: Prisma.RefreshTokenWhereInput | Prisma.RefreshTokenWhereInput[]
@@ -185,7 +185,7 @@ type GetRefreshTokenGroupByPayload<T extends RefreshTokenGroupByArgs> = Prisma.P
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
-// [unused] export type RefreshTokenOrderByWithRelationInput = {
+export type RefreshTokenOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   token?: Prisma.SortOrder
   userId?: Prisma.SortOrder
@@ -195,7 +195,7 @@ type GetRefreshTokenGroupByPayload<T extends RefreshTokenGroupByArgs> = Prisma.P
   _relevance?: Prisma.RefreshTokenOrderByRelevanceInput
 }
 
-// [unused] export type RefreshTokenWhereUniqueInput = Prisma.AtLeast<{
+export type RefreshTokenWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   token?: string
   AND?: Prisma.RefreshTokenWhereInput | Prisma.RefreshTokenWhereInput[]
@@ -207,7 +207,7 @@ type GetRefreshTokenGroupByPayload<T extends RefreshTokenGroupByArgs> = Prisma.P
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id" | "token">
 
-// [unused] export type RefreshTokenOrderByWithAggregationInput = {
+export type RefreshTokenOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   token?: Prisma.SortOrder
   userId?: Prisma.SortOrder
@@ -218,7 +218,7 @@ type GetRefreshTokenGroupByPayload<T extends RefreshTokenGroupByArgs> = Prisma.P
   _min?: Prisma.RefreshTokenMinOrderByAggregateInput
 }
 
-// [unused] export type RefreshTokenScalarWhereWithAggregatesInput = {
+export type RefreshTokenScalarWhereWithAggregatesInput = {
   AND?: Prisma.RefreshTokenScalarWhereWithAggregatesInput | Prisma.RefreshTokenScalarWhereWithAggregatesInput[]
   OR?: Prisma.RefreshTokenScalarWhereWithAggregatesInput[]
   NOT?: Prisma.RefreshTokenScalarWhereWithAggregatesInput | Prisma.RefreshTokenScalarWhereWithAggregatesInput[]
@@ -229,7 +229,7 @@ type GetRefreshTokenGroupByPayload<T extends RefreshTokenGroupByArgs> = Prisma.P
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"RefreshToken"> | Date | string
 }
 
-// [unused] export type RefreshTokenCreateInput = {
+export type RefreshTokenCreateInput = {
   id?: string
   token: string
   expiresAt: Date | string
@@ -237,7 +237,7 @@ type GetRefreshTokenGroupByPayload<T extends RefreshTokenGroupByArgs> = Prisma.P
   user: Prisma.UserCreateNestedOneWithoutRefreshTokensInput
 }
 
-// [unused] export type RefreshTokenUncheckedCreateInput = {
+export type RefreshTokenUncheckedCreateInput = {
   id?: string
   token: string
   userId: string
@@ -245,7 +245,7 @@ type GetRefreshTokenGroupByPayload<T extends RefreshTokenGroupByArgs> = Prisma.P
   createdAt?: Date | string
 }
 
-// [unused] export type RefreshTokenUpdateInput = {
+export type RefreshTokenUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   token?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -253,7 +253,7 @@ type GetRefreshTokenGroupByPayload<T extends RefreshTokenGroupByArgs> = Prisma.P
   user?: Prisma.UserUpdateOneRequiredWithoutRefreshTokensNestedInput
 }
 
-// [unused] export type RefreshTokenUncheckedUpdateInput = {
+export type RefreshTokenUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   token?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -261,7 +261,7 @@ type GetRefreshTokenGroupByPayload<T extends RefreshTokenGroupByArgs> = Prisma.P
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-// [unused] export type RefreshTokenCreateManyInput = {
+export type RefreshTokenCreateManyInput = {
   id?: string
   token: string
   userId: string
@@ -269,14 +269,14 @@ type GetRefreshTokenGroupByPayload<T extends RefreshTokenGroupByArgs> = Prisma.P
   createdAt?: Date | string
 }
 
-// [unused] export type RefreshTokenUpdateManyMutationInput = {
+export type RefreshTokenUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   token?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-// [unused] export type RefreshTokenUncheckedUpdateManyInput = {
+export type RefreshTokenUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   token?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -284,23 +284,23 @@ type GetRefreshTokenGroupByPayload<T extends RefreshTokenGroupByArgs> = Prisma.P
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-// [unused] export type RefreshTokenListRelationFilter = {
+export type RefreshTokenListRelationFilter = {
   every?: Prisma.RefreshTokenWhereInput
   some?: Prisma.RefreshTokenWhereInput
   none?: Prisma.RefreshTokenWhereInput
 }
 
-// [unused] export type RefreshTokenOrderByRelationAggregateInput = {
+export type RefreshTokenOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
-// [unused] export type RefreshTokenOrderByRelevanceInput = {
+export type RefreshTokenOrderByRelevanceInput = {
   fields: Prisma.RefreshTokenOrderByRelevanceFieldEnum | Prisma.RefreshTokenOrderByRelevanceFieldEnum[]
   sort: Prisma.SortOrder
   search: string
 }
 
-// [unused] export type RefreshTokenCountOrderByAggregateInput = {
+export type RefreshTokenCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   token?: Prisma.SortOrder
   userId?: Prisma.SortOrder
@@ -308,7 +308,7 @@ type GetRefreshTokenGroupByPayload<T extends RefreshTokenGroupByArgs> = Prisma.P
   createdAt?: Prisma.SortOrder
 }
 
-// [unused] export type RefreshTokenMaxOrderByAggregateInput = {
+export type RefreshTokenMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   token?: Prisma.SortOrder
   userId?: Prisma.SortOrder
@@ -316,7 +316,7 @@ type GetRefreshTokenGroupByPayload<T extends RefreshTokenGroupByArgs> = Prisma.P
   createdAt?: Prisma.SortOrder
 }
 
-// [unused] export type RefreshTokenMinOrderByAggregateInput = {
+export type RefreshTokenMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   token?: Prisma.SortOrder
   userId?: Prisma.SortOrder
@@ -324,21 +324,21 @@ type GetRefreshTokenGroupByPayload<T extends RefreshTokenGroupByArgs> = Prisma.P
   createdAt?: Prisma.SortOrder
 }
 
-// [unused] export type RefreshTokenCreateNestedManyWithoutUserInput = {
+export type RefreshTokenCreateNestedManyWithoutUserInput = {
   create?: Prisma.XOR<Prisma.RefreshTokenCreateWithoutUserInput, Prisma.RefreshTokenUncheckedCreateWithoutUserInput> | Prisma.RefreshTokenCreateWithoutUserInput[] | Prisma.RefreshTokenUncheckedCreateWithoutUserInput[]
   connectOrCreate?: Prisma.RefreshTokenCreateOrConnectWithoutUserInput | Prisma.RefreshTokenCreateOrConnectWithoutUserInput[]
   createMany?: Prisma.RefreshTokenCreateManyUserInputEnvelope
   connect?: Prisma.RefreshTokenWhereUniqueInput | Prisma.RefreshTokenWhereUniqueInput[]
 }
 
-// [unused] export type RefreshTokenUncheckedCreateNestedManyWithoutUserInput = {
+export type RefreshTokenUncheckedCreateNestedManyWithoutUserInput = {
   create?: Prisma.XOR<Prisma.RefreshTokenCreateWithoutUserInput, Prisma.RefreshTokenUncheckedCreateWithoutUserInput> | Prisma.RefreshTokenCreateWithoutUserInput[] | Prisma.RefreshTokenUncheckedCreateWithoutUserInput[]
   connectOrCreate?: Prisma.RefreshTokenCreateOrConnectWithoutUserInput | Prisma.RefreshTokenCreateOrConnectWithoutUserInput[]
   createMany?: Prisma.RefreshTokenCreateManyUserInputEnvelope
   connect?: Prisma.RefreshTokenWhereUniqueInput | Prisma.RefreshTokenWhereUniqueInput[]
 }
 
-// [unused] export type RefreshTokenUpdateManyWithoutUserNestedInput = {
+export type RefreshTokenUpdateManyWithoutUserNestedInput = {
   create?: Prisma.XOR<Prisma.RefreshTokenCreateWithoutUserInput, Prisma.RefreshTokenUncheckedCreateWithoutUserInput> | Prisma.RefreshTokenCreateWithoutUserInput[] | Prisma.RefreshTokenUncheckedCreateWithoutUserInput[]
   connectOrCreate?: Prisma.RefreshTokenCreateOrConnectWithoutUserInput | Prisma.RefreshTokenCreateOrConnectWithoutUserInput[]
   upsert?: Prisma.RefreshTokenUpsertWithWhereUniqueWithoutUserInput | Prisma.RefreshTokenUpsertWithWhereUniqueWithoutUserInput[]
@@ -352,7 +352,7 @@ type GetRefreshTokenGroupByPayload<T extends RefreshTokenGroupByArgs> = Prisma.P
   deleteMany?: Prisma.RefreshTokenScalarWhereInput | Prisma.RefreshTokenScalarWhereInput[]
 }
 
-// [unused] export type RefreshTokenUncheckedUpdateManyWithoutUserNestedInput = {
+export type RefreshTokenUncheckedUpdateManyWithoutUserNestedInput = {
   create?: Prisma.XOR<Prisma.RefreshTokenCreateWithoutUserInput, Prisma.RefreshTokenUncheckedCreateWithoutUserInput> | Prisma.RefreshTokenCreateWithoutUserInput[] | Prisma.RefreshTokenUncheckedCreateWithoutUserInput[]
   connectOrCreate?: Prisma.RefreshTokenCreateOrConnectWithoutUserInput | Prisma.RefreshTokenCreateOrConnectWithoutUserInput[]
   upsert?: Prisma.RefreshTokenUpsertWithWhereUniqueWithoutUserInput | Prisma.RefreshTokenUpsertWithWhereUniqueWithoutUserInput[]
@@ -366,47 +366,47 @@ type GetRefreshTokenGroupByPayload<T extends RefreshTokenGroupByArgs> = Prisma.P
   deleteMany?: Prisma.RefreshTokenScalarWhereInput | Prisma.RefreshTokenScalarWhereInput[]
 }
 
-// [unused] export type RefreshTokenCreateWithoutUserInput = {
+export type RefreshTokenCreateWithoutUserInput = {
   id?: string
   token: string
   expiresAt: Date | string
   createdAt?: Date | string
 }
 
-// [unused] export type RefreshTokenUncheckedCreateWithoutUserInput = {
+export type RefreshTokenUncheckedCreateWithoutUserInput = {
   id?: string
   token: string
   expiresAt: Date | string
   createdAt?: Date | string
 }
 
-// [unused] export type RefreshTokenCreateOrConnectWithoutUserInput = {
+export type RefreshTokenCreateOrConnectWithoutUserInput = {
   where: Prisma.RefreshTokenWhereUniqueInput
   create: Prisma.XOR<Prisma.RefreshTokenCreateWithoutUserInput, Prisma.RefreshTokenUncheckedCreateWithoutUserInput>
 }
 
-// [unused] export type RefreshTokenCreateManyUserInputEnvelope = {
+export type RefreshTokenCreateManyUserInputEnvelope = {
   data: Prisma.RefreshTokenCreateManyUserInput | Prisma.RefreshTokenCreateManyUserInput[]
   skipDuplicates?: boolean
 }
 
-// [unused] export type RefreshTokenUpsertWithWhereUniqueWithoutUserInput = {
+export type RefreshTokenUpsertWithWhereUniqueWithoutUserInput = {
   where: Prisma.RefreshTokenWhereUniqueInput
   update: Prisma.XOR<Prisma.RefreshTokenUpdateWithoutUserInput, Prisma.RefreshTokenUncheckedUpdateWithoutUserInput>
   create: Prisma.XOR<Prisma.RefreshTokenCreateWithoutUserInput, Prisma.RefreshTokenUncheckedCreateWithoutUserInput>
 }
 
-// [unused] export type RefreshTokenUpdateWithWhereUniqueWithoutUserInput = {
+export type RefreshTokenUpdateWithWhereUniqueWithoutUserInput = {
   where: Prisma.RefreshTokenWhereUniqueInput
   data: Prisma.XOR<Prisma.RefreshTokenUpdateWithoutUserInput, Prisma.RefreshTokenUncheckedUpdateWithoutUserInput>
 }
 
-// [unused] export type RefreshTokenUpdateManyWithWhereWithoutUserInput = {
+export type RefreshTokenUpdateManyWithWhereWithoutUserInput = {
   where: Prisma.RefreshTokenScalarWhereInput
   data: Prisma.XOR<Prisma.RefreshTokenUpdateManyMutationInput, Prisma.RefreshTokenUncheckedUpdateManyWithoutUserInput>
 }
 
-// [unused] export type RefreshTokenScalarWhereInput = {
+export type RefreshTokenScalarWhereInput = {
   AND?: Prisma.RefreshTokenScalarWhereInput | Prisma.RefreshTokenScalarWhereInput[]
   OR?: Prisma.RefreshTokenScalarWhereInput[]
   NOT?: Prisma.RefreshTokenScalarWhereInput | Prisma.RefreshTokenScalarWhereInput[]
@@ -417,28 +417,28 @@ type GetRefreshTokenGroupByPayload<T extends RefreshTokenGroupByArgs> = Prisma.P
   createdAt?: Prisma.DateTimeFilter<"RefreshToken"> | Date | string
 }
 
-// [unused] export type RefreshTokenCreateManyUserInput = {
+export type RefreshTokenCreateManyUserInput = {
   id?: string
   token: string
   expiresAt: Date | string
   createdAt?: Date | string
 }
 
-// [unused] export type RefreshTokenUpdateWithoutUserInput = {
+export type RefreshTokenUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   token?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-// [unused] export type RefreshTokenUncheckedUpdateWithoutUserInput = {
+export type RefreshTokenUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   token?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-// [unused] export type RefreshTokenUncheckedUpdateManyWithoutUserInput = {
+export type RefreshTokenUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   token?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -447,7 +447,7 @@ type GetRefreshTokenGroupByPayload<T extends RefreshTokenGroupByArgs> = Prisma.P
 
 
 
-// [unused] export type RefreshTokenSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+export type RefreshTokenSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   token?: boolean
   userId?: boolean
@@ -458,7 +458,7 @@ type GetRefreshTokenGroupByPayload<T extends RefreshTokenGroupByArgs> = Prisma.P
 
 
 
-// [unused] export type RefreshTokenSelectScalar = {
+export type RefreshTokenSelectScalar = {
   id?: boolean
   token?: boolean
   userId?: boolean
@@ -466,12 +466,12 @@ type GetRefreshTokenGroupByPayload<T extends RefreshTokenGroupByArgs> = Prisma.P
   createdAt?: boolean
 }
 
-// [unused] export type RefreshTokenOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "token" | "userId" | "expiresAt" | "createdAt", ExtArgs["result"]["refreshToken"]>
-// [unused] export type RefreshTokenInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type RefreshTokenOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "token" | "userId" | "expiresAt" | "createdAt", ExtArgs["result"]["refreshToken"]>
+export type RefreshTokenInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 
-// [unused] export type $RefreshTokenPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type $RefreshTokenPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "RefreshToken"
   objects: {
     user: Prisma.$UserPayload<ExtArgs>
@@ -486,14 +486,14 @@ type GetRefreshTokenGroupByPayload<T extends RefreshTokenGroupByArgs> = Prisma.P
   composites: {}
 }
 
-// [unused] export type RefreshTokenGetPayload<S extends boolean | null | undefined | RefreshTokenDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$RefreshTokenPayload, S>
+export type RefreshTokenGetPayload<S extends boolean | null | undefined | RefreshTokenDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$RefreshTokenPayload, S>
 
-// [unused] export type RefreshTokenCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
+export type RefreshTokenCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
   Omit<RefreshTokenFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
     select?: RefreshTokenCountAggregateInputType | true
   }
 
-// [unused] export interface RefreshTokenDelegate<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+export interface RefreshTokenDelegate<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> {
   [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['RefreshToken'], meta: { name: 'RefreshToken' } }
   /**
    * Find zero or one RefreshToken that matches the filter.
@@ -820,7 +820,7 @@ readonly fields: RefreshTokenFieldRefs;
  * Because we want to prevent naming conflicts as mentioned in
  * https://github.com/prisma/prisma-client-js/issues/707
  */
-// [unused] export interface Prisma__RefreshTokenClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+export interface Prisma__RefreshTokenClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
@@ -851,7 +851,7 @@ readonly fields: RefreshTokenFieldRefs;
 /**
  * Fields of the RefreshToken model
  */
-// [unused] export interface RefreshTokenFieldRefs {
+export interface RefreshTokenFieldRefs {
   readonly id: Prisma.FieldRef<"RefreshToken", 'String'>
   readonly token: Prisma.FieldRef<"RefreshToken", 'String'>
   readonly userId: Prisma.FieldRef<"RefreshToken", 'String'>
@@ -864,7 +864,7 @@ readonly fields: RefreshTokenFieldRefs;
 /**
  * RefreshToken findUnique
  */
-// [unused] export type RefreshTokenFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type RefreshTokenFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the RefreshToken
    */
@@ -886,7 +886,7 @@ readonly fields: RefreshTokenFieldRefs;
 /**
  * RefreshToken findUniqueOrThrow
  */
-// [unused] export type RefreshTokenFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type RefreshTokenFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the RefreshToken
    */
@@ -908,7 +908,7 @@ readonly fields: RefreshTokenFieldRefs;
 /**
  * RefreshToken findFirst
  */
-// [unused] export type RefreshTokenFindFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type RefreshTokenFindFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the RefreshToken
    */
@@ -960,7 +960,7 @@ readonly fields: RefreshTokenFieldRefs;
 /**
  * RefreshToken findFirstOrThrow
  */
-// [unused] export type RefreshTokenFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type RefreshTokenFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the RefreshToken
    */
@@ -1012,7 +1012,7 @@ readonly fields: RefreshTokenFieldRefs;
 /**
  * RefreshToken findMany
  */
-// [unused] export type RefreshTokenFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type RefreshTokenFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the RefreshToken
    */
@@ -1059,7 +1059,7 @@ readonly fields: RefreshTokenFieldRefs;
 /**
  * RefreshToken create
  */
-// [unused] export type RefreshTokenCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type RefreshTokenCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the RefreshToken
    */
@@ -1081,7 +1081,7 @@ readonly fields: RefreshTokenFieldRefs;
 /**
  * RefreshToken createMany
  */
-// [unused] export type RefreshTokenCreateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type RefreshTokenCreateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * The data used to create many RefreshTokens.
    */
@@ -1092,7 +1092,7 @@ readonly fields: RefreshTokenFieldRefs;
 /**
  * RefreshToken update
  */
-// [unused] export type RefreshTokenUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type RefreshTokenUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the RefreshToken
    */
@@ -1118,7 +1118,7 @@ readonly fields: RefreshTokenFieldRefs;
 /**
  * RefreshToken updateMany
  */
-// [unused] export type RefreshTokenUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type RefreshTokenUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * The data used to update RefreshTokens.
    */
@@ -1136,7 +1136,7 @@ readonly fields: RefreshTokenFieldRefs;
 /**
  * RefreshToken upsert
  */
-// [unused] export type RefreshTokenUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type RefreshTokenUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the RefreshToken
    */
@@ -1166,7 +1166,7 @@ readonly fields: RefreshTokenFieldRefs;
 /**
  * RefreshToken delete
  */
-// [unused] export type RefreshTokenDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type RefreshTokenDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the RefreshToken
    */
@@ -1188,7 +1188,7 @@ readonly fields: RefreshTokenFieldRefs;
 /**
  * RefreshToken deleteMany
  */
-// [unused] export type RefreshTokenDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type RefreshTokenDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Filter which RefreshTokens to delete
    */
@@ -1202,7 +1202,7 @@ readonly fields: RefreshTokenFieldRefs;
 /**
  * RefreshToken without action
  */
-// [unused] export type RefreshTokenDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type RefreshTokenDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the RefreshToken
    */
