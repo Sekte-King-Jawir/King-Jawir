@@ -18,26 +18,26 @@ export const cartRepository = {
                 id: true,
                 name: true,
                 slug: true,
-              }
-            }
-          }
-        }
+              },
+            },
+          },
+        },
       },
-      orderBy: { id: 'desc' }
+      orderBy: { id: 'desc' },
     })
   },
 
   async getCartItem(id: string, userId: string) {
     return prisma.cartItem.findFirst({
-      where: { id, userId }
+      where: { id, userId },
     })
   },
 
   async getCartItemByProduct(userId: string, productId: string) {
     return prisma.cartItem.findUnique({
       where: {
-        userId_productId: { userId, productId }
-      }
+        userId_productId: { userId, productId },
+      },
     })
   },
 
@@ -53,9 +53,9 @@ export const cartRepository = {
             price: true,
             stock: true,
             image: true,
-          }
-        }
-      }
+          },
+        },
+      },
     })
   },
 
@@ -72,9 +72,9 @@ export const cartRepository = {
             price: true,
             stock: true,
             image: true,
-          }
-        }
-      }
+          },
+        },
+      },
     })
   },
 
@@ -91,21 +91,21 @@ export const cartRepository = {
             price: true,
             stock: true,
             image: true,
-          }
-        }
-      }
+          },
+        },
+      },
     })
   },
 
   async removeFromCart(id: string) {
     return prisma.cartItem.delete({
-      where: { id }
+      where: { id },
     })
   },
 
   async clearCart(userId: string) {
     return prisma.cartItem.deleteMany({
-      where: { userId }
+      where: { userId },
     })
   },
 
@@ -118,7 +118,7 @@ export const cartRepository = {
         price: true,
         stock: true,
         storeId: true,
-      }
+      },
     })
-  }
+  },
 }

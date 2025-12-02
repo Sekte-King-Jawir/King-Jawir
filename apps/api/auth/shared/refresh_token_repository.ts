@@ -15,5 +15,5 @@ export const refreshTokenRepository = {
 
   async deleteAllByUserId(userId: string) {
     return prisma.refreshToken.deleteMany({ where: { userId } })
-  }
+  },
 }

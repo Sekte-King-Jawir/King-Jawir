@@ -39,13 +39,13 @@ export const productRepository = {
         include: {
           category: { select: { id: true, name: true, slug: true } },
           store: { select: { id: true, name: true, slug: true } },
-          _count: { select: { reviews: true } }
+          _count: { select: { reviews: true } },
         },
         orderBy: { createdAt: 'desc' },
         skip: (page - 1) * limit,
-        take: limit
+        take: limit,
       }),
-      prisma.product.count({ where })
+      prisma.product.count({ where }),
     ])
 
     return { products, total, page, limit, totalPages: Math.ceil(total / limit) }
@@ -56,16 +56,16 @@ export const productRepository = {
       where: { id },
       include: {
         category: { select: { id: true, name: true, slug: true } },
-        store: { 
-          select: { 
-            id: true, 
-            name: true, 
+        store: {
+          select: {
+            id: true,
+            name: true,
             slug: true,
-            userId: true
-          } 
+            userId: true,
+          },
         },
-        _count: { select: { reviews: true } }
-      }
+        _count: { select: { reviews: true } },
+      },
     })
   },
 
@@ -74,16 +74,16 @@ export const productRepository = {
       where: { slug },
       include: {
         category: { select: { id: true, name: true, slug: true } },
-        store: { 
-          select: { 
-            id: true, 
-            name: true, 
+        store: {
+          select: {
+            id: true,
+            name: true,
             slug: true,
-            user: { select: { id: true, name: true, avatar: true } }
-          } 
+            user: { select: { id: true, name: true, avatar: true } },
+          },
         },
-        _count: { select: { reviews: true } }
-      }
+        _count: { select: { reviews: true } },
+      },
     })
   },
 
@@ -93,13 +93,13 @@ export const productRepository = {
         where: { storeId },
         include: {
           category: { select: { id: true, name: true, slug: true } },
-          _count: { select: { reviews: true } }
+          _count: { select: { reviews: true } },
         },
         orderBy: { createdAt: 'desc' },
         skip: (page - 1) * limit,
-        take: limit
+        take: limit,
       }),
-      prisma.product.count({ where: { storeId } })
+      prisma.product.count({ where: { storeId } }),
     ])
 
     return { products, total, page, limit, totalPages: Math.ceil(total / limit) }
@@ -114,11 +114,11 @@ export const productRepository = {
         slug: data.slug,
         price: data.price,
         stock: data.stock,
-        image: data.image
+        image: data.image,
       },
       include: {
-        category: { select: { id: true, name: true, slug: true } }
-      }
+        category: { select: { id: true, name: true, slug: true } },
+      },
     })
   },
 
@@ -127,8 +127,8 @@ export const productRepository = {
       where: { id },
       data,
       include: {
-        category: { select: { id: true, name: true, slug: true } }
-      }
+        category: { select: { id: true, name: true, slug: true } },
+      },
     })
   },
 
@@ -141,5 +141,5 @@ export const productRepository = {
     if (!product) return false
     if (excludeId && product.id === excludeId) return false
     return true
-  }
+  },
 }

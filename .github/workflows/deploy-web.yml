@@ -1,13 +1,13 @@
 name: Deploy Web Store to VPS
 
 on:
-  workflow_dispatch: # Manual trigger
+  workflow_dispatch: # Manual triggera
   push:
     branches:
       - main
     paths:
-      - "apps/web/**"
-      - ".github/workflows/deploy-web.yml"
+      - 'apps/web/**'
+      - '.github/workflows/deploy-web.yml'
 
 jobs:
   build-and-deploy-web:

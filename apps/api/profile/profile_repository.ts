@@ -29,9 +29,9 @@ export const profileRepository = {
             id: true,
             name: true,
             slug: true,
-          }
-        }
-      }
+          },
+        },
+      },
     })
   },
 
@@ -56,9 +56,9 @@ export const profileRepository = {
             id: true,
             name: true,
             slug: true,
-          }
-        }
-      }
+          },
+        },
+      },
     })
   },
 
@@ -69,7 +69,7 @@ export const profileRepository = {
       select: {
         id: true,
         avatar: true,
-      }
+      },
     })
-  }
+  },
 }

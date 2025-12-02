@@ -47,10 +47,10 @@ export const adminService = {
 
     // Update role
     const updated = await adminRepository.updateUserRole(userId, newRole.toUpperCase() as Role)
-    return { 
-      success: true, 
+    return {
+      success: true,
       data: updated,
-      message: `Role berhasil diubah ke ${newRole.toUpperCase()}`
+      message: `Role berhasil diubah ke ${newRole.toUpperCase()}`,
     }
   },
 
@@ -80,5 +80,5 @@ export const adminService = {
   async getStats() {
     const stats = await adminRepository.getStats()
     return { success: true, data: stats }
-  }
+  },
 }

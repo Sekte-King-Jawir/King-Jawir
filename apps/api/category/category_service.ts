@@ -13,21 +13,21 @@ export const categoryService = {
   // Get all categories (public)
   async getAll() {
     const categories = await categoryRepository.findAll()
-    
+
     return successResponse('Categories retrieved', {
       categories: categories.map(c => ({
         id: c.id,
         name: c.name,
         slug: c.slug,
-        productCount: c._count.products
-      }))
+        productCount: c._count.products,
+      })),
     })
   },
 
   // Get category by slug (public)
   async getBySlug(slug: string) {
     const category = await categoryRepository.findBySlug(slug)
-    
+
     if (!category) {
       return errorResponse('Category tidak ditemukan', ErrorCode.NOT_FOUND)
     }
@@ -37,8 +37,8 @@ export const categoryService = {
         id: category.id,
         name: category.name,
         slug: category.slug,
-        productCount: category._count.products
-      }
+        productCount: category._count.products,
+      },
     })
   },
 
@@ -58,33 +58,33 @@ export const categoryService = {
 
     const category = await categoryRepository.create({
       name,
-      slug: categorySlug
+      slug: categorySlug,
     })
 
     return successResponse('Category berhasil dibuat', {
       category: {
         id: category.id,
         name: category.name,
-        slug: category.slug
-      }
+        slug: category.slug,
+      },
     })
   },
 
   // Update category (ADMIN only)
   async update(id: string, data: { name?: string; slug?: string }) {
     const category = await categoryRepository.findById(id)
-    
+
     if (!category) {
       return errorResponse('Category tidak ditemukan', ErrorCode.NOT_FOUND)
     }
 
     // Check name unique jika diubah
-    if (data.name && await categoryRepository.nameExists(data.name, id)) {
+    if (data.name && (await categoryRepository.nameExists(data.name, id))) {
       return errorResponse('Nama category sudah ada', ErrorCode.ALREADY_EXISTS)
     }
 
     // Check slug unique jika diubah
-    if (data.slug && await categoryRepository.slugExists(data.slug, id)) {
+    if (data.slug && (await categoryRepository.slugExists(data.slug, id))) {
       return errorResponse('Slug sudah digunakan', ErrorCode.ALREADY_EXISTS)
     }
 
@@ -94,15 +94,15 @@ export const categoryService = {
       category: {
         id: updated.id,
         name: updated.name,
-        slug: updated.slug
-      }
+        slug: updated.slug,
+      },
     })
   },
 
   // Delete category (ADMIN only)
   async delete(id: string) {
     const category = await categoryRepository.findById(id)
-    
+
     if (!category) {
       return errorResponse('Category tidak ditemukan', ErrorCode.NOT_FOUND)
     }
@@ -118,5 +118,5 @@ export const categoryService = {
     await categoryRepository.delete(id)
 
     return successResponse('Category berhasil dihapus')
-  }
+  },
 }

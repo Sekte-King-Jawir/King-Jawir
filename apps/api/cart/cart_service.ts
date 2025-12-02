@@ -21,25 +21,25 @@ interface CartItemWithProduct {
 export const cartService = {
   async getCart(userId: string) {
     const items = await cartRepository.getCart(userId)
-    
+
     // Calculate totals
     let totalItems = 0
     let totalPrice = 0
-    
+
     const cartItems = items.map((item: CartItemWithProduct) => {
       const price = Number(item.product.price)
       const subtotal = price * item.quantity
       totalItems += item.quantity
       totalPrice += subtotal
-      
+
       return {
         id: item.id,
         quantity: item.quantity,
         subtotal,
         product: {
           ...item.product,
-          price
-        }
+          price,
+        },
       }
     })
 
@@ -48,8 +48,8 @@ export const cartService = {
       data: {
         items: cartItems,
         totalItems,
-        totalPrice
-      }
+        totalPrice,
+      },
     }
   },
 
@@ -66,14 +66,17 @@ export const cartService = {
 
     // Check if already in cart
     const existing = await cartRepository.getCartItemByProduct(userId, productId)
-    
+
     if (existing) {
       // Update quantity instead
       const newQty = existing.quantity + quantity
       if (product.stock < newQty) {
-        return { success: false, error: `Stok tidak cukup. Tersedia: ${product.stock}, di keranjang: ${existing.quantity}` }
+        return {
+          success: false,
+          error: `Stok tidak cukup. Tersedia: ${product.stock}, di keranjang: ${existing.quantity}`,
+        }
       }
-      
+
       const updated = await cartRepository.incrementQuantity(existing.id, quantity)
       return { success: true, data: updated, message: 'Quantity updated' }
     }
@@ -124,5 +127,5 @@ export const cartService = {
   async clearCart(userId: string) {
     await cartRepository.clearCart(userId)
     return { success: true, message: 'Keranjang berhasil dikosongkan' }
-  }
+  },
 }

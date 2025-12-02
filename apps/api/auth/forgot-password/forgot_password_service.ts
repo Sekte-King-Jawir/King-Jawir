@@ -29,7 +29,7 @@ export const forgotPasswordService = {
       userId: user.id,
       token,
       type: 'reset_password',
-      expiresAt: new Date(Date.now() + 60 * 60 * 1000) // 1 jam
+      expiresAt: new Date(Date.now() + 60 * 60 * 1000), // 1 jam
     })
 
     const resetUrl = `${process.env.APP_URL}/auth/reset-password?token=${token}`
@@ -61,7 +61,10 @@ export const forgotPasswordService = {
     // Cek password baru tidak boleh sama dengan password lama
     const isSameAsOld = await verifyPassword(newPassword, user.password)
     if (isSameAsOld) {
-      return errorResponse('Password baru tidak boleh sama dengan password lama', ErrorCode.SAME_PASSWORD)
+      return errorResponse(
+        'Password baru tidak boleh sama dengan password lama',
+        ErrorCode.SAME_PASSWORD
+      )
     }
 
     // Hash password baru
@@ -74,5 +77,5 @@ export const forgotPasswordService = {
     await verificationRepository.delete(token)
 
     return successResponse('Password berhasil direset')
-  }
+  },
 }

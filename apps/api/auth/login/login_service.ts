@@ -4,12 +4,7 @@ import { verifyPassword } from '../../lib/hash'
 import { successResponse, errorResponse, ErrorCode } from '../../lib/response'
 
 export const loginService = {
-  async login(
-    email: string, 
-    password: string, 
-    jwtAccess: any, 
-    jwtRefresh: any
-  ) {
+  async login(email: string, password: string, jwtAccess: any, jwtRefresh: any) {
     // Cari user
     const user = await userRepository.findByEmail(email)
     if (!user) {
@@ -18,7 +13,10 @@ export const loginService = {
 
     // Cek jika user login dengan OAuth (tidak punya password)
     if (!user.password) {
-      return errorResponse('Akun ini terdaftar dengan Google. Gunakan Login with Google.', ErrorCode.OAUTH_NO_PASSWORD)
+      return errorResponse(
+        'Akun ini terdaftar dengan Google. Gunakan Login with Google.',
+        ErrorCode.OAUTH_NO_PASSWORD
+      )
     }
 
     // Verifikasi password
@@ -31,7 +29,7 @@ export const loginService = {
     const accessToken = await jwtAccess.sign({
       sub: user.id,
       role: user.role,
-      emailVerified: user.emailVerified
+      emailVerified: user.emailVerified,
     })
     const refreshToken = await jwtRefresh.sign({ sub: user.id })
 
@@ -39,7 +37,7 @@ export const loginService = {
     await refreshTokenRepository.create({
       token: refreshToken,
       userId: user.id,
-      expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // 7 hari
+      expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 hari
     })
 
     const message = user.emailVerified
@@ -54,8 +52,8 @@ export const loginService = {
         email: user.email,
         name: user.name,
         role: user.role,
-        emailVerified: user.emailVerified
-      }
+        emailVerified: user.emailVerified,
+      },
     })
-  }
+  },
 }

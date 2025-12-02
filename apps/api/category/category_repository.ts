@@ -4,9 +4,9 @@ export const categoryRepository = {
   async findAll() {
     return prisma.category.findMany({
       include: {
-        _count: { select: { products: true } }
+        _count: { select: { products: true } },
       },
-      orderBy: { name: 'asc' }
+      orderBy: { name: 'asc' },
     })
   },
 
@@ -14,8 +14,8 @@ export const categoryRepository = {
     return prisma.category.findUnique({
       where: { id },
       include: {
-        _count: { select: { products: true } }
-      }
+        _count: { select: { products: true } },
+      },
     })
   },
 
@@ -23,8 +23,8 @@ export const categoryRepository = {
     return prisma.category.findUnique({
       where: { slug },
       include: {
-        _count: { select: { products: true } }
-      }
+        _count: { select: { products: true } },
+      },
     })
   },
 
@@ -35,7 +35,7 @@ export const categoryRepository = {
   async update(id: string, data: { name?: string; slug?: string }) {
     return prisma.category.update({
       where: { id },
-      data
+      data,
     })
   },
 
@@ -55,5 +55,5 @@ export const categoryRepository = {
     if (!category) return false
     if (excludeId && category.id === excludeId) return false
     return true
-  }
+  },
 }

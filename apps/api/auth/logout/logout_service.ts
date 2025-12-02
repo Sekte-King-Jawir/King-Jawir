@@ -5,5 +5,5 @@ export const logoutService = {
   async logout(refreshToken: string) {
     await refreshTokenRepository.delete(refreshToken)
     return successResponse('Logout berhasil')
-  }
+  },
 }

@@ -8,7 +8,7 @@ export const verificationRepository = {
   async findByToken(token: string) {
     return prisma.verification.findUnique({
       where: { token },
-      include: { user: true }
+      include: { user: true },
     })
   },
 
@@ -18,7 +18,7 @@ export const verificationRepository = {
 
   async deleteByUserIdAndType(userId: string, type: string) {
     return prisma.verification.deleteMany({
-      where: { userId, type }
+      where: { userId, type },
     })
-  }
+  },
 }

@@ -13,20 +13,20 @@ export const reviewRepository = {
             select: {
               id: true,
               name: true,
-              avatar: true
-            }
-          }
+              avatar: true,
+            },
+          },
         },
         skip,
         take: limit,
-        orderBy: { createdAt: 'desc' }
+        orderBy: { createdAt: 'desc' },
       }),
       prisma.review.count({ where: { productId } }),
       prisma.review.aggregate({
         where: { productId },
         _avg: { rating: true },
-        _count: true
-      })
+        _count: true,
+      }),
     ])
 
     return {
@@ -36,7 +36,7 @@ export const reviewRepository = {
       limit,
       totalPages: Math.ceil(total / limit),
       averageRating: stats._avg.rating || 0,
-      reviewCount: stats._count
+      reviewCount: stats._count,
     }
   },
 
@@ -44,8 +44,8 @@ export const reviewRepository = {
   async getUserReview(userId: string, productId: string) {
     return prisma.review.findUnique({
       where: {
-        userId_productId: { userId, productId }
-      }
+        userId_productId: { userId, productId },
+      },
     })
   },
 
@@ -57,10 +57,10 @@ export const reviewRepository = {
         user: {
           select: {
             id: true,
-            name: true
-          }
-        }
-      }
+            name: true,
+          },
+        },
+      },
     })
   },
 
@@ -71,17 +71,17 @@ export const reviewRepository = {
         userId,
         productId,
         rating,
-        comment
+        comment,
       },
       include: {
         user: {
           select: {
             id: true,
             name: true,
-            avatar: true
-          }
-        }
-      }
+            avatar: true,
+          },
+        },
+      },
     })
   },
 
@@ -91,24 +91,24 @@ export const reviewRepository = {
       where: { id },
       data: {
         ...(rating !== undefined && { rating }),
-        ...(comment !== undefined && { comment })
+        ...(comment !== undefined && { comment }),
       },
       include: {
         user: {
           select: {
             id: true,
             name: true,
-            avatar: true
-          }
-        }
-      }
+            avatar: true,
+          },
+        },
+      },
     })
   },
 
   // Delete review
   async deleteReview(id: string) {
     return prisma.review.delete({
-      where: { id }
+      where: { id },
     })
   },
 
@@ -116,7 +116,7 @@ export const reviewRepository = {
   async getProduct(productId: string) {
     return prisma.product.findUnique({
       where: { id: productId },
-      select: { id: true, name: true }
+      select: { id: true, name: true },
     })
   },
 
@@ -124,16 +124,16 @@ export const reviewRepository = {
   async getProductByIdOrSlug(idOrSlug: string) {
     let product = await prisma.product.findUnique({
       where: { id: idOrSlug },
-      select: { id: true, name: true }
+      select: { id: true, name: true },
     })
-    
+
     if (!product) {
       product = await prisma.product.findUnique({
         where: { slug: idOrSlug },
-        select: { id: true, name: true }
+        select: { id: true, name: true },
       })
     }
-    
+
     return product
   },
 
@@ -144,10 +144,10 @@ export const reviewRepository = {
         userId,
         status: 'DONE',
         items: {
-          some: { productId }
-        }
-      }
+          some: { productId },
+        },
+      },
     })
     return !!order
-  }
+  },
 }

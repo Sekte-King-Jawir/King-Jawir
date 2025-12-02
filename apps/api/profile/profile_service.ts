@@ -3,7 +3,7 @@ import { profileRepository, type UpdateProfileData } from './profile_repository'
 export const profileService = {
   async getProfile(userId: string) {
     const user = await profileRepository.findById(userId)
-    
+
     if (!user) {
       return { success: false, error: 'User tidak ditemukan' }
     }
@@ -57,5 +57,5 @@ export const profileService = {
     } catch (error) {
       return { success: false, error: 'Gagal mengupdate avatar' }
     }
-  }
+  },
 }

@@ -17,7 +17,7 @@ const adapter = new PrismaMariaDb({
   port: Number(port),
   user,
   password,
-  database
+  database,
 })
 
 export const prisma = new PrismaClient({ adapter })

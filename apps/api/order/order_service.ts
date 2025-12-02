@@ -14,13 +14,13 @@ export const orderService = {
 
     // Validate stock and calculate total
     let total = 0
-    const orderItems: { productId: string, price: number, quantity: number }[] = []
+    const orderItems: { productId: string; price: number; quantity: number }[] = []
 
     for (const item of cartItems) {
       if (item.product.stock < item.quantity) {
         return {
           success: false,
-          error: `Stok ${item.product.name} tidak cukup. Tersedia: ${item.product.stock}`
+          error: `Stok ${item.product.name} tidak cukup. Tersedia: ${item.product.stock}`,
         }
       }
 
@@ -29,7 +29,7 @@ export const orderService = {
       orderItems.push({
         productId: item.productId,
         price,
-        quantity: item.quantity
+        quantity: item.quantity,
       })
     }
 
@@ -122,13 +122,13 @@ export const orderService = {
       PAID: ['SHIPPED', 'CANCELLED'],
       SHIPPED: ['DONE'],
       DONE: [],
-      CANCELLED: []
+      CANCELLED: [],
     }
 
     if (!validTransitions[order.status as OrderStatus].includes(status)) {
       return {
         success: false,
-        error: `Status tidak dapat diubah dari ${order.status} ke ${status}`
+        error: `Status tidak dapat diubah dari ${order.status} ke ${status}`,
       }
     }
 
@@ -140,5 +140,5 @@ export const orderService = {
 
     const updated = await orderRepository.updateOrderStatus(orderId, status)
     return { success: true, data: updated, message: `Status order diubah ke ${status}` }
-  }
+  },
 }

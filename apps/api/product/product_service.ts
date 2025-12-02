@@ -6,18 +6,21 @@ import { successResponse, errorResponse, ErrorCode } from '../lib/response'
 
 // Helper untuk generate slug
 function generateSlug(name: string): string {
-  return name
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-|-$/g, '')
-    + '-' + Date.now().toString(36) // Tambah unique suffix
+  return (
+    name
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-|-$/g, '') +
+    '-' +
+    Date.now().toString(36)
+  ) // Tambah unique suffix
 }
 
 export const productService = {
   // Get all products (public, dengan filter & pagination)
   async getAll(filter?: ProductFilter, page = 1, limit = 20) {
     const result = await productRepository.findAll(filter, page, limit)
-    
+
     return successResponse('Products retrieved', {
       products: result.products.map(p => ({
         id: p.id,
@@ -29,21 +32,21 @@ export const productService = {
         category: p.category,
         store: p.store,
         reviewCount: p._count.reviews,
-        createdAt: p.createdAt
+        createdAt: p.createdAt,
       })),
       pagination: {
         page: result.page,
         limit: result.limit,
         total: result.total,
-        totalPages: result.totalPages
-      }
+        totalPages: result.totalPages,
+      },
     })
   },
 
   // Get product by slug (public)
   async getBySlug(slug: string) {
     const product = await productRepository.findBySlug(slug)
-    
+
     if (!product) {
       return errorResponse('Product tidak ditemukan', ErrorCode.NOT_FOUND)
     }
@@ -59,21 +62,21 @@ export const productService = {
         category: product.category,
         store: product.store,
         reviewCount: product._count.reviews,
-        createdAt: product.createdAt
-      }
+        createdAt: product.createdAt,
+      },
     })
   },
 
   // Get my products (SELLER)
   async getMyProducts(userId: string, page = 1, limit = 20) {
     const store = await storeRepository.findByUserId(userId)
-    
+
     if (!store) {
       return errorResponse('Anda belum memiliki toko', ErrorCode.NOT_FOUND)
     }
 
     const result = await productRepository.findByStoreId(store.id, page, limit)
-    
+
     return successResponse('Products retrieved', {
       products: result.products.map(p => ({
         id: p.id,
@@ -84,32 +87,32 @@ export const productService = {
         image: p.image,
         category: p.category,
         reviewCount: p._count.reviews,
-        createdAt: p.createdAt
+        createdAt: p.createdAt,
       })),
       pagination: {
         page: result.page,
         limit: result.limit,
         total: result.total,
-        totalPages: result.totalPages
-      }
+        totalPages: result.totalPages,
+      },
     })
   },
 
   // Create product (SELLER)
   async create(
-    userId: string, 
-    data: { 
+    userId: string,
+    data: {
       categoryId: string
       name: string
       slug?: string
       price: number
       stock: number
-      image?: string 
+      image?: string
     }
   ) {
     // Get user's store
     const store = await storeRepository.findByUserId(userId)
-    
+
     if (!store) {
       return errorResponse('Anda belum memiliki toko', ErrorCode.NOT_FOUND)
     }
@@ -122,7 +125,7 @@ export const productService = {
 
     // Generate or validate slug
     const productSlug = data.slug || generateSlug(data.name)
-    
+
     if (await productRepository.slugExists(productSlug)) {
       return errorResponse('Slug sudah digunakan', ErrorCode.ALREADY_EXISTS)
     }
@@ -144,7 +147,7 @@ export const productService = {
       slug: productSlug,
       price: data.price,
       stock: data.stock,
-      image: data.image
+      image: data.image,
     })
 
     return successResponse('Product berhasil dibuat', {
@@ -156,8 +159,8 @@ export const productService = {
         stock: product.stock,
         image: product.image,
         category: product.category,
-        createdAt: product.createdAt
-      }
+        createdAt: product.createdAt,
+      },
     })
   },
 
@@ -175,7 +178,7 @@ export const productService = {
     }
   ) {
     const product = await productRepository.findById(productId)
-    
+
     if (!product) {
       return errorResponse('Product tidak ditemukan', ErrorCode.NOT_FOUND)
     }
@@ -194,7 +197,7 @@ export const productService = {
     }
 
     // Check slug unique if changed
-    if (data.slug && await productRepository.slugExists(data.slug, productId)) {
+    if (data.slug && (await productRepository.slugExists(data.slug, productId))) {
       return errorResponse('Slug sudah digunakan', ErrorCode.ALREADY_EXISTS)
     }
 
@@ -219,15 +222,15 @@ export const productService = {
         stock: updated.stock,
         image: updated.image,
         category: updated.category,
-        createdAt: updated.createdAt
-      }
+        createdAt: updated.createdAt,
+      },
     })
   },
 
   // Delete product (SELLER - only own products)
   async delete(userId: string, productId: string) {
     const product = await productRepository.findById(productId)
-    
+
     if (!product) {
       return errorResponse('Product tidak ditemukan', ErrorCode.NOT_FOUND)
     }
@@ -245,18 +248,18 @@ export const productService = {
   // Get products by store slug (public)
   async getByStoreSlug(storeSlug: string, page = 1, limit = 20) {
     const store = await storeRepository.findBySlug(storeSlug)
-    
+
     if (!store) {
       return errorResponse('Store tidak ditemukan', ErrorCode.NOT_FOUND)
     }
 
     const result = await productRepository.findByStoreId(store.id, page, limit)
-    
+
     return successResponse('Products retrieved', {
       store: {
         id: store.id,
         name: store.name,
-        slug: store.slug
+        slug: store.slug,
       },
       products: result.products.map(p => ({
         id: p.id,
@@ -267,14 +270,14 @@ export const productService = {
         image: p.image,
         category: p.category,
         reviewCount: p._count.reviews,
-        createdAt: p.createdAt
+        createdAt: p.createdAt,
       })),
       pagination: {
         page: result.page,
         limit: result.limit,
         total: result.total,
-        totalPages: result.totalPages
-      }
+        totalPages: result.totalPages,
+      },
     })
-  }
+  },
 }

@@ -7,32 +7,41 @@ export const reviewController = {
     const limit = parseInt(query.limit) || 10
 
     const result = await reviewService.getProductReviews(productIdOrSlug, page, limit)
-    
+
     if (!result.success) {
       set.status = 404
       return {
         success: false,
         message: result.error,
-        error: { code: 'NOT_FOUND', details: null }
+        error: { code: 'NOT_FOUND', details: null },
       }
     }
 
     return {
       success: true,
       message: 'Reviews berhasil diambil',
-      data: result.data
+      data: result.data,
     }
   },
 
-  async createReview(userId: string, body: { productId: string; rating: number; comment?: string }, set: Context['set']) {
-    const result = await reviewService.createReview(userId, body.productId, body.rating, body.comment)
-    
+  async createReview(
+    userId: string,
+    body: { productId: string; rating: number; comment?: string },
+    set: Context['set']
+  ) {
+    const result = await reviewService.createReview(
+      userId,
+      body.productId,
+      body.rating,
+      body.comment
+    )
+
     if (!result.success) {
       set.status = 400
       return {
         success: false,
         message: result.error,
-        error: { code: 'BAD_REQUEST', details: null }
+        error: { code: 'BAD_REQUEST', details: null },
       }
     }
 
@@ -40,44 +49,49 @@ export const reviewController = {
     return {
       success: true,
       message: 'Review berhasil dibuat',
-      data: result.data
+      data: result.data,
     }
   },
 
-  async updateReview(userId: string, reviewId: string, body: { rating?: number; comment?: string }, set: Context['set']) {
+  async updateReview(
+    userId: string,
+    reviewId: string,
+    body: { rating?: number; comment?: string },
+    set: Context['set']
+  ) {
     const result = await reviewService.updateReview(userId, reviewId, body.rating, body.comment)
-    
+
     if (!result.success) {
       set.status = 400
       return {
         success: false,
         message: result.error,
-        error: { code: 'BAD_REQUEST', details: null }
+        error: { code: 'BAD_REQUEST', details: null },
       }
     }
 
     return {
       success: true,
       message: 'Review berhasil diupdate',
-      data: result.data
+      data: result.data,
     }
   },
 
   async deleteReview(userId: string, reviewId: string, isAdmin: boolean, set: Context['set']) {
     const result = await reviewService.deleteReview(userId, reviewId, isAdmin)
-    
+
     if (!result.success) {
       set.status = 400
       return {
         success: false,
         message: result.error,
-        error: { code: 'BAD_REQUEST', details: null }
+        error: { code: 'BAD_REQUEST', details: null },
       }
     }
 
     return {
       success: true,
-      message: result.message
+      message: result.message,
     }
-  }
+  },
 }

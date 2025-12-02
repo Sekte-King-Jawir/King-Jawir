@@ -21,7 +21,7 @@ export const profileController = {
     }
 
     const result = await profileService.getProfile(user.id)
-    
+
     if (!result.success) {
       set.status = 404
       return errorResponse(result.error!, ErrorCode.NOT_FOUND)
@@ -37,7 +37,7 @@ export const profileController = {
     }
 
     const result = await profileService.updateProfile(user.id, body)
-    
+
     if (!result.success) {
       set.status = 400
       return errorResponse(result.error!, ErrorCode.BAD_REQUEST)
@@ -58,12 +58,12 @@ export const profileController = {
     }
 
     const result = await profileService.updateAvatar(user.id, body.avatarUrl)
-    
+
     if (!result.success) {
       set.status = 400
       return errorResponse(result.error!, ErrorCode.BAD_REQUEST)
     }
 
     return successResponse('Avatar berhasil diupdate', result.data)
-  }
+  },
 }

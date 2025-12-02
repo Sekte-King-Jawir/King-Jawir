@@ -5,8 +5,8 @@ export const storeRepository = {
     return prisma.store.findUnique({
       where: { userId },
       include: {
-        _count: { select: { products: true } }
-      }
+        _count: { select: { products: true } },
+      },
     })
   },
 
@@ -15,8 +15,8 @@ export const storeRepository = {
       where: { id },
       include: {
         user: { select: { id: true, name: true, avatar: true } },
-        _count: { select: { products: true } }
-      }
+        _count: { select: { products: true } },
+      },
     })
   },
 
@@ -25,8 +25,8 @@ export const storeRepository = {
       where: { slug },
       include: {
         user: { select: { id: true, name: true, avatar: true } },
-        _count: { select: { products: true } }
-      }
+        _count: { select: { products: true } },
+      },
     })
   },
 
@@ -35,15 +35,15 @@ export const storeRepository = {
       data: {
         userId: data.userId,
         name: data.name,
-        slug: data.slug
-      }
+        slug: data.slug,
+      },
     })
   },
 
   async update(id: string, data: { name?: string; slug?: string }) {
     return prisma.store.update({
       where: { id },
-      data
+      data,
     })
   },
 
@@ -56,13 +56,13 @@ export const storeRepository = {
 
   async delete(id: string) {
     return prisma.store.delete({
-      where: { id }
+      where: { id },
     })
   },
 
   async hasProducts(storeId: string) {
     const count = await prisma.product.count({
-      where: { storeId }
+      where: { storeId },
     })
     return count > 0
   },
@@ -72,14 +72,14 @@ export const storeRepository = {
       where: {
         items: {
           some: {
-            product: { storeId }
-          }
+            product: { storeId },
+          },
         },
         status: {
-          in: ['PENDING', 'PAID', 'SHIPPED']
-        }
-      }
+          in: ['PENDING', 'PAID', 'SHIPPED'],
+        },
+      },
     })
     return count > 0
-  }
+  },
 }

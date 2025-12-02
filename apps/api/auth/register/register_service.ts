@@ -18,7 +18,7 @@ export const registerService = {
     const user = await userRepository.create({
       email,
       password: hashedPassword,
-      name
+      name,
     })
 
     // Buat token verifikasi
@@ -27,7 +27,7 @@ export const registerService = {
       userId: user.id,
       token,
       type: 'email',
-      expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000) // 24 jam
+      expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 jam
     })
 
     // Kirim email
@@ -35,7 +35,7 @@ export const registerService = {
     await sendVerificationEmail(email, verifyUrl)
 
     return successResponse('Register berhasil. Cek email untuk verifikasi.', {
-      user: { id: user.id, email: user.email, name: user.name }
+      user: { id: user.id, email: user.email, name: user.name },
     })
-  }
+  },
 }
