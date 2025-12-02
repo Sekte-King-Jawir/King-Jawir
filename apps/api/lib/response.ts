@@ -31,10 +31,10 @@ export const ErrorCode = {
   INTERNAL_ERROR: 'INTERNAL_ERROR',
 } as const
 
-export type ErrorCodeType = (typeof ErrorCode)[keyof typeof ErrorCode]
+// [unused] export type ErrorCodeType = (typeof ErrorCode)[keyof typeof ErrorCode]
 
 // Response Types
-export interface ApiResponse<T = unknown> {
+// [unused] export interface ApiResponse<T = unknown> {
   success: boolean
   message: string
   data?: T
@@ -70,7 +70,7 @@ export function errorResponse(
 }
 
 // Common Responses
-export const CommonResponse = {
+// [unused] export const CommonResponse = {
   unauthorized: () => errorResponse('Unauthorized', ErrorCode.UNAUTHORIZED),
   forbidden: (message?: string) =>
     errorResponse(message || 'Forbidden - Access denied', ErrorCode.FORBIDDEN),

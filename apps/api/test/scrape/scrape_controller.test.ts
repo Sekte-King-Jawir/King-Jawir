@@ -21,8 +21,8 @@ describe('Scrape Controller', () => {
       source: 'shopee' as const,
       sold: 100,
       location: 'Jakarta',
-      shopName: 'Test Shop'
-    }
+      shopName: 'Test Shop',
+    },
   ]
 
   beforeEach(() => {
@@ -90,7 +90,13 @@ describe('Scrape Controller', () => {
     it('should return success response with Tokopedia products', async () => {
       ;(scrapeService.scrapeTokopedia as any).mockResolvedValue(mockProducts)
 
-      const result = await scrapeController.scrapeTokopedia('laptop', 'highest_rating', 5, 3.5, 150000)
+      const result = await scrapeController.scrapeTokopedia(
+        'laptop',
+        'highest_rating',
+        5,
+        3.5,
+        150000
+      )
 
       expect(result.success).toBe(true)
       expect(result.message).toContain('Tokopedia successfully')

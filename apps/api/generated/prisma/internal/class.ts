@@ -47,10 +47,10 @@ config.compilerWasm = {
 
 
 
-export type LogOptions<ClientOptions extends Prisma.PrismaClientOptions> =
+// [unused] export type LogOptions<ClientOptions extends Prisma.PrismaClientOptions> =
   'log' extends keyof ClientOptions ? ClientOptions['log'] extends Array<Prisma.LogLevel | Prisma.LogDefinition> ? Prisma.GetEvents<ClientOptions['log']> : never : never
 
-export interface PrismaClientConstructor {
+// [unused] export interface PrismaClientConstructor {
     /**
    * ## Prisma Client
    * 
@@ -87,7 +87,7 @@ export interface PrismaClientConstructor {
  * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client).
  */
 
-export interface PrismaClient<
+// [unused] export interface PrismaClient<
   in LogOpts extends Prisma.LogLevel = never,
   in out OmitOpts extends Prisma.PrismaClientOptions['omit'] = undefined,
   in out ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs
@@ -275,6 +275,6 @@ export interface PrismaClient<
   get review(): Prisma.ReviewDelegate<ExtArgs, { omit: OmitOpts }>;
 }
 
-export function getPrismaClientClass(): PrismaClientConstructor {
+// [unused] export function getPrismaClientClass(): PrismaClientConstructor {
   return runtime.getPrismaClient(config) as unknown as PrismaClientConstructor
 }

@@ -3,7 +3,7 @@ import { jwt } from '@elysiajs/jwt'
 import { meController } from './me_controller'
 import { errorResponse, ErrorCode } from '../../lib/response'
 
-export const meRoute = new Elysia()
+// [unused] export const meRoute = new Elysia()
   .use(
     jwt({
       name: 'jwtAccess',

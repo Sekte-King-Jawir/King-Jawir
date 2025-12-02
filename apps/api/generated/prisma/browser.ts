@@ -14,56 +14,56 @@
  */
 
 import * as Prisma from './internal/prismaNamespaceBrowser.ts'
-export { Prisma }
-export * as $Enums from './enums.ts'
+// [unused] export { Prisma }
+// [unused] export * as $Enums from './enums.ts'
 export * from './enums.ts';
 /**
  * Model User
  * 
  */
-export type User = Prisma.UserModel
+// [unused] export type User = Prisma.UserModel
 /**
  * Model RefreshToken
  * 
  */
-export type RefreshToken = Prisma.RefreshTokenModel
+// [unused] export type RefreshToken = Prisma.RefreshTokenModel
 /**
  * Model Verification
  * 
  */
-export type Verification = Prisma.VerificationModel
+// [unused] export type Verification = Prisma.VerificationModel
 /**
  * Model Store
  * 
  */
-export type Store = Prisma.StoreModel
+// [unused] export type Store = Prisma.StoreModel
 /**
  * Model Category
  * 
  */
-export type Category = Prisma.CategoryModel
+// [unused] export type Category = Prisma.CategoryModel
 /**
  * Model Product
  * 
  */
-export type Product = Prisma.ProductModel
+// [unused] export type Product = Prisma.ProductModel
 /**
  * Model CartItem
  * 
  */
-export type CartItem = Prisma.CartItemModel
+// [unused] export type CartItem = Prisma.CartItemModel
 /**
  * Model Order
  * 
  */
-export type Order = Prisma.OrderModel
+// [unused] export type Order = Prisma.OrderModel
 /**
  * Model OrderItem
  * 
  */
-export type OrderItem = Prisma.OrderItemModel
+// [unused] export type OrderItem = Prisma.OrderItemModel
 /**
  * Model Review
  * 
  */
-export type Review = Prisma.ReviewModel
+// [unused] export type Review = Prisma.ReviewModel

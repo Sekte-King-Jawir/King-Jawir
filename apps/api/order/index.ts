@@ -3,7 +3,7 @@ import { orderController } from './order_controller'
 import { jwtPlugin, authDerive } from '../lib/auth-helper'
 
 // Customer order routes
-export const orderRoutes = new Elysia({ prefix: '/orders' })
+// [unused] export const orderRoutes = new Elysia({ prefix: '/orders' })
   .use(jwtPlugin)
   .derive(authDerive)
   // POST /orders - Checkout (create order from cart)
@@ -78,7 +78,7 @@ export const orderRoutes = new Elysia({ prefix: '/orders' })
   )
 
 // Seller order routes
-export const sellerOrderRoutes = new Elysia({ prefix: '/seller/orders' })
+// [unused] export const sellerOrderRoutes = new Elysia({ prefix: '/seller/orders' })
   .use(jwtPlugin)
   .derive(authDerive)
   // GET /seller/orders - Get seller's orders

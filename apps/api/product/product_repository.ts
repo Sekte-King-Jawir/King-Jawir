@@ -8,7 +8,7 @@ export interface ProductFilter {
   maxPrice?: number
 }
 
-export interface CreateProductData {
+// [unused] export interface CreateProductData {
   storeId: string
   categoryId: string
   name: string

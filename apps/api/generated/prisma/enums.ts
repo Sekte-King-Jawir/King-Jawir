@@ -9,7 +9,7 @@
 * 🟢 You can import this file directly.
 */
 
-export const Role = {
+// [unused] export const Role = {
   CUSTOMER: 'CUSTOMER',
   SELLER: 'SELLER',
   ADMIN: 'ADMIN'
@@ -18,7 +18,7 @@ export const Role = {
 export type Role = (typeof Role)[keyof typeof Role]
 
 
-export const OrderStatus = {
+// [unused] export const OrderStatus = {
   PENDING: 'PENDING',
   PAID: 'PAID',
   SHIPPED: 'SHIPPED',

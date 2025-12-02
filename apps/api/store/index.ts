@@ -3,7 +3,7 @@ import { storeController } from './store_controller'
 import { jwtPlugin, authDerive, isSeller, type AuthUser } from '../lib/auth-helper'
 import { errorResponse, ErrorCode } from '../lib/response'
 
-export const storeRoutes = new Elysia({ prefix: '/store' })
+// [unused] export const storeRoutes = new Elysia({ prefix: '/store' })
   .use(jwtPlugin)
   .derive(authDerive)
 
@@ -133,7 +133,7 @@ export const storeRoutes = new Elysia({ prefix: '/store' })
   )
 
 // Public routes untuk melihat store
-export const publicStoreRoutes = new Elysia({ prefix: '/stores' })
+// [unused] export const publicStoreRoutes = new Elysia({ prefix: '/stores' })
 
   // GET /stores/:slug - Get store by slug (public)
   .get(

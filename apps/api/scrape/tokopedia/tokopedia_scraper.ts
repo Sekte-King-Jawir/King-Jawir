@@ -1,7 +1,7 @@
 import puppeteer, { Browser, Page } from 'puppeteer'
 import { ScrapedProduct, ScrapingOptions } from '../scrape_service'
 
-export class TokopediaScraper {
+// [unused] export class TokopediaScraper {
   private browser: Browser | null = null
 
   async scrapeProducts(options: ScrapingOptions): Promise<ScrapedProduct[]> {
@@ -16,14 +16,16 @@ export class TokopediaScraper {
           '--no-first-run',
           '--no-zygote',
           '--single-process',
-          '--disable-gpu'
-        ]
+          '--disable-gpu',
+        ],
       })
 
       const page = await this.browser.newPage()
-      
+
       // Set user agent and viewport
-      await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36')
+      await page.setUserAgent(
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+      )
       await page.setViewport({ width: 1366, height: 768 })
 
       // Build search URL
@@ -38,7 +40,7 @@ export class TokopediaScraper {
         const productElements = document.querySelectorAll('[data-testid="masterProductCard"]')
         const products: any[] = []
 
-        productElements.forEach((element) => {
+        productElements.forEach(element => {
           try {
             // Product name
             const nameElement = element.querySelector('[data-testid="masterProductName"]')
@@ -83,7 +85,7 @@ export class TokopediaScraper {
                 source: 'tokopedia' as const,
                 sold,
                 location,
-                shopName
+                shopName,
               })
             }
           } catch (error) {
@@ -110,9 +112,9 @@ export class TokopediaScraper {
   private buildSearchUrl(options: ScrapingOptions): string {
     const baseUrl = 'https://www.tokopedia.com/search'
     const params = new URLSearchParams()
-    
+
     params.set('q', options.query)
-    
+
     // Add sorting parameters
     switch (options.sortBy) {
       case 'cheapest':

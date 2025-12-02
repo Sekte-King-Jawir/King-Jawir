@@ -26,7 +26,7 @@ describe('Scrape Service', () => {
       source: 'shopee' as const,
       sold: 100,
       location: 'Jakarta',
-      shopName: 'Shopee Shop'
+      shopName: 'Shopee Shop',
     },
     {
       name: 'Shopee Product 2',
@@ -37,8 +37,8 @@ describe('Scrape Service', () => {
       source: 'shopee' as const,
       sold: 50,
       location: 'Bandung',
-      shopName: 'Shopee Shop 2'
-    }
+      shopName: 'Shopee Shop 2',
+    },
   ]
 
   const mockTokopediaProducts = [
@@ -51,7 +51,7 @@ describe('Scrape Service', () => {
       source: 'tokopedia' as const,
       sold: 80,
       location: 'Surabaya',
-      shopName: 'Tokopedia Shop'
+      shopName: 'Tokopedia Shop',
     },
     {
       name: 'Tokopedia Product 2',
@@ -62,8 +62,8 @@ describe('Scrape Service', () => {
       source: 'tokopedia' as const,
       sold: 30,
       location: 'Yogyakarta',
-      shopName: 'Tokopedia Shop 2'
-    }
+      shopName: 'Tokopedia Shop 2',
+    },
   ]
 
   beforeEach(() => {
@@ -86,7 +86,9 @@ describe('Scrape Service', () => {
       ;(shopeeScraper.scrapeProducts as any).mockRejectedValue(new Error('Scraping failed'))
 
       const options = { query: 'laptop' }
-      await expect(scrapeService.scrapeShopee(options)).rejects.toThrow('Failed to scrape products from Shopee')
+      await expect(scrapeService.scrapeShopee(options)).rejects.toThrow(
+        'Failed to scrape products from Shopee'
+      )
     })
   })
 
@@ -105,7 +107,9 @@ describe('Scrape Service', () => {
       ;(tokopediaScraper.scrapeProducts as any).mockRejectedValue(new Error('Scraping failed'))
 
       const options = { query: 'laptop' }
-      await expect(scrapeService.scrapeTokopedia(options)).rejects.toThrow('Failed to scrape products from Tokopedia')
+      await expect(scrapeService.scrapeTokopedia(options)).rejects.toThrow(
+        'Failed to scrape products from Tokopedia'
+      )
     })
   })
 
@@ -125,7 +129,9 @@ describe('Scrape Service', () => {
       ;(shopeeScraper.scrapeProducts as any).mockRejectedValue(new Error('Scraping failed'))
 
       const options = { query: 'laptop' }
-      await expect(scrapeService.scrapeAll(options)).rejects.toThrow('Failed to scrape products from all platforms')
+      await expect(scrapeService.scrapeAll(options)).rejects.toThrow(
+        'Failed to scrape products from all platforms'
+      )
     })
   })
 
@@ -180,12 +186,12 @@ describe('Scrape Service', () => {
     })
 
     it('should apply multiple filters', () => {
-      const options = { 
-        query: 'laptop', 
+      const options = {
+        query: 'laptop',
         sortBy: 'cheapest' as const,
         minRating: 4.0,
         maxPrice: 150000,
-        limit: 2
+        limit: 2,
       }
       const result = scrapeService.sortAndFilterProducts(allProducts, options)
 

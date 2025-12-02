@@ -3,7 +3,7 @@ import { reviewController } from './review_controller'
 import { jwtPlugin, authDerive } from '../lib/auth-helper'
 
 // Protected review routes
-export const reviewRoutes = new Elysia()
+// [unused] export const reviewRoutes = new Elysia()
   .use(jwtPlugin)
   .derive(authDerive)
   // POST /reviews - Create review
@@ -93,7 +93,7 @@ export const reviewRoutes = new Elysia()
   )
 
 // Public product reviews route (uses :slug to match product routes)
-export const productReviewsRoute = new Elysia().get(
+// [unused] export const productReviewsRoute = new Elysia().get(
   '/products/:slug/reviews',
   async ({ params, query, set }) => {
     return reviewController.getProductReviews(params.slug, query, set)

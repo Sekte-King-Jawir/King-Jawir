@@ -2,7 +2,7 @@ import { jwt } from '@elysiajs/jwt'
 import { type Role } from './auth-middleware'
 
 // JWT Payload type
-export interface JWTPayload {
+// [unused] export interface JWTPayload {
   sub: string
   role: Role
   emailVerified?: boolean
@@ -19,7 +19,7 @@ export interface AuthUser {
 /**
  * Shared JWT configuration
  */
-export const jwtConfig = {
+// [unused] export const jwtConfig = {
   name: 'jwtAccess' as const,
   secret: process.env.JWT_SECRET || 'secret-key-min-32-chars-long!!',
 }
@@ -61,7 +61,7 @@ export const authDerive = async ({
 /**
  * Check if user has required role
  */
-export const hasRole = (user: AuthUser | null, requiredRoles: Role[]): boolean => {
+// [unused] export const hasRole = (user: AuthUser | null, requiredRoles: Role[]): boolean => {
   if (!user) return false
   return requiredRoles.includes(user.role)
 }
@@ -77,6 +77,6 @@ export const isAdmin = (user: AuthUser | null): boolean => {
   return hasRole(user, ['ADMIN'])
 }
 
-export const isAuthenticated = (user: AuthUser | null): boolean => {
+// [unused] export const isAuthenticated = (user: AuthUser | null): boolean => {
   return user !== null
 }

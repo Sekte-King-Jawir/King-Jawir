@@ -1,7 +1,7 @@
 import puppeteer, { Browser, Page } from 'puppeteer'
 import { ScrapedProduct, ScrapingOptions } from '../scrape_service'
 
-export class ShopeeScraper {
+// [unused] export class ShopeeScraper {
   private browser: Browser | null = null
 
   async scrapeProducts(options: ScrapingOptions): Promise<ScrapedProduct[]> {
@@ -16,14 +16,16 @@ export class ShopeeScraper {
           '--no-first-run',
           '--no-zygote',
           '--single-process',
-          '--disable-gpu'
-        ]
+          '--disable-gpu',
+        ],
       })
 
       const page = await this.browser.newPage()
-      
+
       // Set user agent and viewport
-      await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36')
+      await page.setUserAgent(
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+      )
       await page.setViewport({ width: 1366, height: 768 })
 
       // Build search URL
@@ -38,40 +40,54 @@ export class ShopeeScraper {
         const productElements = document.querySelectorAll('.shopee-search-item-result__item')
         const products: any[] = []
 
-        productElements.forEach((element) => {
+        productElements.forEach(element => {
           try {
             // Product name
-            const nameElement = element.querySelector('.shopee-search-item-result__item .shopee-search-item-result__item--title')
+            const nameElement = element.querySelector(
+              '.shopee-search-item-result__item .shopee-search-item-result__item--title'
+            )
             const name = nameElement?.textContent?.trim() || ''
 
             // Product URL
             const linkElement = element.querySelector('a')
             const productUrl = linkElement?.href || ''
-            const fullUrl = productUrl.startsWith('http') ? productUrl : `https://shopee.co.id${productUrl}`
+            const fullUrl = productUrl.startsWith('http')
+              ? productUrl
+              : `https://shopee.co.id${productUrl}`
 
             // Product image
             const imageElement = element.querySelector('.shopee-search-item-result__item img')
             const imageUrl = imageElement?.src || imageElement?.getAttribute('data-src') || ''
 
             // Price
-            const priceElement = element.querySelector('.shopee-search-item-result__item .shopee-search-item-result__item--price')
+            const priceElement = element.querySelector(
+              '.shopee-search-item-result__item .shopee-search-item-result__item--price'
+            )
             const priceText = priceElement?.textContent?.trim() || ''
             const price = this.parsePrice(priceText)
 
             // Rating
-            const ratingElement = element.querySelector('.shopee-search-item-result__item .shopee-search-item-result__item--rating')
+            const ratingElement = element.querySelector(
+              '.shopee-search-item-result__item .shopee-search-item-result__item--rating'
+            )
             const rating = this.parseRating(ratingElement?.textContent || '')
 
             // Sold count
-            const soldElement = element.querySelector('.shopee-search-item-result__item .shopee-search-item-result__item--sold')
+            const soldElement = element.querySelector(
+              '.shopee-search-item-result__item .shopee-search-item-result__item--sold'
+            )
             const sold = this.parseSold(soldElement?.textContent || '')
 
             // Shop name
-            const shopElement = element.querySelector('.shopee-search-item-result__item .shopee-search-item-result__item--shop')
+            const shopElement = element.querySelector(
+              '.shopee-search-item-result__item .shopee-search-item-result__item--shop'
+            )
             const shopName = shopElement?.textContent?.trim() || ''
 
             // Location
-            const locationElement = element.querySelector('.shopee-search-item-result__item .shopee-search-item-result__item--location')
+            const locationElement = element.querySelector(
+              '.shopee-search-item-result__item .shopee-search-item-result__item--location'
+            )
             const location = locationElement?.textContent?.trim() || ''
 
             if (name && price > 0) {
@@ -84,7 +100,7 @@ export class ShopeeScraper {
                 source: 'shopee' as const,
                 sold,
                 location,
-                shopName
+                shopName,
               })
             }
           } catch (error) {
@@ -111,9 +127,9 @@ export class ShopeeScraper {
   private buildSearchUrl(options: ScrapingOptions): string {
     const baseUrl = 'https://shopee.co.id/search'
     const params = new URLSearchParams()
-    
+
     params.set('keyword', options.query)
-    
+
     // Add sorting parameters
     switch (options.sortBy) {
       case 'cheapest':

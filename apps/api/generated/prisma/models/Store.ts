@@ -16,15 +16,15 @@ import type * as Prisma from "../internal/prismaNamespace.ts"
  * Model Store
  * 
  */
-export type StoreModel = runtime.Types.Result.DefaultSelection<Prisma.$StorePayload>
+// [unused] export type StoreModel = runtime.Types.Result.DefaultSelection<Prisma.$StorePayload>
 
-export type AggregateStore = {
+// [unused] export type AggregateStore = {
   _count: StoreCountAggregateOutputType | null
   _min: StoreMinAggregateOutputType | null
   _max: StoreMaxAggregateOutputType | null
 }
 
-export type StoreMinAggregateOutputType = {
+// [unused] export type StoreMinAggregateOutputType = {
   id: string | null
   userId: string | null
   name: string | null
@@ -32,7 +32,7 @@ export type StoreMinAggregateOutputType = {
   createdAt: Date | null
 }
 
-export type StoreMaxAggregateOutputType = {
+// [unused] export type StoreMaxAggregateOutputType = {
   id: string | null
   userId: string | null
   name: string | null
@@ -40,7 +40,7 @@ export type StoreMaxAggregateOutputType = {
   createdAt: Date | null
 }
 
-export type StoreCountAggregateOutputType = {
+// [unused] export type StoreCountAggregateOutputType = {
   id: number
   userId: number
   name: number
@@ -50,7 +50,7 @@ export type StoreCountAggregateOutputType = {
 }
 
 
-export type StoreMinAggregateInputType = {
+// [unused] export type StoreMinAggregateInputType = {
   id?: true
   userId?: true
   name?: true
@@ -58,7 +58,7 @@ export type StoreMinAggregateInputType = {
   createdAt?: true
 }
 
-export type StoreMaxAggregateInputType = {
+// [unused] export type StoreMaxAggregateInputType = {
   id?: true
   userId?: true
   name?: true
@@ -66,7 +66,7 @@ export type StoreMaxAggregateInputType = {
   createdAt?: true
 }
 
-export type StoreCountAggregateInputType = {
+// [unused] export type StoreCountAggregateInputType = {
   id?: true
   userId?: true
   name?: true
@@ -75,7 +75,7 @@ export type StoreCountAggregateInputType = {
   _all?: true
 }
 
-export type StoreAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+// [unused] export type StoreAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Filter which Store to aggregate.
    */
@@ -124,7 +124,7 @@ export type StoreAggregateArgs<ExtArgs extends runtime.Types.Extensions.Internal
   _max?: StoreMaxAggregateInputType
 }
 
-export type GetStoreAggregateType<T extends StoreAggregateArgs> = {
+// [unused] export type GetStoreAggregateType<T extends StoreAggregateArgs> = {
       [P in keyof T & keyof AggregateStore]: P extends '_count' | 'count'
     ? T[P] extends true
       ? number
@@ -135,7 +135,7 @@ export type GetStoreAggregateType<T extends StoreAggregateArgs> = {
 
 
 
-export type StoreGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+// [unused] export type StoreGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.StoreWhereInput
   orderBy?: Prisma.StoreOrderByWithAggregationInput | Prisma.StoreOrderByWithAggregationInput[]
   by: Prisma.StoreScalarFieldEnum[] | Prisma.StoreScalarFieldEnum
@@ -147,7 +147,7 @@ export type StoreGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
   _max?: StoreMaxAggregateInputType
 }
 
-export type StoreGroupByOutputType = {
+// [unused] export type StoreGroupByOutputType = {
   id: string
   userId: string
   name: string
@@ -173,7 +173,7 @@ type GetStoreGroupByPayload<T extends StoreGroupByArgs> = Prisma.PrismaPromise<
 
 
 
-export type StoreWhereInput = {
+// [unused] export type StoreWhereInput = {
   AND?: Prisma.StoreWhereInput | Prisma.StoreWhereInput[]
   OR?: Prisma.StoreWhereInput[]
   NOT?: Prisma.StoreWhereInput | Prisma.StoreWhereInput[]
@@ -186,7 +186,7 @@ export type StoreWhereInput = {
   products?: Prisma.ProductListRelationFilter
 }
 
-export type StoreOrderByWithRelationInput = {
+// [unused] export type StoreOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   name?: Prisma.SortOrder
@@ -197,7 +197,7 @@ export type StoreOrderByWithRelationInput = {
   _relevance?: Prisma.StoreOrderByRelevanceInput
 }
 
-export type StoreWhereUniqueInput = Prisma.AtLeast<{
+// [unused] export type StoreWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   userId?: string
   slug?: string
@@ -210,7 +210,7 @@ export type StoreWhereUniqueInput = Prisma.AtLeast<{
   products?: Prisma.ProductListRelationFilter
 }, "id" | "userId" | "slug">
 
-export type StoreOrderByWithAggregationInput = {
+// [unused] export type StoreOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   name?: Prisma.SortOrder
@@ -221,7 +221,7 @@ export type StoreOrderByWithAggregationInput = {
   _min?: Prisma.StoreMinOrderByAggregateInput
 }
 
-export type StoreScalarWhereWithAggregatesInput = {
+// [unused] export type StoreScalarWhereWithAggregatesInput = {
   AND?: Prisma.StoreScalarWhereWithAggregatesInput | Prisma.StoreScalarWhereWithAggregatesInput[]
   OR?: Prisma.StoreScalarWhereWithAggregatesInput[]
   NOT?: Prisma.StoreScalarWhereWithAggregatesInput | Prisma.StoreScalarWhereWithAggregatesInput[]
@@ -232,7 +232,7 @@ export type StoreScalarWhereWithAggregatesInput = {
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Store"> | Date | string
 }
 
-export type StoreCreateInput = {
+// [unused] export type StoreCreateInput = {
   id?: string
   name: string
   slug: string
@@ -241,7 +241,7 @@ export type StoreCreateInput = {
   products?: Prisma.ProductCreateNestedManyWithoutStoreInput
 }
 
-export type StoreUncheckedCreateInput = {
+// [unused] export type StoreUncheckedCreateInput = {
   id?: string
   userId: string
   name: string
@@ -250,7 +250,7 @@ export type StoreUncheckedCreateInput = {
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutStoreInput
 }
 
-export type StoreUpdateInput = {
+// [unused] export type StoreUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
@@ -259,7 +259,7 @@ export type StoreUpdateInput = {
   products?: Prisma.ProductUpdateManyWithoutStoreNestedInput
 }
 
-export type StoreUncheckedUpdateInput = {
+// [unused] export type StoreUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -268,7 +268,7 @@ export type StoreUncheckedUpdateInput = {
   products?: Prisma.ProductUncheckedUpdateManyWithoutStoreNestedInput
 }
 
-export type StoreCreateManyInput = {
+// [unused] export type StoreCreateManyInput = {
   id?: string
   userId: string
   name: string
@@ -276,14 +276,14 @@ export type StoreCreateManyInput = {
   createdAt?: Date | string
 }
 
-export type StoreUpdateManyMutationInput = {
+// [unused] export type StoreUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type StoreUncheckedUpdateManyInput = {
+// [unused] export type StoreUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -291,18 +291,18 @@ export type StoreUncheckedUpdateManyInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type StoreNullableScalarRelationFilter = {
+// [unused] export type StoreNullableScalarRelationFilter = {
   is?: Prisma.StoreWhereInput | null
   isNot?: Prisma.StoreWhereInput | null
 }
 
-export type StoreOrderByRelevanceInput = {
+// [unused] export type StoreOrderByRelevanceInput = {
   fields: Prisma.StoreOrderByRelevanceFieldEnum | Prisma.StoreOrderByRelevanceFieldEnum[]
   sort: Prisma.SortOrder
   search: string
 }
 
-export type StoreCountOrderByAggregateInput = {
+// [unused] export type StoreCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   name?: Prisma.SortOrder
@@ -310,7 +310,7 @@ export type StoreCountOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
 }
 
-export type StoreMaxOrderByAggregateInput = {
+// [unused] export type StoreMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   name?: Prisma.SortOrder
@@ -318,7 +318,7 @@ export type StoreMaxOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
 }
 
-export type StoreMinOrderByAggregateInput = {
+// [unused] export type StoreMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   name?: Prisma.SortOrder
@@ -326,34 +326,24 @@ export type StoreMinOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
 }
 
-export type StoreScalarRelationFilter = {
+// [unused] export type StoreScalarRelationFilter = {
   is?: Prisma.StoreWhereInput
   isNot?: Prisma.StoreWhereInput
 }
 
-export type StoreCreateNestedOneWithoutUserInput = {
+// [unused] export type StoreCreateNestedOneWithoutUserInput = {
   create?: Prisma.XOR<Prisma.StoreCreateWithoutUserInput, Prisma.StoreUncheckedCreateWithoutUserInput>
   connectOrCreate?: Prisma.StoreCreateOrConnectWithoutUserInput
   connect?: Prisma.StoreWhereUniqueInput
 }
 
-export type StoreUncheckedCreateNestedOneWithoutUserInput = {
+// [unused] export type StoreUncheckedCreateNestedOneWithoutUserInput = {
   create?: Prisma.XOR<Prisma.StoreCreateWithoutUserInput, Prisma.StoreUncheckedCreateWithoutUserInput>
   connectOrCreate?: Prisma.StoreCreateOrConnectWithoutUserInput
   connect?: Prisma.StoreWhereUniqueInput
 }
 
-export type StoreUpdateOneWithoutUserNestedInput = {
-  create?: Prisma.XOR<Prisma.StoreCreateWithoutUserInput, Prisma.StoreUncheckedCreateWithoutUserInput>
-  connectOrCreate?: Prisma.StoreCreateOrConnectWithoutUserInput
-  upsert?: Prisma.StoreUpsertWithoutUserInput
-  disconnect?: Prisma.StoreWhereInput | boolean
-  delete?: Prisma.StoreWhereInput | boolean
-  connect?: Prisma.StoreWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.StoreUpdateToOneWithWhereWithoutUserInput, Prisma.StoreUpdateWithoutUserInput>, Prisma.StoreUncheckedUpdateWithoutUserInput>
-}
-
-export type StoreUncheckedUpdateOneWithoutUserNestedInput = {
+// [unused] export type StoreUpdateOneWithoutUserNestedInput = {
   create?: Prisma.XOR<Prisma.StoreCreateWithoutUserInput, Prisma.StoreUncheckedCreateWithoutUserInput>
   connectOrCreate?: Prisma.StoreCreateOrConnectWithoutUserInput
   upsert?: Prisma.StoreUpsertWithoutUserInput
@@ -363,13 +353,23 @@ export type StoreUncheckedUpdateOneWithoutUserNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.StoreUpdateToOneWithWhereWithoutUserInput, Prisma.StoreUpdateWithoutUserInput>, Prisma.StoreUncheckedUpdateWithoutUserInput>
 }
 
-export type StoreCreateNestedOneWithoutProductsInput = {
+// [unused] export type StoreUncheckedUpdateOneWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.StoreCreateWithoutUserInput, Prisma.StoreUncheckedCreateWithoutUserInput>
+  connectOrCreate?: Prisma.StoreCreateOrConnectWithoutUserInput
+  upsert?: Prisma.StoreUpsertWithoutUserInput
+  disconnect?: Prisma.StoreWhereInput | boolean
+  delete?: Prisma.StoreWhereInput | boolean
+  connect?: Prisma.StoreWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.StoreUpdateToOneWithWhereWithoutUserInput, Prisma.StoreUpdateWithoutUserInput>, Prisma.StoreUncheckedUpdateWithoutUserInput>
+}
+
+// [unused] export type StoreCreateNestedOneWithoutProductsInput = {
   create?: Prisma.XOR<Prisma.StoreCreateWithoutProductsInput, Prisma.StoreUncheckedCreateWithoutProductsInput>
   connectOrCreate?: Prisma.StoreCreateOrConnectWithoutProductsInput
   connect?: Prisma.StoreWhereUniqueInput
 }
 
-export type StoreUpdateOneRequiredWithoutProductsNestedInput = {
+// [unused] export type StoreUpdateOneRequiredWithoutProductsNestedInput = {
   create?: Prisma.XOR<Prisma.StoreCreateWithoutProductsInput, Prisma.StoreUncheckedCreateWithoutProductsInput>
   connectOrCreate?: Prisma.StoreCreateOrConnectWithoutProductsInput
   upsert?: Prisma.StoreUpsertWithoutProductsInput
@@ -377,7 +377,7 @@ export type StoreUpdateOneRequiredWithoutProductsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.StoreUpdateToOneWithWhereWithoutProductsInput, Prisma.StoreUpdateWithoutProductsInput>, Prisma.StoreUncheckedUpdateWithoutProductsInput>
 }
 
-export type StoreCreateWithoutUserInput = {
+// [unused] export type StoreCreateWithoutUserInput = {
   id?: string
   name: string
   slug: string
@@ -385,7 +385,7 @@ export type StoreCreateWithoutUserInput = {
   products?: Prisma.ProductCreateNestedManyWithoutStoreInput
 }
 
-export type StoreUncheckedCreateWithoutUserInput = {
+// [unused] export type StoreUncheckedCreateWithoutUserInput = {
   id?: string
   name: string
   slug: string
@@ -393,23 +393,23 @@ export type StoreUncheckedCreateWithoutUserInput = {
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutStoreInput
 }
 
-export type StoreCreateOrConnectWithoutUserInput = {
+// [unused] export type StoreCreateOrConnectWithoutUserInput = {
   where: Prisma.StoreWhereUniqueInput
   create: Prisma.XOR<Prisma.StoreCreateWithoutUserInput, Prisma.StoreUncheckedCreateWithoutUserInput>
 }
 
-export type StoreUpsertWithoutUserInput = {
+// [unused] export type StoreUpsertWithoutUserInput = {
   update: Prisma.XOR<Prisma.StoreUpdateWithoutUserInput, Prisma.StoreUncheckedUpdateWithoutUserInput>
   create: Prisma.XOR<Prisma.StoreCreateWithoutUserInput, Prisma.StoreUncheckedCreateWithoutUserInput>
   where?: Prisma.StoreWhereInput
 }
 
-export type StoreUpdateToOneWithWhereWithoutUserInput = {
+// [unused] export type StoreUpdateToOneWithWhereWithoutUserInput = {
   where?: Prisma.StoreWhereInput
   data: Prisma.XOR<Prisma.StoreUpdateWithoutUserInput, Prisma.StoreUncheckedUpdateWithoutUserInput>
 }
 
-export type StoreUpdateWithoutUserInput = {
+// [unused] export type StoreUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
@@ -417,7 +417,7 @@ export type StoreUpdateWithoutUserInput = {
   products?: Prisma.ProductUpdateManyWithoutStoreNestedInput
 }
 
-export type StoreUncheckedUpdateWithoutUserInput = {
+// [unused] export type StoreUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
@@ -425,7 +425,7 @@ export type StoreUncheckedUpdateWithoutUserInput = {
   products?: Prisma.ProductUncheckedUpdateManyWithoutStoreNestedInput
 }
 
-export type StoreCreateWithoutProductsInput = {
+// [unused] export type StoreCreateWithoutProductsInput = {
   id?: string
   name: string
   slug: string
@@ -433,7 +433,7 @@ export type StoreCreateWithoutProductsInput = {
   user: Prisma.UserCreateNestedOneWithoutStoreInput
 }
 
-export type StoreUncheckedCreateWithoutProductsInput = {
+// [unused] export type StoreUncheckedCreateWithoutProductsInput = {
   id?: string
   userId: string
   name: string
@@ -441,23 +441,23 @@ export type StoreUncheckedCreateWithoutProductsInput = {
   createdAt?: Date | string
 }
 
-export type StoreCreateOrConnectWithoutProductsInput = {
+// [unused] export type StoreCreateOrConnectWithoutProductsInput = {
   where: Prisma.StoreWhereUniqueInput
   create: Prisma.XOR<Prisma.StoreCreateWithoutProductsInput, Prisma.StoreUncheckedCreateWithoutProductsInput>
 }
 
-export type StoreUpsertWithoutProductsInput = {
+// [unused] export type StoreUpsertWithoutProductsInput = {
   update: Prisma.XOR<Prisma.StoreUpdateWithoutProductsInput, Prisma.StoreUncheckedUpdateWithoutProductsInput>
   create: Prisma.XOR<Prisma.StoreCreateWithoutProductsInput, Prisma.StoreUncheckedCreateWithoutProductsInput>
   where?: Prisma.StoreWhereInput
 }
 
-export type StoreUpdateToOneWithWhereWithoutProductsInput = {
+// [unused] export type StoreUpdateToOneWithWhereWithoutProductsInput = {
   where?: Prisma.StoreWhereInput
   data: Prisma.XOR<Prisma.StoreUpdateWithoutProductsInput, Prisma.StoreUncheckedUpdateWithoutProductsInput>
 }
 
-export type StoreUpdateWithoutProductsInput = {
+// [unused] export type StoreUpdateWithoutProductsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
@@ -465,7 +465,7 @@ export type StoreUpdateWithoutProductsInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutStoreNestedInput
 }
 
-export type StoreUncheckedUpdateWithoutProductsInput = {
+// [unused] export type StoreUncheckedUpdateWithoutProductsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -478,18 +478,18 @@ export type StoreUncheckedUpdateWithoutProductsInput = {
  * Count Type StoreCountOutputType
  */
 
-export type StoreCountOutputType = {
+// [unused] export type StoreCountOutputType = {
   products: number
 }
 
-export type StoreCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+// [unused] export type StoreCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   products?: boolean | StoreCountOutputTypeCountProductsArgs
 }
 
 /**
  * StoreCountOutputType without action
  */
-export type StoreCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+// [unused] export type StoreCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the StoreCountOutputType
    */
@@ -499,12 +499,12 @@ export type StoreCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extens
 /**
  * StoreCountOutputType without action
  */
-export type StoreCountOutputTypeCountProductsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+// [unused] export type StoreCountOutputTypeCountProductsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.ProductWhereInput
 }
 
 
-export type StoreSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+// [unused] export type StoreSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
   name?: boolean
@@ -517,7 +517,7 @@ export type StoreSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
 
 
 
-export type StoreSelectScalar = {
+// [unused] export type StoreSelectScalar = {
   id?: boolean
   userId?: boolean
   name?: boolean
@@ -525,14 +525,14 @@ export type StoreSelectScalar = {
   createdAt?: boolean
 }
 
-export type StoreOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "name" | "slug" | "createdAt", ExtArgs["result"]["store"]>
-export type StoreInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+// [unused] export type StoreOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "name" | "slug" | "createdAt", ExtArgs["result"]["store"]>
+// [unused] export type StoreInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   products?: boolean | Prisma.Store$productsArgs<ExtArgs>
   _count?: boolean | Prisma.StoreCountOutputTypeDefaultArgs<ExtArgs>
 }
 
-export type $StorePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+// [unused] export type $StorePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Store"
   objects: {
     user: Prisma.$UserPayload<ExtArgs>
@@ -548,14 +548,14 @@ export type $StorePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   composites: {}
 }
 
-export type StoreGetPayload<S extends boolean | null | undefined | StoreDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$StorePayload, S>
+// [unused] export type StoreGetPayload<S extends boolean | null | undefined | StoreDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$StorePayload, S>
 
-export type StoreCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
+// [unused] export type StoreCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
   Omit<StoreFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
     select?: StoreCountAggregateInputType | true
   }
 
-export interface StoreDelegate<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+// [unused] export interface StoreDelegate<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> {
   [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Store'], meta: { name: 'Store' } }
   /**
    * Find zero or one Store that matches the filter.
@@ -882,7 +882,7 @@ readonly fields: StoreFieldRefs;
  * Because we want to prevent naming conflicts as mentioned in
  * https://github.com/prisma/prisma-client-js/issues/707
  */
-export interface Prisma__StoreClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+// [unused] export interface Prisma__StoreClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   products<T extends Prisma.Store$productsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Store$productsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -914,7 +914,7 @@ export interface Prisma__StoreClient<T, Null = never, ExtArgs extends runtime.Ty
 /**
  * Fields of the Store model
  */
-export interface StoreFieldRefs {
+// [unused] export interface StoreFieldRefs {
   readonly id: Prisma.FieldRef<"Store", 'String'>
   readonly userId: Prisma.FieldRef<"Store", 'String'>
   readonly name: Prisma.FieldRef<"Store", 'String'>
@@ -927,7 +927,7 @@ export interface StoreFieldRefs {
 /**
  * Store findUnique
  */
-export type StoreFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+// [unused] export type StoreFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the Store
    */
@@ -949,7 +949,7 @@ export type StoreFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.Interna
 /**
  * Store findUniqueOrThrow
  */
-export type StoreFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+// [unused] export type StoreFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the Store
    */
@@ -971,7 +971,7 @@ export type StoreFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.
 /**
  * Store findFirst
  */
-export type StoreFindFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+// [unused] export type StoreFindFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the Store
    */
@@ -1023,7 +1023,7 @@ export type StoreFindFirstArgs<ExtArgs extends runtime.Types.Extensions.Internal
 /**
  * Store findFirstOrThrow
  */
-export type StoreFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+// [unused] export type StoreFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the Store
    */
@@ -1075,7 +1075,7 @@ export type StoreFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.I
 /**
  * Store findMany
  */
-export type StoreFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+// [unused] export type StoreFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the Store
    */
@@ -1122,7 +1122,7 @@ export type StoreFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalA
 /**
  * Store create
  */
-export type StoreCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+// [unused] export type StoreCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the Store
    */
@@ -1144,7 +1144,7 @@ export type StoreCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
 /**
  * Store createMany
  */
-export type StoreCreateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+// [unused] export type StoreCreateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * The data used to create many Stores.
    */
@@ -1155,7 +1155,7 @@ export type StoreCreateManyArgs<ExtArgs extends runtime.Types.Extensions.Interna
 /**
  * Store update
  */
-export type StoreUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+// [unused] export type StoreUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the Store
    */
@@ -1181,7 +1181,7 @@ export type StoreUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
 /**
  * Store updateMany
  */
-export type StoreUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+// [unused] export type StoreUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * The data used to update Stores.
    */
@@ -1199,7 +1199,7 @@ export type StoreUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.Interna
 /**
  * Store upsert
  */
-export type StoreUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+// [unused] export type StoreUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the Store
    */
@@ -1229,7 +1229,7 @@ export type StoreUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
 /**
  * Store delete
  */
-export type StoreDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+// [unused] export type StoreDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the Store
    */
@@ -1251,7 +1251,7 @@ export type StoreDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
 /**
  * Store deleteMany
  */
-export type StoreDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+// [unused] export type StoreDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Filter which Stores to delete
    */
@@ -1265,7 +1265,7 @@ export type StoreDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Interna
 /**
  * Store.products
  */
-export type Store$productsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+// [unused] export type Store$productsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the Product
    */
@@ -1289,7 +1289,7 @@ export type Store$productsArgs<ExtArgs extends runtime.Types.Extensions.Internal
 /**
  * Store without action
  */
-export type StoreDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+// [unused] export type StoreDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the Store
    */

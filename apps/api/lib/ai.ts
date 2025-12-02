@@ -30,7 +30,7 @@ const defaultModel = openai(defaultModelName)
  * @param options - Additional options (model, temperature, etc.)
  * @returns Generated text and metadata
  */
-export async function generateCompletion(
+// [unused] export async function generateCompletion(
   prompt: string,
   options?: {
     model?: string
@@ -62,7 +62,7 @@ export async function generateCompletion(
  * @param options - Additional options (model, temperature, etc.)
  * @returns Text stream and metadata
  */
-export async function generateStreamingCompletion(
+// [unused] export async function generateStreamingCompletion(
   prompt: string,
   options?: {
     model?: string
@@ -91,7 +91,7 @@ export async function generateStreamingCompletion(
  * @param messages - Array of chat messages
  * @param options - Additional options
  */
-export async function generateChatCompletion(
+// [unused] export async function generateChatCompletion(
   messages: Array<{ role: 'system' | 'user' | 'assistant'; content: string }>,
   options?: {
     model?: string
@@ -120,7 +120,7 @@ export async function generateChatCompletion(
  * @param messages - Array of chat messages
  * @param options - Additional options
  */
-export async function generateStreamingChatCompletion(
+// [unused] export async function generateStreamingChatCompletion(
   messages: Array<{ role: 'system' | 'user' | 'assistant'; content: string }>,
   options?: {
     model?: string
@@ -143,4 +143,4 @@ export async function generateStreamingChatCompletion(
 }
 
 // Export providers for custom usage
-export { openai, defaultModelName }
+// [unused] // [unused] export { openai, defaultModelName }

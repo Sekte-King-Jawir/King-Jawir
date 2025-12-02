@@ -3,7 +3,7 @@ import { categoryController } from './category_controller'
 import { jwtPlugin, authDerive, isAdmin, type AuthUser } from '../lib/auth-helper'
 import { errorResponse, ErrorCode } from '../lib/response'
 
-export const categoryRoutes = new Elysia({ prefix: '/categories' })
+// [unused] export const categoryRoutes = new Elysia({ prefix: '/categories' })
   .use(jwtPlugin)
   .derive(authDerive)
 

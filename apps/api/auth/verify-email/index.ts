@@ -1,7 +1,7 @@
 import { Elysia, t } from 'elysia'
 import { verifyEmailController } from './verify_email_controller'
 
-export const verifyEmailRoute = new Elysia().get(
+// [unused] export const verifyEmailRoute = new Elysia().get(
   '/verify-email',
   async ({ query, set }) => {
     const result = await verifyEmailController.handle(query.token)

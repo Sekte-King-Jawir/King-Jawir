@@ -15,7 +15,7 @@ interface JWTPayload {
 }
 
 // User context dari JWT
-export interface AuthUser {
+// [unused] export interface AuthUser {
   id: string
   role: Role
 }
@@ -24,7 +24,7 @@ export interface AuthUser {
  * Auth middleware plugin
  * Verifikasi JWT dan extract user info
  */
-export const authMiddleware = new Elysia({ name: 'auth-middleware' })
+// [unused] export const authMiddleware = new Elysia({ name: 'auth-middleware' })
   .use(
     jwt({
       name: 'jwtAccess',
@@ -71,7 +71,7 @@ export const authMiddleware = new Elysia({ name: 'auth-middleware' })
 /**
  * Guard: Require authenticated user
  */
-export const requireAuth = ({ user, set }: { user: AuthUser | null; set: any }) => {
+// [unused] export const requireAuth = ({ user, set }: { user: AuthUser | null; set: any }) => {
   if (!user) {
     set.status = 401
     return errorResponse('Unauthorized - Please login', ErrorCode.UNAUTHORIZED)
@@ -81,7 +81,7 @@ export const requireAuth = ({ user, set }: { user: AuthUser | null; set: any }) 
 /**
  * Guard: Require specific roles
  */
-export const requireRole = (allowedRoles: Role[]) => {
+// [unused] export const requireRole = (allowedRoles: Role[]) => {
   return ({ user, set }: { user: AuthUser | null; set: any }) => {
     if (!user) {
       set.status = 401
@@ -101,7 +101,7 @@ export const requireRole = (allowedRoles: Role[]) => {
 /**
  * Pre-configured guards untuk kemudahan
  */
-export const guards = {
+// [unused] export const guards = {
   // Semua authenticated user
   auth: requireAuth,
 
@@ -119,13 +119,13 @@ export const guards = {
  * Helper untuk check ownership
  * Misal: apakah product ini milik store user ini?
  */
-export const isOwner = (resourceUserId: string, currentUserId: string): boolean => {
+// [unused] export const isOwner = (resourceUserId: string, currentUserId: string): boolean => {
   return resourceUserId === currentUserId
 }
 
 /**
  * Helper untuk check apakah user adalah admin
  */
-export const isAdmin = (user: AuthUser | null): boolean => {
+// [unused] export const isAdmin = (user: AuthUser | null): boolean => {
   return user?.role === 'ADMIN'
 }

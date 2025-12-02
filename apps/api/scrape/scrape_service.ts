@@ -47,7 +47,7 @@ export const scrapeService = {
     try {
       const [shopeeProducts, tokopediaProducts] = await Promise.all([
         this.scrapeShopee(options),
-        this.scrapeTokopedia(options)
+        this.scrapeTokopedia(options),
       ])
 
       const allProducts = [...shopeeProducts, ...tokopediaProducts]
@@ -98,5 +98,5 @@ export const scrapeService = {
     }
 
     return filtered
-  }
+  },
 }
