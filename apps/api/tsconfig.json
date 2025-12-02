@@ -12,8 +12,7 @@
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
-    "composite": true,
-    "noEmit": false,
+    "noEmit": true,
 
     // Strict type checking - ENABLED FOR CODE QUALITY
     "strict": true,
@@ -39,7 +38,6 @@
     "noUncheckedSideEffectImports": true,
     "allowUnusedLabels": false,
     "allowUnreachableCode": false,
-    "exactOptionalPropertyTypes": true,
-    "noImplicitOverride": true
+    "exactOptionalPropertyTypes": true
   }
 }

@@ -7,6 +7,6 @@
     "moduleResolution": "Bundler",
     "allowJs": true,
     "jsx": "preserve",
-    "noEmit": false
+    "noEmit": true
   }
 }
