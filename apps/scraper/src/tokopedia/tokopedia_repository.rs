@@ -23,13 +23,53 @@ impl TokopediaRepository {
         tab.set_default_timeout(get_page_load_timeout());
 
         tab.navigate_to(url).context("Failed to navigate to URL")?;
-        let _ = tab.wait_until_navigated();
 
-        // Wait for page to fully load and render
+        // Wait for network idle - simpler approach: wait for main content to load
+        println!("⏳ Waiting for page to load...");
+        thread::sleep(std::time::Duration::from_secs(3)); // Wait 3 seconds for initial load
+
+        // Check if main content container exists (network idle indicator)
+        let container_check_script = r#"
+            !!document.querySelector('div[data-testid="divSRPContentProducts"]') ||
+            !!document.querySelector('div[class*="css-"]') ||
+            document.readyState === 'complete'
+        "#;
+
+        let container_result = tab.evaluate(container_check_script, false);
+        let container_exists = match container_result {
+            Ok(obj) => obj.value.unwrap_or(false.into()).as_bool().unwrap_or(false),
+            Err(_) => false,
+        };
+
+        if !container_exists {
+            println!("⚠️  Container not found, waiting a bit more...");
+            thread::sleep(std::time::Duration::from_secs(2));
+        }
+
+        println!("✅ Page loaded, proceeding with scrolling");
+
+        // Wait for initial page load
         thread::sleep(get_page_render_wait());
 
-        // Trigger any pending renders
-        let _ = tab.get_content();
+        // Aggressive scrolling to trigger lazy loading of all products
+        println!("🔄 Scrolling to load all products...");
+
+        // Scroll to bottom multiple times to trigger lazy loading
+        for i in 1..=5 {
+            let scroll_script = format!("window.scrollTo(0, document.body.scrollHeight * {} / 5);", i);
+            let _ = tab.evaluate(&scroll_script, false);
+            thread::sleep(std::time::Duration::from_secs(1));
+        }
+
+        // Final scroll to very bottom
+        let _ = tab.evaluate("window.scrollTo(0, document.body.scrollHeight);", false);
+        thread::sleep(std::time::Duration::from_secs(2));
+
+        // Scroll back to top to ensure all elements are rendered
+        let _ = tab.evaluate("window.scrollTo(0, 0);", false);
+        thread::sleep(std::time::Duration::from_secs(1));
+
+        // Wait for final rendering
         thread::sleep(get_additional_wait());
 
         let html_content = tab.get_content().context("Failed to get page content")?;
@@ -40,132 +80,158 @@ impl TokopediaRepository {
     pub fn parse_products_from_dom(&self, html: &str, limit: usize) -> Vec<Product> {
         let document = Html::parse_document(html);
         
-        // Try multiple selector strategies
-        let link_selector = Selector::parse("a[href*='/p/']").unwrap();
-        let img_selector = Selector::parse("img").unwrap();
+        // Strategy 1: Use data-testid attribute for container (more stable)
+        let container_selector = Selector::parse(r#"div[data-testid="divSRPContentProducts"]"#).unwrap();
+        let link_selector = Selector::parse("a[href*='tokopedia.com']").unwrap();
+        let img_selector = Selector::parse("img[alt='product-image']").unwrap();
+        let span_selector = Selector::parse("span").unwrap();
+        let div_selector = Selector::parse("div").unwrap();
 
         let mut products = Vec::new();
         let mut seen_urls = std::collections::HashSet::new();
 
-        println!("🔍 Searching for product links in DOM...");
+        println!("🔍 Searching for products with stable selectors...");
 
-        for link_elem in document.select(&link_selector) {
-            if products.len() >= limit {
-                break;
-            }
+        // Try to find the product container first
+        let product_links: Vec<_> = if let Some(container) = document.select(&container_selector).next() {
+            println!("  ✓ Found product container with data-testid");
+            container.select(&link_selector).collect()
+        } else {
+            println!("  ⚠ Container not found, searching entire document");
+            document.select(&link_selector).collect()
+        };
 
+        println!("  Found {} potential product links", product_links.len());
+
+        for link_elem in product_links {
+            // Extract and validate product URL
             let product_url = link_elem.value().attr("href").unwrap_or("").to_string();
             
-            // Skip invalid or duplicate URLs
-            if product_url.is_empty() 
-                || product_url.contains("/discovery/") 
-                || product_url.contains("/top-ads/")
-                || seen_urls.contains(&product_url) {
+            // Make full URL if relative
+            let full_url = if product_url.starts_with("http") {
+                product_url.clone()
+            } else if product_url.starts_with('/') {
+                format!("https://www.tokopedia.com{}", product_url)
+            } else {
+                product_url.clone()
+            };
+            
+            // Validate URL - must be a product page, not search or discovery
+            if full_url.is_empty() 
+                || full_url.contains("/search")
+                || full_url.contains("/discovery/") 
+                || full_url.contains("/top-ads/")
+                || full_url.contains("/promo/")
+                || seen_urls.contains(&full_url) {
                 continue;
             }
 
-            seen_urls.insert(product_url.clone());
+            seen_urls.insert(full_url.clone());
 
-            let link_html = link_elem.html();
-            let name = self.extract_product_name(&link_html);
-            let price = self.extract_product_price(&link_html);
+            // Extract product name - find longest span text (product names are usually long)
+            let name = link_elem
+                .select(&span_selector)
+                .map(|span| span.text().collect::<String>().trim().to_string())
+                .filter(|text| {
+                    text.len() > 15 // Product names are usually longer than 15 chars
+                    && !text.starts_with("Rp") // Not a price
+                    && !text.contains("terjual") // Not sold count
+                    && !text.chars().all(|c| c.is_numeric() || c == '.' || c == ',') // Not just numbers
+                })
+                .max_by_key(|text| text.len()) // Take the longest text (likely product name)
+                .unwrap_or_default();
+
+            // Extract price - collect ALL text with "Rp" and debug
+            let all_price_candidates: Vec<String> = link_elem
+                .descendants()
+                .filter_map(|node| {
+                    node.value().as_text().map(|t| t.trim().to_string())
+                })
+                .filter(|text| {
+                    text.starts_with("Rp") 
+                    && !text.contains("Cashback")
+                    && !text.contains('%')
+                })
+                .collect();
             
-            // Only add if we have both name and price
-            if !name.is_empty() && !price.is_empty() {
-                let rating = self.extract_rating(&link_html);
-                let image_url = self.extract_image_url(&link_elem, &img_selector);
-                let shop_location = self.extract_shop_location(&link_html);
-
-                products.push(Product {
-                    name,
-                    price,
-                    rating,
-                    image_url,
-                    product_url,
-                    shop_location,
-                });
-                
-                println!("  ✓ Found: {}", products.last().unwrap().name);
+            // Debug: show all candidates
+            if !all_price_candidates.is_empty() && all_price_candidates.len() <= 5 {
+                println!("    💰 Price candidates: {:?}", all_price_candidates);
             }
+            
+            // Pick the longest one as it's likely the actual price
+            let price = all_price_candidates
+                .iter()
+                .max_by_key(|text| text.len())
+                .cloned()
+                .unwrap_or_default();
+
+            // Debug output
+            if !name.is_empty() || !price.is_empty() {
+                println!("  🔍 Debug: name='{}', price='{}', url='{}'", 
+                    if name.is_empty() { "EMPTY" } else { &name[..name.len().min(30)] },
+                    if price.is_empty() { "EMPTY" } else { &price },
+                    &full_url[..full_url.len().min(50)]
+                );
+            }
+
+            // Only proceed if we have valid name and price
+            if name.is_empty() || price.is_empty() {
+                continue;
+            }
+
+            // Extract rating - look for numeric pattern like "4.8" or "5.0"
+            let rating = link_elem
+                .select(&span_selector)
+                .filter_map(|span| {
+                    let text = span.text().collect::<String>().trim().to_string();
+                    // Rating pattern: single digit, dot, single digit (e.g., "4.8")
+                    if text.len() >= 3 && text.len() <= 4 
+                        && text.contains('.') 
+                        && text.chars().filter(|c| c.is_numeric()).count() == 2 {
+                        Some(text)
+                    } else {
+                        None
+                    }
+                })
+                .next();
+
+            // Extract image URL using stable alt attribute
+            let image_url = link_elem
+                .select(&img_selector)
+                .next()
+                .and_then(|img| {
+                    img.value()
+                        .attr("src")
+                        .or_else(|| img.value().attr("data-src"))
+                })
+                .unwrap_or("")
+                .to_string();
+
+            // Extract shop location - find span with city names
+            let shop_location = link_elem
+                .select(&span_selector)
+                .map(|span| span.text().collect::<String>().trim().to_string())
+                .filter(|text| {
+                    // Match common Indonesian city/region names
+                    INDONESIAN_CITIES.iter().any(|city| text.contains(city))
+                })
+                .last(); // Usually the last matching span is the location
+
+            products.push(Product {
+                name,
+                price,
+                rating,
+                image_url,
+                product_url: full_url.clone(),
+                shop_location,
+            });
+            
+            println!("  ✓ Found: {} - {}", products.last().unwrap().name, products.last().unwrap().price);
         }
 
         println!("📦 DOM parsing extracted {} products", products.len());
         products
-    }
-
-    /// Extract product name from HTML
-    fn extract_product_name(&self, html: &str) -> String {
-        let fragment = Html::parse_fragment(html);
-        
-        // Try to find product name in span elements
-        fragment
-            .select(&Selector::parse("span").unwrap())
-            .filter_map(|span| {
-                let text = span.text().collect::<String>().trim().to_string();
-                // Product name is usually longer, doesn't start with Rp, and not a number
-                if text.len() > 15 
-                    && !text.starts_with("Rp") 
-                    && !text.contains('%') 
-                    && !text.chars().all(|c| c.is_numeric() || c == '.' || c == ',')
-                    && !text.contains("Kab.") 
-                    && !text.contains("Kota") {
-                    Some(text)
-                } else {
-                    None
-                }
-            })
-            .next()
-            .unwrap_or_default()
-    }
-
-    /// Extract product price from HTML
-    fn extract_product_price(&self, html: &str) -> String {
-        Html::parse_fragment(html)
-            .select(&Selector::parse("span").unwrap())
-            .filter_map(|span| {
-                let text = span.text().collect::<String>().trim().to_string();
-                if text.starts_with("Rp") {
-                    Some(text)
-                } else {
-                    None
-                }
-            })
-            .next()
-            .unwrap_or_default()
-    }
-
-    /// Extract rating using regex
-    fn extract_rating(&self, html: &str) -> Option<String> {
-        use regex::Regex;
-        let re = Regex::new(RATING_PATTERN).unwrap();
-        re.captures(html)
-            .and_then(|cap| cap.get(1))
-            .map(|m| m.as_str().to_string())
-    }
-
-    /// Extract image URL from element
-    fn extract_image_url(&self, link_elem: &scraper::ElementRef, img_selector: &Selector) -> String {
-        link_elem
-            .select(img_selector)
-            .next()
-            .and_then(|img| img.value().attr("src"))
-            .unwrap_or("")
-            .to_string()
-    }
-
-    /// Extract shop location from HTML
-    fn extract_shop_location(&self, html: &str) -> Option<String> {
-        Html::parse_fragment(html)
-            .select(&Selector::parse("span").unwrap())
-            .filter_map(|span| {
-                let text = span.text().collect::<String>().trim().to_string();
-                if INDONESIAN_CITIES.iter().any(|city| text.contains(city)) {
-                    Some(text)
-                } else {
-                    None
-                }
-            })
-            .next()
     }
 
     /// Parse products from __NEXT_DATA__ JSON
@@ -188,19 +254,11 @@ impl TokopediaRepository {
         let mut products = Vec::new();
 
         // Strategy 1: Find arrays with product objects
-        fn find_products<'a>(val: &'a Value, products: &mut Vec<Product>, limit: usize) {
-            if products.len() >= limit {
-                return;
-            }
-
+        fn find_products<'a>(val: &'a Value, products: &mut Vec<Product>, _limit: usize) {
             match val {
                 Value::Array(arr) => {
                     // Check if this array contains product objects
                     for item in arr {
-                        if products.len() >= limit {
-                            break;
-                        }
-                        
                         if let Some(obj) = item.as_object() {
                             // Try to parse as product
                             if let Some(product) = parse_product_from_json(obj) {
@@ -210,7 +268,7 @@ impl TokopediaRepository {
                         }
                         
                         // Recurse into nested structures
-                        find_products(item, products, limit);
+                        find_products(item, products, _limit);
                     }
                 }
                 Value::Object(obj) => {
@@ -222,10 +280,7 @@ impl TokopediaRepository {
                     
                     // Recurse into object values
                     for value in obj.values() {
-                        if products.len() >= limit {
-                            break;
-                        }
-                        find_products(value, products, limit);
+                        find_products(value, products, _limit);
                     }
                 }
                 _ => {}
