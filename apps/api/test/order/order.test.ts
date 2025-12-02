@@ -128,7 +128,11 @@ describe('Order Service', () => {
       const result = await orderService.checkout('user-123')
 
       expect(result.success).toBe(true)
-      expect(orderRepository.createOrder).toHaveBeenCalledWith('user-123', 250000, expect.any(Array))
+      expect(orderRepository.createOrder).toHaveBeenCalledWith(
+        'user-123',
+        250000,
+        expect.any(Array)
+      )
     })
   })
 

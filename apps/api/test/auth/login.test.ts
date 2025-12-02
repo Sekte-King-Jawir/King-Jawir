@@ -40,7 +40,7 @@ describe('Login Service', () => {
     ;(userRepository.findByEmail as any).mockReset()
     ;(refreshTokenRepository.create as any).mockReset()
     ;(verifyPassword as any).mockReset()
-    
+
     // Recreate JWT mocks with implementations
     mockJwtAccess = {
       sign: mock(() => Promise.resolve('mock-access-token')),

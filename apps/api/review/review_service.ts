@@ -14,10 +14,7 @@ export const reviewService = {
   },
 
   // Create review
-  async create(
-    userId: string,
-    data: { productId: string; rating: number; comment?: string }
-  ) {
+  async create(userId: string, data: { productId: string; rating: number; comment?: string }) {
     // Validasi rating
     if (data.rating < 1 || data.rating > 5) {
       return errorResponse('Rating harus antara 1-5', ErrorCode.VALIDATION_ERROR)
@@ -31,16 +28,16 @@ export const reviewService = {
     // Cek apakah user sudah review
     const hasReviewed = await reviewRepository.hasUserReviewed(userId, data.productId)
     if (hasReviewed) {
-      return errorResponse('Anda sudah memberikan review untuk produk ini', ErrorCode.ALREADY_EXISTS)
+      return errorResponse(
+        'Anda sudah memberikan review untuk produk ini',
+        ErrorCode.ALREADY_EXISTS
+      )
     }
 
     // Cek apakah user sudah beli produk
     const hasPurchased = await reviewRepository.hasUserPurchased(userId, data.productId)
     if (!hasPurchased) {
-      return errorResponse(
-        'Anda harus membeli produk terlebih dahulu',
-        ErrorCode.BAD_REQUEST
-      )
+      return errorResponse('Anda harus membeli produk terlebih dahulu', ErrorCode.BAD_REQUEST)
     }
 
     const review = await reviewRepository.create({
@@ -54,11 +51,7 @@ export const reviewService = {
   },
 
   // Update review
-  async update(
-    userId: string,
-    reviewId: string,
-    data: { rating?: number; comment?: string }
-  ) {
+  async update(userId: string, reviewId: string, data: { rating?: number; comment?: string }) {
     // Validasi rating jika ada
     if (data.rating !== undefined && (data.rating < 1 || data.rating > 5)) {
       return errorResponse('Rating harus antara 1-5', ErrorCode.VALIDATION_ERROR)

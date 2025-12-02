@@ -18,7 +18,9 @@ if (process.env.NODE_ENV === 'test') {
   const urlMatch = databaseUrl.match(/mysql:\/\/([^:]+):([^@]+)@([^:]+):(\d+)\/(.+)/)
 
   if (!urlMatch) {
-    throw new Error('Invalid DATABASE_URL format. Expected: mysql://user:password@host:port/database')
+    throw new Error(
+      'Invalid DATABASE_URL format. Expected: mysql://user:password@host:port/database'
+    )
   }
 
   const [, user, password, host, port, database] = urlMatch
