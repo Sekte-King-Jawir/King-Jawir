@@ -1,4 +1,4 @@
-import puppeteer, { Browser, Page } from 'puppeteer'
+import { chromium, Browser, Page } from 'playwright'
 import { ScrapedProduct, ScrapingOptions } from '../scrape_service'
 
 export class TokopediaScraper {
@@ -6,7 +6,7 @@ export class TokopediaScraper {
 
   async scrapeProducts(options: ScrapingOptions): Promise<ScrapedProduct[]> {
     try {
-      this.browser = await puppeteer.launch({
+      this.browser = await chromium.launch({
         headless: true,
         args: [
           '--no-sandbox',
@@ -20,27 +20,27 @@ export class TokopediaScraper {
         ],
       })
 
-      const page = await this.browser.newPage()
+      const context = await this.browser.newContext({
+        userAgent:
+          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+        viewport: { width: 1366, height: 768 },
+      })
 
-      // Set user agent and viewport
-      await page.setUserAgent(
-        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-      )
-      await page.setViewport({ width: 1366, height: 768 })
+      const page = await context.newPage()
 
       // Build search URL
       const searchUrl = this.buildSearchUrl(options)
-      await page.goto(searchUrl, { waitUntil: 'networkidle2', timeout: 30000 })
+      await page.goto(searchUrl, { waitUntil: 'networkidle', timeout: 30000 })
 
       // Wait for product listings to load
       await page.waitForSelector('[data-testid="masterProductCard"]', { timeout: 10000 })
 
       // Extract product data
-      const products = await page.evaluate(() => {
+      const rawProducts = await page.evaluate(() => {
         const productElements = document.querySelectorAll('[data-testid="masterProductCard"]')
-        const products: any[] = []
+        const items: any[] = []
 
-        productElements.forEach(element => {
+        productElements.forEach((element) => {
           try {
             // Product name
             const nameElement = element.querySelector('[data-testid="masterProductName"]')
@@ -57,15 +57,14 @@ export class TokopediaScraper {
             // Price
             const priceElement = element.querySelector('[data-testid="masterProductPrice"]')
             const priceText = priceElement?.textContent?.trim() || ''
-            const price = this.parsePrice(priceText)
 
             // Rating
             const ratingElement = element.querySelector('[data-testid="masterProductRating"]')
-            const rating = this.parseRating(ratingElement?.textContent || '')
+            const ratingText = ratingElement?.textContent || ''
 
             // Sold count
             const soldElement = element.querySelector('[data-testid="masterProductSoldCount"]')
-            const sold = this.parseSold(soldElement?.textContent || '')
+            const soldText = soldElement?.textContent || ''
 
             // Shop name
             const shopElement = element.querySelector('[data-testid="masterProductShopName"]')
@@ -75,29 +74,48 @@ export class TokopediaScraper {
             const locationElement = element.querySelector('[data-testid="masterProductLocation"]')
             const location = locationElement?.textContent?.trim() || ''
 
-            if (name && price > 0) {
-              products.push({
-                name,
-                price,
-                rating,
-                imageUrl,
-                productUrl,
-                source: 'tokopedia' as const,
-                sold,
-                location,
-                shopName,
-              })
-            }
+            items.push({
+              name,
+              priceText,
+              ratingText,
+              imageUrl,
+              productUrl,
+              soldText,
+              location,
+              shopName,
+            })
           } catch (error) {
             console.error('Error parsing product element:', error)
           }
         })
 
-        return products
+        return items
       })
 
       await this.browser.close()
       this.browser = null
+
+      // Process raw data
+      const products: ScrapedProduct[] = []
+      for (const raw of rawProducts) {
+        const price = this.parsePrice(raw.priceText)
+        const rating = this.parseRating(raw.ratingText)
+        const sold = this.parseSold(raw.soldText)
+
+        if (raw.name && price > 0) {
+          products.push({
+            name: raw.name,
+            price,
+            rating,
+            imageUrl: raw.imageUrl,
+            productUrl: raw.productUrl,
+            source: 'tokopedia',
+            sold,
+            location: raw.location,
+            shopName: raw.shopName,
+          })
+        }
+      }
 
       return products
     } catch (error) {
