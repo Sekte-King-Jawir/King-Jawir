@@ -10,18 +10,21 @@ function processDepcheck(packageJsonPath, depcheckJsonPath, location) {
     const depcheckContent = fs.readFileSync(depcheckJsonPath, 'utf-8');
     const depcheckData = JSON.parse(depcheckContent);
     const unusedDeps = depcheckData.dependencies || [];
+    const unusedDevDeps = depcheckData.devDependencies || [];
     
-    if (unusedDeps.length === 0) {
+    if (unusedDeps.length === 0 && unusedDevDeps.length === 0) {
       console.log(`No unused dependencies in ${location}`);
       return false;
     }
     
-    console.log(`📦 Found unused dependencies in ${location}:`, unusedDeps);
+    console.log(`📦 Found unused in ${location}:`);
+    if (unusedDeps.length > 0) console.log(`  dependencies: ${unusedDeps.join(', ')}`);
+    if (unusedDevDeps.length > 0) console.log(`  devDependencies: ${unusedDevDeps.join(', ')}`);
     
     const pkg = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
     let changed = false;
     
-    unusedDeps.forEach(dep => {
+    [...unusedDeps, ...unusedDevDeps].forEach(dep => {
       if (pkg.dependencies && pkg.dependencies[dep]) {
         console.log(`Removing dependency: ${dep}`);
         delete pkg.dependencies[dep];
