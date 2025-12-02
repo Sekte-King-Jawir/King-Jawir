@@ -15,14 +15,6 @@ pub const USER_AGENT: &str = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
 pub const TOKOPEDIA_BASE_URL: &str = "https://www.tokopedia.com";
 pub const SEARCH_ENDPOINT: &str = "/search";
 
-// CSS Selectors
-pub const PRODUCT_CONTAINER_SELECTOR: &str = r#"div[data-testid="divSRPContentProducts"]"#;
-pub const PRODUCT_LINK_SELECTOR: &str = "a[href*='tokopedia.com/']";
-pub const PRODUCT_IMAGE_SELECTOR: &str = r#"img[alt="product-image"]"#;
-
-// Regex patterns
-pub const RATING_PATTERN: &str = r#">(\d\.\d)<"#;
-
 // Indonesian cities for location extraction
 pub const INDONESIAN_CITIES: &[&str] = &[
     "Jakarta", "Bandung", "Surabaya", "Malang", "Kab.", "Kota",

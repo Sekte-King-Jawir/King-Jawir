@@ -6,9 +6,7 @@ edition = "2021"
 [dependencies]
 anyhow = "1.0"
 axum = "0.7"
-clap = { version = "4.4", features = ["derive"] }
 headless_chrome = { version = "1.0", default-features = false, features = ["fetch"] } 
-regex = "1.10"
 scraper = "0.18"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
