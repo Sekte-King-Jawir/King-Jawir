@@ -31,13 +31,15 @@
     // Detect unused code
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noPropertyAccessFromIndexSignature": false,
+    "noPropertyAccessFromIndexSignature": true,
 
     // Additional strict checks
     "noImplicitReturns": true,
     "noUncheckedSideEffectImports": true,
     "allowUnusedLabels": false,
     "allowUnreachableCode": false,
-    "exactOptionalPropertyTypes": true
+    "exactOptionalPropertyTypes": true,
+    "forceConsistentCasingInFileNames": true,
+    "useUnknownInCatchVariables": true
   }
 }

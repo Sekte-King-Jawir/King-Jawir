@@ -34,6 +34,23 @@ export const config = [
       ...pluginReactHooks.configs.recommended.rules,
       // React scope no longer necessary with new JSX transform.
       'react/react-in-jsx-scope': 'off',
+
+      // React strict rules
+      'react/jsx-no-leaked-render': 'error',
+      'react/jsx-key': ['error', { checkFragmentShorthand: true }],
+      'react/jsx-no-useless-fragment': 'error',
+      'react/self-closing-comp': 'error',
+      'react/jsx-curly-brace-presence': ['error', { props: 'never', children: 'never' }],
+      'react/jsx-boolean-value': ['error', 'never'],
+      'react/jsx-no-target-blank': ['error', { enforceDynamicLinks: 'always' }],
+      'react/no-array-index-key': 'error',
+      'react/no-danger': 'error',
+      'react/no-unstable-nested-components': 'error',
+      'react/prop-types': 'off',
+
+      // React Hooks strict rules
+      'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/exhaustive-deps': 'error',
     },
   },
 ]

@@ -7,7 +7,7 @@ type Props = Omit<ImageProps, 'src'> & {
   srcDark: string
 }
 
-const ThemeImage = (props: Props) => {
+const ThemeImage = (props: Props): React.JSX.Element => {
   const { srcLight, srcDark, ...rest } = props
 
   return (
@@ -18,7 +18,7 @@ const ThemeImage = (props: Props) => {
   )
 }
 
-export default function Home() {
+export default function Home(): React.JSX.Element {
   return (
     <div className={styles.page}>
       <main className={styles.main}>
@@ -63,7 +63,7 @@ export default function Home() {
             Read our docs
           </a>
         </div>
-        <Button appName="web" className={styles.secondary || ''}>
+        <Button appName="web" className={styles.secondary ?? ''}>
           Open alert
         </Button>
       </main>
