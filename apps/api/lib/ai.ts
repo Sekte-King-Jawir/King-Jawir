@@ -69,11 +69,7 @@ export async function generateStreamingCompletion(
     temperature?: number
     maxTokens?: number
     system?: string
-    onFinish?: (result: {
-      text: string
-      usage: any
-      finishReason: string
-    }) => void
+    onFinish?: (result: { text: string; usage: any; finishReason: string }) => void
   }
 ) {
   const model = options?.model ? openai(options.model) : defaultModel
@@ -130,11 +126,7 @@ export async function generateStreamingChatCompletion(
     model?: string
     temperature?: number
     maxTokens?: number
-    onFinish?: (result: {
-      text: string
-      usage: any
-      finishReason: string
-    }) => void
+    onFinish?: (result: { text: string; usage: any; finishReason: string }) => void
   }
 ) {
   const model = options?.model ? openai(options.model) : defaultModel
