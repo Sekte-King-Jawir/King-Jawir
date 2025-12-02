@@ -19,6 +19,7 @@
     "api:check-types": "turbo run check-types --filter=api"
   },
   "devDependencies": {
+    "depcheck": "^1.4.7",
     "prettier": "^3.6.2",
     "ts-prune": "^0.10.3",
     "turbo": "^2.6.1",

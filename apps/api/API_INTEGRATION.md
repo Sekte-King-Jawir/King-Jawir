@@ -18,20 +18,20 @@ export const API_CONFIG = {
 
 ### Endpoints
 
-| Method | Endpoint | Description | Auth |
-|--------|----------|-------------|------|
-| POST | `/auth/register` | Register user baru | ❌ |
-| POST | `/auth/login` | Login user | ❌ |
-| POST | `/auth/logout` | Logout user | ✅ |
-| POST | `/auth/refresh` | Refresh access token | ✅ |
-| GET | `/auth/me` | Get current user | ✅ |
-| GET | `/auth/verify-email` | Verify email dengan token | ❌ |
-| POST | `/auth/resend-verification` | Kirim ulang email verifikasi | ❌ |
-| POST | `/auth/forgot-password` | Request reset password | ❌ |
-| POST | `/auth/reset-password` | Reset password dengan token | ❌ |
-| POST | `/auth/change-password` | Ganti password (logged in) | ✅ |
-| GET | `/auth/google` | OAuth Google redirect | ❌ |
-| GET | `/auth/google/callback` | OAuth Google callback | ❌ |
+| Method | Endpoint                    | Description                  | Auth |
+| ------ | --------------------------- | ---------------------------- | ---- |
+| POST   | `/auth/register`            | Register user baru           | ❌   |
+| POST   | `/auth/login`               | Login user                   | ❌   |
+| POST   | `/auth/logout`              | Logout user                  | ✅   |
+| POST   | `/auth/refresh`             | Refresh access token         | ✅   |
+| GET    | `/auth/me`                  | Get current user             | ✅   |
+| GET    | `/auth/verify-email`        | Verify email dengan token    | ❌   |
+| POST   | `/auth/resend-verification` | Kirim ulang email verifikasi | ❌   |
+| POST   | `/auth/forgot-password`     | Request reset password       | ❌   |
+| POST   | `/auth/reset-password`      | Reset password dengan token  | ❌   |
+| POST   | `/auth/change-password`     | Ganti password (logged in)   | ✅   |
+| GET    | `/auth/google`              | OAuth Google redirect        | ❌   |
+| GET    | `/auth/google/callback`     | OAuth Google callback        | ❌   |
 
 ### Variables & Types
 
@@ -110,7 +110,7 @@ export function useAuth() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include', // Important for cookies!
-      body: JSON.stringify(credentials)
+      body: JSON.stringify(credentials),
     })
     const data: LoginResponse = await res.json()
     if (data.success) {
@@ -125,7 +125,7 @@ export function useAuth() {
   const logout = async () => {
     await fetch(`${API_CONFIG.BASE_URL}/auth/logout`, {
       method: 'POST',
-      credentials: 'include'
+      credentials: 'include',
     })
     setUser(null)
     localStorage.removeItem('accessToken')
@@ -133,7 +133,7 @@ export function useAuth() {
 
   const getMe = async () => {
     const res = await fetch(`${API_CONFIG.BASE_URL}/auth/me`, {
-      credentials: 'include'
+      credentials: 'include',
     })
     const data: MeResponse = await res.json()
     if (data.success) {
@@ -152,11 +152,11 @@ export function useAuth() {
 
 ### Endpoints
 
-| Method | Endpoint | Description | Auth |
-|--------|----------|-------------|------|
-| GET | `/profile` | Get user profile | ✅ |
-| PUT | `/profile` | Update profile | ✅ |
-| PUT | `/profile/avatar` | Update avatar | ✅ |
+| Method | Endpoint          | Description      | Auth |
+| ------ | ----------------- | ---------------- | ---- |
+| GET    | `/profile`        | Get user profile | ✅   |
+| PUT    | `/profile`        | Update profile   | ✅   |
+| PUT    | `/profile/avatar` | Update avatar    | ✅   |
 
 ### Variables & Types
 
@@ -177,12 +177,12 @@ interface Profile {
 
 interface UpdateProfileRequest {
   name?: string
-  phone?: string  // Format: 08xxxxxxxxxx (10-13 digits)
-  bio?: string    // Max 500 chars
+  phone?: string // Format: 08xxxxxxxxxx (10-13 digits)
+  bio?: string // Max 500 chars
 }
 
 interface UpdateAvatarRequest {
-  avatar: string  // Valid URL
+  avatar: string // Valid URL
 }
 
 interface ProfileResponse {
@@ -201,7 +201,7 @@ interface ProfileResponse {
 export function useProfile() {
   const getProfile = async (): Promise<ProfileResponse> => {
     const res = await fetch(`${API_CONFIG.BASE_URL}/profile`, {
-      credentials: 'include'
+      credentials: 'include',
     })
     return res.json()
   }
@@ -211,7 +211,7 @@ export function useProfile() {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
     })
     return res.json()
   }
@@ -221,7 +221,7 @@ export function useProfile() {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
-      body: JSON.stringify({ avatar: avatarUrl })
+      body: JSON.stringify({ avatar: avatarUrl }),
     })
     return res.json()
   }
@@ -236,13 +236,13 @@ export function useProfile() {
 
 ### Endpoints
 
-| Method | Endpoint | Description | Auth | Role |
-|--------|----------|-------------|------|------|
-| POST | `/store` | Create store (upgrade to SELLER) | ✅ | CUSTOMER |
-| GET | `/store` | Get my store | ✅ | SELLER |
-| PUT | `/store` | Update my store | ✅ | SELLER |
-| DELETE | `/store` | Delete store (downgrade to CUSTOMER) | ✅ | SELLER |
-| GET | `/stores/:slug` | Get store by slug (public) | ❌ | - |
+| Method | Endpoint        | Description                          | Auth | Role     |
+| ------ | --------------- | ------------------------------------ | ---- | -------- |
+| POST   | `/store`        | Create store (upgrade to SELLER)     | ✅   | CUSTOMER |
+| GET    | `/store`        | Get my store                         | ✅   | SELLER   |
+| PUT    | `/store`        | Update my store                      | ✅   | SELLER   |
+| DELETE | `/store`        | Delete store (downgrade to CUSTOMER) | ✅   | SELLER   |
+| GET    | `/stores/:slug` | Get store by slug (public)           | ❌   | -        |
 
 ### Variables & Types
 
@@ -263,8 +263,8 @@ interface Store {
 }
 
 interface CreateStoreRequest {
-  name: string        // 2-100 chars
-  slug?: string       // Auto-generated if empty
+  name: string // 2-100 chars
+  slug?: string // Auto-generated if empty
 }
 
 interface UpdateStoreRequest {
@@ -291,14 +291,14 @@ export function useStore() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
     })
     return res.json()
   }
 
   const getMyStore = async (): Promise<StoreResponse> => {
     const res = await fetch(`${API_CONFIG.BASE_URL}/store`, {
-      credentials: 'include'
+      credentials: 'include',
     })
     return res.json()
   }
@@ -311,7 +311,7 @@ export function useStore() {
   const deleteStore = async () => {
     const res = await fetch(`${API_CONFIG.BASE_URL}/store`, {
       method: 'DELETE',
-      credentials: 'include'
+      credentials: 'include',
     })
     return res.json()
   }
@@ -326,13 +326,13 @@ export function useStore() {
 
 ### Endpoints
 
-| Method | Endpoint | Description | Auth | Role |
-|--------|----------|-------------|------|------|
-| GET | `/categories` | List all categories | ❌ | - |
-| GET | `/categories/:slug` | Get category by slug | ❌ | - |
-| POST | `/categories` | Create category | ✅ | ADMIN |
-| PUT | `/categories/:id` | Update category | ✅ | ADMIN |
-| DELETE | `/categories/:id` | Delete category | ✅ | ADMIN |
+| Method | Endpoint            | Description          | Auth | Role  |
+| ------ | ------------------- | -------------------- | ---- | ----- |
+| GET    | `/categories`       | List all categories  | ❌   | -     |
+| GET    | `/categories/:slug` | Get category by slug | ❌   | -     |
+| POST   | `/categories`       | Create category      | ✅   | ADMIN |
+| PUT    | `/categories/:id`   | Update category      | ✅   | ADMIN |
+| DELETE | `/categories/:id`   | Delete category      | ✅   | ADMIN |
 
 ### Variables & Types
 
@@ -399,15 +399,15 @@ export function useCategories() {
 
 ### Endpoints
 
-| Method | Endpoint | Description | Auth | Role |
-|--------|----------|-------------|------|------|
-| GET | `/products` | List products (with filters) | ❌ | - |
-| GET | `/products/:slug` | Get product by slug | ❌ | - |
-| POST | `/products` | Create product | ✅ | SELLER |
-| PUT | `/products/:id` | Update product | ✅ | SELLER |
-| DELETE | `/products/:id` | Delete product | ✅ | SELLER |
-| GET | `/my-products` | Get my products | ✅ | SELLER |
-| GET | `/stores/:slug/products` | Get store products | ❌ | - |
+| Method | Endpoint                 | Description                  | Auth | Role   |
+| ------ | ------------------------ | ---------------------------- | ---- | ------ |
+| GET    | `/products`              | List products (with filters) | ❌   | -      |
+| GET    | `/products/:slug`        | Get product by slug          | ❌   | -      |
+| POST   | `/products`              | Create product               | ✅   | SELLER |
+| PUT    | `/products/:id`          | Update product               | ✅   | SELLER |
+| DELETE | `/products/:id`          | Delete product               | ✅   | SELLER |
+| GET    | `/my-products`           | Get my products              | ✅   | SELLER |
+| GET    | `/stores/:slug/products` | Get store products           | ❌   | -      |
 
 ### Variables & Types
 
@@ -446,10 +446,10 @@ interface ProductFilter {
 
 interface CreateProductRequest {
   categoryId: string
-  name: string          // 2-200 chars
+  name: string // 2-200 chars
   slug?: string
-  price: number         // >= 0
-  stock: number         // >= 0
+  price: number // >= 0
+  stock: number // >= 0
   image?: string
 }
 
@@ -514,10 +514,9 @@ export function useProducts() {
   }
 
   const getMyProducts = async (page = 1, limit = 20) => {
-    const res = await fetch(
-      `${API_CONFIG.BASE_URL}/my-products?page=${page}&limit=${limit}`,
-      { credentials: 'include' }
-    )
+    const res = await fetch(`${API_CONFIG.BASE_URL}/my-products?page=${page}&limit=${limit}`, {
+      credentials: 'include',
+    })
     return res.json()
   }
 
@@ -526,7 +525,7 @@ export function useProducts() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
     })
     return res.json()
   }
@@ -541,13 +540,13 @@ export function useProducts() {
 
 ### Endpoints
 
-| Method | Endpoint | Description | Auth |
-|--------|----------|-------------|------|
-| GET | `/cart` | Get cart | ✅ |
-| POST | `/cart` | Add to cart | ✅ |
-| PUT | `/cart/:productId` | Update quantity | ✅ |
-| DELETE | `/cart/:productId` | Remove item | ✅ |
-| DELETE | `/cart` | Clear cart | ✅ |
+| Method | Endpoint           | Description     | Auth |
+| ------ | ------------------ | --------------- | ---- |
+| GET    | `/cart`            | Get cart        | ✅   |
+| POST   | `/cart`            | Add to cart     | ✅   |
+| PUT    | `/cart/:productId` | Update quantity | ✅   |
+| DELETE | `/cart/:productId` | Remove item     | ✅   |
+| DELETE | `/cart`            | Clear cart      | ✅   |
 
 ### Variables & Types
 
@@ -582,11 +581,11 @@ interface Cart {
 
 interface AddToCartRequest {
   productId: string
-  quantity: number    // >= 1
+  quantity: number // >= 1
 }
 
 interface UpdateCartRequest {
-  quantity: number    // >= 1, <= stock
+  quantity: number // >= 1, <= stock
 }
 
 interface CartResponse {
@@ -607,7 +606,7 @@ export function useCart() {
 
   const getCart = async () => {
     const res = await fetch(`${API_CONFIG.BASE_URL}/cart`, {
-      credentials: 'include'
+      credentials: 'include',
     })
     const data: CartResponse = await res.json()
     if (data.success) setCart(data.data.cart)
@@ -619,7 +618,7 @@ export function useCart() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
-      body: JSON.stringify({ productId, quantity })
+      body: JSON.stringify({ productId, quantity }),
     })
     const data = await res.json()
     if (data.success) await getCart()
@@ -631,7 +630,7 @@ export function useCart() {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
-      body: JSON.stringify({ quantity })
+      body: JSON.stringify({ quantity }),
     })
     const data = await res.json()
     if (data.success) await getCart()
@@ -641,7 +640,7 @@ export function useCart() {
   const removeItem = async (productId: string) => {
     const res = await fetch(`${API_CONFIG.BASE_URL}/cart/${productId}`, {
       method: 'DELETE',
-      credentials: 'include'
+      credentials: 'include',
     })
     const data = await res.json()
     if (data.success) await getCart()
@@ -651,7 +650,7 @@ export function useCart() {
   const clearCart = async () => {
     const res = await fetch(`${API_CONFIG.BASE_URL}/cart`, {
       method: 'DELETE',
-      credentials: 'include'
+      credentials: 'include',
     })
     const data = await res.json()
     if (data.success) setCart({ items: [], itemCount: 0, total: 0 })
@@ -668,14 +667,14 @@ export function useCart() {
 
 ### Endpoints
 
-| Method | Endpoint | Description | Auth | Role |
-|--------|----------|-------------|------|------|
-| GET | `/orders` | Get my orders | ✅ | CUSTOMER |
-| GET | `/orders/:id` | Get order detail | ✅ | CUSTOMER |
-| POST | `/orders` | Checkout (create order) | ✅ | CUSTOMER |
-| PUT | `/orders/:id/cancel` | Cancel order | ✅ | CUSTOMER |
-| GET | `/seller/orders` | Get seller orders | ✅ | SELLER |
-| PUT | `/seller/orders/:id/status` | Update order status | ✅ | SELLER |
+| Method | Endpoint                    | Description             | Auth | Role     |
+| ------ | --------------------------- | ----------------------- | ---- | -------- |
+| GET    | `/orders`                   | Get my orders           | ✅   | CUSTOMER |
+| GET    | `/orders/:id`               | Get order detail        | ✅   | CUSTOMER |
+| POST   | `/orders`                   | Checkout (create order) | ✅   | CUSTOMER |
+| PUT    | `/orders/:id/cancel`        | Cancel order            | ✅   | CUSTOMER |
+| GET    | `/seller/orders`            | Get seller orders       | ✅   | SELLER   |
+| PUT    | `/seller/orders/:id/status` | Update order status     | ✅   | SELLER   |
 
 ### Variables & Types
 
@@ -757,16 +756,15 @@ CANCELLED (only from PENDING)
 // hooks/useOrders.ts
 export function useOrders() {
   const getOrders = async (page = 1, limit = 10): Promise<OrdersResponse> => {
-    const res = await fetch(
-      `${API_CONFIG.BASE_URL}/orders?page=${page}&limit=${limit}`,
-      { credentials: 'include' }
-    )
+    const res = await fetch(`${API_CONFIG.BASE_URL}/orders?page=${page}&limit=${limit}`, {
+      credentials: 'include',
+    })
     return res.json()
   }
 
   const getOrderDetail = async (orderId: string): Promise<OrderResponse> => {
     const res = await fetch(`${API_CONFIG.BASE_URL}/orders/${orderId}`, {
-      credentials: 'include'
+      credentials: 'include',
     })
     return res.json()
   }
@@ -774,7 +772,7 @@ export function useOrders() {
   const checkout = async (): Promise<OrderResponse> => {
     const res = await fetch(`${API_CONFIG.BASE_URL}/orders`, {
       method: 'POST',
-      credentials: 'include'
+      credentials: 'include',
     })
     return res.json()
   }
@@ -782,7 +780,7 @@ export function useOrders() {
   const cancelOrder = async (orderId: string) => {
     const res = await fetch(`${API_CONFIG.BASE_URL}/orders/${orderId}/cancel`, {
       method: 'PUT',
-      credentials: 'include'
+      credentials: 'include',
     })
     return res.json()
   }
@@ -797,7 +795,7 @@ export function useSellerOrders() {
     if (status) params.set('status', status)
 
     const res = await fetch(`${API_CONFIG.BASE_URL}/seller/orders?${params}`, {
-      credentials: 'include'
+      credentials: 'include',
     })
     return res.json()
   }
@@ -807,7 +805,7 @@ export function useSellerOrders() {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
-      body: JSON.stringify({ status })
+      body: JSON.stringify({ status }),
     })
     return res.json()
   }
@@ -822,12 +820,12 @@ export function useSellerOrders() {
 
 ### Endpoints
 
-| Method | Endpoint | Description | Auth |
-|--------|----------|-------------|------|
-| GET | `/products/:slug/reviews` | Get product reviews | ❌ |
-| POST | `/reviews` | Create review | ✅ |
-| PUT | `/reviews/:id` | Update review | ✅ |
-| DELETE | `/reviews/:id` | Delete review | ✅ |
+| Method | Endpoint                  | Description         | Auth |
+| ------ | ------------------------- | ------------------- | ---- |
+| GET    | `/products/:slug/reviews` | Get product reviews | ❌   |
+| POST   | `/reviews`                | Create review       | ✅   |
+| PUT    | `/reviews/:id`            | Update review       | ✅   |
+| DELETE | `/reviews/:id`            | Delete review       | ✅   |
 
 ### Variables & Types
 
@@ -836,7 +834,7 @@ export function useSellerOrders() {
 
 interface Review {
   id: string
-  rating: number        // 1-5
+  rating: number // 1-5
   comment?: string
   user: {
     id: string
@@ -849,12 +847,12 @@ interface Review {
 
 interface CreateReviewRequest {
   productId: string
-  rating: number        // 1-5
+  rating: number // 1-5
   comment?: string
 }
 
 interface UpdateReviewRequest {
-  rating?: number       // 1-5
+  rating?: number // 1-5
   comment?: string
 }
 
@@ -898,7 +896,7 @@ export function useReviews() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
     })
     return res.json()
   }
@@ -908,7 +906,7 @@ export function useReviews() {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
     })
     return res.json()
   }
@@ -916,7 +914,7 @@ export function useReviews() {
   const deleteReview = async (reviewId: string) => {
     const res = await fetch(`${API_CONFIG.BASE_URL}/reviews/${reviewId}`, {
       method: 'DELETE',
-      credentials: 'include'
+      credentials: 'include',
     })
     return res.json()
   }
@@ -931,13 +929,13 @@ export function useReviews() {
 
 ### Endpoints
 
-| Method | Endpoint | Description | Auth | Role |
-|--------|----------|-------------|------|------|
-| GET | `/admin/stats` | Get dashboard stats | ✅ | ADMIN |
-| GET | `/admin/users` | List users | ✅ | ADMIN |
-| GET | `/admin/users/:id` | Get user detail | ✅ | ADMIN |
-| PUT | `/admin/users/:id/role` | Update user role | ✅ | ADMIN |
-| DELETE | `/admin/users/:id` | Delete user | ✅ | ADMIN |
+| Method | Endpoint                | Description         | Auth | Role  |
+| ------ | ----------------------- | ------------------- | ---- | ----- |
+| GET    | `/admin/stats`          | Get dashboard stats | ✅   | ADMIN |
+| GET    | `/admin/users`          | List users          | ✅   | ADMIN |
+| GET    | `/admin/users/:id`      | Get user detail     | ✅   | ADMIN |
+| PUT    | `/admin/users/:id/role` | Update user role    | ✅   | ADMIN |
+| DELETE | `/admin/users/:id`      | Delete user         | ✅   | ADMIN |
 
 ### Variables & Types
 
@@ -1031,7 +1029,7 @@ interface AdminUserResponse {
 export function useAdmin() {
   const getStats = async (): Promise<AdminStatsResponse> => {
     const res = await fetch(`${API_CONFIG.BASE_URL}/admin/stats`, {
-      credentials: 'include'
+      credentials: 'include',
     })
     return res.json()
   }
@@ -1044,14 +1042,14 @@ export function useAdmin() {
     if (filter?.limit) params.set('limit', String(filter.limit))
 
     const res = await fetch(`${API_CONFIG.BASE_URL}/admin/users?${params}`, {
-      credentials: 'include'
+      credentials: 'include',
     })
     return res.json()
   }
 
   const getUserDetail = async (userId: string): Promise<AdminUserResponse> => {
     const res = await fetch(`${API_CONFIG.BASE_URL}/admin/users/${userId}`, {
-      credentials: 'include'
+      credentials: 'include',
     })
     return res.json()
   }
@@ -1061,7 +1059,7 @@ export function useAdmin() {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
-      body: JSON.stringify({ role })
+      body: JSON.stringify({ role }),
     })
     return res.json()
   }
@@ -1069,7 +1067,7 @@ export function useAdmin() {
   const deleteUser = async (userId: string) => {
     const res = await fetch(`${API_CONFIG.BASE_URL}/admin/users/${userId}`, {
       method: 'DELETE',
-      credentials: 'include'
+      credentials: 'include',
     })
     return res.json()
   }
@@ -1094,12 +1092,12 @@ export const apiClient = axios.create({
   timeout: API_CONFIG.TIMEOUT,
   withCredentials: true, // Important for cookies!
   headers: {
-    'Content-Type': 'application/json'
-  }
+    'Content-Type': 'application/json',
+  },
 })
 
 // Request interceptor - add token
-apiClient.interceptors.request.use((config) => {
+apiClient.interceptors.request.use(config => {
   const token = localStorage.getItem('accessToken')
   if (token) {
     config.headers.Authorization = `Bearer ${token}`
@@ -1109,8 +1107,8 @@ apiClient.interceptors.request.use((config) => {
 
 // Response interceptor - handle 401
 apiClient.interceptors.response.use(
-  (response) => response,
-  async (error) => {
+  response => response,
+  async error => {
     if (error.response?.status === 401) {
       // Try refresh token
       try {
@@ -1164,38 +1162,38 @@ apiClient.interceptors.response.use(
 
 ### Error Codes
 
-| Code | HTTP Status | Description |
-|------|-------------|-------------|
-| `UNAUTHORIZED` | 401 | Not logged in |
-| `FORBIDDEN` | 403 | No permission |
-| `NOT_FOUND` | 404 | Resource not found |
-| `ALREADY_EXISTS` | 400 | Duplicate entry |
-| `BAD_REQUEST` | 400 | Invalid input |
-| `VALIDATION_ERROR` | 400 | Validation failed |
+| Code               | HTTP Status | Description        |
+| ------------------ | ----------- | ------------------ |
+| `UNAUTHORIZED`     | 401         | Not logged in      |
+| `FORBIDDEN`        | 403         | No permission      |
+| `NOT_FOUND`        | 404         | Resource not found |
+| `ALREADY_EXISTS`   | 400         | Duplicate entry    |
+| `BAD_REQUEST`      | 400         | Invalid input      |
+| `VALIDATION_ERROR` | 400         | Validation failed  |
 
 ---
 
 ## 🔑 Test Accounts
 
-| Role | Email | Password |
-|------|-------|----------|
-| Admin | admin@marketplace.com | admin123 |
-| Seller | seller@marketplace.com | seller123 |
+| Role     | Email                    | Password    |
+| -------- | ------------------------ | ----------- |
+| Admin    | admin@marketplace.com    | admin123    |
+| Seller   | seller@marketplace.com   | seller123   |
 | Customer | customer@marketplace.com | customer123 |
 
 ---
 
 ## 📊 Summary
 
-| Module | Endpoints | Public | Auth | Admin Only |
-|--------|-----------|--------|------|------------|
-| Auth | 12 | 8 | 4 | 0 |
-| Profile | 3 | 0 | 3 | 0 |
-| Store | 5 | 1 | 4 | 0 |
-| Products | 7 | 4 | 3 | 0 |
-| Categories | 4 | 2 | 0 | 2 |
-| Cart | 5 | 0 | 5 | 0 |
-| Orders | 6 | 0 | 6 | 0 |
-| Reviews | 4 | 1 | 3 | 0 |
-| Admin | 5 | 0 | 0 | 5 |
-| **Total** | **51** | **16** | **28** | **7** |
+| Module     | Endpoints | Public | Auth   | Admin Only |
+| ---------- | --------- | ------ | ------ | ---------- |
+| Auth       | 12        | 8      | 4      | 0          |
+| Profile    | 3         | 0      | 3      | 0          |
+| Store      | 5         | 1      | 4      | 0          |
+| Products   | 7         | 4      | 3      | 0          |
+| Categories | 4         | 2      | 0      | 2          |
+| Cart       | 5         | 0      | 5      | 0          |
+| Orders     | 6         | 0      | 6      | 0          |
+| Reviews    | 4         | 1      | 3      | 0          |
+| Admin      | 5         | 0      | 0      | 5          |
+| **Total**  | **51**    | **16** | **28** | **7**      |
