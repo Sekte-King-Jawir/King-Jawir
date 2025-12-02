@@ -1,12 +1,11 @@
 mod browser;
 mod config;
-mod scraper;
+mod tokopedia;
 
-use axum::{routing::get, Router};
+use axum::Router;
 use tower_http::cors::{Any, CorsLayer};
 
 use crate::config::{SERVER_HOST, SERVER_PORT};
-use crate::scraper::scraper_controller::scraper_handler;
 
 #[tokio::main]
 async fn main() {
@@ -16,9 +15,9 @@ async fn main() {
         .allow_methods(Any)
         .allow_headers(Any);
 
-    // Build router
+    // Build router with all routes from modules
     let app = Router::new()
-        .route("/api/scraper", get(scraper_handler))
+        .merge(tokopedia::router())
         .layer(cors);
 
     // Start server
@@ -28,7 +27,7 @@ async fn main() {
         .unwrap_or_else(|_| panic!("Failed to bind to {}", addr));
 
     println!("🚀 Tokopedia Scraper API running on http://{}", addr);
-    println!("📡 Endpoint: GET http://{}/api/scraper?query=iphone&limit=10", addr);
+    println!("📡 Endpoint: GET http://{}/api/scraper/tokopedia?query=iphone&limit=10", addr);
 
     axum::serve(listener, app)
         .await

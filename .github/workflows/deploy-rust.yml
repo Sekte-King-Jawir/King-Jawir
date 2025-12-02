@@ -1,0 +1,84 @@
+name: Deploy Rust Store to VPS
+
+on:
+  workflow_dispatch: # Manual trigger
+  push:
+    branches:
+      - main
+    paths:
+      - 'apps/scraper/**'
+      - '.github/workflows/deploy-rust.yml'
+
+jobs:
+  build-and-deploy-rust:
+    name: Build and Deploy Rust Store
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          profile: minimal
+          override: true
+
+      - name: Cache Cargo dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            apps/scraper/target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('apps/scraper/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-
+
+      - name: Build Rust Application
+        working-directory: apps/scraper
+        run: cargo build --release
+
+      - name: Sync Build Artifacts to VPS
+        env:
+          SSH_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          echo "$SSH_KEY" > /tmp/deploy_key && chmod 600 /tmp/deploy_key
+
+          # Create necessary directories on VPS
+          ssh -o StrictHostKeyChecking=no -i /tmp/deploy_key ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} "mkdir -p ${{ secrets.VPS_TARGET_DIR }}/apps/scraper/target/release"
+
+          # Sync binary
+          rsync -avz --progress -e "ssh -o StrictHostKeyChecking=no -i /tmp/deploy_key" \
+            apps/scraper/target/release/scraper \
+            ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_TARGET_DIR }}/apps/scraper/target/release/scraper
+
+          # Sync ecosystem config
+          rsync -avz -e "ssh -o StrictHostKeyChecking=no -i /tmp/deploy_key" \
+            apps/scraper/ecosystem.config.cjs \
+            ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_TARGET_DIR }}/apps/scraper/ecosystem.config.cjs
+
+          # Set executable permissions
+          ssh -o StrictHostKeyChecking=no -i /tmp/deploy_key ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} "chmod +x ${{ secrets.VPS_TARGET_DIR }}/apps/scraper/target/release/scraper"
+
+          rm -f /tmp/deploy_key
+
+      - name: Restart Rust Store with PM2
+        env:
+          SSH_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          echo "$SSH_KEY" > /tmp/deploy_key && chmod 600 /tmp/deploy_key
+          ssh -o StrictHostKeyChecking=no -i /tmp/deploy_key ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} '
+            # Ensure PM2 is available
+            export PATH=$PATH:/home/asephs/.bun/bin:/home/asephs/.nvm/versions/node/v22.17.1/bin
+            cd ${{ secrets.VPS_TARGET_DIR }}/apps/scraper
+
+            # Start or restart Rust Store with PM2
+            pm2 startOrRestart ecosystem.config.cjs --env production
+            pm2 save
+
+            echo "✅ Rust Store deployment successful!"
+          '
+          rm -f /tmp/deploy_key

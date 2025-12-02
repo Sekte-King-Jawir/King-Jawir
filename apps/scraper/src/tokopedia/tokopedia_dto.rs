@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Deserialize)]
-pub struct ScraperQuery {
+pub struct TokopediaQuery {
     #[serde(default = "crate::config::default_query")]
     pub query: String,
     #[serde(default = "crate::config::default_limit")]

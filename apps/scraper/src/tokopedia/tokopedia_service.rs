@@ -1,22 +1,22 @@
 use anyhow::Result;
 
 use crate::config::*;
-use crate::scraper::scraper_model::Product;
-use crate::scraper::scraper_repository::ScraperRepository;
+use crate::tokopedia::tokopedia_model::Product;
+use crate::tokopedia::tokopedia_repository::TokopediaRepository;
 
-pub struct ScraperService {
-    repository: ScraperRepository,
+pub struct TokopediaService {
+    repository: TokopediaRepository,
 }
 
-impl ScraperService {
+impl TokopediaService {
     pub fn new() -> Result<Self> {
-        let repository = ScraperRepository::new()?;
+        let repository = TokopediaRepository::new()?;
         Ok(Self { repository })
     }
 
     /// Main business logic for scraping Tokopedia products
-    pub fn scrape_tokopedia(&self, query: &str, limit: usize) -> Result<Vec<Product>> {
-        println!("🔍 Searching for '{}' on Tokopedia...", query);
+    pub fn scrape_tokopedia(&self, query: &str, _limit: usize) -> Result<Vec<Product>> {
+        println!("🔍 Searching for '{}' on Tokopedia (scraping all rendered products)...", query);
 
         let url = self.build_search_url(query);
         println!("🌐 Navigating to {}", url);
@@ -33,17 +33,17 @@ impl ScraperService {
 
         // Try to parse from __NEXT_DATA__ JSON first (faster and more reliable)
         let products = self.repository
-            .parse_products_from_json(&html_content, limit)
+            .parse_products_from_json(&html_content, usize::MAX)
             .unwrap_or_else(|| {
                 println!("⚠️  JSON parsing failed, falling back to DOM parsing...");
-                self.repository.parse_products_from_dom(&html_content, limit)
+                self.repository.parse_products_from_dom(&html_content, usize::MAX)
             });
 
         if products.is_empty() {
             println!("⚠️  No products extracted");
         } else {
             println!("✅ Successfully extracted {} products", products.len());
-            for (i, p) in products.iter().enumerate().take(3) {
+            for (i, p) in products.iter().enumerate().take(5) {
                 println!("  {}. {} - {}", i + 1, p.name, p.price);
             }
         }
@@ -54,7 +54,7 @@ impl ScraperService {
     /// Build Tokopedia search URL with query parameters
     fn build_search_url(&self, query: &str) -> String {
         format!(
-            "{}{}?st=product&q={}&ob=3&rt=4,5",
+            "{}{}?st=product&q={}",
             TOKOPEDIA_BASE_URL,
             SEARCH_ENDPOINT,
             urlencoding::encode(query)
