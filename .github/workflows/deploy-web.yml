@@ -108,8 +108,11 @@ jobs:
           ssh -o StrictHostKeyChecking=no -i /tmp/deploy_key ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} '
             # Ensure bun and node global bin are available for PM2
             export PATH=$PATH:/home/asephs/.bun/bin:/home/asephs/.nvm/versions/node/v22.17.1/bin
-            cd ${{ secrets.VPS_TARGET_DIR }}/apps/web
+            cd ${{ secrets.VPS_TARGET_DIR }}/
 
+            # Install dependencies
+            bun install
+            cd ${{ secrets.VPS_TARGET_DIR }}/apps/web
             # Stop existing PM2 process
             pm2 delete web_store || true
 
