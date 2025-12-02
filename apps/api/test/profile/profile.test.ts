@@ -163,7 +163,7 @@ describe('Profile Route Validation (TypeBox)', () => {
         password: 'customer123',
       }),
     })
-    const data = await res.json()
+    const data = (await res.json()) as { data?: { accessToken?: string } }
     return data.data?.accessToken
   }
 

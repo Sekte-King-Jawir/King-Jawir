@@ -122,7 +122,10 @@ describe('Scrape Service', () => {
       const result = await scrapeService.scrapeAll(options)
 
       expect(result).toHaveLength(4)
-      expect(result).toEqual([...mockShopeeProducts, ...mockTokopediaProducts])
+      // Results are sorted by default (rating then price), so order may differ
+      expect(result.map(p => p.name).sort()).toEqual(
+        [...mockShopeeProducts, ...mockTokopediaProducts].map(p => p.name).sort()
+      )
     })
 
     it('should throw error when scraping fails', async () => {

@@ -2,36 +2,24 @@ import 'dotenv/config'
 import { PrismaClient } from '../generated/prisma/client'
 import { PrismaMariaDb } from '@prisma/adapter-mariadb'
 
-// Parse DATABASE_URL to extract connection details
-const databaseUrl = process.env.DATABASE_URL || ''
-
-// Skip DB adapter if in test environment (use default connection)
 let prisma: PrismaClient
 
-if (process.env.NODE_ENV === 'test') {
-  // For testing, create a basic PrismaClient without adapter
-  // Tests should mock prisma methods as needed
+if (process.env['NODE_ENV'] === 'test') {
   prisma = { $transaction: async (cb: any) => cb({}) } as any
-} else if (!databaseUrl) {
-  prisma = new PrismaClient({} as any)
 } else {
-  const urlMatch = databaseUrl.match(/mysql:\/\/([^:]+):([^@]+)@([^:/]+):(\d+)\/([^?]+)/)
-
-  if (!urlMatch) {
-    console.error('DATABASE_URL:', databaseUrl)
-    throw new Error(
-      'Invalid DATABASE_URL format. Expected: mysql://user:password@host:port/database'
-    )
-  }
-
-  const [, user, password, host, port, database] = urlMatch
+  // Parse DATABASE_URL for mariadb adapter
+  const dbUrl = process.env['DATABASE_URL'] || ''
+  const url = new URL(dbUrl)
 
   const adapter = new PrismaMariaDb({
-    host,
-    port: Number(port),
-    user,
-    password,
-    database,
+    host: url.hostname,
+    port: parseInt(url.port) || 3306,
+    user: decodeURIComponent(url.username),
+    password: decodeURIComponent(url.password),
+    database: url.pathname.slice(1), // Remove leading slash
+    connectionLimit: 10,
+    connectTimeout: 30000,
+    acquireTimeout: 30000,
   })
 
   prisma = new PrismaClient({ adapter })
