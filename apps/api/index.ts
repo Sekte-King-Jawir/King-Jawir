@@ -14,7 +14,7 @@ import { adminRoutes } from './admin'
 const app = new Elysia()
   .use(
     cors({
-      origin: process.env.WEB_URL || 'http://localhost:3000',
+      origin: process.env['WEB_URL'] || 'http://localhost:3000',
       credentials: true,
       allowedHeaders: ['Content-Type', 'Authorization'],
       methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
