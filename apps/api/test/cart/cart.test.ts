@@ -56,7 +56,7 @@ describe('Cart Service', () => {
       expect(result.data?.items).toHaveLength(1)
       expect(result.data?.totalItems).toBe(2)
       expect(result.data?.totalPrice).toBe(200000)
-      expect(result.data?.items[0].subtotal).toBe(200000)
+      expect(result.data?.items[0]!.subtotal).toBe(200000)
     })
 
     it('should return empty cart if no items', async () => {
@@ -75,7 +75,7 @@ describe('Cart Service', () => {
 
       const result = await cartService.getCart('user-123')
 
-      expect(typeof result.data?.items[0].product.price).toBe('number')
+      expect(typeof result.data?.items[0]!.product.price).toBe('number')
     })
   })
 

@@ -37,7 +37,7 @@ export type ErrorCodeType = (typeof ErrorCode)[keyof typeof ErrorCode]
 export interface ApiResponse<T = unknown> {
   success: boolean
   message: string
-  data?: T
+  data?: T | undefined
   error?: {
     code: ErrorCodeType
     details?: Record<string, string> | null

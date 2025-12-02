@@ -13,12 +13,25 @@ export const profileService = {
 
   async updateProfile(userId: string, data: UpdateProfileData) {
     // Validasi sudah dihandle oleh TypeBox di route level
-    // Clean up the data
+    // Clean up the data - only include defined values with actual content
     const cleanData: UpdateProfileData = {}
-    if (data.name) cleanData.name = data.name.trim()
-    if (data.phone !== undefined) cleanData.phone = data.phone.trim() || undefined
-    if (data.address !== undefined) cleanData.address = data.address.trim() || undefined
-    if (data.bio !== undefined) cleanData.bio = data.bio.trim() || undefined
+
+    if (data.name) {
+      const trimmed = data.name.trim()
+      if (trimmed) cleanData.name = trimmed
+    }
+    if (data.phone !== undefined) {
+      const trimmed = data.phone.trim()
+      if (trimmed) cleanData.phone = trimmed
+    }
+    if (data.address !== undefined) {
+      const trimmed = data.address.trim()
+      if (trimmed) cleanData.address = trimmed
+    }
+    if (data.bio !== undefined) {
+      const trimmed = data.bio.trim()
+      if (trimmed) cleanData.bio = trimmed
+    }
 
     try {
       const updated = await profileRepository.updateProfile(userId, cleanData)

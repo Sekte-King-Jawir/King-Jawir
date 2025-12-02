@@ -21,7 +21,7 @@ export interface AuthUser {
  */
 export const jwtConfig = {
   name: 'jwtAccess' as const,
-  secret: process.env.JWT_SECRET || 'secret-key-min-32-chars-long!!',
+  secret: process.env['JWT_SECRET'] || 'secret-key-min-32-chars-long!!',
 }
 
 /**

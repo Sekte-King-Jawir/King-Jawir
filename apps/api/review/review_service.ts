@@ -44,7 +44,7 @@ export const reviewService = {
       userId,
       productId: data.productId,
       rating: data.rating,
-      comment: data.comment,
+      ...(data.comment !== undefined && { comment: data.comment }),
     })
 
     return successResponse('Review berhasil dibuat', { review })

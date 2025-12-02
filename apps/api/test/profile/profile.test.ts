@@ -90,7 +90,7 @@ describe('Profile Service', () => {
       )
     })
 
-    it('should handle empty strings as undefined', async () => {
+    it('should handle empty strings by not including them', async () => {
       ;(profileRepository.updateProfile as any).mockResolvedValue(mockUser)
 
       await profileService.updateProfile('user-123', {
@@ -99,14 +99,8 @@ describe('Profile Service', () => {
         bio: '',
       })
 
-      expect(profileRepository.updateProfile).toHaveBeenCalledWith(
-        'user-123',
-        expect.objectContaining({
-          phone: undefined,
-          address: undefined,
-          bio: undefined,
-        })
-      )
+      // Empty strings should not be included in the update data
+      expect(profileRepository.updateProfile).toHaveBeenCalledWith('user-123', {})
     })
 
     it('should handle update errors', async () => {
@@ -151,7 +145,7 @@ describe('Profile Service', () => {
 // NOTE: These tests require the server to be running on localhost:4101
 describe('Profile Route Validation (TypeBox)', () => {
   const BASE_URL = 'http://localhost:4101'
-  let accessToken: string
+  let accessToken: string | undefined
 
   // Helper to login and get token
   async function login() {

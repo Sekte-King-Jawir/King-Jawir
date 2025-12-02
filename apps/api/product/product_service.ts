@@ -147,7 +147,7 @@ export const productService = {
       slug: productSlug,
       price: data.price,
       stock: data.stock,
-      image: data.image,
+      ...(data.image !== undefined && { image: data.image }),
     })
 
     return successResponse('Product berhasil dibuat', {
@@ -158,7 +158,7 @@ export const productService = {
         price: Number(product.price),
         stock: product.stock,
         image: product.image,
-        category: product.category,
+        categoryId: product.categoryId,
         createdAt: product.createdAt,
       },
     })

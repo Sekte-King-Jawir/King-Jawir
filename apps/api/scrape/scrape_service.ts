@@ -1,6 +1,5 @@
 import { shopeeScraper } from './shopee/shopee_scraper'
 import { tokopediaScraper } from './tokopedia/tokopedia_scraper'
-import { successResponse, errorResponse, ErrorCode } from '../lib/response'
 
 export interface ScrapedProduct {
   name: string

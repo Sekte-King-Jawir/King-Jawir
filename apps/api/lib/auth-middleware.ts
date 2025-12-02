@@ -28,16 +28,16 @@ export const authMiddleware = new Elysia({ name: 'auth-middleware' })
   .use(
     jwt({
       name: 'jwtAccess',
-      secret: process.env.JWT_SECRET || 'secret-key-min-32-chars-long!!',
+      secret: process.env['JWT_SECRET'] || 'secret-key-min-32-chars-long!!',
       exp: '15m',
     })
   )
   .resolve(async ({ headers, cookie, jwtAccess }) => {
     // Ambil token dari cookie atau Authorization header
     // headers bisa lowercase atau mixed case tergantung client
-    const authHeader = headers.authorization || (headers['Authorization'] as string | undefined)
+    const authHeader = headers['authorization'] || (headers['Authorization'] as string | undefined)
     const token =
-      (cookie.accessToken?.value as string | undefined) || authHeader?.replace('Bearer ', '')
+      (cookie['accessToken']?.value as string | undefined) || authHeader?.replace('Bearer ', '')
 
     // Debug log (remove in production)
     console.log('Auth Debug:', { hasToken: !!token, tokenStart: token?.substring(0, 30) })
@@ -71,7 +71,7 @@ export const authMiddleware = new Elysia({ name: 'auth-middleware' })
 /**
  * Guard: Require authenticated user
  */
-export const requireAuth = ({ user, set }: { user: AuthUser | null; set: any }) => {
+export const requireAuth = ({ user, set }: { user: AuthUser | null; set: any }): void | object => {
   if (!user) {
     set.status = 401
     return errorResponse('Unauthorized - Please login', ErrorCode.UNAUTHORIZED)
@@ -82,7 +82,7 @@ export const requireAuth = ({ user, set }: { user: AuthUser | null; set: any }) 
  * Guard: Require specific roles
  */
 export const requireRole = (allowedRoles: Role[]) => {
-  return ({ user, set }: { user: AuthUser | null; set: any }) => {
+  return ({ user, set }: { user: AuthUser | null; set: any }): void | object => {
     if (!user) {
       set.status = 401
       return errorResponse('Unauthorized - Please login', ErrorCode.UNAUTHORIZED)

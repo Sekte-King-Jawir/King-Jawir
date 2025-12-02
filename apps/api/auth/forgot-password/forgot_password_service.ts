@@ -32,7 +32,7 @@ export const forgotPasswordService = {
       expiresAt: new Date(Date.now() + 60 * 60 * 1000), // 1 jam
     })
 
-    const resetUrl = `${process.env.APP_URL}/auth/reset-password?token=${token}`
+    const resetUrl = `${process.env['APP_URL']}/auth/reset-password?token=${token}`
     await sendResetPasswordEmail(email, resetUrl)
 
     return successResponse('Jika email terdaftar, link reset password akan dikirim')

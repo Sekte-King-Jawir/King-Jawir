@@ -25,14 +25,14 @@ export const googleRoute = new Elysia()
   .use(
     jwt({
       name: 'jwtAccess',
-      secret: process.env.JWT_SECRET || 'secret-key-min-32-chars-long!!',
+      secret: process.env['JWT_SECRET'] || 'secret-key-min-32-chars-long!!',
       exp: '15m',
     })
   )
   .use(
     jwt({
       name: 'jwtRefresh',
-      secret: process.env.JWT_REFRESH_SECRET || 'refresh-secret-key-min-32-chars!!',
+      secret: process.env['JWT_REFRESH_SECRET'] || 'refresh-secret-key-min-32-chars!!',
       exp: '7d',
     })
   )
@@ -63,7 +63,7 @@ export const googleRoute = new Elysia()
   // Google OAuth callback
   .get(
     '/google/callback',
-    async ({ query, set, cookie, jwtAccess, jwtRefresh, redirect }) => {
+    async ({ query, set, cookie, jwtAccess, jwtRefresh }) => {
       const { code, state } = query
 
       if (!code || !state) {
@@ -109,7 +109,7 @@ export const googleRoute = new Elysia()
       await googleController.createRefreshToken(result.user!.id, refreshToken)
 
       // Set cookies
-      cookie.accessToken?.set({
+      cookie['accessToken']?.set({
         value: accessToken,
         httpOnly: true,
         secure: isProduction,
@@ -118,7 +118,7 @@ export const googleRoute = new Elysia()
         path: '/',
       })
 
-      cookie.refreshToken?.set({
+      cookie['refreshToken']?.set({
         value: refreshToken,
         httpOnly: true,
         secure: isProduction,

@@ -10,14 +10,14 @@ export const loginRoute = new Elysia()
   .use(
     jwt({
       name: 'jwtAccess',
-      secret: process.env.JWT_SECRET || 'secret-key-min-32-chars-long!!',
+      secret: process.env['JWT_SECRET'] || 'secret-key-min-32-chars-long!!',
       exp: '15m',
     })
   )
   .use(
     jwt({
       name: 'jwtRefresh',
-      secret: process.env.JWT_REFRESH_SECRET || 'refresh-secret-key-min-32-chars!!',
+      secret: process.env['JWT_REFRESH_SECRET'] || 'refresh-secret-key-min-32-chars!!',
       exp: '7d',
     })
   )
@@ -34,7 +34,7 @@ export const loginRoute = new Elysia()
       const { accessToken, refreshToken, user } = result.data!
 
       // Set cookies
-      cookie.accessToken?.set({
+      cookie['accessToken']?.set({
         value: accessToken,
         httpOnly: true,
         secure: isProduction,
@@ -43,7 +43,7 @@ export const loginRoute = new Elysia()
         path: '/',
       })
 
-      cookie.refreshToken?.set({
+      cookie['refreshToken']?.set({
         value: refreshToken,
         httpOnly: true,
         secure: isProduction,

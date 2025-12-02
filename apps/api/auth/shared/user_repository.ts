@@ -30,7 +30,7 @@ export const userRepository = {
         email: data.email,
         name: data.name,
         googleId: data.googleId,
-        avatar: data.avatar,
+        avatar: data.avatar ?? null,
         emailVerified: true,
         password: null,
       },
@@ -42,7 +42,7 @@ export const userRepository = {
       where: { id: userId },
       data: {
         googleId,
-        avatar,
+        avatar: avatar ?? null,
         emailVerified: true,
       },
     })

@@ -1,6 +1,6 @@
 import { Elysia, t } from 'elysia'
 import { categoryController } from './category_controller'
-import { jwtPlugin, authDerive, isAdmin, type AuthUser } from '../lib/auth-helper'
+import { jwtPlugin, authDerive, isAdmin } from '../lib/auth-helper'
 import { errorResponse, ErrorCode } from '../lib/response'
 import { v } from '../lib/validators'
 

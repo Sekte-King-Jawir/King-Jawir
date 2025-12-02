@@ -29,12 +29,11 @@ export const reviewController = {
     body: { productId: string; rating: number; comment?: string },
     set: Context['set']
   ) {
-    const result = await reviewService.createReview(
-      userId,
-      body.productId,
-      body.rating,
-      body.comment
-    )
+    const result = await reviewService.create(userId, {
+      productId: body.productId,
+      rating: body.rating,
+      ...(body.comment !== undefined && { comment: body.comment }),
+    })
 
     if (!result.success) {
       set.status = 400
@@ -59,7 +58,10 @@ export const reviewController = {
     body: { rating?: number; comment?: string },
     set: Context['set']
   ) {
-    const result = await reviewService.updateReview(userId, reviewId, body.rating, body.comment)
+    const result = await reviewService.update(userId, reviewId, {
+      ...(body.rating !== undefined && { rating: body.rating }),
+      ...(body.comment !== undefined && { comment: body.comment }),
+    })
 
     if (!result.success) {
       set.status = 400
@@ -77,8 +79,8 @@ export const reviewController = {
     }
   },
 
-  async deleteReview(userId: string, reviewId: string, isAdmin: boolean, set: Context['set']) {
-    const result = await reviewService.deleteReview(userId, reviewId, isAdmin)
+  async deleteReview(userId: string, reviewId: string, _isAdmin: boolean, set: Context['set']) {
+    const result = await reviewService.delete(userId, reviewId)
 
     if (!result.success) {
       set.status = 400

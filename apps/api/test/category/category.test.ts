@@ -44,7 +44,7 @@ describe('Category Service', () => {
 
       expect(result.success).toBe(true)
       expect(result.data?.categories).toHaveLength(1)
-      expect(result.data?.categories[0].name).toBe('Electronics')
+      expect(result.data?.categories[0]!.name).toBe('Electronics')
       expect(categoryRepository.findAll).toHaveBeenCalled()
     })
 

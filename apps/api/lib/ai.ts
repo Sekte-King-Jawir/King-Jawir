@@ -3,9 +3,9 @@ import { generateText, streamText } from 'ai'
 
 // Initialize OpenAI provider with custom base URL
 // Make sure to set OPENAI_API_KEY, OPENAI_API_BASE, and OPENAI_MODEL in your .env file
-const apiKey = process.env.OPENAI_API_KEY
-const baseURL = process.env.OPENAI_API_BASE
-const defaultModelName = process.env.OPENAI_MODEL || 'GLM 4.6'
+const apiKey = process.env['OPENAI_API_KEY']
+const baseURL = process.env['OPENAI_API_BASE']
+const defaultModelName = process.env['OPENAI_MODEL'] || 'GLM 4.6'
 
 if (!apiKey && process.env.NODE_ENV !== 'test') {
   console.warn('⚠️ OPENAI_API_KEY is not set. AI features will not work.')
@@ -45,8 +45,8 @@ export async function generateCompletion(
     model,
     prompt,
     temperature: options?.temperature ?? 0.7,
-    maxOutputTokens: options?.maxTokens,
-    system: options?.system,
+    ...(options?.maxTokens !== undefined && { maxOutputTokens: options.maxTokens }),
+    ...(options?.system !== undefined && { system: options.system }),
   })
 
   return {
@@ -78,9 +78,9 @@ export async function generateStreamingCompletion(
     model,
     prompt,
     temperature: options?.temperature ?? 0.7,
-    maxOutputTokens: options?.maxTokens,
-    system: options?.system,
-    onFinish: options?.onFinish,
+    ...(options?.maxTokens !== undefined && { maxOutputTokens: options.maxTokens }),
+    ...(options?.system !== undefined && { system: options.system }),
+    ...(options?.onFinish !== undefined && { onFinish: options.onFinish }),
   })
 
   return result
@@ -105,7 +105,7 @@ export async function generateChatCompletion(
     model,
     messages,
     temperature: options?.temperature ?? 0.7,
-    maxOutputTokens: options?.maxTokens,
+    ...(options?.maxTokens !== undefined && { maxOutputTokens: options.maxTokens }),
   })
 
   return {
@@ -135,8 +135,8 @@ export async function generateStreamingChatCompletion(
     model,
     messages,
     temperature: options?.temperature ?? 0.7,
-    maxOutputTokens: options?.maxTokens,
-    onFinish: options?.onFinish,
+    ...(options?.maxTokens !== undefined && { maxOutputTokens: options.maxTokens }),
+    ...(options?.onFinish !== undefined && { onFinish: options.onFinish }),
   })
 
   return result

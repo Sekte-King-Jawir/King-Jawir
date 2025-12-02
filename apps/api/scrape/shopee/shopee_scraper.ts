@@ -1,5 +1,5 @@
-import { chromium, Browser, Page } from 'playwright'
-import { ScrapedProduct, ScrapingOptions } from '../scrape_service'
+import puppeteer, { type Browser } from 'puppeteer'
+import type { ScrapedProduct, ScrapingOptions } from '../scrape_service'
 
 export class ShopeeScraper {
   private browser: Browser | null = null
@@ -36,11 +36,39 @@ export class ShopeeScraper {
       await page.waitForSelector('.shopee-search-item-result__item', { timeout: 10000 })
 
       // Extract product data
-      const rawProducts = await page.evaluate(() => {
-        const productElements = document.querySelectorAll('.shopee-search-item-result__item')
-        const items: any[] = []
+      const products = await page.evaluate(() => {
+        const productElements = (document as Document).querySelectorAll(
+          '.shopee-search-item-result__item'
+        )
+        const products: Array<{
+          name: string
+          price: number
+          rating: number
+          imageUrl: string
+          productUrl: string
+          source: 'shopee'
+          sold: number
+          location: string
+          shopName: string
+        }> = []
 
-        productElements.forEach((element) => {
+        const parsePrice = (priceText: string): number => {
+          const cleaned = priceText.replace(/[Rp$,.]/g, '').replace(/\s+/g, '')
+          const parsed = parseInt(cleaned)
+          return isNaN(parsed) ? 0 : parsed
+        }
+
+        const parseRating = (ratingText: string): number => {
+          const match = ratingText.match(/(\d+\.?\d*)/)
+          return match && match[1] ? parseFloat(match[1]) : 0
+        }
+
+        const parseSold = (soldText: string): number => {
+          const match = soldText.match(/(\d+)/)
+          return match && match[1] ? parseInt(match[1]) : 0
+        }
+
+        productElements.forEach((element: Element) => {
           try {
             // Product name
             const nameElement = element.querySelector(
@@ -50,13 +78,15 @@ export class ShopeeScraper {
 
             // Product URL
             const linkElement = element.querySelector('a')
-            const productUrl = linkElement?.href || ''
+            const productUrl = linkElement?.getAttribute('href') || ''
             const fullUrl = productUrl.startsWith('http')
               ? productUrl
               : `https://shopee.co.id${productUrl}`
 
             // Product image
-            const imageElement = element.querySelector('.shopee-search-item-result__item img')
+            const imageElement = element.querySelector(
+              '.shopee-search-item-result__item img'
+            ) as HTMLImageElement | null
             const imageUrl = imageElement?.src || imageElement?.getAttribute('data-src') || ''
 
             // Price
@@ -64,18 +94,19 @@ export class ShopeeScraper {
               '.shopee-search-item-result__item .shopee-search-item-result__item--price'
             )
             const priceText = priceElement?.textContent?.trim() || ''
+            const price = parsePrice(priceText)
 
             // Rating
             const ratingElement = element.querySelector(
               '.shopee-search-item-result__item .shopee-search-item-result__item--rating'
             )
-            const ratingText = ratingElement?.textContent || ''
+            const rating = parseRating(ratingElement?.textContent || '')
 
             // Sold count
             const soldElement = element.querySelector(
               '.shopee-search-item-result__item .shopee-search-item-result__item--sold'
             )
-            const soldText = soldElement?.textContent || ''
+            const sold = parseSold(soldElement?.textContent || '')
 
             // Shop name
             const shopElement = element.querySelector(
@@ -165,25 +196,6 @@ export class ShopeeScraper {
     }
 
     return `${baseUrl}?${params.toString()}`
-  }
-
-  private parsePrice(priceText: string): number {
-    // Remove currency symbols and convert to number
-    const cleaned = priceText.replace(/[Rp$,.]/g, '').replace(/\s+/g, '')
-    const parsed = parseInt(cleaned)
-    return isNaN(parsed) ? 0 : parsed
-  }
-
-  private parseRating(ratingText: string): number {
-    // Extract rating number (e.g., "4.5 (123)" -> 4.5)
-    const match = ratingText.match(/(\d+\.?\d*)/)
-    return match ? parseFloat(match[1]) : 0
-  }
-
-  private parseSold(soldText: string): number {
-    // Extract sold count (e.g., "123 terjual" -> 123)
-    const match = soldText.match(/(\d+)/)
-    return match ? parseInt(match[1]) : 0
   }
 }
 
