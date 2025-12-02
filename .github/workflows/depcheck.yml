@@ -1,0 +1,167 @@
+name: Depcheck - Clean Unused Dependencies
+
+on:
+  workflow_dispatch: # Manual trigger
+  push:
+    branches:
+      - main
+    paths:
+      - '**/package.json'
+      - 'package.json'
+
+jobs:
+  depcheck:
+    name: Check and Auto-Fix Dependencies
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write
+      pull-requests: write
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Get Bun cache directory
+        id: bun-cache
+        shell: bash
+        run: |
+          echo "BUN_INSTALL_CACHE_DIR=$(bun pm cache)" >> $GITHUB_OUTPUT
+
+      - name: Setup Bun cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.bun-cache.outputs.BUN_INSTALL_CACHE_DIR }}
+          key: ${{ runner.os }}-bun-depcheck-${{ hashFiles('**/package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-bun-depcheck-
+
+      - name: Install Dependencies
+        run: bun install
+
+      - name: Install Depcheck
+        run: bun add -D depcheck
+
+      - name: Run Depcheck on Root
+        id: depcheck-root
+        continue-on-error: true
+        run: |
+          echo "Running depcheck on root..."
+          bun run depcheck --json > depcheck-root.json 2>&1 || true
+          
+          if [ -s depcheck-root.json ]; then
+            echo "checked_root=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Run Depcheck on Apps/API
+        id: depcheck-api
+        continue-on-error: true
+        working-directory: apps/api
+        run: |
+          echo "Running depcheck on apps/api..."
+          bun run depcheck --json > ../../depcheck-api.json 2>&1 || true
+          
+          if [ -s ../../depcheck-api.json ]; then
+            echo "checked_api=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Run Depcheck on Apps/Web
+        id: depcheck-web
+        continue-on-error: true
+        working-directory: apps/web
+        run: |
+          echo "Running depcheck on apps/web..."
+          bun run depcheck --json > ../../depcheck-web.json 2>&1 || true
+          
+          if [ -s ../../depcheck-web.json ]; then
+            echo "checked_web=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Process Results and Auto-Fix
+        id: process-results
+        run: |
+          echo "Processing depcheck results..."
+          
+          # Function to remove unused dependencies
+          remove_unused_deps() {
+            local package_json=$1
+            local depcheck_json=$2
+            local location=$3
+            
+            if [ ! -f "$depcheck_json" ]; then
+              echo "No depcheck results for $location"
+              return
+            fi
+            
+            # Extract unused dependencies
+            local unused_deps=$(cat "$depcheck_json" | bun run -e "console.log(JSON.stringify(JSON.parse(require('fs').readFileSync(0, 'utf-8')).dependencies || []))")
+            
+            if [ "$unused_deps" != "[]" ] && [ "$unused_deps" != "" ]; then
+              echo "📦 Found unused dependencies in $location:"
+              echo "$unused_deps"
+              
+              # Parse and remove each unused dependency
+              echo "$unused_deps" | bun run -e "
+                const deps = JSON.parse(require('fs').readFileSync(0, 'utf-8'));
+                const pkg = JSON.parse(require('fs').readFileSync('$package_json', 'utf-8'));
+                let changed = false;
+                
+                deps.forEach(dep => {
+                  if (pkg.dependencies && pkg.dependencies[dep]) {
+                    console.log('Removing dependency:', dep);
+                    delete pkg.dependencies[dep];
+                    changed = true;
+                  }
+                  if (pkg.devDependencies && pkg.devDependencies[dep]) {
+                    console.log('Removing devDependency:', dep);
+                    delete pkg.devDependencies[dep];
+                    changed = true;
+                  }
+                });
+                
+                if (changed) {
+                  require('fs').writeFileSync('$package_json', JSON.stringify(pkg, null, 2) + '\n');
+                  console.log('✅ Updated $package_json');
+                }
+              "
+              
+              echo "has_changes=true" >> $GITHUB_OUTPUT
+            fi
+          }
+          
+          # Process each location
+          remove_unused_deps "package.json" "depcheck-root.json" "root"
+          remove_unused_deps "apps/api/package.json" "depcheck-api.json" "apps/api"
+          remove_unused_deps "apps/web/package.json" "depcheck-web.json" "apps/web"
+
+      - name: Commit Changes
+        if: steps.process-results.outputs.has_changes == 'true'
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
+          git add package.json apps/*/package.json
+          
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: remove unused dependencies detected by depcheck" -m "- Auto-removed unused dependencies from package.json files" -m "- Generated by depcheck workflow"
+            
+            git push
+            echo "✅ Unused dependencies removed and committed!" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Success Summary
+        if: steps.process-results.outputs.has_changes != 'true'
+        run: |
+          echo "## ✅ Depcheck Passed" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "No unused dependencies found!" >> $GITHUB_STEP_SUMMARY
