@@ -3,7 +3,7 @@ use std::time::Duration;
 pub const DEFAULT_QUERY: &str = "iphone";
 pub const DEFAULT_LIMIT: usize = 10;
 pub const SERVER_HOST: &str = "0.0.0.0";
-pub const SERVER_PORT: u16 = 4103;
+pub const SERVER_PORT: u16 = 4104;
 
 pub const BROWSER_WINDOW_WIDTH: u32 = 1920;
 pub const BROWSER_WINDOW_HEIGHT: u32 = 1080;
