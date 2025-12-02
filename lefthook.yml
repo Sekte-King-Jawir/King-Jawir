@@ -1,0 +1,33 @@
+pre-commit:
+  parallel: false
+  commands:
+    format:
+      glob: '*.{ts,tsx,js,jsx,json,md,yml,yaml}'
+      run: bun run format {staged_files} && git add {staged_files}
+      stage_fixed: true
+
+    lint:
+      glob: '*.{ts,tsx,js,jsx}'
+      run: bun run lint
+
+    type-check:
+      run: bun run check-types
+
+    build:
+      run: bun run build
+      fail_text: '❌ Build failed! Please fix the errors before committing.'
+
+pre-push:
+  parallel: false
+  commands:
+    lint:
+      run: bun run lint
+      fail_text: '❌ Lint failed! Please fix the errors before pushing.'
+
+    type-check:
+      run: bun run check-types
+      fail_text: '❌ Type check failed! Please fix the errors before pushing.'
+
+    build:
+      run: bun run build
+      fail_text: '❌ Build failed! Please fix the errors before pushing.'
