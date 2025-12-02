@@ -1,0 +1,255 @@
+name: Code Quality - Auto Fix
+
+on:
+  workflow_dispatch: # Manual trigger
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  code-quality:
+    name: Format, Clean Exports & Dependencies
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Get Bun cache directory
+        id: bun-cache
+        shell: bash
+        run: |
+          echo "BUN_INSTALL_CACHE_DIR=$(bun pm cache)" >> $GITHUB_OUTPUT
+
+      - name: Setup Bun cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.bun-cache.outputs.BUN_INSTALL_CACHE_DIR }}
+          key: ${{ runner.os }}-bun-${{ hashFiles('**/package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-bun-
+
+      - name: Install Dependencies
+        run: bun install
+
+      # ===== 1. FORMAT WITH PRETTIER =====
+      - name: Run Prettier
+        id: format
+        continue-on-error: true
+        run: |
+          echo "🎨 Running Prettier..."
+          bun run format
+          if ! git diff --exit-code; then
+            echo "formatted=true" >> $GITHUB_OUTPUT
+            echo "✅ Code formatted!"
+          else
+            echo "formatted=false" >> $GITHUB_OUTPUT
+            echo "ℹ️ No formatting changes needed"
+          fi
+
+      # ===== 2. CLEAN UNUSED DEPENDENCIES =====
+      - name: Install Depcheck
+        run: bun add -D depcheck
+
+      - name: Run Depcheck on Root
+        continue-on-error: true
+        run: |
+          echo "📦 Running depcheck on root..."
+          bun run depcheck --json > depcheck-root.json 2>&1 || true
+
+      - name: Run Depcheck on Apps/API
+        continue-on-error: true
+        working-directory: apps/api
+        run: |
+          echo "📦 Running depcheck on apps/api..."
+          bun run depcheck --json > ../../depcheck-api.json 2>&1 || true
+
+      - name: Run Depcheck on Apps/Web
+        continue-on-error: true
+        working-directory: apps/web
+        run: |
+          echo "📦 Running depcheck on apps/web..."
+          bun run depcheck --json > ../../depcheck-web.json 2>&1 || true
+
+      - name: Remove Unused Dependencies
+        id: depcheck
+        run: |
+          echo "Processing depcheck results..."
+          
+          # Function to remove unused dependencies
+          remove_unused_deps() {
+            local package_json=$1
+            local depcheck_json=$2
+            local location=$3
+            
+            if [ ! -f "$depcheck_json" ]; then
+              echo "No depcheck results for $location"
+              return
+            fi
+            
+            # Extract unused dependencies
+            local unused_deps=$(cat "$depcheck_json" | bun run -e "console.log(JSON.stringify(JSON.parse(require('fs').readFileSync(0, 'utf-8')).dependencies || []))")
+            
+            if [ "$unused_deps" != "[]" ] && [ "$unused_deps" != "" ]; then
+              echo "📦 Found unused dependencies in $location:"
+              echo "$unused_deps"
+              
+              # Parse and remove each unused dependency
+              echo "$unused_deps" | bun run -e "
+                const deps = JSON.parse(require('fs').readFileSync(0, 'utf-8'));
+                const pkg = JSON.parse(require('fs').readFileSync('$package_json', 'utf-8'));
+                let changed = false;
+                
+                deps.forEach(dep => {
+                  if (pkg.dependencies && pkg.dependencies[dep]) {
+                    console.log('Removing dependency:', dep);
+                    delete pkg.dependencies[dep];
+                    changed = true;
+                  }
+                  if (pkg.devDependencies && pkg.devDependencies[dep]) {
+                    console.log('Removing devDependency:', dep);
+                    delete pkg.devDependencies[dep];
+                    changed = true;
+                  }
+                });
+                
+                if (changed) {
+                  require('fs').writeFileSync('$package_json', JSON.stringify(pkg, null, 2) + '\n');
+                  console.log('✅ Updated $package_json');
+                }
+              "
+              
+              echo "cleaned_deps=true" >> $GITHUB_OUTPUT
+            fi
+          }
+          
+          # Process each location
+          remove_unused_deps "package.json" "depcheck-root.json" "root"
+          remove_unused_deps "apps/api/package.json" "depcheck-api.json" "apps/api"
+          remove_unused_deps "apps/web/package.json" "depcheck-web.json" "apps/web"
+
+      # ===== 3. CLEAN UNUSED EXPORTS =====
+      - name: Install TS-Prune
+        run: bun add -D ts-prune
+
+      - name: Run TS-Prune and Clean Exports
+        id: ts-prune
+        continue-on-error: true
+        run: |
+          echo "🧹 Running ts-prune analysis..."
+          bun run ts-prune > ts-prune-report.txt 2>&1 || true
+          
+          if [ -s ts-prune-report.txt ]; then
+            echo "🧹 Unused exports found, cleaning up..."
+            cat ts-prune-report.txt
+            
+            # Parse and remove unused exports
+            while IFS= read -r line; do
+              if [[ $line =~ ^(.+):([0-9]+)\ -\ (.+)$ ]]; then
+                file="${BASH_REMATCH[1]}"
+                line_num="${BASH_REMATCH[2]}"
+                export_name="${BASH_REMATCH[3]}"
+                
+                # Skip if file doesn't exist or is in node_modules
+                if [[ ! -f "$file" ]] || [[ "$file" == *"node_modules"* ]]; then
+                  continue
+                fi
+                
+                echo "Removing unused export from $file:$line_num - $export_name"
+                
+                # Comment out the export line
+                sed -i "${line_num}s/^/\/\/ [unused] /" "$file"
+              fi
+            done < ts-prune-report.txt
+            
+            echo "cleaned_exports=true" >> $GITHUB_OUTPUT
+            echo "✅ Cleaned up unused exports!"
+          else
+            echo "cleaned_exports=false" >> $GITHUB_OUTPUT
+            echo "✅ No unused exports found!"
+          fi
+
+      # ===== 4. COMMIT ALL CHANGES =====
+      - name: Check for changes
+        id: changes-check
+        run: |
+          if ! git diff --exit-code; then
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit All Changes
+        if: steps.changes-check.outputs.has_changes == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+          git add -A
+          
+          # Build commit message
+          COMMIT_MSG="chore: auto code quality improvements [skip ci]"
+          COMMIT_BODY=""
+          
+          if [ "${{ steps.format.outputs.formatted }}" == "true" ]; then
+            COMMIT_BODY="${COMMIT_BODY}\n- Code formatted with Prettier"
+          fi
+          
+          if [ "${{ steps.depcheck.outputs.cleaned_deps }}" == "true" ]; then
+            COMMIT_BODY="${COMMIT_BODY}\n- Removed unused dependencies"
+          fi
+          
+          if [ "${{ steps.ts-prune.outputs.cleaned_exports }}" == "true" ]; then
+            COMMIT_BODY="${COMMIT_BODY}\n- Cleaned unused exports"
+          fi
+          
+          if [ -n "$COMMIT_BODY" ]; then
+            echo -e "$COMMIT_MSG\n$COMMIT_BODY" | git commit -F -
+          else
+            git commit -m "$COMMIT_MSG"
+          fi
+
+          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:main
+          echo "✅ All changes committed and pushed!" >> $GITHUB_STEP_SUMMARY
+
+      # ===== 5. SUMMARY =====
+      - name: Generate Summary
+        run: |
+          echo "## 🎯 Code Quality Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [ "${{ steps.format.outputs.formatted }}" == "true" ]; then
+            echo "✅ **Prettier**: Code formatted" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "ℹ️ **Prettier**: No changes needed" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          if [ "${{ steps.depcheck.outputs.cleaned_deps }}" == "true" ]; then
+            echo "✅ **Depcheck**: Removed unused dependencies" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "ℹ️ **Depcheck**: No unused dependencies" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          if [ "${{ steps.ts-prune.outputs.cleaned_exports }}" == "true" ]; then
+            echo "✅ **TS-Prune**: Cleaned unused exports" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "ℹ️ **TS-Prune**: No unused exports" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ steps.changes-check.outputs.has_changes }}" == "true" ]; then
+            echo "**Status**: Changes committed to repository" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "**Status**: No changes needed - codebase is clean! 🎉" >> $GITHUB_STEP_SUMMARY
+          fi
