@@ -13,7 +13,6 @@ Backend API untuk King Jawir Marketplace menggunakan Elysia.js dan Bun runtime.
 - ⭐ Product Reviews
 - 👑 Admin Dashboard
 - 🤖 **AI-Powered Features** (NEW!)
-- 🔍 **Product Scraping** (Shopee & Tokopedia)
 
 ## Installation
 
@@ -93,39 +92,6 @@ bun run lib/ai-example.ts
 
 Swagger documentation available at: `http://localhost:4101/docs`
 
-## Product Scraping
-
-API menyediakan fitur scraping produk dari marketplace:
-
-### Endpoints
-
-- `GET /scrape/shopee` - Scrape produk dari Shopee
-- `GET /scrape/tokopedia` - Scrape produk dari Tokopedia
-- `GET /scrape/all` - Scrape produk dari semua platform
-- `GET /scrape/top-cheapest` - Top 10 produk termurah
-- `GET /scrape/top-rated` - Top 10 produk rating tertinggi
-
-### Parameters
-
-- `q` (required) - Search query (min 2 karakter)
-- `sortBy` (optional) - `cheapest` | `highest_rating` | `best_selling`
-- `limit` (optional) - Jumlah hasil (1-50, default: 10)
-- `minRating` (optional) - Rating minimum (0-5)
-- `maxPrice` (optional) - Harga maksimum
-
-### Example
-
-```bash
-# Cari sepatu termurah
-curl "http://localhost:4101/scrape/all?q=sepatu&sortBy=cheapest&limit=10"
-
-# Top 10 termurah dengan rating min 4.5
-curl "http://localhost:4101/scrape/top-cheapest?q=laptop&minRating=4.5"
-
-# Top 10 rating tertinggi dengan harga max 500000
-curl "http://localhost:4101/scrape/top-rated?q=handphone&maxPrice=500000"
-```
-
 ## Project Structure
 
 ```
@@ -142,9 +108,6 @@ apps/api/
 ├── order/            # Order management
 ├── review/           # Product reviews
 ├── admin/            # Admin features
-├── scrape/           # Product scraping (Shopee, Tokopedia)
-│   ├── shopee/       # Shopee scraper
-│   └── tokopedia/    # Tokopedia scraper
 └── test/             # Test files
 ```
 
