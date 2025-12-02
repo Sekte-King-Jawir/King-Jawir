@@ -29,6 +29,7 @@ cp .env.example .env
 ```
 
 Required variables:
+
 - `DATABASE_URL` - MySQL connection string
 - `JWT_SECRET` - JWT secret key
 - `SMTP_*` - Email configuration
@@ -39,11 +40,13 @@ Required variables:
 ## Running the API
 
 Development mode:
+
 ```bash
 bun run dev
 ```
 
 Production mode:
+
 ```bash
 bun run start
 ```
@@ -51,11 +54,13 @@ bun run start
 ## Testing
 
 Run all tests:
+
 ```bash
 bun run test
 ```
 
 Watch mode:
+
 ```bash
 bun run test:watch
 ```
@@ -63,6 +68,7 @@ bun run test:watch
 ## AI SDK Integration
 
 Library AI SDK telah ditambahkan untuk fitur AI-powered. Lihat dokumentasi lengkap di:
+
 - `lib/ai.ts` - Core AI functions
 - `lib/AI_USAGE.md` - Usage guide & examples
 - `lib/ai-example.ts` - Example code
@@ -72,9 +78,7 @@ Library AI SDK telah ditambahkan untuk fitur AI-powered. Lihat dokumentasi lengk
 ```typescript
 import { generateCompletion } from './lib/ai'
 
-const result = await generateCompletion(
-  'Tulis deskripsi produk untuk sepatu olahraga'
-)
+const result = await generateCompletion('Tulis deskripsi produk untuk sepatu olahraga')
 console.log(result.text)
 ```
 
