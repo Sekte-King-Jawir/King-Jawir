@@ -1,5 +1,6 @@
 import { Elysia, t } from 'elysia'
 import { registerController } from './register_controller'
+import { v } from '../../lib/validators'
 
 export const registerRoute = new Elysia().post(
   '/register',
@@ -14,9 +15,9 @@ export const registerRoute = new Elysia().post(
   },
   {
     body: t.Object({
-      email: t.String({ format: 'email' }),
-      password: t.String({ minLength: 6 }),
-      name: t.String({ minLength: 2 }),
+      email: v.email(),
+      password: v.password(),
+      name: v.name(),
     }),
     detail: {
       tags: ['Auth'],

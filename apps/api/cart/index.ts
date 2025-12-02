@@ -1,6 +1,7 @@
 import { Elysia, t } from 'elysia'
 import { cartController } from './cart_controller'
 import { jwtPlugin, authDerive } from '../lib/auth-helper'
+import { v } from '../lib/validators'
 
 export const cartRoutes = new Elysia({ prefix: '/cart' })
   .use(jwtPlugin)
@@ -29,7 +30,7 @@ export const cartRoutes = new Elysia({ prefix: '/cart' })
     {
       body: t.Object({
         productId: t.String(),
-        quantity: t.Optional(t.Number({ minimum: 1, default: 1 })),
+        quantity: t.Optional(v.quantity()),
       }),
       detail: {
         tags: ['Cart'],

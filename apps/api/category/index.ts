@@ -2,6 +2,7 @@ import { Elysia, t } from 'elysia'
 import { categoryController } from './category_controller'
 import { jwtPlugin, authDerive, isAdmin, type AuthUser } from '../lib/auth-helper'
 import { errorResponse, ErrorCode } from '../lib/response'
+import { v } from '../lib/validators'
 
 export const categoryRoutes = new Elysia({ prefix: '/categories' })
   .use(jwtPlugin)
@@ -69,8 +70,8 @@ export const categoryRoutes = new Elysia({ prefix: '/categories' })
     },
     {
       body: t.Object({
-        name: t.String({ minLength: 2, maxLength: 50 }),
-        slug: t.Optional(t.String({ minLength: 2, maxLength: 50 })),
+        name: v.name(),
+        slug: t.Optional(v.slug()),
       }),
       detail: {
         tags: ['Categories'],
@@ -106,8 +107,8 @@ export const categoryRoutes = new Elysia({ prefix: '/categories' })
         id: t.String(),
       }),
       body: t.Object({
-        name: t.Optional(t.String({ minLength: 2, maxLength: 50 })),
-        slug: t.Optional(t.String({ minLength: 2, maxLength: 50 })),
+        name: t.Optional(v.name()),
+        slug: t.Optional(v.slug()),
       }),
       detail: {
         tags: ['Categories'],

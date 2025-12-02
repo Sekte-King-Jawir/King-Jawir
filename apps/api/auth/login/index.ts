@@ -2,6 +2,7 @@ import { Elysia, t } from 'elysia'
 import { jwt } from '@elysiajs/jwt'
 import { loginController } from './login_controller'
 import { successResponse } from '../../lib/response'
+import { v } from '../../lib/validators'
 
 const isProduction = process.env.NODE_ENV === 'production'
 
@@ -60,8 +61,8 @@ export const loginRoute = new Elysia()
     },
     {
       body: t.Object({
-        email: t.String({ format: 'email' }),
-        password: t.String(),
+        email: v.email(),
+        password: t.String({ minLength: 1 }),
       }),
       detail: {
         tags: ['Auth'],

@@ -1,6 +1,7 @@
 import { Elysia, t } from 'elysia'
 import { reviewController } from './review_controller'
 import { jwtPlugin, authDerive } from '../lib/auth-helper'
+import { v } from '../lib/validators'
 
 // Protected review routes
 export const reviewRoutes = new Elysia()
@@ -24,8 +25,8 @@ export const reviewRoutes = new Elysia()
     {
       body: t.Object({
         productId: t.String({ minLength: 1 }),
-        rating: t.Number({ minimum: 1, maximum: 5 }),
-        comment: t.Optional(t.String()),
+        rating: v.rating(),
+        comment: t.Optional(t.String({ maxLength: 1000 })),
       }),
       detail: {
         tags: ['Reviews'],
@@ -54,8 +55,8 @@ export const reviewRoutes = new Elysia()
         id: t.String(),
       }),
       body: t.Object({
-        rating: t.Optional(t.Number({ minimum: 1, maximum: 5 })),
-        comment: t.Optional(t.String()),
+        rating: t.Optional(v.rating()),
+        comment: t.Optional(t.String({ maxLength: 1000 })),
       }),
       detail: {
         tags: ['Reviews'],

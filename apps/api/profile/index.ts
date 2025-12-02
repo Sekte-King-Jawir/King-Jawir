@@ -1,6 +1,7 @@
 import { Elysia, t } from 'elysia'
 import { profileController } from './profile_controller'
 import { jwtPlugin, authDerive } from '../lib/auth-helper'
+import { v } from '../lib/validators'
 
 export const profileRoutes = new Elysia({ prefix: '/profile' })
   .use(jwtPlugin)
@@ -28,10 +29,10 @@ export const profileRoutes = new Elysia({ prefix: '/profile' })
     },
     {
       body: t.Object({
-        name: t.Optional(t.String({ minLength: 2 })),
-        phone: t.Optional(t.String()),
-        address: t.Optional(t.String()),
-        bio: t.Optional(t.String({ maxLength: 500 })),
+        name: t.Optional(v.name()),
+        phone: t.Optional(v.phoneID()),
+        address: t.Optional(v.address()),
+        bio: t.Optional(v.bio()),
       }),
       detail: {
         tags: ['Profile'],
@@ -49,7 +50,7 @@ export const profileRoutes = new Elysia({ prefix: '/profile' })
     },
     {
       body: t.Object({
-        avatarUrl: t.String(),
+        avatarUrl: v.url(),
       }),
       detail: {
         tags: ['Profile'],

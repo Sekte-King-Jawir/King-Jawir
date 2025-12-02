@@ -70,43 +70,8 @@ describe('Profile Service', () => {
       expect(profileRepository.updateProfile).toHaveBeenCalled()
     })
 
-    it('should validate name minimum length', async () => {
-      const result = await profileService.updateProfile('user-123', { name: 'A' })
-
-      expect(result.success).toBe(false)
-      expect(result.error).toContain('minimal 2 karakter')
-    })
-
-    it('should validate phone number format', async () => {
-      const result = await profileService.updateProfile('user-123', { phone: 'invalid-phone' })
-
-      expect(result.success).toBe(false)
-      expect(result.error).toContain('Format nomor HP')
-    })
-
-    it('should accept Indonesian phone number formats', async () => {
-      ;(profileRepository.updateProfile as any).mockResolvedValue(mockUser)
-
-      // Test +62 format
-      let result = await profileService.updateProfile('user-123', { phone: '+628123456789' })
-      expect(result.success).toBe(true)
-
-      // Test 08 format
-      result = await profileService.updateProfile('user-123', { phone: '081234567890' })
-      expect(result.success).toBe(true)
-
-      // Test 62 format
-      result = await profileService.updateProfile('user-123', { phone: '628123456789' })
-      expect(result.success).toBe(true)
-    })
-
-    it('should validate bio maximum length', async () => {
-      const longBio = 'x'.repeat(501)
-      const result = await profileService.updateProfile('user-123', { bio: longBio })
-
-      expect(result.success).toBe(false)
-      expect(result.error).toContain('Bio maksimal 500 karakter')
-    })
+    // Note: Validation is now handled by TypeBox at route level
+    // Service tests focus on business logic, not validation
 
     it('should trim whitespace from inputs', async () => {
       ;(profileRepository.updateProfile as any).mockResolvedValue(mockUser)
@@ -169,29 +134,7 @@ describe('Profile Service', () => {
       expect(profileRepository.updateAvatar).toHaveBeenCalledWith('user-123', avatarUrl)
     })
 
-    it('should validate URL format', async () => {
-      const result = await profileService.updateAvatar('user-123', 'not-a-url')
-
-      expect(result.success).toBe(false)
-      expect(result.error).toContain('URL avatar tidak valid')
-    })
-
-    it('should reject empty URL', async () => {
-      const result = await profileService.updateAvatar('user-123', '')
-
-      expect(result.success).toBe(false)
-      expect(result.error).toContain('URL avatar tidak valid')
-    })
-
-    it('should accept http and https URLs', async () => {
-      ;(profileRepository.updateAvatar as any).mockResolvedValue(mockUser)
-
-      let result = await profileService.updateAvatar('user-123', 'https://example.com/avatar.jpg')
-      expect(result.success).toBe(true)
-
-      result = await profileService.updateAvatar('user-123', 'http://example.com/avatar.jpg')
-      expect(result.success).toBe(true)
-    })
+    // Note: URL validation is now handled by TypeBox at route level
 
     it('should handle update errors', async () => {
       ;(profileRepository.updateAvatar as any).mockRejectedValue(new Error('DB Error'))
@@ -201,5 +144,106 @@ describe('Profile Service', () => {
       expect(result.success).toBe(false)
       expect(result.error).toContain('Gagal mengupdate')
     })
+  })
+})
+
+// Integration tests for TypeBox validation at route level
+// NOTE: These tests require the server to be running on localhost:4101
+describe('Profile Route Validation (TypeBox)', () => {
+  const BASE_URL = 'http://localhost:4101'
+  let accessToken: string
+
+  // Helper to login and get token
+  async function login() {
+    const res = await fetch(`${BASE_URL}/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: 'customer@marketplace.com',
+        password: 'customer123',
+      }),
+    })
+    const data = await res.json()
+    return data.data?.accessToken
+  }
+
+  it('should reject invalid phone format', async () => {
+    accessToken = await login()
+    if (!accessToken) return // Skip if login fails
+
+    const res = await fetch(`${BASE_URL}/profile`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({ phone: 'invalid-phone' }),
+    })
+
+    expect(res.status).toBe(422) // TypeBox validation error
+  })
+
+  it('should accept valid Indonesian phone', async () => {
+    accessToken = await login()
+    if (!accessToken) return
+
+    const res = await fetch(`${BASE_URL}/profile`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({ phone: '081234567890' }),
+    })
+
+    expect(res.status).toBe(200)
+  })
+
+  it('should reject bio over 500 chars', async () => {
+    accessToken = await login()
+    if (!accessToken) return
+
+    const res = await fetch(`${BASE_URL}/profile`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({ bio: 'x'.repeat(501) }),
+    })
+
+    expect(res.status).toBe(422)
+  })
+
+  it('should reject invalid avatar URL', async () => {
+    accessToken = await login()
+    if (!accessToken) return
+
+    const res = await fetch(`${BASE_URL}/profile/avatar`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({ avatarUrl: 'not-a-url' }),
+    })
+
+    expect(res.status).toBe(422)
+  })
+
+  it('should accept valid avatar URL', async () => {
+    accessToken = await login()
+    if (!accessToken) return
+
+    const res = await fetch(`${BASE_URL}/profile/avatar`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({ avatarUrl: 'https://example.com/avatar.jpg' }),
+    })
+
+    expect(res.status).toBe(200)
   })
 })

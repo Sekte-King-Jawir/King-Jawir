@@ -2,6 +2,7 @@ import { Elysia, t } from 'elysia'
 import { productController } from './product_controller'
 import { jwtPlugin, authDerive, isSeller, type AuthUser } from '../lib/auth-helper'
 import { errorResponse, ErrorCode } from '../lib/response'
+import { v } from '../lib/validators'
 
 export const productRoutes = new Elysia({ prefix: '/products' })
   .use(jwtPlugin)
@@ -96,11 +97,11 @@ export const productRoutes = new Elysia({ prefix: '/products' })
     {
       body: t.Object({
         categoryId: t.String(),
-        name: t.String({ minLength: 2, maxLength: 200 }),
-        slug: t.Optional(t.String({ minLength: 2, maxLength: 200 })),
-        price: t.Number({ minimum: 0 }),
-        stock: t.Number({ minimum: 0 }),
-        image: t.Optional(t.String()),
+        name: v.name(),
+        slug: t.Optional(v.slug()),
+        price: v.price(),
+        stock: v.stock(),
+        image: t.Optional(v.url()),
       }),
       detail: {
         tags: ['Products'],
@@ -137,11 +138,11 @@ export const productRoutes = new Elysia({ prefix: '/products' })
       }),
       body: t.Object({
         categoryId: t.Optional(t.String()),
-        name: t.Optional(t.String({ minLength: 2, maxLength: 200 })),
-        slug: t.Optional(t.String({ minLength: 2, maxLength: 200 })),
-        price: t.Optional(t.Number({ minimum: 0 })),
-        stock: t.Optional(t.Number({ minimum: 0 })),
-        image: t.Optional(t.String()),
+        name: t.Optional(v.name()),
+        slug: t.Optional(v.slug()),
+        price: t.Optional(v.price()),
+        stock: t.Optional(v.stock()),
+        image: t.Optional(v.url()),
       }),
       detail: {
         tags: ['Products'],
