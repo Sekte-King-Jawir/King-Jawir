@@ -21,7 +21,10 @@ export const reviewService = {
 
     const hasPurchased = await reviewRepository.hasUserPurchasedProduct(userId, productId)
     if (!hasPurchased) {
-      return { success: false, error: 'Anda harus membeli produk terlebih dahulu sebelum memberikan review' }
+      return {
+        success: false,
+        error: 'Anda harus membeli produk terlebih dahulu sebelum memberikan review',
+      }
     }
 
     const existingReview = await reviewRepository.getUserReview(userId, productId)
@@ -69,5 +72,5 @@ export const reviewService = {
 
     await reviewRepository.deleteReview(reviewId)
     return { success: true, message: 'Review berhasil dihapus' }
-  }
+  },
 }

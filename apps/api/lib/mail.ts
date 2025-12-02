@@ -6,8 +6,8 @@ const transporter = nodemailer.createTransport({
   secure: true,
   auth: {
     user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS
-  }
+    pass: process.env.SMTP_PASS,
+  },
 })
 
 // Kirim email verifikasi
@@ -23,7 +23,7 @@ export async function sendVerificationEmail(email: string, url: string) {
         Verifikasi Email
       </a>
       <p>Link berlaku 24 jam.</p>
-    `
+    `,
   })
 }
 
@@ -40,6 +40,6 @@ export async function sendResetPasswordEmail(email: string, url: string) {
         Reset Password
       </a>
       <p>Link berlaku 1 jam.</p>
-    `
+    `,
   })
 }

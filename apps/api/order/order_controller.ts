@@ -24,7 +24,7 @@ export const orderController = {
   },
 
   // GET /orders - Get my orders
-  async getMyOrders(user: AuthUser | null, query: { page?: string, limit?: string }, set: any) {
+  async getMyOrders(user: AuthUser | null, query: { page?: string; limit?: string }, set: any) {
     if (!user) {
       set.status = 401
       return errorResponse('Unauthorized - Please login', ErrorCode.UNAUTHORIZED)
@@ -48,7 +48,10 @@ export const orderController = {
 
     if (!result.success) {
       set.status = result.error === 'Order tidak ditemukan' ? 404 : 403
-      return errorResponse(result.error!, result.error === 'Order tidak ditemukan' ? ErrorCode.NOT_FOUND : ErrorCode.FORBIDDEN)
+      return errorResponse(
+        result.error!,
+        result.error === 'Order tidak ditemukan' ? ErrorCode.NOT_FOUND : ErrorCode.FORBIDDEN
+      )
     }
 
     return successResponse('Detail order berhasil diambil', result.data)
@@ -76,7 +79,7 @@ export const orderController = {
   },
 
   // GET /seller/orders - Get seller's orders
-  async getSellerOrders(user: AuthUser | null, query: { page?: string, limit?: string }, set: any) {
+  async getSellerOrders(user: AuthUser | null, query: { page?: string; limit?: string }, set: any) {
     if (!user) {
       set.status = 401
       return errorResponse('Unauthorized - Please login', ErrorCode.UNAUTHORIZED)
@@ -101,7 +104,12 @@ export const orderController = {
   },
 
   // PUT /seller/orders/:id/status - Update order status
-  async updateOrderStatus(user: AuthUser | null, orderId: string, body: { status: OrderStatus }, set: any) {
+  async updateOrderStatus(
+    user: AuthUser | null,
+    orderId: string,
+    body: { status: OrderStatus },
+    set: any
+  ) {
     if (!user) {
       set.status = 401
       return errorResponse('Unauthorized - Please login', ErrorCode.UNAUTHORIZED)
@@ -130,5 +138,5 @@ export const orderController = {
     }
 
     return successResponse(result.message!, result.data)
-  }
+  },
 }

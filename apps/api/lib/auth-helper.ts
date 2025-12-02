@@ -33,21 +33,25 @@ export const jwtPlugin = jwt(jwtConfig)
  * Auth derive function - extracts user from JWT token
  * Use with .derive() in route files
  */
-export const authDerive = async ({ headers, cookie, jwtAccess }: any): Promise<{ user: AuthUser | null }> => {
+export const authDerive = async ({
+  headers,
+  cookie,
+  jwtAccess,
+}: any): Promise<{ user: AuthUser | null }> => {
   const authHeader = headers.authorization || headers['Authorization']
   const token = cookie.accessToken?.value || authHeader?.replace('Bearer ', '')
-  
+
   if (!token) {
     return { user: null }
   }
 
   try {
-    const payload = await jwtAccess.verify(token) as JWTPayload | false
+    const payload = (await jwtAccess.verify(token)) as JWTPayload | false
     if (!payload) {
       return { user: null }
     }
     return {
-      user: { id: payload.sub, role: payload.role }
+      user: { id: payload.sub, role: payload.role },
     }
   } catch {
     return { user: null }

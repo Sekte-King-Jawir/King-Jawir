@@ -18,17 +18,21 @@ export const orderRepository = {
                 id: true,
                 name: true,
                 userId: true,
-              }
-            }
-          }
-        }
-      }
+              },
+            },
+          },
+        },
+      },
     })
   },
 
   // Create order with items
-  async createOrder(userId: string, total: number, items: { productId: string, price: number, quantity: number }[]) {
-    return prisma.$transaction(async (tx) => {
+  async createOrder(
+    userId: string,
+    total: number,
+    items: { productId: string; price: number; quantity: number }[]
+  ) {
+    return prisma.$transaction(async tx => {
       // Create order
       const order = await tx.order.create({
         data: {
@@ -40,8 +44,8 @@ export const orderRepository = {
               productId: item.productId,
               price: item.price,
               quantity: item.quantity,
-            }))
-          }
+            })),
+          },
         },
         include: {
           items: {
@@ -57,26 +61,26 @@ export const orderRepository = {
                       id: true,
                       name: true,
                       slug: true,
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
       })
 
       // Reduce stock for each product
       for (const item of items) {
         await tx.product.update({
           where: { id: item.productId },
-          data: { stock: { decrement: item.quantity } }
+          data: { stock: { decrement: item.quantity } },
         })
       }
 
       // Clear user's cart
       await tx.cartItem.deleteMany({
-        where: { userId }
+        where: { userId },
       })
 
       return order
@@ -104,18 +108,18 @@ export const orderRepository = {
                       id: true,
                       name: true,
                       slug: true,
-                    }
-                  }
-                }
-              }
-            }
-          }
+                    },
+                  },
+                },
+              },
+            },
+          },
         },
         orderBy: { createdAt: 'desc' },
         skip,
         take: limit,
       }),
-      prisma.order.count({ where: { userId } })
+      prisma.order.count({ where: { userId } }),
     ])
 
     return { orders, total, page, limit, totalPages: Math.ceil(total / limit) }
@@ -133,7 +137,7 @@ export const orderRepository = {
             email: true,
             phone: true,
             address: true,
-          }
+          },
         },
         items: {
           include: {
@@ -149,23 +153,23 @@ export const orderRepository = {
                     name: true,
                     slug: true,
                     userId: true,
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
     })
   },
 
   // Cancel order
   async cancelOrder(orderId: string) {
-    return prisma.$transaction(async (tx) => {
+    return prisma.$transaction(async tx => {
       // Get order items to restore stock
       const order = await tx.order.findUnique({
         where: { id: orderId },
-        include: { items: true }
+        include: { items: true },
       })
 
       if (!order) return null
@@ -174,14 +178,14 @@ export const orderRepository = {
       for (const item of order.items) {
         await tx.product.update({
           where: { id: item.productId },
-          data: { stock: { increment: item.quantity } }
+          data: { stock: { increment: item.quantity } },
         })
       }
 
       // Update order status
       return tx.order.update({
         where: { id: orderId },
-        data: { status: 'CANCELLED' }
+        data: { status: 'CANCELLED' },
       })
     })
   },
@@ -197,10 +201,10 @@ export const orderRepository = {
           items: {
             some: {
               product: {
-                storeId
-              }
-            }
-          }
+                storeId,
+              },
+            },
+          },
         },
         include: {
           user: {
@@ -210,13 +214,13 @@ export const orderRepository = {
               email: true,
               phone: true,
               address: true,
-            }
+            },
           },
           items: {
             where: {
               product: {
-                storeId
-              }
+                storeId,
+              },
             },
             include: {
               product: {
@@ -225,10 +229,10 @@ export const orderRepository = {
                   name: true,
                   slug: true,
                   image: true,
-                }
-              }
-            }
-          }
+                },
+              },
+            },
+          },
         },
         orderBy: { createdAt: 'desc' },
         skip,
@@ -239,37 +243,40 @@ export const orderRepository = {
           items: {
             some: {
               product: {
-                storeId
-              }
-            }
-          }
-        }
-      })
+                storeId,
+              },
+            },
+          },
+        },
+      }),
     ])
 
     return { orders, total, page, limit, totalPages: Math.ceil(total / limit) }
   },
 
   // Update order status
-  async updateOrderStatus(orderId: string, status: 'PENDING' | 'PAID' | 'SHIPPED' | 'DONE' | 'CANCELLED') {
+  async updateOrderStatus(
+    orderId: string,
+    status: 'PENDING' | 'PAID' | 'SHIPPED' | 'DONE' | 'CANCELLED'
+  ) {
     return prisma.order.update({
       where: { id: orderId },
-      data: { status }
+      data: { status },
     })
   },
 
   // Get user's store
   async getUserStore(userId: string) {
     return prisma.store.findUnique({
-      where: { userId }
+      where: { userId },
     })
   },
 
   // Check if product belongs to store
   async isProductFromStore(productId: string, storeId: string) {
     const product = await prisma.product.findFirst({
-      where: { id: productId, storeId }
+      where: { id: productId, storeId },
     })
     return !!product
-  }
+  },
 }

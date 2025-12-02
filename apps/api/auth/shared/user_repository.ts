@@ -19,8 +19,8 @@ export const userRepository = {
         email: data.email,
         password: data.password,
         name: data.name,
-        emailVerified: false
-      }
+        emailVerified: false,
+      },
     })
   },
 
@@ -32,33 +32,33 @@ export const userRepository = {
         googleId: data.googleId,
         avatar: data.avatar,
         emailVerified: true,
-        password: null
-      }
+        password: null,
+      },
     })
   },
 
   async linkGoogleAccount(userId: string, googleId: string, avatar?: string) {
     return prisma.user.update({
       where: { id: userId },
-      data: { 
+      data: {
         googleId,
         avatar,
-        emailVerified: true
-      }
+        emailVerified: true,
+      },
     })
   },
 
   async updateEmailVerified(id: string, verified: boolean) {
     return prisma.user.update({
       where: { id },
-      data: { emailVerified: verified }
+      data: { emailVerified: verified },
     })
   },
 
   async updatePassword(id: string, password: string) {
     return prisma.user.update({
       where: { id },
-      data: { password }
+      data: { password },
     })
-  }
+  },
 }

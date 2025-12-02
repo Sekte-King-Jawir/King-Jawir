@@ -25,12 +25,12 @@ export const resendVerificationService = {
       userId: user.id,
       token,
       type: 'email',
-      expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000)
+      expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
     })
 
     const verifyUrl = `${process.env.APP_URL}/auth/verify-email?token=${token}`
     await sendVerificationEmail(email, verifyUrl)
 
     return successResponse('Email verifikasi telah dikirim ulang')
-  }
+  },
 }

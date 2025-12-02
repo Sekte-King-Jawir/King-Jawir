@@ -19,5 +19,5 @@ export const categoryController = {
 
   async delete(id: string) {
     return categoryService.delete(id)
-  }
+  },
 }

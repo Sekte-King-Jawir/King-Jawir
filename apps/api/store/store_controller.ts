@@ -19,5 +19,5 @@ export const storeController = {
 
   async delete(userId: string) {
     return storeService.deleteStore(userId)
-  }
+  },
 }

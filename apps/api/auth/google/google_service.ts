@@ -4,9 +4,10 @@ import { refreshTokenRepository } from '../shared/refresh_token_repository'
 
 // Initialize Google OAuth
 const google = new Google(
-  process.env.GOOGLE_CLIENT_ID || '',
-  process.env.GOOGLE_CLIENT_SECRET || '',
-  process.env.GOOGLE_REDIRECT_URI || 'http://localhost:3001/auth/google/callback'
+  process.env.GOOGLE_OAUTH_CLIENT_ID || '',
+  process.env.GOOGLE_OAUTH_CLIENT_SECRET || '',
+  process.env.GOOGLE_REDIRECT_URI ||
+    `http://localhost:${process.env.API_PORT || 4101}/auth/google/callback`
 )
 
 interface GoogleUserInfo {
@@ -22,9 +23,9 @@ export const googleService = {
   createAuthorizationURL() {
     const state = generateState()
     const codeVerifier = generateCodeVerifier()
-    
+
     const url = google.createAuthorizationURL(state, codeVerifier, ['openid', 'email', 'profile'])
-    
+
     return { url: url.toString(), state, codeVerifier }
   },
 
@@ -38,15 +39,15 @@ export const googleService = {
       // Fetch user info from Google
       const response = await fetch('https://openidconnect.googleapis.com/v1/userinfo', {
         headers: {
-          Authorization: `Bearer ${accessToken}`
-        }
+          Authorization: `Bearer ${accessToken}`,
+        },
       })
 
       if (!response.ok) {
         throw new Error('Failed to fetch user info from Google')
       }
 
-      const googleUser = await response.json() as GoogleUserInfo
+      const googleUser = (await response.json()) as GoogleUserInfo
 
       return { success: true, googleUser }
     } catch (error) {
@@ -59,14 +60,14 @@ export const googleService = {
   async findOrCreateUser(googleUser: GoogleUserInfo) {
     // 1. Cek apakah user sudah pernah login dengan Google ID ini
     let user = await userRepository.findByGoogleId(googleUser.sub)
-    
+
     if (user) {
       return { user, isNewUser: false }
     }
 
     // 2. Cek apakah email sudah terdaftar (manual register)
     user = await userRepository.findByEmail(googleUser.email)
-    
+
     if (user) {
       // Link Google account ke user yang sudah ada
       user = await userRepository.linkGoogleAccount(user.id, googleUser.sub, googleUser.picture)
@@ -78,7 +79,7 @@ export const googleService = {
       email: googleUser.email,
       name: googleUser.name,
       googleId: googleUser.sub,
-      avatar: googleUser.picture
+      avatar: googleUser.picture,
     })
 
     return { user, isNewUser: true }
@@ -88,5 +89,5 @@ export const googleService = {
   async createRefreshToken(userId: string, token: string) {
     const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // 7 days
     return refreshTokenRepository.create({ userId, token, expiresAt })
-  }
+  },
 }

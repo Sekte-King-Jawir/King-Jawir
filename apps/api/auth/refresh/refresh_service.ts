@@ -29,7 +29,7 @@ export const refreshService = {
     const newAccessToken = await jwtAccess.sign({
       sub: user.id,
       role: user.role,
-      emailVerified: user.emailVerified
+      emailVerified: user.emailVerified,
     })
 
     const newRefreshToken = await jwtRefresh.sign({ sub: user.id })
@@ -38,12 +38,12 @@ export const refreshService = {
     await refreshTokenRepository.create({
       token: newRefreshToken,
       userId: user.id,
-      expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+      expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
     })
 
     return successResponse('Token berhasil diperbarui', {
       accessToken: newAccessToken,
-      refreshToken: newRefreshToken
+      refreshToken: newRefreshToken,
     })
-  }
+  },
 }

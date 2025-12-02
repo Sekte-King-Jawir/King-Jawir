@@ -21,27 +21,27 @@ export const storeService = {
 
     // Generate atau validate slug
     const storeSlug = slug || generateSlug(name)
-    
+
     // Check slug unique
     if (await storeRepository.slugExists(storeSlug)) {
       return errorResponse('Slug sudah digunakan', ErrorCode.ALREADY_EXISTS)
     }
 
     // Create store dan upgrade role ke SELLER dalam transaction
-    const store = await prisma.$transaction(async (tx) => {
+    const store = await prisma.$transaction(async tx => {
       // Create store
       const newStore = await tx.store.create({
         data: {
           userId,
           name,
-          slug: storeSlug
-        }
+          slug: storeSlug,
+        },
       })
 
       // Upgrade user role ke SELLER
       await tx.user.update({
         where: { id: userId },
-        data: { role: 'SELLER' }
+        data: { role: 'SELLER' },
       })
 
       return newStore
@@ -52,15 +52,15 @@ export const storeService = {
         id: store.id,
         name: store.name,
         slug: store.slug,
-        createdAt: store.createdAt
-      }
+        createdAt: store.createdAt,
+      },
     })
   },
 
   // Get my store
   async getMyStore(userId: string) {
     const store = await storeRepository.findByUserId(userId)
-    
+
     if (!store) {
       return errorResponse('Anda belum memiliki toko', ErrorCode.NOT_FOUND)
     }
@@ -71,21 +71,21 @@ export const storeService = {
         name: store.name,
         slug: store.slug,
         productCount: store._count.products,
-        createdAt: store.createdAt
-      }
+        createdAt: store.createdAt,
+      },
     })
   },
 
   // Update my store
   async updateStore(userId: string, data: { name?: string; slug?: string }) {
     const store = await storeRepository.findByUserId(userId)
-    
+
     if (!store) {
       return errorResponse('Anda belum memiliki toko', ErrorCode.NOT_FOUND)
     }
 
     // Check slug unique jika diubah
-    if (data.slug && await storeRepository.slugExists(data.slug, store.id)) {
+    if (data.slug && (await storeRepository.slugExists(data.slug, store.id))) {
       return errorResponse('Slug sudah digunakan', ErrorCode.ALREADY_EXISTS)
     }
 
@@ -96,15 +96,15 @@ export const storeService = {
         id: updated.id,
         name: updated.name,
         slug: updated.slug,
-        createdAt: updated.createdAt
-      }
+        createdAt: updated.createdAt,
+      },
     })
   },
 
   // Get store by slug (public)
   async getStoreBySlug(slug: string) {
     const store = await storeRepository.findBySlug(slug)
-    
+
     if (!store) {
       return errorResponse('Toko tidak ditemukan', ErrorCode.NOT_FOUND)
     }
@@ -116,15 +116,15 @@ export const storeService = {
         slug: store.slug,
         productCount: store._count.products,
         owner: store.user,
-        createdAt: store.createdAt
-      }
+        createdAt: store.createdAt,
+      },
     })
   },
 
   // Delete store (downgrade SELLER -> CUSTOMER)
   async deleteStore(userId: string) {
     const store = await storeRepository.findByUserId(userId)
-    
+
     if (!store) {
       return errorResponse('Anda belum memiliki toko', ErrorCode.NOT_FOUND)
     }
@@ -132,28 +132,31 @@ export const storeService = {
     // Check if store has active orders
     const hasActiveOrders = await storeRepository.hasActiveOrders(store.id)
     if (hasActiveOrders) {
-      return errorResponse('Tidak dapat menghapus toko. Masih ada pesanan yang belum selesai', ErrorCode.BAD_REQUEST)
+      return errorResponse(
+        'Tidak dapat menghapus toko. Masih ada pesanan yang belum selesai',
+        ErrorCode.BAD_REQUEST
+      )
     }
 
     // Delete store and downgrade role dalam transaction
-    await prisma.$transaction(async (tx) => {
+    await prisma.$transaction(async tx => {
       // Delete all products first (cascade)
       await tx.product.deleteMany({
-        where: { storeId: store.id }
+        where: { storeId: store.id },
       })
 
       // Delete store
       await tx.store.delete({
-        where: { id: store.id }
+        where: { id: store.id },
       })
 
       // Downgrade user role ke CUSTOMER
       await tx.user.update({
         where: { id: userId },
-        data: { role: 'CUSTOMER' }
+        data: { role: 'CUSTOMER' },
       })
     })
 
     return successResponse('Toko berhasil dihapus. Role Anda sekarang CUSTOMER', null)
-  }
+  },
 }

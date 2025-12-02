@@ -10,7 +10,7 @@ export const googleController = {
   async handleCallback(code: string, codeVerifier: string) {
     // Get Google user info
     const result = await googleService.handleCallback(code, codeVerifier)
-    
+
     if (!result.success || !result.googleUser) {
       return { success: false, message: result.error || 'Google authentication failed' }
     }
@@ -26,14 +26,14 @@ export const googleController = {
         name: user.name,
         avatar: user.avatar,
         emailVerified: user.emailVerified,
-        role: user.role
+        role: user.role,
       },
-      isNewUser
+      isNewUser,
     }
   },
 
   // Create refresh token
   async createRefreshToken(userId: string, token: string) {
     return googleService.createRefreshToken(userId, token)
-  }
+  },
 }

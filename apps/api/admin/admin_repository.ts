@@ -8,14 +8,11 @@ export const adminRepository = {
     const skip = (page - 1) * limit
 
     const where: any = {}
-    
+
     if (search) {
-      where.OR = [
-        { name: { contains: search } },
-        { email: { contains: search } }
-      ]
+      where.OR = [{ name: { contains: search } }, { email: { contains: search } }]
     }
-    
+
     if (role) {
       where.role = role
     }
@@ -36,21 +33,21 @@ export const adminRepository = {
             select: {
               id: true,
               name: true,
-              slug: true
-            }
+              slug: true,
+            },
           },
           _count: {
             select: {
               orders: true,
-              reviews: true
-            }
-          }
+              reviews: true,
+            },
+          },
         },
         skip,
         take: limit,
-        orderBy: { createdAt: 'desc' }
+        orderBy: { createdAt: 'desc' },
       }),
-      prisma.user.count({ where })
+      prisma.user.count({ where }),
     ])
 
     return {
@@ -58,7 +55,7 @@ export const adminRepository = {
       total,
       page,
       limit,
-      totalPages: Math.ceil(total / limit)
+      totalPages: Math.ceil(total / limit),
     }
   },
 
@@ -84,19 +81,19 @@ export const adminRepository = {
             slug: true,
             _count: {
               select: {
-                products: true
-              }
-            }
-          }
+                products: true,
+              },
+            },
+          },
         },
         _count: {
           select: {
             orders: true,
             reviews: true,
-            cart: true
-          }
-        }
-      }
+            cart: true,
+          },
+        },
+      },
     })
   },
 
@@ -109,8 +106,8 @@ export const adminRepository = {
         id: true,
         name: true,
         email: true,
-        role: true
-      }
+        role: true,
+      },
     })
   },
 
@@ -124,17 +121,17 @@ export const adminRepository = {
       prisma.cartItem.deleteMany({ where: { userId: id } }),
       // Delete orders (and their items)
       prisma.orderItem.deleteMany({
-        where: { order: { userId: id } }
+        where: { order: { userId: id } },
       }),
       prisma.order.deleteMany({ where: { userId: id } }),
       // Delete store products if seller
       prisma.product.deleteMany({
-        where: { store: { userId: id } }
+        where: { store: { userId: id } },
       }),
       // Delete store
       prisma.store.deleteMany({ where: { userId: id } }),
       // Finally delete user
-      prisma.user.delete({ where: { id } })
+      prisma.user.delete({ where: { id } }),
     ])
   },
 
@@ -148,26 +145,26 @@ export const adminRepository = {
       totalRevenue,
       recentOrders,
       topProducts,
-      ordersByStatus
+      ordersByStatus,
     ] = await Promise.all([
       // Total users
       prisma.user.count(),
-      
+
       // Total sellers
       prisma.user.count({ where: { role: 'SELLER' } }),
-      
+
       // Total products
       prisma.product.count(),
-      
+
       // Total orders
       prisma.order.count(),
-      
+
       // Total revenue (only DONE orders)
       prisma.order.aggregate({
         where: { status: 'DONE' },
-        _sum: { total: true }
+        _sum: { total: true },
       }),
-      
+
       // Recent orders (last 5)
       prisma.order.findMany({
         take: 5,
@@ -180,25 +177,25 @@ export const adminRepository = {
           user: {
             select: {
               name: true,
-              email: true
-            }
-          }
-        }
+              email: true,
+            },
+          },
+        },
       }),
-      
+
       // Top selling products
       prisma.orderItem.groupBy({
         by: ['productId'],
         _sum: { quantity: true },
         orderBy: { _sum: { quantity: 'desc' } },
-        take: 5
+        take: 5,
       }),
-      
+
       // Orders by status
       prisma.order.groupBy({
         by: ['status'],
-        _count: true
-      })
+        _count: true,
+      }),
     ])
 
     // Get product details for top products
@@ -210,15 +207,15 @@ export const adminRepository = {
         name: true,
         slug: true,
         price: true,
-        image: true
-      }
+        image: true,
+      },
     })
 
     const topProductsWithDetails = topProducts.map(tp => {
       const product = productDetails.find(p => p.id === tp.productId)
       return {
         ...product,
-        totalSold: tp._sum.quantity
+        totalSold: tp._sum.quantity,
       }
     })
 
@@ -228,17 +225,20 @@ export const adminRepository = {
         totalSellers,
         totalProducts,
         totalOrders,
-        totalRevenue: Number(totalRevenue._sum.total) || 0
+        totalRevenue: Number(totalRevenue._sum.total) || 0,
       },
       recentOrders: recentOrders.map(o => ({
         ...o,
-        total: Number(o.total)
+        total: Number(o.total),
       })),
       topProducts: topProductsWithDetails,
-      ordersByStatus: ordersByStatus.reduce((acc, item) => {
-        acc[item.status] = item._count
-        return acc
-      }, {} as Record<string, number>)
+      ordersByStatus: ordersByStatus.reduce(
+        (acc, item) => {
+          acc[item.status] = item._count
+          return acc
+        },
+        {} as Record<string, number>
+      ),
     }
-  }
+  },
 }

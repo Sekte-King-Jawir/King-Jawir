@@ -49,5 +49,5 @@ export const productController = {
 
   async getByStoreSlug(storeSlug: string, page?: number, limit?: number) {
     return productService.getByStoreSlug(storeSlug, page, limit)
-  }
+  },
 }

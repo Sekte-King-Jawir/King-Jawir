@@ -2,12 +2,22 @@ import 'dotenv/config'
 import { PrismaClient } from '../generated/prisma/client'
 import { PrismaMariaDb } from '@prisma/adapter-mariadb'
 
+// Parse DATABASE_URL to extract connection details
+const databaseUrl = process.env.DATABASE_URL || ''
+const urlMatch = databaseUrl.match(/mysql:\/\/([^:]+):([^@]+)@([^:]+):(\d+)\/(.+)/)
+
+if (!urlMatch) {
+  throw new Error('Invalid DATABASE_URL format. Expected: mysql://user:password@host:port/database')
+}
+
+const [, user, password, host, port, database] = urlMatch
+
 const adapter = new PrismaMariaDb({
-  host: process.env.DB_HOST || '127.0.0.1',
-  port: Number(process.env.DB_PORT) || 3307,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME
+  host,
+  port: Number(port),
+  user,
+  password,
+  database,
 })
 
 export const prisma = new PrismaClient({ adapter })

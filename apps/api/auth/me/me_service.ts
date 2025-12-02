@@ -16,8 +16,8 @@ export const meService = {
         name: user.name,
         avatar: user.avatar,
         role: user.role,
-        emailVerified: user.emailVerified
-      }
+        emailVerified: user.emailVerified,
+      },
     })
-  }
+  },
 }

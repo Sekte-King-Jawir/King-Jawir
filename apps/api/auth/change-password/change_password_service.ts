@@ -13,7 +13,10 @@ export const changePasswordService = {
 
     // Cek jika user OAuth (tidak punya password)
     if (!user.password) {
-      return errorResponse('Akun ini terdaftar dengan Google. Tidak bisa ubah password.', ErrorCode.OAUTH_NO_PASSWORD)
+      return errorResponse(
+        'Akun ini terdaftar dengan Google. Tidak bisa ubah password.',
+        ErrorCode.OAUTH_NO_PASSWORD
+      )
     }
 
     // Verifikasi password lama
@@ -25,7 +28,10 @@ export const changePasswordService = {
     // Cek password baru tidak sama dengan yang lama
     const sameAsOld = await verifyPassword(newPassword, user.password)
     if (sameAsOld) {
-      return errorResponse('Password baru tidak boleh sama dengan password lama', ErrorCode.SAME_PASSWORD)
+      return errorResponse(
+        'Password baru tidak boleh sama dengan password lama',
+        ErrorCode.SAME_PASSWORD
+      )
     }
 
     // Hash dan update password
@@ -33,5 +39,5 @@ export const changePasswordService = {
     await userRepository.updatePassword(userId, hashedPassword)
 
     return successResponse('Password berhasil diubah')
-  }
+  },
 }

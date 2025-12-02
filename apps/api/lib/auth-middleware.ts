@@ -25,17 +25,19 @@ export interface AuthUser {
  * Verifikasi JWT dan extract user info
  */
 export const authMiddleware = new Elysia({ name: 'auth-middleware' })
-  .use(jwt({
-    name: 'jwtAccess',
-    secret: process.env.JWT_SECRET || 'secret-key-min-32-chars-long!!',
-    exp: '15m'
-  }))
+  .use(
+    jwt({
+      name: 'jwtAccess',
+      secret: process.env.JWT_SECRET || 'secret-key-min-32-chars-long!!',
+      exp: '15m',
+    })
+  )
   .resolve(async ({ headers, cookie, jwtAccess }) => {
     // Ambil token dari cookie atau Authorization header
     // headers bisa lowercase atau mixed case tergantung client
-    const authHeader = headers.authorization || headers['Authorization'] as string | undefined
-    const token = (cookie.accessToken?.value as string | undefined)
-      || authHeader?.replace('Bearer ', '')
+    const authHeader = headers.authorization || (headers['Authorization'] as string | undefined)
+    const token =
+      (cookie.accessToken?.value as string | undefined) || authHeader?.replace('Bearer ', '')
 
     // Debug log (remove in production)
     console.log('Auth Debug:', { hasToken: !!token, tokenStart: token?.substring(0, 30) })
@@ -45,10 +47,12 @@ export const authMiddleware = new Elysia({ name: 'auth-middleware' })
     }
 
     try {
-      const payload = await jwtAccess.verify(token) as JWTPayload | false
-      
-      console.log('JWT Verify Result:', { payload: payload ? { sub: payload.sub, role: payload.role } : false })
-      
+      const payload = (await jwtAccess.verify(token)) as JWTPayload | false
+
+      console.log('JWT Verify Result:', {
+        payload: payload ? { sub: payload.sub, role: payload.role } : false,
+      })
+
       if (!payload) {
         return { user: null as AuthUser | null }
       }
@@ -56,8 +60,8 @@ export const authMiddleware = new Elysia({ name: 'auth-middleware' })
       return {
         user: {
           id: payload.sub,
-          role: payload.role
-        } as AuthUser | null
+          role: payload.role,
+        } as AuthUser | null,
       }
     } catch {
       return { user: null as AuthUser | null }
@@ -100,13 +104,13 @@ export const requireRole = (allowedRoles: Role[]) => {
 export const guards = {
   // Semua authenticated user
   auth: requireAuth,
-  
+
   // Customer atau role lebih tinggi
   customer: requireRole(['CUSTOMER', 'SELLER', 'ADMIN']),
-  
+
   // Seller atau admin
   seller: requireRole(['SELLER', 'ADMIN']),
-  
+
   // Admin only
   admin: requireRole(['ADMIN']),
 }

@@ -6,7 +6,7 @@ export const verifyEmailService = {
   async verify(token: string) {
     // Cari verification token
     const verification = await verificationRepository.findByToken(token)
-    
+
     if (!verification || verification.type !== 'email') {
       return errorResponse('Token tidak valid', ErrorCode.TOKEN_INVALID)
     }
@@ -23,5 +23,5 @@ export const verifyEmailService = {
     await verificationRepository.delete(token)
 
     return successResponse('Email berhasil diverifikasi')
-  }
+  },
 }

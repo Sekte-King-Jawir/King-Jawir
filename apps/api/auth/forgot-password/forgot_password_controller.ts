@@ -7,5 +7,5 @@ export const forgotPasswordController = {
 
   async resetPassword(token: string, newPassword: string) {
     return forgotPasswordService.resetPassword(token, newPassword)
-  }
+  },
 }

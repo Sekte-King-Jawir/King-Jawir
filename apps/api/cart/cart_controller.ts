@@ -40,7 +40,7 @@ export const cartController = {
     }
 
     const result = await cartService.addToCart(user.id, body.productId, quantity)
-    
+
     if (!result.success) {
       set.status = 400
       return errorResponse(result.error!, ErrorCode.BAD_REQUEST)
@@ -50,7 +50,12 @@ export const cartController = {
     return successResponse(result.message || 'Produk ditambahkan ke keranjang', result.data)
   },
 
-  async updateQuantity(user: AuthUser | null, cartItemId: string, body: UpdateQuantityBody, set: any) {
+  async updateQuantity(
+    user: AuthUser | null,
+    cartItemId: string,
+    body: UpdateQuantityBody,
+    set: any
+  ) {
     if (!user) {
       set.status = 401
       return errorResponse('Unauthorized - Please login', ErrorCode.UNAUTHORIZED)
@@ -62,7 +67,7 @@ export const cartController = {
     }
 
     const result = await cartService.updateQuantity(user.id, cartItemId, body.quantity)
-    
+
     if (!result.success) {
       set.status = 400
       return errorResponse(result.error!, ErrorCode.BAD_REQUEST)
@@ -78,7 +83,7 @@ export const cartController = {
     }
 
     const result = await cartService.removeFromCart(user.id, cartItemId)
-    
+
     if (!result.success) {
       set.status = 404
       return errorResponse(result.error!, ErrorCode.NOT_FOUND)
@@ -95,5 +100,5 @@ export const cartController = {
 
     const result = await cartService.clearCart(user.id)
     return successResponse(result.message!)
-  }
+  },
 }
