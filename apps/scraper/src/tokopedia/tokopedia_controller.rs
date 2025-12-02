@@ -45,7 +45,7 @@ pub async fn tokopedia_handler(
     let query = params.query;
     let limit = params.limit;
 
-    println!("📥 Received request: query='{}', limit={}", query, limit);
+    println!("📥 Received request: query='{query}', limit={limit}");
 
     match TokopediaService::new() {
         Ok(service) => match service.scrape_tokopedia(&query, limit) {
@@ -54,15 +54,14 @@ pub async fn tokopedia_handler(
                 Json(ApiResponse::success(products, count))
             }
             Err(e) => {
-                eprintln!("❌ Scraping error: {}", e);
-                Json(ApiResponse::error(format!("Failed to scrape: {}", e)))
+                eprintln!("❌ Scraping error: {e}");
+                Json(ApiResponse::error(format!("Failed to scrape: {e}")))
             }
         },
         Err(e) => {
-            eprintln!("❌ Service initialization error: {}", e);
+            eprintln!("❌ Service initialization error: {e}");
             Json(ApiResponse::error(format!(
-                "Failed to initialize scraper: {}",
-                e
+                "Failed to initialize scraper: {e}"
             )))
         }
     }

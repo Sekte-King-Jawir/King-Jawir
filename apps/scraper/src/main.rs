@@ -44,14 +44,14 @@ async fn main() {
         .layer(cors);
 
     // Start server
-    let addr = format!("{}:{}", SERVER_HOST, SERVER_PORT);
+    let addr = format!("{SERVER_HOST}:{SERVER_PORT}");
     let listener = tokio::net::TcpListener::bind(&addr)
         .await
-        .unwrap_or_else(|_| panic!("Failed to bind to {}", addr));
+        .unwrap_or_else(|_| panic!("Failed to bind to {addr}"));
 
-    println!("🚀 Tokopedia Scraper API running on http://{}", addr);
-    println!("📡 Endpoint: GET http://{}/api/scraper/tokopedia?query=iphone&limit=10", addr);
-    println!("📚 Swagger UI: http://{}/docs", addr);
+    println!("🚀 Tokopedia Scraper API running on http://{addr}");
+    println!("📡 Endpoint: GET http://{addr}/api/scraper/tokopedia?query=iphone&limit=10");
+    println!("📚 Swagger UI: http://{addr}/docs");
 
     axum::serve(listener, app)
         .await

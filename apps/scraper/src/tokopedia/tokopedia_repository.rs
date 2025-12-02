@@ -63,7 +63,7 @@ impl TokopediaRepository {
 
         // Faster scrolling: scroll to bottom in larger steps with shorter delays
         for i in 1..=3 {
-            let scroll_script = format!("window.scrollTo(0, document.body.scrollHeight * {} / 3);", i);
+            let scroll_script = format!("window.scrollTo(0, document.body.scrollHeight * {i} / 3);");
             let _ = tab.evaluate(&scroll_script, false);
             thread::sleep(std::time::Duration::from_millis(300));
         }
@@ -117,7 +117,7 @@ impl TokopediaRepository {
             let full_url = if product_url.starts_with("http") {
                 product_url.clone()
             } else if product_url.starts_with('/') {
-                format!("https://www.tokopedia.com{}", product_url)
+                format!("https://www.tokopedia.com{product_url}")
             } else {
                 product_url.clone()
             };
@@ -162,7 +162,7 @@ impl TokopediaRepository {
             
             // Debug: show all candidates
             if !all_price_candidates.is_empty() && all_price_candidates.len() <= 5 {
-                println!("    💰 Price candidates: {:?}", all_price_candidates);
+                println!("    💰 Price candidates: {all_price_candidates:?}");
             }
             
             // Pick the longest one as it's likely the actual price
@@ -264,7 +264,7 @@ impl TokopediaRepository {
         let mut products = Vec::new();
 
         // Strategy 1: Find arrays with product objects
-        fn find_products<'a>(val: &'a Value, products: &mut Vec<Product>, _limit: usize) {
+        fn find_products(val: &Value, products: &mut Vec<Product>, _limit: usize) {
             match val {
                 Value::Array(arr) => {
                     // Check if this array contains product objects
@@ -316,7 +316,7 @@ impl TokopediaRepository {
             let price_str = if let Some(p) = price.as_str() {
                 p.to_string()
             } else if let Some(p) = price.as_i64() {
-                format!("Rp{}", p)
+                format!("Rp{p}")
             } else {
                 return None;
             };
@@ -327,11 +327,7 @@ impl TokopediaRepository {
                 .and_then(|v| {
                     if let Some(s) = v.as_str() {
                         Some(s.to_string())
-                    } else if let Some(n) = v.as_f64() {
-                        Some(format!("{:.1}", n))
-                    } else {
-                        None
-                    }
+                    } else { v.as_f64().map(|n| format!("{n:.1}")) }
                 });
 
             let image_url = obj.get("imageUrl")

@@ -16,10 +16,10 @@ impl TokopediaService {
 
     /// Main business logic for scraping Tokopedia products
     pub fn scrape_tokopedia(&self, query: &str, _limit: usize) -> Result<Vec<Product>> {
-        println!("🔍 Searching for '{}' on Tokopedia (scraping all rendered products)...", query);
+        println!("🔍 Searching for '{query}' on Tokopedia (scraping all rendered products)...");
 
         let url = self.build_search_url(query);
-        println!("🌐 Navigating to {}", url);
+        println!("🌐 Navigating to {url}");
 
         let html_content = self.repository.fetch_search_page(&url)?;
         println!("✅ Got page content ({} bytes)", html_content.len());

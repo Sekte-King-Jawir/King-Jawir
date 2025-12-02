@@ -19,7 +19,7 @@ impl BrowserClient {
     fn create_launch_options() -> LaunchOptions<'static> {
         use std::ffi::OsStr;
         
-        let user_agent_arg = Box::leak(format!("--user-agent={}", USER_AGENT).into_boxed_str());
+        let user_agent_arg = Box::leak(format!("--user-agent={USER_AGENT}").into_boxed_str());
         
         LaunchOptions::default_builder()
             .headless(true)
