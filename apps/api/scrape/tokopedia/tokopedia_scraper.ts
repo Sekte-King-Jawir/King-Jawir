@@ -40,7 +40,7 @@ export class TokopediaScraper {
         const productElements = document.querySelectorAll('[data-testid="masterProductCard"]')
         const items: any[] = []
 
-        productElements.forEach((element) => {
+        productElements.forEach(element => {
           try {
             // Product name
             const nameElement = element.querySelector('[data-testid="masterProductName"]')

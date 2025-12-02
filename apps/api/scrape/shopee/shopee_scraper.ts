@@ -40,7 +40,7 @@ export class ShopeeScraper {
         const productElements = document.querySelectorAll('.shopee-search-item-result__item')
         const items: any[] = []
 
-        productElements.forEach((element) => {
+        productElements.forEach(element => {
           try {
             // Product name
             const nameElement = element.querySelector(
