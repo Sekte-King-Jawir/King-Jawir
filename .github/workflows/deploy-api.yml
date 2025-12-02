@@ -110,23 +110,23 @@ jobs:
         run: |
           echo "$SSH_KEY" > /tmp/deploy_key && chmod 600 /tmp/deploy_key
           ssh -o StrictHostKeyChecking=no -i /tmp/deploy_key ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} '
-            # Ensure bun and node global bin are available for PM2
-            export PATH=$PATH:/home/asephs/.bun/bin:/home/asephs/.nvm/versions/node/v22.17.1/bin
-            cd ${{ secrets.VPS_TARGET_DIR }}/
+            # Ensure bun and node global bin are av
+           cd ${{ secrets.VPS_TARGET_DIR }}/
 
             # Install dependencies
-            bun install
+            bun install ailable for PM2
+            export PATH=$PATH:/home/asephs/.bun/bin:/home/asephs/.nvm/versions/node/v22.17.1/bin
             cd ${{ secrets.VPS_TARGET_DIR }}/apps/api
 
             # Stop existing PM2 process
             pm2 delete api_store || true
 
-            # Start API Store with PM2
+            # Start API Store with PM2 using Bun interpreter
             if [ -f ecosystem.config.cjs ]; then
-              pm2 start ecosystem.config.cjs --env production
+              pm2 start ecosystem.config.cjs --env production --interpreter $(which bun)
             else
               # Start directly if no ecosystem config
-              pm2 start dist/index.js --name api_store --env production
+              pm2 start dist/index.js --name api_store --env production --interpreter $(which bun)
             fi
             
             pm2 save
