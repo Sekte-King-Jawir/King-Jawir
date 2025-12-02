@@ -2,7 +2,7 @@ import { storeService } from './store_service'
 
 export const storeController = {
   async create(userId: string, name: string, slug?: string) {
-    return storeService.createStore(userId, name, slug)
+    return storeService.create(userId, { name, ...(slug !== undefined && { slug }) })
   },
 
   async getMyStore(userId: string) {
@@ -10,11 +10,11 @@ export const storeController = {
   },
 
   async update(userId: string, data: { name?: string; slug?: string }) {
-    return storeService.updateStore(userId, data)
+    return storeService.update(userId, data)
   },
 
   async getBySlug(slug: string) {
-    return storeService.getStoreBySlug(slug)
+    return storeService.getBySlug(slug)
   },
 
   async delete(userId: string) {

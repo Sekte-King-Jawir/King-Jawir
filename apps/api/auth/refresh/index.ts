@@ -9,21 +9,21 @@ export const refreshRoute = new Elysia()
   .use(
     jwt({
       name: 'jwtAccess',
-      secret: process.env.JWT_SECRET || 'secret-key-min-32-chars-long!!',
+      secret: process.env['JWT_SECRET'] || 'secret-key-min-32-chars-long!!',
       exp: '15m',
     })
   )
   .use(
     jwt({
       name: 'jwtRefresh',
-      secret: process.env.JWT_REFRESH_SECRET || 'refresh-secret-key-min-32-chars!!',
+      secret: process.env['JWT_REFRESH_SECRET'] || 'refresh-secret-key-min-32-chars!!',
       exp: '7d',
     })
   )
   .post(
     '/refresh',
     async ({ set, cookie, jwtAccess, jwtRefresh }) => {
-      const refreshToken = cookie.refreshToken?.value as string | undefined
+      const refreshToken = cookie['refreshToken']?.value as string | undefined
 
       if (!refreshToken) {
         set.status = 401
@@ -40,7 +40,7 @@ export const refreshRoute = new Elysia()
       const { accessToken, refreshToken: newRefreshToken } = result.data!
 
       // Update cookies dengan token baru
-      cookie.accessToken?.set({
+      cookie['accessToken']?.set({
         value: accessToken,
         httpOnly: true,
         secure: isProduction,
@@ -49,7 +49,7 @@ export const refreshRoute = new Elysia()
         path: '/',
       })
 
-      cookie.refreshToken?.set({
+      cookie['refreshToken']?.set({
         value: newRefreshToken,
         httpOnly: true,
         secure: isProduction,

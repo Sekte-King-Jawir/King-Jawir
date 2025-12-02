@@ -1,4 +1,4 @@
-import { scrapeService, ScrapingOptions } from './scrape_service'
+import { scrapeService, type ScrapingOptions } from './scrape_service'
 import { successResponse, errorResponse, ErrorCode } from '../lib/response'
 
 export const scrapeController = {
@@ -17,10 +17,10 @@ export const scrapeController = {
 
       const options: ScrapingOptions = {
         query: query.trim(),
-        sortBy: sortBy as any,
         limit: limit || 10,
         minRating: minRating || 0,
-        maxPrice: maxPrice,
+        ...(sortBy && { sortBy: sortBy as 'cheapest' | 'highest_rating' | 'best_selling' }),
+        ...(maxPrice !== undefined && { maxPrice }),
       }
 
       const products = await scrapeService.scrapeShopee(options)
@@ -58,10 +58,10 @@ export const scrapeController = {
 
       const options: ScrapingOptions = {
         query: query.trim(),
-        sortBy: sortBy as any,
         limit: limit || 10,
         minRating: minRating || 0,
-        maxPrice: maxPrice,
+        ...(sortBy && { sortBy: sortBy as 'cheapest' | 'highest_rating' | 'best_selling' }),
+        ...(maxPrice !== undefined && { maxPrice }),
       }
 
       const products = await scrapeService.scrapeTokopedia(options)
@@ -99,10 +99,10 @@ export const scrapeController = {
 
       const options: ScrapingOptions = {
         query: query.trim(),
-        sortBy: sortBy as any,
         limit: limit || 10,
         minRating: minRating || 0,
-        maxPrice: maxPrice,
+        ...(sortBy && { sortBy: sortBy as 'cheapest' | 'highest_rating' | 'best_selling' }),
+        ...(maxPrice !== undefined && { maxPrice }),
       }
 
       const products = await scrapeService.scrapeAll(options)
@@ -175,7 +175,7 @@ export const scrapeController = {
         query: query.trim(),
         sortBy: 'highest_rating',
         limit: 10,
-        maxPrice: maxPrice,
+        ...(maxPrice !== undefined && { maxPrice }),
       }
 
       const products = await scrapeService.scrapeAll(options)

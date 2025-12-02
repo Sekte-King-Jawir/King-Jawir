@@ -264,7 +264,7 @@ describe('Admin Service', () => {
 
       expect(result.success).toBe(true)
       expect(result.data?.overview.totalUsers).toBe(100)
-      expect(result.data?.ordersByStatus.PENDING).toBe(10)
+      expect(result.data?.ordersByStatus['PENDING']).toBe(10)
       expect(adminRepository.getStats).toHaveBeenCalled()
     })
 

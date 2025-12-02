@@ -12,7 +12,7 @@ function generateSlug(name: string): string {
 
 export const storeService = {
   // Create store (CUSTOMER -> SELLER upgrade)
-  async create(userId: string, data: { name: string; slug?: string; description?: string }) {
+  async create(userId: string, data: { name: string; slug?: string }) {
     // Check apakah user sudah punya store
     const existingStore = await storeRepository.findByUserId(userId)
     if (existingStore) {
@@ -40,7 +40,6 @@ export const storeService = {
           userId,
           name: data.name,
           slug: storeSlug,
-          description: data.description,
         },
       })
 
@@ -83,7 +82,7 @@ export const storeService = {
   },
 
   // Update my store
-  async update(userId: string, data: { name?: string; slug?: string; description?: string }) {
+  async update(userId: string, data: { name?: string; slug?: string }) {
     const store = await storeRepository.findByUserId(userId)
 
     if (!store) {

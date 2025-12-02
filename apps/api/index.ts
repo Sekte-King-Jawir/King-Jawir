@@ -70,8 +70,10 @@ const app = new Elysia()
       description: 'Check if API is running',
     },
   })
-  .listen(process.env.API_PORT || 4101)
+  .listen(process.env['API_PORT'] || 4101)
 
-const port = process.env.API_PORT || 4101
+const port = process.env['API_PORT'] || 4101
 console.log(`🚀 Server running at http://localhost:${port}`)
 console.log(`📚 Swagger docs at http://localhost:${port}/docs`)
+
+export { app }

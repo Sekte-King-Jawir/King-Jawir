@@ -114,7 +114,7 @@ export const productRepository = {
         slug: data.slug,
         price: data.price,
         stock: data.stock,
-        image: data.image,
+        image: data.image ?? null,
       },
       include: {
         category: { select: { id: true, name: true, slug: true } },

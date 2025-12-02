@@ -127,7 +127,7 @@ describe('Product Service', () => {
 
       const result = await productService.getAll()
 
-      expect(typeof result.data?.products[0].price).toBe('number')
+      expect(typeof result.data?.products[0]!.price).toBe('number')
     })
   })
 

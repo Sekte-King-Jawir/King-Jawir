@@ -7,7 +7,7 @@ export const changePasswordRoute = new Elysia()
   .use(
     jwt({
       name: 'jwtAccess',
-      secret: process.env.JWT_SECRET || 'secret-key-min-32-chars-long!!',
+      secret: process.env['JWT_SECRET'] || 'secret-key-min-32-chars-long!!',
       exp: '15m',
     })
   )
@@ -16,8 +16,8 @@ export const changePasswordRoute = new Elysia()
     async ({ body, headers, cookie, set, jwtAccess }) => {
       // Baca dari cookie, fallback ke header untuk API clients
       const token =
-        (cookie.accessToken?.value as string | undefined) ||
-        headers.authorization?.replace('Bearer ', '')
+        (cookie['accessToken']?.value as string | undefined) ||
+        headers['authorization']?.replace('Bearer ', '')
 
       if (!token) {
         set.status = 401

@@ -75,7 +75,7 @@ describe('Scrape Service', () => {
     it('should scrape Shopee products successfully', async () => {
       ;(shopeeScraper.scrapeProducts as any).mockResolvedValue(mockShopeeProducts)
 
-      const options = { query: 'laptop', sortBy: 'cheapest', limit: 10 }
+      const options = { query: 'laptop', sortBy: 'cheapest' as const, limit: 10 }
       const result = await scrapeService.scrapeShopee(options)
 
       expect(result).toEqual(mockShopeeProducts)
@@ -96,7 +96,7 @@ describe('Scrape Service', () => {
     it('should scrape Tokopedia products successfully', async () => {
       ;(tokopediaScraper.scrapeProducts as any).mockResolvedValue(mockTokopediaProducts)
 
-      const options = { query: 'laptop', sortBy: 'highest_rating', limit: 10 }
+      const options = { query: 'laptop', sortBy: 'highest_rating' as const, limit: 10 }
       const result = await scrapeService.scrapeTokopedia(options)
 
       expect(result).toEqual(mockTokopediaProducts)
@@ -145,24 +145,24 @@ describe('Scrape Service', () => {
       const options = { query: 'laptop', sortBy: 'cheapest' as const }
       const result = scrapeService.sortAndFilterProducts(allProducts, options)
 
-      expect(result[0].price).toBeLessThanOrEqual(result[1].price)
-      expect(result[0].price).toBe(100000) // Shopee Product 1
+      expect(result[0]!.price).toBeLessThanOrEqual(result[1]!.price)
+      expect(result[0]!.price).toBe(100000) // Shopee Product 1
     })
 
     it('should sort by highest rating', () => {
       const options = { query: 'laptop', sortBy: 'highest_rating' as const }
       const result = scrapeService.sortAndFilterProducts(allProducts, options)
 
-      expect(result[0].rating).toBeGreaterThanOrEqual(result[1].rating)
-      expect(result[0].rating).toBe(4.8) // Tokopedia Product 1
+      expect(result[0]!.rating).toBeGreaterThanOrEqual(result[1]!.rating)
+      expect(result[0]!.rating).toBe(4.8) // Tokopedia Product 1
     })
 
     it('should sort by best selling', () => {
       const options = { query: 'laptop', sortBy: 'best_selling' as const }
       const result = scrapeService.sortAndFilterProducts(allProducts, options)
 
-      expect(result[0].sold).toBeGreaterThanOrEqual(result[1].sold)
-      expect(result[0].sold).toBe(100) // Shopee Product 1
+      expect(result[0]!.sold).toBeGreaterThanOrEqual(result[1]!.sold ?? 0)
+      expect(result[0]!.sold).toBe(100) // Shopee Product 1
     })
 
     it('should filter by minimum rating', () => {
@@ -200,7 +200,7 @@ describe('Scrape Service', () => {
 
       expect(result).toHaveLength(2)
       expect(result.every(p => p.rating >= 4.0 && p.price <= 150000)).toBe(true)
-      expect(result[0].price).toBeLessThanOrEqual(result[1].price)
+      expect(result[0]!.price).toBeLessThanOrEqual(result[1]!.price)
     })
 
     it('should use default sorting when no sortBy specified', () => {
@@ -208,9 +208,9 @@ describe('Scrape Service', () => {
       const result = scrapeService.sortAndFilterProducts(allProducts, options)
 
       // Default: sort by rating then price
-      expect(result[0].rating).toBeGreaterThanOrEqual(result[1].rating)
-      if (result[0].rating === result[1].rating) {
-        expect(result[0].price).toBeLessThanOrEqual(result[1].price)
+      expect(result[0]!.rating).toBeGreaterThanOrEqual(result[1]!.rating)
+      if (result[0]!.rating === result[1]!.rating) {
+        expect(result[0]!.price).toBeLessThanOrEqual(result[1]!.price)
       }
     })
   })

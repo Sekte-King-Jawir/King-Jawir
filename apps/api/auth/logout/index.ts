@@ -4,15 +4,15 @@ import { logoutController } from './logout_controller'
 export const logoutRoute = new Elysia().post(
   '/logout',
   async ({ cookie }) => {
-    const refreshToken = cookie.refreshToken?.value as string | undefined
+    const refreshToken = cookie['refreshToken']?.value as string | undefined
 
     if (refreshToken) {
       await logoutController.handle(refreshToken)
     }
 
     // Clear cookies
-    cookie.accessToken?.remove()
-    cookie.refreshToken?.remove()
+    cookie['accessToken']?.remove()
+    cookie['refreshToken']?.remove()
 
     return { success: true, message: 'Logout berhasil' }
   },

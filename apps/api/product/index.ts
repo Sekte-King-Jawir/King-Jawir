@@ -1,6 +1,6 @@
 import { Elysia, t } from 'elysia'
 import { productController } from './product_controller'
-import { jwtPlugin, authDerive, isSeller, type AuthUser } from '../lib/auth-helper'
+import { jwtPlugin, authDerive, isSeller } from '../lib/auth-helper'
 import { errorResponse, ErrorCode } from '../lib/response'
 import { v } from '../lib/validators'
 
@@ -13,10 +13,10 @@ export const productRoutes = new Elysia({ prefix: '/products' })
     '/',
     async ({ query }) => {
       const filter = {
-        categoryId: query.categoryId,
-        search: query.search,
-        minPrice: query.minPrice ? Number(query.minPrice) : undefined,
-        maxPrice: query.maxPrice ? Number(query.maxPrice) : undefined,
+        ...(query.categoryId && { categoryId: query.categoryId }),
+        ...(query.search && { search: query.search }),
+        ...(query.minPrice && { minPrice: Number(query.minPrice) }),
+        ...(query.maxPrice && { maxPrice: Number(query.maxPrice) }),
       }
 
       return productController.getAll(
@@ -82,10 +82,10 @@ export const productRoutes = new Elysia({ prefix: '/products' })
       const result = await productController.create(user.id, {
         categoryId: body.categoryId,
         name: body.name,
-        slug: body.slug,
         price: body.price,
         stock: body.stock,
-        image: body.image,
+        ...(body.slug && { slug: body.slug }),
+        ...(body.image && { image: body.image }),
       })
 
       if (!result.success) {

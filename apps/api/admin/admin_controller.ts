@@ -93,7 +93,7 @@ export const adminController = {
   },
 
   // GET /admin/stats
-  async getStats(set: Context['set']) {
+  async getStats(_set: Context['set']) {
     const result = await adminService.getStats()
 
     return {

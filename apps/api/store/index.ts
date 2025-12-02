@@ -1,6 +1,6 @@
 import { Elysia, t } from 'elysia'
 import { storeController } from './store_controller'
-import { jwtPlugin, authDerive, isSeller, type AuthUser } from '../lib/auth-helper'
+import { jwtPlugin, authDerive, isSeller } from '../lib/auth-helper'
 import { errorResponse, ErrorCode } from '../lib/response'
 import { v } from '../lib/validators'
 
