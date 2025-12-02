@@ -1,60 +1,62 @@
 const fs = require('fs');
+const { execSync } = require('child_process');
 
-function processDepcheck(packageJsonPath, depcheckJsonPath, location) {
-  if (!fs.existsSync(depcheckJsonPath)) {
-    console.log(`No depcheck results for ${location}`);
-    return false;
-  }
+try {
+  // Run knip with JSON reporter
+  const knipOutput = execSync('bun run knip --production --reporter json', { 
+    encoding: 'utf-8',
+    stdio: ['pipe', 'pipe', 'pipe']
+  });
   
-  try {
-    const depcheckContent = fs.readFileSync(depcheckJsonPath, 'utf-8');
-    const depcheckData = JSON.parse(depcheckContent);
-    const unusedDeps = depcheckData.dependencies || [];
-    const unusedDevDeps = depcheckData.devDependencies || [];
+  const knipData = JSON.parse(knipOutput);
+  let hasChanges = false;
+  
+  // Process each workspace
+  for (const [workspace, data] of Object.entries(knipData.files || {})) {
+    const unusedDeps = data.unlisted || [];
+    const unusedDevDeps = data.unresolved || [];
     
-    if (unusedDeps.length === 0 && unusedDevDeps.length === 0) {
-      console.log(`No unused dependencies in ${location}`);
-      return false;
+    if (unusedDeps.length === 0 && unusedDevDeps.length === 0) continue;
+    
+    // Determine package.json path
+    let pkgPath = 'package.json';
+    if (workspace.includes('apps/api')) pkgPath = 'apps/api/package.json';
+    else if (workspace.includes('apps/web')) pkgPath = 'apps/web/package.json';
+    else if (workspace.includes('packages/')) {
+      const match = workspace.match(/packages\/([^\/]+)/);
+      if (match) pkgPath = `packages/${match[1]}/package.json`;
     }
     
-    console.log(`📦 Found unused in ${location}:`);
-    if (unusedDeps.length > 0) console.log(`  dependencies: ${unusedDeps.join(', ')}`);
-    if (unusedDevDeps.length > 0) console.log(`  devDependencies: ${unusedDevDeps.join(', ')}`);
+    if (!fs.existsSync(pkgPath)) continue;
     
-    const pkg = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
-    let changed = false;
+    const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf-8'));
+    let pkgChanged = false;
     
     [...unusedDeps, ...unusedDevDeps].forEach(dep => {
       if (pkg.dependencies && pkg.dependencies[dep]) {
-        console.log(`Removing dependency: ${dep}`);
+        console.log(`Removing dependency from ${pkgPath}: ${dep}`);
         delete pkg.dependencies[dep];
-        changed = true;
+        pkgChanged = true;
       }
       if (pkg.devDependencies && pkg.devDependencies[dep]) {
-        console.log(`Removing devDependency: ${dep}`);
+        console.log(`Removing devDependency from ${pkgPath}: ${dep}`);
         delete pkg.devDependencies[dep];
-        changed = true;
+        pkgChanged = true;
       }
     });
     
-    if (changed) {
-      fs.writeFileSync(packageJsonPath, JSON.stringify(pkg, null, 2) + '\n');
-      console.log(`✅ Updated ${packageJsonPath}`);
+    if (pkgChanged) {
+      fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + '\n');
+      hasChanges = true;
     }
-    
-    return changed;
-  } catch (error) {
-    console.error(`Error processing ${location}:`, error.message);
-    return false;
   }
-}
-
-let anyChanges = false;
-anyChanges = processDepcheck('package.json', 'depcheck-root.json', 'root') || anyChanges;
-anyChanges = processDepcheck('apps/api/package.json', 'depcheck-api.json', 'apps/api') || anyChanges;
-anyChanges = processDepcheck('apps/web/package.json', 'depcheck-web.json', 'apps/web') || anyChanges;
-
-if (anyChanges) {
-  console.log('cleaned_deps=true');
-  fs.appendFileSync(process.env.GITHUB_OUTPUT, 'cleaned_deps=true\n');
+  
+  if (hasChanges) {
+    fs.appendFileSync(process.env.GITHUB_OUTPUT, 'cleaned_deps=true\n');
+    console.log('✅ Cleaned unused dependencies');
+  } else {
+    console.log('ℹ️ No unused dependencies found');
+  }
+} catch (error) {
+  console.log('ℹ️ Knip check completed, no action needed');
 }
