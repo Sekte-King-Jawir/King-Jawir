@@ -1,4 +1,5 @@
 import { Elysia } from 'elysia'
+import { cors } from '@elysiajs/cors'
 import { swagger } from '@elysiajs/swagger'
 import { authRoutes } from './auth'
 import { storeRoutes, publicStoreRoutes } from './store'
@@ -11,6 +12,14 @@ import { reviewRoutes, productReviewsRoute } from './review'
 import { adminRoutes } from './admin'
 
 const app = new Elysia()
+  .use(
+    cors({
+      origin: process.env.WEB_URL || 'http://localhost:3000',
+      credentials: true,
+      allowedHeaders: ['Content-Type', 'Authorization'],
+      methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    })
+  )
   .use(
     swagger({
       path: '/docs',
