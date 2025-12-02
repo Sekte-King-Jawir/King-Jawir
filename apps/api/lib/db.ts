@@ -15,9 +15,10 @@ if (process.env.NODE_ENV === 'test') {
 } else if (!databaseUrl) {
   prisma = new PrismaClient({} as any)
 } else {
-  const urlMatch = databaseUrl.match(/mysql:\/\/([^:]+):([^@]+)@([^:]+):(\d+)\/(.+)/)
+  const urlMatch = databaseUrl.match(/mysql:\/\/([^:]+):([^@]+)@([^:/]+):(\d+)\/([^?]+)/)
 
   if (!urlMatch) {
+    console.error('DATABASE_URL:', databaseUrl)
     throw new Error(
       'Invalid DATABASE_URL format. Expected: mysql://user:password@host:port/database'
     )
