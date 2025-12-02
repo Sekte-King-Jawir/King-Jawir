@@ -1,0 +1,65 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "workspaces": {
+    ".": {
+      "entry": ["turbo.json"],
+      "project": ["**/*.{js,ts,tsx,jsx,json}"]
+    },
+    "apps/api": {
+      "entry": [
+        "index.ts",
+        "prisma/seed.ts",
+        "lib/**/*.ts",
+        "auth/**/*.ts",
+        "*/index.ts",
+        "*/*_service.ts",
+        "*/*_controller.ts",
+        "*/*_repository.ts"
+      ],
+      "project": ["**/*.{js,ts,tsx,jsx}"]
+    },
+    "apps/web": {
+      "entry": ["app/**/*.{ts,tsx}", "next.config.js"],
+      "project": ["**/*.{js,ts,tsx,jsx}"]
+    },
+    "packages/*": {
+      "entry": ["src/**/*.{ts,tsx}", "index.{ts,tsx}"],
+      "project": ["**/*.{js,ts,tsx,jsx}"]
+    }
+  },
+  "ignore": [
+    "**/*.config.{js,cjs,mjs}",
+    "**/*.test.{ts,tsx,js,jsx}",
+    "**/test/**",
+    "**/__tests__/**",
+    "**/dist/**",
+    "**/.next/**",
+    "**/coverage/**",
+    "**/node_modules/**"
+  ],
+  "ignoreDependencies": [
+    "typescript",
+    "prettier",
+    "eslint",
+    "turbo",
+    "@types/*",
+    "lefthook",
+    "knip",
+    "better-auth",
+    "react-dom",
+    "@prisma/client",
+    "@prisma/adapter-mariadb",
+    "prismabox",
+    "dotenv",
+    "puppeteer",
+    "@ai-sdk/openai",
+    "@elysiajs/cookie",
+    "@elysiajs/jwt",
+    "ai",
+    "arctic",
+    "bcryptjs",
+    "cheerio",
+    "nodemailer"
+  ],
+  "ignoreBinaries": ["bunx", "bun"]
+}

@@ -9,6 +9,7 @@ import { cartRoutes } from './cart'
 import { orderRoutes, sellerOrderRoutes } from './order'
 import { reviewRoutes, productReviewsRoute } from './review'
 import { adminRoutes } from './admin'
+import { scrapeRoutes } from './scrape'
 
 const app = new Elysia()
   .use(
@@ -30,6 +31,7 @@ const app = new Elysia()
           { name: 'Orders', description: 'Order management' },
           { name: 'Reviews', description: 'Product reviews' },
           { name: 'Admin', description: 'Admin management' },
+          { name: 'Scraping', description: 'Product scraping from Shopee and Tokopedia' },
         ],
         components: {
           securitySchemes: {
@@ -60,6 +62,7 @@ const app = new Elysia()
   .use(reviewRoutes)
   .use(productReviewsRoute)
   .use(adminRoutes)
+  .use(scrapeRoutes)
   .get('/', () => ({ message: 'Marketplace API' }), {
     detail: {
       tags: ['General'],

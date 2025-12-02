@@ -8,9 +8,15 @@ interface ButtonProps {
   appName: string
 }
 
-export const Button = ({ children, className, appName }: ButtonProps) => {
+export const Button = ({ children, className, appName }: ButtonProps): React.JSX.Element => {
   return (
-    <button className={className} onClick={() => alert(`Hello from your ${appName} app!`)}>
+    <button
+      className={className}
+      onClick={(): void => {
+        // eslint-disable-next-line no-console
+        console.log(`Hello from your ${appName} app!`)
+      }}
+    >
       {children}
     </button>
   )
