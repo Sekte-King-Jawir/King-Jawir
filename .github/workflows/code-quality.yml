@@ -66,21 +66,21 @@ jobs:
         continue-on-error: true
         run: |
           echo "📦 Running depcheck on root..."
-          bun run depcheck --json > depcheck-root.json 2>&1 || true
+          bun run depcheck --json 2>/dev/null > depcheck-root.json || echo '{"dependencies":[],"devDependencies":[]}' > depcheck-root.json
 
       - name: Run Depcheck on Apps/API
         continue-on-error: true
         working-directory: apps/api
         run: |
           echo "📦 Running depcheck on apps/api..."
-          bun run depcheck --json > ../../depcheck-api.json 2>&1 || true
+          bun run depcheck --json 2>/dev/null > ../../depcheck-api.json || echo '{"dependencies":[],"devDependencies":[]}' > ../../depcheck-api.json
 
       - name: Run Depcheck on Apps/Web
         continue-on-error: true
         working-directory: apps/web
         run: |
           echo "📦 Running depcheck on apps/web..."
-          bun run depcheck --json > ../../depcheck-web.json 2>&1 || true
+          bun run depcheck --json 2>/dev/null > ../../depcheck-web.json || echo '{"dependencies":[],"devDependencies":[]}' > ../../depcheck-web.json
 
       - name: Remove Unused Dependencies
         id: depcheck
@@ -101,18 +101,21 @@ jobs:
               const depcheckContent = fs.readFileSync(depcheckJsonPath, 'utf-8');
               const depcheckData = JSON.parse(depcheckContent);
               const unusedDeps = depcheckData.dependencies || [];
+              const unusedDevDeps = depcheckData.devDependencies || [];
               
-              if (unusedDeps.length === 0) {
+              if (unusedDeps.length === 0 && unusedDevDeps.length === 0) {
                 console.log(`No unused dependencies in ${location}`);
                 return false;
               }
               
-              console.log(`📦 Found unused dependencies in ${location}:`, unusedDeps);
+              console.log(`📦 Found unused in ${location}:`);
+              if (unusedDeps.length > 0) console.log(`  dependencies: ${unusedDeps.join(', ')}`);
+              if (unusedDevDeps.length > 0) console.log(`  devDependencies: ${unusedDevDeps.join(', ')}`);
               
               const pkg = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
               let changed = false;
               
-              unusedDeps.forEach(dep => {
+              [...unusedDeps, ...unusedDevDeps].forEach(dep => {
                 if (pkg.dependencies && pkg.dependencies[dep]) {
                   console.log(`Removing dependency: ${dep}`);
                   delete pkg.dependencies[dep];
@@ -249,3 +252,10 @@ jobs:
           else
             echo "**Status**: No changes needed - codebase is clean! 🎉" >> $GITHUB_STEP_SUMMARY
           fi
+
+      # ===== 6. CLEANUP TEMPORARY FILES =====
+      - name: Cleanup Artifacts
+        if: always()
+        run: |
+          rm -f depcheck-*.json cleanup-deps.js typecheck-report.txt || true
+          echo "🧹 Cleaned up temporary files"
