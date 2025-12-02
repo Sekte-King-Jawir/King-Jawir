@@ -1,7 +1,7 @@
 name: Auto Format on Merge
 
 on:
-  workflow_dispatch:
+  workflow_dispatch: # Manual triggera
   push:
     branches:
       - main

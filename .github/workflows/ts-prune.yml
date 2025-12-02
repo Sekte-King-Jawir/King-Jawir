@@ -1,7 +1,7 @@
 name: TS-Prune - Clean Unused Exports
 
 on:
-  workflow_dispatch: # Manual trigger
+  workflow_dispatch: # Manual triggera
   push:
     branches:
       - main
