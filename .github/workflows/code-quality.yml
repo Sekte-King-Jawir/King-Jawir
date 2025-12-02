@@ -87,59 +87,90 @@ jobs:
         run: |
           echo "Processing depcheck results..."
           
-          # Function to remove unused dependencies
-          remove_unused_deps() {
-            local package_json=$1
-            local depcheck_json=$2
-            local location=$3
+          # Create cleanup script
+          cat > cleanup-deps.js << 'EOF'
+          const fs = require('fs');
+          
+          function processDepcheck(packageJsonPath, depcheckJsonPath, location) {
+            if (!fs.existsSync(depcheckJsonPath)) {
+              console.log(`No depcheck results for ${location}`);
+              return false;
+            }
             
-            if [ ! -f "$depcheck_json" ]; then
-              echo "No depcheck results for $location"
-              return
-            fi
-            
-            # Extract unused dependencies
-            local unused_deps=$(cat "$depcheck_json" | bun run -e "console.log(JSON.stringify(JSON.parse(require('fs').readFileSync(0, 'utf-8')).dependencies || []))")
-            
-            if [ "$unused_deps" != "[]" ] && [ "$unused_deps" != "" ]; then
-              echo "📦 Found unused dependencies in $location:"
-              echo "$unused_deps"
+            try {
+              const depcheckContent = fs.readFileSync(depcheckJsonPath, 'utf-8');
+              const depcheckData = JSON.parse(depcheckContent);
+              const unusedDeps = depcheckData.dependencies || [];
               
-              # Parse and remove each unused dependency
-              echo "$unused_deps" | bun run -e "
-                const deps = JSON.parse(require('fs').readFileSync(0, 'utf-8'));
-                const pkg = JSON.parse(require('fs').readFileSync('$package_json', 'utf-8'));
-                let changed = false;
-                
-                deps.forEach(dep => {
-                  if (pkg.dependencies && pkg.dependencies[dep]) {
-                    console.log('Removing dependency:', dep);
-                    delete pkg.dependencies[dep];
-                    changed = true;
-                  }
-                  if (pkg.devDependencies && pkg.devDependencies[dep]) {
-                    console.log('Removing devDependency:', dep);
-                    delete pkg.devDependencies[dep];
-                    changed = true;
-                  }
-                });
-                
-                if (changed) {
-                  require('fs').writeFileSync('$package_json', JSON.stringify(pkg, null, 2) + '\n');
-                  console.log('✅ Updated $package_json');
+              if (unusedDeps.length === 0) {
+                console.log(`No unused dependencies in ${location}`);
+                return false;
+              }
+              
+              console.log(`📦 Found unused dependencies in ${location}:`, unusedDeps);
+              
+              const pkg = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
+              let changed = false;
+              
+              unusedDeps.forEach(dep => {
+                if (pkg.dependencies && pkg.dependencies[dep]) {
+                  console.log(`Removing dependency: ${dep}`);
+                  delete pkg.dependencies[dep];
+                  changed = true;
                 }
-              "
+                if (pkg.devDependencies && pkg.devDependencies[dep]) {
+                  console.log(`Removing devDependency: ${dep}`);
+                  delete pkg.devDependencies[dep];
+                  changed = true;
+                }
+              });
               
-              echo "cleaned_deps=true" >> $GITHUB_OUTPUT
-            fi
+              if (changed) {
+                fs.writeFileSync(packageJsonPath, JSON.stringify(pkg, null, 2) + '\n');
+                console.log(`✅ Updated ${packageJsonPath}`);
+              }
+              
+              return changed;
+            } catch (error) {
+              console.error(`Error processing ${location}:`, error.message);
+              return false;
+            }
           }
           
-          # Process each location
-          remove_unused_deps "package.json" "depcheck-root.json" "root"
-          remove_unused_deps "apps/api/package.json" "depcheck-api.json" "apps/api"
-          remove_unused_deps "apps/web/package.json" "depcheck-web.json" "apps/web"
+          let anyChanges = false;
+          anyChanges = processDepcheck('package.json', 'depcheck-root.json', 'root') || anyChanges;
+          anyChanges = processDepcheck('apps/api/package.json', 'depcheck-api.json', 'apps/api') || anyChanges;
+          anyChanges = processDepcheck('apps/web/package.json', 'depcheck-web.json', 'apps/web') || anyChanges;
+          
+          if (anyChanges) {
+            console.log('cleaned_deps=true');
+            fs.appendFileSync(process.env.GITHUB_OUTPUT, 'cleaned_deps=true\n');
+          }
+          EOF
+          
+          node cleanup-deps.js
 
       # ===== 3. CLEAN UNUSED EXPORTS =====
+      - name: Create Root TSConfig
+        run: |
+          cat > tsconfig.json << 'EOF'
+          {
+            "compilerOptions": {
+              "target": "ESNext",
+              "module": "ESNext",
+              "moduleResolution": "bundler",
+              "strict": false,
+              "skipLibCheck": true,
+              "noEmit": true
+            },
+            "references": [
+              { "path": "./apps/api" },
+              { "path": "./apps/web" },
+              { "path": "./packages/ui" }
+            ]
+          }
+          EOF
+
       - name: Install TS-Prune
         run: bun add -D ts-prune
 
