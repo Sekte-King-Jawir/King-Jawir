@@ -10,7 +10,6 @@
     "check-types": "turbo run check-types",
     "knip": "knip",
     "knip:production": "knip --production",
-    "prepare": "lefthook install || echo 'Lefthook install skipped'",
     "copyenv": "node -e \"const fs = require('fs'); const path = require('path'); const rootEnv = path.join(__dirname, '.env'); if (!fs.existsSync(rootEnv)) { console.error('Root .env file not found'); process.exit(1); } const appsDir = path.join(__dirname, 'apps'); fs.readdirSync(appsDir).forEach(dir => { const fullDir = path.join(appsDir, dir); if (fs.statSync(fullDir).isDirectory() && !['.git', '.github', 'node_modules', '.turbo', '.next', '.vscode', 'dist', 'public', 'src', 'coverage', 'logs', '.devcontainer', '.yarn', 'target'].includes(dir)) { const dest = path.join(fullDir, '.env'); fs.copyFileSync(rootEnv, dest); console.log('Copied .env to ' + dest); } });\"",
     "web:dev": "turbo run dev --filter=web",
     "web:build": "turbo run build --filter=web",
@@ -23,7 +22,6 @@
   },
   "devDependencies": {
     "knip": "^5.71.0",
-    "lefthook": "^2.0.4",
     "prettier": "^3.6.2",
     "turbo": "^2.6.1",
     "typescript": "5.9.2"
