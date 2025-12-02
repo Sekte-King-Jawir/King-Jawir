@@ -47,13 +47,16 @@ export default function RegisterPage(): React.JSX.Element {
     setLoading(true)
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4101'}/auth/register`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ name, email, password }),
-      })
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4101'}/auth/register`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ name, email, password }),
+        }
+      )
 
       const data: RegisterResponse = await response.json()
 
@@ -63,7 +66,7 @@ export default function RegisterPage(): React.JSX.Element {
       }
 
       setSuccess('Registrasi berhasil! Silakan cek email untuk verifikasi akun.')
-      
+
       // Reset form
       setName('')
       setEmail('')
@@ -100,7 +103,7 @@ export default function RegisterPage(): React.JSX.Element {
               type="text"
               id="name"
               value={name}
-              onChange={(e) => setName(e.target.value)}
+              onChange={e => setName(e.target.value)}
               className={styles.input}
               placeholder="Masukkan nama lengkap"
               required
@@ -116,7 +119,7 @@ export default function RegisterPage(): React.JSX.Element {
               type="email"
               id="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={e => setEmail(e.target.value)}
               className={styles.input}
               placeholder="nama@email.com"
               required
@@ -131,7 +134,7 @@ export default function RegisterPage(): React.JSX.Element {
               type="password"
               id="password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={e => setPassword(e.target.value)}
               className={styles.input}
               placeholder="Minimal 6 karakter"
               required
@@ -147,7 +150,7 @@ export default function RegisterPage(): React.JSX.Element {
               type="password"
               id="confirmPassword"
               value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
+              onChange={e => setConfirmPassword(e.target.value)}
               className={styles.input}
               placeholder="Ulangi password"
               required

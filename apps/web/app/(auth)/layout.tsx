@@ -5,10 +5,6 @@ export const metadata: Metadata = {
   description: 'Login atau Daftar ke King Jawir Marketplace',
 }
 
-export default function AuthLayout({
-  children,
-}: {
-  children: React.ReactNode
-}): React.JSX.Element {
+export default function AuthLayout({ children }: { children: React.ReactNode }): React.JSX.Element {
   return <>{children}</>
 }

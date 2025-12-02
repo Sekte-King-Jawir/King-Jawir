@@ -32,14 +32,17 @@ export default function LoginPage(): React.JSX.Element {
     setLoading(true)
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4101'}/auth/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-        credentials: 'include',
-      })
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4101'}/auth/login`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email, password }),
+          credentials: 'include',
+        }
+      )
 
       const data: LoginResponse = await response.json()
 
@@ -82,7 +85,7 @@ export default function LoginPage(): React.JSX.Element {
               type="email"
               id="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={e => setEmail(e.target.value)}
               className={styles.input}
               placeholder="nama@email.com"
               required
@@ -97,7 +100,7 @@ export default function LoginPage(): React.JSX.Element {
               type="password"
               id="password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={e => setPassword(e.target.value)}
               className={styles.input}
               placeholder="Masukkan password"
               required
