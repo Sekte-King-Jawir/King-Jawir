@@ -65,7 +65,7 @@ export async function resetPasswordAction(
     return {
       success: true,
       message: 'Password berhasil direset!',
-      redirectTo: '/login',
+      redirectTo: '/auth/login',
     }
   } catch (err) {
     console.error('Reset password error:', err)

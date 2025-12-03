@@ -76,7 +76,7 @@ export function ResetPasswordForm({ token }: { token: string }): React.JSX.Eleme
         </form>
 
         <p className={styles.footer}>
-          <Link href="/login" className={styles.link}>
+          <Link href="/auth/login" className={styles.link}>
             Kembali ke Login
           </Link>
         </p>

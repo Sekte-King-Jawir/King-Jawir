@@ -108,7 +108,7 @@ export async function loginAction(
         return {
           success: false,
           message: data.message !== '' ? data.message : 'Email belum diverifikasi',
-          redirectTo: '/resend-verification',
+          redirectTo: '/auth/resend-verification',
         }
       }
 

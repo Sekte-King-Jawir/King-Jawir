@@ -44,7 +44,7 @@ export function ForgotPasswordForm(): React.JSX.Element {
 
         <p className={styles.footer}>
           Ingat password?{' '}
-          <Link href="/login" className={styles.link}>
+          <Link href="/auth/login" className={styles.link}>
             Login sekarang
           </Link>
         </p>

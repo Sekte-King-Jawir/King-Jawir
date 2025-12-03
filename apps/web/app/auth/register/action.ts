@@ -59,7 +59,7 @@ export async function registerAction(
     return {
       success: true,
       message: 'Registrasi berhasil! Silakan cek email untuk verifikasi akun.',
-      redirectTo: '/login',
+      redirectTo: '/auth/login',
     }
   } catch (err) {
     console.error('Register error:', err)

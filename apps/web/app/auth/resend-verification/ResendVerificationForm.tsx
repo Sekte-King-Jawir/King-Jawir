@@ -44,7 +44,7 @@ export function ResendVerificationForm(): React.JSX.Element {
 
         <p className={styles.footer}>
           Sudah verifikasi?{' '}
-          <Link href="/login" className={styles.link}>
+          <Link href="/auth/login" className={styles.link}>
             Login sekarang
           </Link>
         </p>
