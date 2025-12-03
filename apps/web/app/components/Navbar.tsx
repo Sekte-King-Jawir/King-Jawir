@@ -1,11 +1,13 @@
-"use client"
+'use client'
 import Link from 'next/link'
 import styles from './Navbar.module.css'
 
 export default function Navbar(): React.ReactElement {
   return (
     <header className={styles.root}>
-      <div className={styles.brand}><Link href="/">King Jawir</Link></div>
+      <div className={styles.brand}>
+        <Link href="/">King Jawir</Link>
+      </div>
       <div className={styles.search}>
         <input aria-label="search" placeholder="Cari produk, kategori..." />
       </div>
