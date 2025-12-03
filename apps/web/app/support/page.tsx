@@ -49,12 +49,55 @@ export default function SupportPage(): React.JSX.Element {
   const [result, setResult] = useState<PriceAnalysisResult | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [isDarkMode, setIsDarkMode] = useState(false)
+  const [loadingProgress, setLoadingProgress] = useState(0)
+  const [currentAnalysisStep, setCurrentAnalysisStep] = useState(0)
+
+  const analysisSteps = [
+    '🔍 Scanning Tokopedia marketplace...',
+    '📊 Gathering product data...',
+    '🤖 Running AI price analysis...',
+    '📈 Calculating market statistics...',
+    '💡 Generating insights...',
+    '🎯 Preparing recommendations...',
+    '✨ Finalizing results...'
+  ]
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme')
     const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches
     setIsDarkMode(savedTheme === 'dark' || (savedTheme === null && systemTheme))
   }, [])
+
+  useEffect(() => {
+    let progressInterval: NodeJS.Timeout
+    let stepInterval: NodeJS.Timeout
+
+    if (loading) {
+      setLoadingProgress(0)
+      setCurrentAnalysisStep(0)
+      
+      // Progress simulation
+      progressInterval = setInterval(() => {
+        setLoadingProgress(prev => {
+          if (prev >= 95) return prev
+          return prev + Math.random() * 3
+        })
+      }, 800)
+
+      // Step rotation
+      stepInterval = setInterval(() => {
+        setCurrentAnalysisStep(prev => (prev + 1) % analysisSteps.length)
+      }, 3000)
+    } else {
+      setLoadingProgress(0)
+      setCurrentAnalysisStep(0)
+    }
+
+    return () => {
+      clearInterval(progressInterval)
+      clearInterval(stepInterval)
+    }
+  }, [loading, analysisSteps.length])
 
   const toggleTheme = (): void => {
     const newTheme = !isDarkMode
@@ -87,7 +130,11 @@ export default function SupportPage(): React.JSX.Element {
       const data: ApiResponse = (await response.json()) as ApiResponse
 
       if (data.success === true && data.data !== null && data.data !== undefined) {
-        setResult(data.data)
+        setLoadingProgress(100)
+        const resultData = data.data
+        setTimeout(() => {
+          setResult(resultData)
+        }, 500)
       } else {
         setError(data.error?.code ?? 'Failed to analyze prices')
       }
@@ -185,7 +232,7 @@ export default function SupportPage(): React.JSX.Element {
             {loading ? (
               <>
                 <div className={styles.spinner} />
-                Analyzing Market Data...
+                Processing...
               </>
             ) : (
               <>
@@ -195,6 +242,60 @@ export default function SupportPage(): React.JSX.Element {
             )}
           </button>
         </form>
+
+        {loading ? (
+          <div className={styles.loadingContainer}>
+            <div className={styles.loadingCard}>
+              <div className={styles.loadingHeader}>
+                <div className={styles.loadingIcon}>
+                  <div className={styles.pulseRing} />
+                  <div className={styles.pulseRing} />
+                  <div className={styles.pulseRing} />
+                  <BarChart3 size={32} className={styles.chartIcon} />
+                </div>
+                <h3>Analyzing Market Data</h3>
+                <p>This may take up to 30 seconds...</p>
+              </div>
+              
+              <div className={styles.progressSection}>
+                <div className={styles.progressBar}>
+                  <div 
+                    className={styles.progressFill}
+                    style={{ width: `${loadingProgress}%` }}
+                  />
+                </div>
+                <div className={styles.progressText}>
+                  {Math.round(loadingProgress)}% Complete
+                </div>
+              </div>
+
+              <div className={styles.analysisSteps}>
+                <div className={styles.currentStep}>
+                  {analysisSteps[currentAnalysisStep]}
+                </div>
+                <div className={styles.stepIndicators}>
+                  {analysisSteps.map((step, index) => (
+                    <div
+                      key={step}
+                      className={`${styles.stepDot} ${
+                        index <= currentAnalysisStep ? styles.stepDotActive : ''
+                      }`}
+                    />
+                  ))}
+                </div>
+              </div>
+
+              <div className={styles.loadingTips}>
+                <div className={styles.tipIcon}>💡</div>
+                <div className={styles.tipText}>
+                  <strong>Did you know?</strong> Our AI analyzes pricing patterns, 
+                  market trends, and competitor data to give you the most accurate 
+                  price recommendations.
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : null}
 
         {error !== null && error.length > 0 ? (
           <div className={styles.error}>
