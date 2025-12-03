@@ -1,4 +1,5 @@
 import { Elysia } from 'elysia'
+import { cors } from '@elysiajs/cors'
 import { swagger } from '@elysiajs/swagger'
 import { authRoutes } from './auth'
 import { storeRoutes, publicStoreRoutes } from './store'
@@ -9,8 +10,21 @@ import { cartRoutes } from './cart'
 import { orderRoutes, sellerOrderRoutes } from './order'
 import { reviewRoutes, productReviewsRoute } from './review'
 import { adminRoutes } from './admin'
+import { priceAnalysisRoutes } from './price-analysis'
+import { priceAnalysisWebSocket } from './price-analysis/websocket'
 
 const app = new Elysia()
+  .onRequest(({ request }) => {
+    console.log(`[${request.method}] ${request.url} | Origin: ${request.headers.get('origin')}`)
+  })
+  .use(
+    cors({
+      origin: () => true,
+      credentials: true,
+      methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+      allowedHeaders: ['Content-Type', 'Authorization', 'Cookie', 'X-Requested-With'],
+    })
+  )
   .use(
     swagger({
       path: '/docs',
@@ -30,6 +44,7 @@ const app = new Elysia()
           { name: 'Orders', description: 'Order management' },
           { name: 'Reviews', description: 'Product reviews' },
           { name: 'Admin', description: 'Admin management' },
+          { name: 'Price Analysis', description: 'AI-powered price analysis from Tokopedia' },
         ],
         components: {
           securitySchemes: {
@@ -60,6 +75,8 @@ const app = new Elysia()
   .use(reviewRoutes)
   .use(productReviewsRoute)
   .use(adminRoutes)
+  .use(priceAnalysisRoutes)
+  .use(priceAnalysisWebSocket)
   .get('/', () => ({ message: 'Marketplace API' }), {
     detail: {
       tags: ['General'],
