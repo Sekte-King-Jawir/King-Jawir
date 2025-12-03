@@ -4,18 +4,13 @@ import Link from "next/link";
 import Navbar from "./components/Navbar";
 
 export default async function Home() {
-  // Fetch categories and products from local API
+  // Fetch products from local API
   const API_BASE = process.env.API_URL || 'http://localhost:4101'
 
-  const [catRes, prodRes] = await Promise.all([
-    fetch(`${API_BASE}/categories`),
-    fetch(`${API_BASE}/products?limit=8`),
-  ])
+  const prodRes = await fetch(`${API_BASE}/products?limit=8`)
 
-  const catJson = await catRes.json().catch(() => null)
   const prodJson = await prodRes.json().catch(() => null)
 
-  const categories = catJson && catJson.success && catJson.data ? catJson.data.categories : []
   const products = prodJson && prodJson.success && prodJson.data ? prodJson.data.products : []
 
   return (
@@ -117,21 +112,22 @@ export default async function Home() {
         </div>
 
         <div className="grid grid-cols-3 md:grid-cols-6 gap-4">
-          {categories.map((c: any, i: number) => (
+          {[
+            { name: 'Phone', icon: '📱', slug: 'phone' },
+            { name: 'Smart', icon: '⌚', slug: 'smart' },
+            { name: 'Camera', icon: '📷', slug: 'camera' },
+            { name: 'Headphones', icon: '🎧', slug: 'headphones' },
+            { name: 'Computer', icon: '💻', slug: 'computer' },
+            { name: 'Gaming', icon: '🎮', slug: 'gaming' },
+          ].map((category, i) => (
             <div 
-              key={c.id || i} 
+              key={i} 
               className="group bg-white border border-gray-100 rounded-2xl p-6 flex flex-col items-center justify-center hover:shadow-xl hover:-translate-y-2 transition-all duration-300 cursor-pointer"
             >
               <div className="w-16 h-16 bg-gradient-to-br from-purple-100 to-pink-100 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                <Image
-                  src={(c && c.image) || `/img/c_${(c && c.slug) || 'phone'}.png`}
-                  width={40}
-                  height={40}
-                  alt={c.name}
-                  className="object-contain"
-                />
+                <span className="text-3xl">{category.icon}</span>
               </div>
-              <p className="text-sm font-medium text-center">{c.name}</p>
+              <p className="text-sm font-medium text-center">{category.name}</p>
             </div>
           ))}
         </div>
