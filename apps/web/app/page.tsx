@@ -1,7 +1,7 @@
 // app/page.tsx
-import Image from "next/image";
-import Link from "next/link";
-import Navbar from "./components/Navbar";
+import Image from 'next/image'
+import Link from 'next/link'
+import Navbar from './components/Navbar'
 
 export default async function Home() {
   // Fetch products from local API
@@ -26,7 +26,10 @@ export default async function Home() {
               Pro. Beyond
             </span>
             <h1 className="text-4xl md:text-6xl font-bold leading-tight">
-              iPhone 14 <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">Pro</span>
+              iPhone 14{' '}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
+                Pro
+              </span>
             </h1>
             <p className="text-lg text-gray-300 max-w-md">
               Created to change everything for the better. For everyone.
@@ -58,14 +61,21 @@ export default async function Home() {
           {/* Card 1 */}
           <div className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
             <div className="relative overflow-hidden">
-              <Image src="/img/f1.png" width={600} height={300} alt="PS5" className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500" />
+              <Image
+                src="/img/f1.png"
+                width={600}
+                height={300}
+                alt="PS5"
+                className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
+              />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </div>
             <div className="p-6">
               <h3 className="font-bold text-xl">Playstation 5</h3>
               <p className="text-gray-500 mt-2">Play Has No Limits.</p>
               <button className="mt-4 text-sm font-semibold text-purple-600 hover:text-purple-700 flex items-center gap-2 group/btn">
-                Explore <span className="group-hover/btn:translate-x-1 transition-transform">→</span>
+                Explore{' '}
+                <span className="group-hover/btn:translate-x-1 transition-transform">→</span>
               </button>
             </div>
           </div>
@@ -73,14 +83,21 @@ export default async function Home() {
           {/* Card 2 */}
           <div className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
             <div className="relative overflow-hidden">
-              <Image src="/img/f2.png" width={600} height={300} alt="AirPods Max" className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500" />
+              <Image
+                src="/img/f2.png"
+                width={600}
+                height={300}
+                alt="AirPods Max"
+                className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
+              />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </div>
             <div className="p-6">
               <h3 className="font-bold text-xl">AirPods Max</h3>
               <p className="text-gray-500 mt-2">A perfect balance of high-fidelity audio.</p>
               <button className="mt-4 text-sm font-semibold text-purple-600 hover:text-purple-700 flex items-center gap-2 group/btn">
-                Explore <span className="group-hover/btn:translate-x-1 transition-transform">→</span>
+                Explore{' '}
+                <span className="group-hover/btn:translate-x-1 transition-transform">→</span>
               </button>
             </div>
           </div>
@@ -88,14 +105,21 @@ export default async function Home() {
           {/* Card 3 */}
           <div className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
             <div className="relative overflow-hidden">
-              <Image src="/img/f3.png" width={600} height={300} alt="Vision Pro" className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500" />
+              <Image
+                src="/img/f3.png"
+                width={600}
+                height={300}
+                alt="Vision Pro"
+                className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
+              />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </div>
             <div className="p-6">
               <h3 className="font-bold text-xl">Vision Pro</h3>
               <p className="text-gray-500 mt-2">Welcome to Spatial Computing.</p>
               <button className="mt-4 text-sm font-semibold text-purple-600 hover:text-purple-700 flex items-center gap-2 group/btn">
-                Explore <span className="group-hover/btn:translate-x-1 transition-transform">→</span>
+                Explore{' '}
+                <span className="group-hover/btn:translate-x-1 transition-transform">→</span>
               </button>
             </div>
           </div>
@@ -106,7 +130,10 @@ export default async function Home() {
       <section className="max-w-7xl mx-auto px-6 py-16">
         <div className="flex items-center justify-between mb-8">
           <h2 className="text-2xl md:text-3xl font-bold">Browse by Category</h2>
-          <Link href="/categories" className="text-purple-600 hover:text-purple-700 font-medium flex items-center gap-2">
+          <Link
+            href="/categories"
+            className="text-purple-600 hover:text-purple-700 font-medium flex items-center gap-2"
+          >
             View All <span>→</span>
           </Link>
         </div>
@@ -120,8 +147,8 @@ export default async function Home() {
             { name: 'Computer', icon: '💻', slug: 'computer' },
             { name: 'Gaming', icon: '🎮', slug: 'gaming' },
           ].map((category, i) => (
-            <div 
-              key={i} 
+            <div
+              key={i}
               className="group bg-white border border-gray-100 rounded-2xl p-6 flex flex-col items-center justify-center hover:shadow-xl hover:-translate-y-2 transition-all duration-300 cursor-pointer"
             >
               <div className="w-16 h-16 bg-gradient-to-br from-purple-100 to-pink-100 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
@@ -142,9 +169,7 @@ export default async function Home() {
             <span className="inline-block px-4 py-1 bg-white/20 rounded-full text-sm font-medium mb-4">
               🔥 Limited Time Offer
             </span>
-            <h3 className="text-3xl md:text-4xl font-bold mb-4">
-              Up to 50% Off on Selected Items
-            </h3>
+            <h3 className="text-3xl md:text-4xl font-bold mb-4">Up to 50% Off on Selected Items</h3>
             <p className="text-white/80 mb-6">
               Don&apos;t miss out on our biggest sale of the year. Shop now and save big!
             </p>
@@ -159,15 +184,18 @@ export default async function Home() {
       <section className="max-w-7xl mx-auto px-6 py-16">
         <div className="flex items-center justify-between mb-8">
           <h2 className="text-2xl md:text-3xl font-bold">New Arrivals</h2>
-          <Link href="/products" className="text-purple-600 hover:text-purple-700 font-medium flex items-center gap-2">
+          <Link
+            href="/products"
+            className="text-purple-600 hover:text-purple-700 font-medium flex items-center gap-2"
+          >
             View All <span>→</span>
           </Link>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {products.map((p: any, i: number) => (
-            <div 
-              key={p.id || i} 
+            <div
+              key={p.id || i}
               className="group bg-white rounded-2xl p-4 border border-gray-100 hover:shadow-xl hover:-translate-y-2 transition-all duration-300"
             >
               <div className="relative aspect-square bg-gray-50 rounded-xl overflow-hidden mb-4">
@@ -219,18 +247,30 @@ export default async function Home() {
       <footer className="bg-white border-t border-gray-100 py-12">
         <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-10">
           <div>
-            <h3 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-500 text-transparent bg-clip-text mb-4">cyber</h3>
+            <h3 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-500 text-transparent bg-clip-text mb-4">
+              cyber
+            </h3>
             <p className="text-gray-500 text-sm">
-              We are an electronics store providing the best devices with top-notch quality and service.
+              We are an electronics store providing the best devices with top-notch quality and
+              service.
             </p>
             <div className="flex gap-4 mt-6">
-              <a href="#" className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-purple-100 hover:text-purple-600 transition-colors">
+              <a
+                href="#"
+                className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-purple-100 hover:text-purple-600 transition-colors"
+              >
                 𝕏
               </a>
-              <a href="#" className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-purple-100 hover:text-purple-600 transition-colors">
+              <a
+                href="#"
+                className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-purple-100 hover:text-purple-600 transition-colors"
+              >
                 📘
               </a>
-              <a href="#" className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-purple-100 hover:text-purple-600 transition-colors">
+              <a
+                href="#"
+                className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-purple-100 hover:text-purple-600 transition-colors"
+              >
                 📸
               </a>
             </div>
@@ -239,19 +279,29 @@ export default async function Home() {
           <div>
             <h4 className="font-semibold mb-4">Services</h4>
             <ul className="text-sm text-gray-500 space-y-3">
-              <li className="hover:text-purple-600 cursor-pointer transition-colors">Bonus program</li>
+              <li className="hover:text-purple-600 cursor-pointer transition-colors">
+                Bonus program
+              </li>
               <li className="hover:text-purple-600 cursor-pointer transition-colors">Gift cards</li>
-              <li className="hover:text-purple-600 cursor-pointer transition-colors">Credit & Payment</li>
-              <li className="hover:text-purple-600 cursor-pointer transition-colors">Service contracts</li>
+              <li className="hover:text-purple-600 cursor-pointer transition-colors">
+                Credit & Payment
+              </li>
+              <li className="hover:text-purple-600 cursor-pointer transition-colors">
+                Service contracts
+              </li>
             </ul>
           </div>
 
           <div>
             <h4 className="font-semibold mb-4">Assistance</h4>
             <ul className="text-sm text-gray-500 space-y-3">
-              <li className="hover:text-purple-600 cursor-pointer transition-colors">Find a store</li>
+              <li className="hover:text-purple-600 cursor-pointer transition-colors">
+                Find a store
+              </li>
               <li className="hover:text-purple-600 cursor-pointer transition-colors">Delivery</li>
-              <li className="hover:text-purple-600 cursor-pointer transition-colors">Return policy</li>
+              <li className="hover:text-purple-600 cursor-pointer transition-colors">
+                Return policy
+              </li>
               <li className="hover:text-purple-600 cursor-pointer transition-colors">Contact us</li>
             </ul>
           </div>
@@ -259,9 +309,15 @@ export default async function Home() {
           <div>
             <h4 className="font-semibold mb-4">Support</h4>
             <ul className="text-sm text-gray-500 space-y-3">
-              <li className="hover:text-purple-600 cursor-pointer transition-colors">Terms of delivery</li>
-              <li className="hover:text-purple-600 cursor-pointer transition-colors">Return policy</li>
-              <li className="hover:text-purple-600 cursor-pointer transition-colors">Order tracking</li>
+              <li className="hover:text-purple-600 cursor-pointer transition-colors">
+                Terms of delivery
+              </li>
+              <li className="hover:text-purple-600 cursor-pointer transition-colors">
+                Return policy
+              </li>
+              <li className="hover:text-purple-600 cursor-pointer transition-colors">
+                Order tracking
+              </li>
               <li className="hover:text-purple-600 cursor-pointer transition-colors">FAQs</li>
             </ul>
           </div>
@@ -270,12 +326,18 @@ export default async function Home() {
         <div className="max-w-7xl mx-auto px-6 mt-12 pt-8 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-gray-500">© 2025 Cyber. All rights reserved.</p>
           <div className="flex gap-6 text-sm text-gray-500">
-            <a href="#" className="hover:text-purple-600 transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-purple-600 transition-colors">Terms of Service</a>
-            <a href="#" className="hover:text-purple-600 transition-colors">Cookie Settings</a>
+            <a href="#" className="hover:text-purple-600 transition-colors">
+              Privacy Policy
+            </a>
+            <a href="#" className="hover:text-purple-600 transition-colors">
+              Terms of Service
+            </a>
+            <a href="#" className="hover:text-purple-600 transition-colors">
+              Cookie Settings
+            </a>
           </div>
         </div>
       </footer>
     </main>
-  );
+  )
 }
