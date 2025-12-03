@@ -21,12 +21,15 @@ export async function verifyEmailAction(token: string): Promise<ActionResult> {
   }
 
   try {
-    const response = await fetch(`${API_URL}/auth/verify-email?token=${encodeURIComponent(token)}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
+    const response = await fetch(
+      `${API_URL}/auth/verify-email?token=${encodeURIComponent(token)}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    )
 
     const json: unknown = await response.json()
     const data = parseApiResponse(json)
