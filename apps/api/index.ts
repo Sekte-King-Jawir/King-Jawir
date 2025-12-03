@@ -10,14 +10,13 @@ import { cartRoutes } from './cart'
 import { orderRoutes, sellerOrderRoutes } from './order'
 import { reviewRoutes, productReviewsRoute } from './review'
 import { adminRoutes } from './admin'
+import { priceAnalysisRoutes } from './price-analysis'
 
 const app = new Elysia()
   .use(
     cors({
-      origin: process.env['WEB_URL'] || 'http://localhost:3000',
+      origin: true,
       credentials: true,
-      allowedHeaders: ['Content-Type', 'Authorization'],
-      methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     })
   )
   .use(
@@ -39,6 +38,7 @@ const app = new Elysia()
           { name: 'Orders', description: 'Order management' },
           { name: 'Reviews', description: 'Product reviews' },
           { name: 'Admin', description: 'Admin management' },
+          { name: 'Price Analysis', description: 'AI-powered price analysis from Tokopedia' },
         ],
         components: {
           securitySchemes: {
@@ -69,6 +69,7 @@ const app = new Elysia()
   .use(reviewRoutes)
   .use(productReviewsRoute)
   .use(adminRoutes)
+  .use(priceAnalysisRoutes)
   .get('/', () => ({ message: 'Marketplace API' }), {
     detail: {
       tags: ['General'],

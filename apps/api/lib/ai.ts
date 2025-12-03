@@ -1,7 +1,6 @@
-import { createOpenAI } from '@ai-sdk/openai'
-import { generateText, streamText } from 'ai'
+import OpenAI from 'openai'
 
-// Initialize OpenAI provider with custom base URL
+// Initialize OpenAI client with NVIDIA API configuration
 // Make sure to set OPENAI_API_KEY, OPENAI_API_BASE, and OPENAI_MODEL in your .env file
 const apiKey = process.env['OPENAI_API_KEY']
 const baseURL = process.env['OPENAI_API_BASE']
@@ -15,14 +14,11 @@ if (!baseURL && process.env.NODE_ENV !== 'test') {
   console.warn('⚠️ OPENAI_API_BASE is not set. Using default OpenAI base URL.')
 }
 
-// Create custom OpenAI provider with custom base URL
-const openai = createOpenAI({
+// Create OpenAI client instance
+const openai = new OpenAI({
   apiKey: apiKey || 'dummy-key',
   baseURL: baseURL || 'https://api.openai.com/v1',
 })
-
-// Default model configuration
-const defaultModel = openai(defaultModelName)
 
 /**
  * Generate text completion (non-streaming)
@@ -39,20 +35,24 @@ export async function generateCompletion(
     system?: string
   }
 ) {
-  const model = options?.model ? openai(options.model) : defaultModel
+  const messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = []
+  
+  if (options?.system) {
+    messages.push({ role: 'system', content: options.system })
+  }
+  messages.push({ role: 'user', content: prompt })
 
-  const result = await generateText({
-    model,
-    prompt,
+  const completion = await openai.chat.completions.create({
+    model: options?.model || defaultModelName,
+    messages,
     temperature: options?.temperature ?? 0.7,
-    ...(options?.maxTokens !== undefined && { maxOutputTokens: options.maxTokens }),
-    ...(options?.system !== undefined && { system: options.system }),
+    max_tokens: options?.maxTokens,
   })
 
   return {
-    text: result.text,
-    usage: result.usage,
-    finishReason: result.finishReason,
+    text: completion.choices[0]?.message?.content || '',
+    usage: completion.usage,
+    finishReason: completion.choices[0]?.finish_reason || 'unknown',
   }
 }
 
@@ -60,7 +60,7 @@ export async function generateCompletion(
  * Generate streaming text completion
  * @param prompt - The prompt to generate text from
  * @param options - Additional options (model, temperature, etc.)
- * @returns Text stream and metadata
+ * @returns Text stream
  */
 export async function generateStreamingCompletion(
   prompt: string,
@@ -72,18 +72,22 @@ export async function generateStreamingCompletion(
     onFinish?: (result: { text: string; usage: any; finishReason: string }) => void
   }
 ) {
-  const model = options?.model ? openai(options.model) : defaultModel
+  const messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = []
+  
+  if (options?.system) {
+    messages.push({ role: 'system', content: options.system })
+  }
+  messages.push({ role: 'user', content: prompt })
 
-  const result = streamText({
-    model,
-    prompt,
+  const stream = await openai.chat.completions.create({
+    model: options?.model || defaultModelName,
+    messages,
     temperature: options?.temperature ?? 0.7,
-    ...(options?.maxTokens !== undefined && { maxOutputTokens: options.maxTokens }),
-    ...(options?.system !== undefined && { system: options.system }),
-    ...(options?.onFinish !== undefined && { onFinish: options.onFinish }),
+    max_tokens: options?.maxTokens,
+    stream: true,
   })
 
-  return result
+  return stream
 }
 
 /**
@@ -99,19 +103,17 @@ export async function generateChatCompletion(
     maxTokens?: number
   }
 ) {
-  const model = options?.model ? openai(options.model) : defaultModel
-
-  const result = await generateText({
-    model,
-    messages,
+  const completion = await openai.chat.completions.create({
+    model: options?.model || defaultModelName,
+    messages: messages as OpenAI.Chat.Completions.ChatCompletionMessageParam[],
     temperature: options?.temperature ?? 0.7,
-    ...(options?.maxTokens !== undefined && { maxOutputTokens: options.maxTokens }),
+    max_tokens: options?.maxTokens,
   })
 
   return {
-    text: result.text,
-    usage: result.usage,
-    finishReason: result.finishReason,
+    text: completion.choices[0]?.message?.content || '',
+    usage: completion.usage,
+    finishReason: completion.choices[0]?.finish_reason || 'unknown',
   }
 }
 
@@ -129,18 +131,16 @@ export async function generateStreamingChatCompletion(
     onFinish?: (result: { text: string; usage: any; finishReason: string }) => void
   }
 ) {
-  const model = options?.model ? openai(options.model) : defaultModel
-
-  const result = streamText({
-    model,
-    messages,
+  const stream = await openai.chat.completions.create({
+    model: options?.model || defaultModelName,
+    messages: messages as OpenAI.Chat.Completions.ChatCompletionMessageParam[],
     temperature: options?.temperature ?? 0.7,
-    ...(options?.maxTokens !== undefined && { maxOutputTokens: options.maxTokens }),
-    ...(options?.onFinish !== undefined && { onFinish: options.onFinish }),
+    max_tokens: options?.maxTokens,
+    stream: true,
   })
 
-  return result
+  return stream
 }
 
-// Export providers for custom usage
+// Export client and model name for custom usage
 export { openai, defaultModelName }
