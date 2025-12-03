@@ -75,6 +75,74 @@ const app = new Elysia()
   .use(productReviewsRoute)
   .use(adminRoutes)
   .use(priceAnalysisRoutes)
+  .ws('/api/price-analysis/stream', {
+    message(ws, message) {
+      // Handle incoming WebSocket messages for price analysis streaming
+      try {
+        console.log('Received WebSocket message:', message)
+        
+        // Message is already parsed by Elysia, no need to JSON.parse
+        const data = typeof message === 'string' ? JSON.parse(message) : message
+        
+        // Validate message structure
+        if (!data || typeof data !== 'object') {
+          throw new Error('Message must be a valid JSON object')
+        }
+        
+        if (data.type === 'start-analysis') {
+          // Validate required fields
+          if (!data.query || typeof data.query !== 'string' || data.query.trim() === '') {
+            throw new Error('Query field is required and must be a non-empty string')
+          }
+          
+          // Import and start streaming analysis
+          import('./price-analysis/price_analysis_service').then(({ priceAnalysisService }) => {
+            priceAnalysisService.streamAnalysis(
+              data.query.trim(),
+              data.limit || 10,
+              data.userPrice,
+              (update) => {
+                ws.send(JSON.stringify(update))
+              }
+            ).catch((error) => {
+              console.error('Stream analysis error:', error)
+              ws.send(JSON.stringify({
+                type: 'error',
+                message: error.message || 'Analysis failed'
+              }))
+            })
+          }).catch((importError) => {
+            console.error('Import error:', importError)
+            ws.send(JSON.stringify({
+              type: 'error',
+              message: 'Failed to load analysis service'
+            }))
+          })
+        } else {
+          ws.send(JSON.stringify({
+            type: 'error',
+            message: 'Unknown message type. Expected "start-analysis"'
+          }))
+        }
+      } catch (error) {
+        console.error('WebSocket message parsing error:', error)
+        ws.send(JSON.stringify({
+          type: 'error',
+          message: error instanceof Error ? error.message : 'Invalid message format'
+        }))
+      }
+    },
+    open(ws) {
+      console.log('WebSocket connection opened for price analysis')
+      ws.send(JSON.stringify({
+        type: 'connected',
+        message: 'WebSocket connected successfully'
+      }))
+    },
+    close(ws) {
+      console.log('WebSocket connection closed')
+    }
+  })
   .get('/', () => ({ message: 'Marketplace API' }), {
     detail: {
       tags: ['General'],

@@ -31,14 +31,11 @@ interface PriceAnalysisResult {
   }
 }
 
-interface ApiResponse {
-  success: boolean
-  message: string
+interface WebSocketMessage {
+  type: 'connected' | 'progress' | 'complete' | 'error'
+  message?: string
+  progress?: number
   data?: PriceAnalysisResult
-  error?: {
-    code: string
-    details?: Record<string, string> | null
-  }
 }
 
 export default function SupportPage(): React.JSX.Element {
@@ -51,15 +48,16 @@ export default function SupportPage(): React.JSX.Element {
   const [isDarkMode, setIsDarkMode] = useState(false)
   const [loadingProgress, setLoadingProgress] = useState(0)
   const [currentAnalysisStep, setCurrentAnalysisStep] = useState(0)
+  const [streamingMessage, setStreamingMessage] = useState('')
+  const [ws, setWs] = useState<WebSocket | null>(null)
 
   const analysisSteps = [
-    '🔍 Scanning Tokopedia marketplace...',
-    '📊 Gathering product data...',
-    '🤖 Running AI price analysis...',
+    '🔍 Initializing price analysis...',
+    '📊 Scanning Tokopedia marketplace...',
     '📈 Calculating market statistics...',
-    '💡 Generating insights...',
-    '🎯 Preparing recommendations...',
-    '✨ Finalizing results...'
+    '🤖 Running AI price analysis...',
+    '💡 Generating market insights...',
+    '✨ Finalizing recommendations...'
   ]
 
   useEffect(() => {
@@ -69,35 +67,12 @@ export default function SupportPage(): React.JSX.Element {
   }, [])
 
   useEffect(() => {
-    let progressInterval: NodeJS.Timeout
-    let stepInterval: NodeJS.Timeout
-
-    if (loading) {
-      setLoadingProgress(0)
-      setCurrentAnalysisStep(0)
-      
-      // Progress simulation
-      progressInterval = setInterval(() => {
-        setLoadingProgress(prev => {
-          if (prev >= 95) return prev
-          return prev + Math.random() * 3
-        })
-      }, 800)
-
-      // Step rotation
-      stepInterval = setInterval(() => {
-        setCurrentAnalysisStep(prev => (prev + 1) % analysisSteps.length)
-      }, 3000)
-    } else {
-      setLoadingProgress(0)
-      setCurrentAnalysisStep(0)
-    }
-
     return () => {
-      clearInterval(progressInterval)
-      clearInterval(stepInterval)
+      if (ws !== null) {
+        ws.close()
+      }
     }
-  }, [loading, analysisSteps.length])
+  }, [ws])
 
   const toggleTheme = (): void => {
     const newTheme = !isDarkMode
@@ -109,38 +84,93 @@ export default function SupportPage(): React.JSX.Element {
     return `Rp${num.toLocaleString('id-ID')}`
   }
 
-  const handleSubmit = async (e: React.FormEvent): Promise<void> => {
+  const handleSubmit = (e: React.FormEvent): void => {
     e.preventDefault()
     setLoading(true)
     setError(null)
     setResult(null)
+    setLoadingProgress(0)
+    setCurrentAnalysisStep(0)
+    setStreamingMessage('')
 
     try {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4101'
-      const params = new URLSearchParams({
-        query,
-        limit: limit.toString(),
-      })
+      const wsUrl = apiUrl.replace('http', 'ws')
+      
+      const websocket = new WebSocket(`${wsUrl}/api/price-analysis/stream`)
+      setWs(websocket)
 
-      if (typeof userPrice === 'number' && userPrice > 0) {
-        params.append('userPrice', userPrice.toString())
+      websocket.onopen = (): void => {
+        // Send analysis request
+        websocket.send(JSON.stringify({
+          type: 'start-analysis',
+          query,
+          limit,
+          userPrice: typeof userPrice === 'number' && userPrice > 0 ? userPrice : undefined
+        }))
       }
 
-      const response = await fetch(`${apiUrl}/api/price-analysis?${params.toString()}`)
-      const data: ApiResponse = (await response.json()) as ApiResponse
-
-      if (data.success === true && data.data !== null && data.data !== undefined) {
-        setLoadingProgress(100)
-        const resultData = data.data
-        setTimeout(() => {
-          setResult(resultData)
-        }, 500)
-      } else {
-        setError(data.error?.code ?? 'Failed to analyze prices')
+      websocket.onmessage = (event): void => {
+        try {
+          const update = JSON.parse(event.data as string) as WebSocketMessage
+          
+          switch (update.type) {
+            case 'connected': {
+              // WebSocket connection established - no action needed
+              break
+            }
+            
+            case 'progress': {
+              setLoadingProgress(update.progress ?? 0)
+              setStreamingMessage(update.message ?? '')
+              
+              // Map progress to step index
+              const progress = update.progress ?? 0
+              if (progress <= 10) setCurrentAnalysisStep(0)
+              else if (progress <= 25) setCurrentAnalysisStep(1)
+              else if (progress <= 55) setCurrentAnalysisStep(2)
+              else if (progress <= 75) setCurrentAnalysisStep(3)
+              else if (progress <= 90) setCurrentAnalysisStep(4)
+              else setCurrentAnalysisStep(5)
+              break
+            }
+              
+            case 'complete': {
+              setLoadingProgress(100)
+              if (update.data !== undefined) {
+                setResult(update.data)
+              }
+              setLoading(false)
+              websocket.close()
+              break
+            }
+              
+            case 'error': {
+              setError(update.message ?? 'Analysis failed')
+              setLoading(false)
+              websocket.close()
+              break
+            }
+          }
+        } catch (err) {
+          console.error('Error parsing WebSocket message:', err)
+          setError('Communication error occurred')
+          setLoading(false)
+        }
       }
+
+      websocket.onerror = (error) => {
+        console.error('WebSocket error:', error)
+        setError('Connection error occurred')
+        setLoading(false)
+      }
+
+      websocket.onclose = (): void => {
+        setWs(null)
+      }
+
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Unknown error occurred')
-    } finally {
       setLoading(false)
     }
   }
@@ -165,9 +195,7 @@ export default function SupportPage(): React.JSX.Element {
 
       <main className={styles.main}>
         <form
-          onSubmit={e => {
-            void handleSubmit(e)
-          }}
+          onSubmit={handleSubmit}
           className={styles.form}
         >
           <div className={styles.formGroup}>
@@ -271,7 +299,7 @@ export default function SupportPage(): React.JSX.Element {
 
               <div className={styles.analysisSteps}>
                 <div className={styles.currentStep}>
-                  {analysisSteps[currentAnalysisStep]}
+                  {streamingMessage.length > 0 ? streamingMessage : analysisSteps[currentAnalysisStep]}
                 </div>
                 <div className={styles.stepIndicators}>
                   {analysisSteps.map((step, index) => (
