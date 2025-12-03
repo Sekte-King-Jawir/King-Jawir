@@ -46,7 +46,7 @@ export async function generateCompletion(
     model: options?.model || defaultModelName,
     messages,
     temperature: options?.temperature ?? 0.7,
-    max_tokens: options?.maxTokens,
+    max_tokens: options?.maxTokens ?? null,
   })
 
   return {
@@ -83,7 +83,7 @@ export async function generateStreamingCompletion(
     model: options?.model || defaultModelName,
     messages,
     temperature: options?.temperature ?? 0.7,
-    max_tokens: options?.maxTokens,
+    max_tokens: options?.maxTokens ?? null,
     stream: true,
   })
 
@@ -107,7 +107,7 @@ export async function generateChatCompletion(
     model: options?.model || defaultModelName,
     messages: messages as OpenAI.Chat.Completions.ChatCompletionMessageParam[],
     temperature: options?.temperature ?? 0.7,
-    max_tokens: options?.maxTokens,
+    max_tokens: options?.maxTokens ?? null,
   })
 
   return {
@@ -135,7 +135,7 @@ export async function generateStreamingChatCompletion(
     model: options?.model || defaultModelName,
     messages: messages as OpenAI.Chat.Completions.ChatCompletionMessageParam[],
     temperature: options?.temperature ?? 0.7,
-    max_tokens: options?.maxTokens,
+    max_tokens: options?.maxTokens ?? null,
     stream: true,
   })
 

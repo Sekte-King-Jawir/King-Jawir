@@ -235,6 +235,218 @@
   100% { transform: rotate(360deg); }
 }
 
+@keyframes pulse {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.1); }
+}
+
+@keyframes pulseRing {
+  0% { transform: scale(0.8); opacity: 1; }
+  100% { transform: scale(2); opacity: 0; }
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Enhanced Loading Styles */
+.loadingContainer {
+  animation: slideIn 0.5s ease-out;
+  margin-bottom: 2rem;
+}
+
+.loadingCard {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 1rem;
+  padding: 2.5rem 2rem;
+  box-shadow: var(--shadow-lg);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.loadingCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+.loadingHeader {
+  margin-bottom: 2rem;
+}
+
+.loadingIcon {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.pulseRing {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  border: 2px solid var(--accent-primary);
+  border-radius: 50%;
+  animation: pulseRing 2s ease-out infinite;
+}
+
+.pulseRing:nth-child(2) {
+  animation-delay: 0.5s;
+}
+
+.pulseRing:nth-child(3) {
+  animation-delay: 1s;
+}
+
+.chartIcon {
+  color: var(--accent-primary);
+  z-index: 1;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.loadingHeader h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.loadingHeader p {
+  color: var(--text-secondary);
+  font-size: 1rem;
+}
+
+.progressSection {
+  margin-bottom: 2rem;
+}
+
+.progressBar {
+  width: 100%;
+  height: 8px;
+  background: var(--bg-tertiary);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 0.75rem;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.progressFill {
+  height: 100%;
+  background: var(--accent-gradient);
+  border-radius: 4px;
+  transition: width 0.8s ease-out;
+  position: relative;
+}
+
+.progressFill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 20px;
+  background: linear-gradient(to right, transparent, rgba(255,255,255,0.3));
+  animation: progressShine 1.5s ease-in-out infinite;
+}
+
+@keyframes progressShine {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}
+
+.progressText {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  font-family: var(--font-geist-mono, 'Consolas', monospace);
+}
+
+.analysisSteps {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: var(--bg-tertiary);
+  border-radius: 0.75rem;
+  border: 1px solid var(--border-color);
+}
+
+.currentStep {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--accent-primary);
+  margin-bottom: 1rem;
+  min-height: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeInUp 0.5s ease-out;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.stepIndicators {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.stepDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--border-color);
+  transition: all 0.3s ease;
+}
+
+.stepDotActive {
+  background: var(--accent-primary);
+  transform: scale(1.3);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--accent-primary) 50%, transparent);
+}
+
+.loadingTips {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: var(--bg-primary);
+  border-radius: 0.75rem;
+  border: 1px solid var(--border-color);
+  text-align: left;
+}
+
+.tipIcon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.tipText {
+  color: var(--text-secondary);
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+.tipText strong {
+  color: var(--text-primary);
+}
+
 /* Error and Success States */
 .error {
   background: var(--error-bg);

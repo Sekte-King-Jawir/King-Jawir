@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
-import { Moon, Sun, Search, TrendingUp, ShoppingBag, BarChart3 } from 'lucide-react'
-import styles from './support.module.css'
+import { Search, TrendingUp, ShoppingBag, BarChart3 } from 'lucide-react'
+import { HeaderThemeToggle } from '../../components/theme-toggle'
 
 interface TokopediaProduct {
   name: string
@@ -31,14 +31,11 @@ interface PriceAnalysisResult {
   }
 }
 
-interface ApiResponse {
-  success: boolean
-  message: string
+interface WebSocketMessage {
+  type: 'connected' | 'progress' | 'complete' | 'error'
+  message?: string
+  progress?: number
   data?: PriceAnalysisResult
-  error?: {
-    code: string
-    details?: Record<string, string> | null
-  }
 }
 
 export default function SupportPage(): React.JSX.Element {
@@ -48,87 +45,160 @@ export default function SupportPage(): React.JSX.Element {
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState<PriceAnalysisResult | null>(null)
   const [error, setError] = useState<string | null>(null)
-  const [isDarkMode, setIsDarkMode] = useState(false)
+  const [loadingProgress, setLoadingProgress] = useState(0)
+  const [currentAnalysisStep, setCurrentAnalysisStep] = useState(0)
+  const [streamingMessage, setStreamingMessage] = useState('')
+  const [ws, setWs] = useState<WebSocket | null>(null)
+
+  const analysisSteps = [
+    '🔍 Initializing price analysis...',
+    '📊 Scanning Tokopedia marketplace...',
+    '📈 Calculating market statistics...',
+    '🤖 Running AI price analysis...',
+    '💡 Generating market insights...',
+    '✨ Finalizing recommendations...',
+  ]
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem('theme')
-    const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches
-    setIsDarkMode(savedTheme === 'dark' || (savedTheme === null && systemTheme))
-  }, [])
-
-  const toggleTheme = (): void => {
-    const newTheme = !isDarkMode
-    setIsDarkMode(newTheme)
-    localStorage.setItem('theme', newTheme ? 'dark' : 'light')
-  }
+    return () => {
+      if (ws !== null) {
+        ws.close()
+      }
+    }
+  }, [ws])
 
   const formatRupiah = (num: number): string => {
     return `Rp${num.toLocaleString('id-ID')}`
   }
 
-  const handleSubmit = async (e: React.FormEvent): Promise<void> => {
+  const handleSubmit = (e: React.FormEvent): void => {
     e.preventDefault()
     setLoading(true)
     setError(null)
     setResult(null)
+    setLoadingProgress(0)
+    setCurrentAnalysisStep(0)
+    setStreamingMessage('')
 
     try {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4101'
-      const params = new URLSearchParams({
-        query,
-        limit: limit.toString(),
-      })
+      const wsUrl = apiUrl.replace('http', 'ws')
 
-      if (typeof userPrice === 'number' && userPrice > 0) {
-        params.append('userPrice', userPrice.toString())
+      const websocket = new WebSocket(`${wsUrl}/api/price-analysis/stream`)
+      setWs(websocket)
+
+      websocket.onopen = (): void => {
+        // Send analysis request
+        websocket.send(
+          JSON.stringify({
+            type: 'start-analysis',
+            query,
+            limit,
+            userPrice: typeof userPrice === 'number' && userPrice > 0 ? userPrice : undefined,
+          })
+        )
       }
 
-      const response = await fetch(`${apiUrl}/api/price-analysis?${params.toString()}`)
-      const data: ApiResponse = (await response.json()) as ApiResponse
+      websocket.onmessage = (event): void => {
+        try {
+          const update = JSON.parse(event.data as string) as WebSocketMessage
 
-      if (data.success === true && data.data !== null && data.data !== undefined) {
-        setResult(data.data)
-      } else {
-        setError(data.error?.code ?? 'Failed to analyze prices')
+          switch (update.type) {
+            case 'connected': {
+              // WebSocket connection established - no action needed
+              break
+            }
+
+            case 'progress': {
+              setLoadingProgress(update.progress ?? 0)
+              setStreamingMessage(update.message ?? '')
+
+              // Map progress to step index
+              const progress = update.progress ?? 0
+              if (progress <= 10) setCurrentAnalysisStep(0)
+              else if (progress <= 25) setCurrentAnalysisStep(1)
+              else if (progress <= 55) setCurrentAnalysisStep(2)
+              else if (progress <= 75) setCurrentAnalysisStep(3)
+              else if (progress <= 90) setCurrentAnalysisStep(4)
+              else setCurrentAnalysisStep(5)
+              break
+            }
+
+            case 'complete': {
+              setLoadingProgress(100)
+              if (update.data !== undefined) {
+                setResult(update.data)
+              }
+              setLoading(false)
+              websocket.close()
+              break
+            }
+
+            case 'error': {
+              setError(update.message ?? 'Analysis failed')
+              setLoading(false)
+              websocket.close()
+              break
+            }
+          }
+        } catch (err) {
+          console.error('Error parsing WebSocket message:', err)
+          setError('Communication error occurred')
+          setLoading(false)
+        }
+      }
+
+      websocket.onerror = error => {
+        console.error('WebSocket error:', error)
+        setError('Connection error occurred')
+        setLoading(false)
+      }
+
+      websocket.onclose = (): void => {
+        setWs(null)
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Unknown error occurred')
-    } finally {
       setLoading(false)
     }
   }
 
   return (
-    <div className={`${styles.container} ${isDarkMode ? styles.dark : styles.light}`}>
-      <header className={styles.header}>
-        <div className={styles.headerTop}>
-          <div className={styles.logo}>
-            <BarChart3 className={styles.logoIcon} />
-            <span>PriceScope AI</span>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950">
+      {/* Header */}
+      <header className="border-b border-border/40 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="container flex h-16 items-center justify-between px-6">
+          <div className="flex items-center gap-2">
+            <BarChart3 className="h-8 w-8 text-primary" />
+            <span className="text-2xl font-bold text-foreground">PriceScope AI</span>
           </div>
-          <button onClick={toggleTheme} className={styles.themeToggle} aria-label="Toggle theme">
-            {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
-          </button>
+          <HeaderThemeToggle />
         </div>
-        <div className={styles.headerContent}>
-          <h1>Intelligent Price Analysis</h1>
-          <p>Discover market insights with AI-powered Tokopedia price analysis</p>
+        <div className="container px-6 pb-8 pt-4">
+          <h1 className="text-4xl font-bold tracking-tight text-foreground mb-2">
+            Intelligent Price Analysis
+          </h1>
+          <p className="text-xl text-muted-foreground">
+            Discover market insights with AI-powered Tokopedia price analysis
+          </p>
         </div>
       </header>
 
-      <main className={styles.main}>
+      <main className="container px-6 py-8">
+        {/* Form */}
         <form
-          onSubmit={e => {
-            void handleSubmit(e)
-          }}
-          className={styles.form}
+          onSubmit={handleSubmit}
+          className="bg-card/50 backdrop-blur-sm border border-border rounded-xl p-6 mb-8 shadow-lg"
         >
-          <div className={styles.formGroup}>
-            <label htmlFor="query">
-              <Search size={16} />
-              Product Query
-            </label>
-            <div className={styles.inputWrapper}>
+          <div className="space-y-6">
+            <div className="space-y-2">
+              <label
+                htmlFor="query"
+                className="text-sm font-medium text-foreground flex items-center gap-2"
+              >
+                <Search size={16} />
+                Product Query
+              </label>
               <input
                 id="query"
                 type="text"
@@ -136,18 +206,19 @@ export default function SupportPage(): React.JSX.Element {
                 onChange={e => setQuery(e.target.value)}
                 placeholder="Search for products, e.g., iPhone 15 Pro"
                 required
-                className={styles.input}
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
               />
             </div>
-          </div>
 
-          <div className={styles.formRow}>
-            <div className={styles.formGroup}>
-              <label htmlFor="limit">
-                <TrendingUp size={16} />
-                Products Limit
-              </label>
-              <div className={styles.inputWrapper}>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <label
+                  htmlFor="limit"
+                  className="text-sm font-medium text-foreground flex items-center gap-2"
+                >
+                  <TrendingUp size={16} />
+                  Products Limit
+                </label>
                 <input
                   id="limit"
                   type="number"
@@ -155,17 +226,18 @@ export default function SupportPage(): React.JSX.Element {
                   onChange={e => setLimit(parseInt(e.target.value))}
                   min="1"
                   max="50"
-                  className={styles.input}
+                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                 />
               </div>
-            </div>
 
-            <div className={styles.formGroup}>
-              <label htmlFor="userPrice">
-                <ShoppingBag size={16} />
-                Your Budget (Optional)
-              </label>
-              <div className={styles.inputWrapper}>
+              <div className="space-y-2">
+                <label
+                  htmlFor="userPrice"
+                  className="text-sm font-medium text-foreground flex items-center gap-2"
+                >
+                  <ShoppingBag size={16} />
+                  Your Budget (Optional)
+                </label>
                 <input
                   id="userPrice"
                   type="number"
@@ -175,121 +247,224 @@ export default function SupportPage(): React.JSX.Element {
                   }
                   placeholder="Enter your budget in Rupiah"
                   min="0"
-                  className={styles.input}
+                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                 />
               </div>
             </div>
-          </div>
 
-          <button type="submit" disabled={loading} className={styles.submitButton}>
-            {loading ? (
-              <>
-                <div className={styles.spinner} />
-                Analyzing Market Data...
-              </>
-            ) : (
-              <>
-                <Search size={20} />
-                Analyze Market Prices
-              </>
-            )}
-          </button>
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-12 px-6 gap-2"
+            >
+              {loading ? (
+                <>
+                  <div className="animate-spin h-4 w-4 border-2 border-current border-t-transparent rounded-full" />
+                  Processing...
+                </>
+              ) : (
+                <>
+                  <Search size={20} />
+                  Analyze Market Prices
+                </>
+              )}
+            </button>
+          </div>
         </form>
 
+        {/* Loading State */}
+        {loading ? (
+          <div className="bg-card/50 backdrop-blur-sm border border-border rounded-xl p-8 mb-8 shadow-lg">
+            <div className="text-center space-y-6">
+              <div className="relative inline-flex items-center justify-center">
+                <div className="absolute inset-0 rounded-full animate-ping bg-primary/20" />
+                <div className="absolute inset-2 rounded-full animate-ping bg-primary/40 animation-delay-200" />
+                <div className="relative">
+                  <BarChart3 size={48} className="text-primary" />
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-2xl font-semibold text-foreground mb-2">
+                  Analyzing Market Data
+                </h3>
+                <p className="text-muted-foreground">This may take up to 30 seconds...</p>
+              </div>
+
+              <div className="space-y-3">
+                <div className="w-full bg-secondary rounded-full h-3 overflow-hidden">
+                  <div
+                    className="h-full bg-primary transition-all duration-500 ease-out"
+                    style={{ width: `${loadingProgress}%` }}
+                  />
+                </div>
+                <div className="text-sm font-medium text-foreground">
+                  {Math.round(loadingProgress)}% Complete
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <div className="text-lg text-foreground">
+                  {streamingMessage.length > 0
+                    ? streamingMessage
+                    : analysisSteps[currentAnalysisStep]}
+                </div>
+                <div className="flex justify-center gap-2">
+                  {analysisSteps.map((step, index) => (
+                    <div
+                      key={step}
+                      className={`w-2 h-2 rounded-full transition-colors duration-300 ${
+                        index <= currentAnalysisStep ? 'bg-primary' : 'bg-muted'
+                      }`}
+                    />
+                  ))}
+                </div>
+              </div>
+
+              <div className="bg-muted/50 rounded-lg p-4 max-w-md mx-auto">
+                <div className="flex items-start gap-3">
+                  <div className="text-2xl">💡</div>
+                  <div className="text-sm text-left">
+                    <strong className="text-foreground">Did you know?</strong>
+                    <span className="text-muted-foreground ml-1">
+                      Our AI analyzes pricing patterns, market trends, and competitor data to give
+                      you the most accurate price recommendations.
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : null}
+
+        {/* Error State */}
         {error !== null && error.length > 0 ? (
-          <div className={styles.error}>
+          <div className="bg-destructive/10 border border-destructive/20 text-destructive rounded-lg p-4 mb-8">
             <strong>❌ Error:</strong> {error}
           </div>
         ) : null}
 
+        {/* Results */}
         {result !== null ? (
-          <div className={styles.results}>
-            <section className={styles.section}>
-              <h2>📊 Market Statistics</h2>
-              <div className={styles.stats}>
-                <div className={styles.statCard}>
-                  <span className={styles.statLabel}>Minimum</span>
-                  <span className={styles.statValue}>{formatRupiah(result.statistics.min)}</span>
+          <div className="space-y-8">
+            {/* Statistics */}
+            <section className="bg-card/50 backdrop-blur-sm border border-border rounded-xl p-6 shadow-lg">
+              <h2 className="text-2xl font-semibold text-foreground mb-6 flex items-center gap-2">
+                📊 Market Statistics
+              </h2>
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="bg-background/50 rounded-lg p-4 text-center">
+                  <div className="text-sm text-muted-foreground mb-1">Minimum</div>
+                  <div className="text-xl font-bold text-foreground">
+                    {formatRupiah(result.statistics.min)}
+                  </div>
                 </div>
-                <div className={styles.statCard}>
-                  <span className={styles.statLabel}>Average</span>
-                  <span className={styles.statValue}>
+                <div className="bg-background/50 rounded-lg p-4 text-center">
+                  <div className="text-sm text-muted-foreground mb-1">Average</div>
+                  <div className="text-xl font-bold text-foreground">
                     {formatRupiah(result.statistics.average)}
-                  </span>
+                  </div>
                 </div>
-                <div className={styles.statCard}>
-                  <span className={styles.statLabel}>Median</span>
-                  <span className={styles.statValue}>{formatRupiah(result.statistics.median)}</span>
+                <div className="bg-background/50 rounded-lg p-4 text-center">
+                  <div className="text-sm text-muted-foreground mb-1">Median</div>
+                  <div className="text-xl font-bold text-foreground">
+                    {formatRupiah(result.statistics.median)}
+                  </div>
                 </div>
-                <div className={styles.statCard}>
-                  <span className={styles.statLabel}>Maximum</span>
-                  <span className={styles.statValue}>{formatRupiah(result.statistics.max)}</span>
+                <div className="bg-background/50 rounded-lg p-4 text-center">
+                  <div className="text-sm text-muted-foreground mb-1">Maximum</div>
+                  <div className="text-xl font-bold text-foreground">
+                    {formatRupiah(result.statistics.max)}
+                  </div>
                 </div>
               </div>
-              <p className={styles.productCount}>
+              <p className="text-center text-sm text-muted-foreground mt-4">
                 Analyzed {result.statistics.totalProducts} products
               </p>
             </section>
 
-            <section className={styles.section}>
-              <h2>🤖 AI Analysis</h2>
-              <div className={styles.analysis}>
-                <div className={styles.recommendation}>
-                  <h3>Recommendation:</h3>
-                  <p>{result.analysis.recommendation}</p>
+            {/* AI Analysis */}
+            <section className="bg-card/50 backdrop-blur-sm border border-border rounded-xl p-6 shadow-lg">
+              <h2 className="text-2xl font-semibold text-foreground mb-6 flex items-center gap-2">
+                🤖 AI Analysis
+              </h2>
+              <div className="space-y-6">
+                <div className="bg-background/50 rounded-lg p-4">
+                  <h3 className="text-lg font-semibold text-foreground mb-2">Recommendation:</h3>
+                  <p className="text-foreground leading-relaxed">
+                    {result.analysis.recommendation}
+                  </p>
                 </div>
 
                 {typeof result.analysis.suggestedPrice === 'number' &&
                 result.analysis.suggestedPrice > 0 ? (
-                  <div className={styles.suggestedPrice}>
-                    <h3>Suggested Price:</h3>
-                    <p className={styles.priceHighlight}>
+                  <div className="bg-primary/10 border border-primary/20 rounded-lg p-4">
+                    <h3 className="text-lg font-semibold text-foreground mb-2">Suggested Price:</h3>
+                    <p className="text-2xl font-bold text-primary">
                       {formatRupiah(result.analysis.suggestedPrice)}
                     </p>
                   </div>
                 ) : null}
 
-                <div className={styles.insights}>
-                  <h3>Key Insights:</h3>
-                  <ul>
+                <div className="bg-background/50 rounded-lg p-4">
+                  <h3 className="text-lg font-semibold text-foreground mb-3">Key Insights:</h3>
+                  <ul className="space-y-2">
                     {result.analysis.insights.map(insight => (
-                      <li key={insight.slice(0, 50)}>{insight}</li>
+                      <li
+                        key={insight.slice(0, 50)}
+                        className="flex items-start gap-2 text-foreground"
+                      >
+                        <span className="text-primary mt-1 text-sm">•</span>
+                        {insight}
+                      </li>
                     ))}
                   </ul>
                 </div>
               </div>
             </section>
 
-            <section className={styles.section}>
-              <h2>🛍️ Product List</h2>
-              <div className={styles.products}>
+            {/* Products */}
+            <section className="bg-card/50 backdrop-blur-sm border border-border rounded-xl p-6 shadow-lg">
+              <h2 className="text-2xl font-semibold text-foreground mb-6 flex items-center gap-2">
+                🛍️ Product List
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {result.products.map(product => (
-                  <div key={product.product_url} className={styles.productCard}>
+                  <div
+                    key={product.product_url}
+                    className="bg-background/50 rounded-lg overflow-hidden border border-border hover:shadow-lg transition-shadow duration-300"
+                  >
                     <Image
                       src={product.image_url}
                       alt={product.name}
-                      width={280}
+                      width={300}
                       height={200}
-                      className={styles.productImage}
+                      className="w-full h-48 object-cover"
                     />
-                    <div className={styles.productInfo}>
-                      <h4 className={styles.productName}>{product.name}</h4>
-                      <p className={styles.productPrice}>{product.price}</p>
+                    <div className="p-4 space-y-2">
+                      <h4 className="font-semibold text-foreground line-clamp-2 leading-tight">
+                        {product.name}
+                      </h4>
+                      <p className="text-lg font-bold text-primary">{product.price}</p>
                       {product.rating !== null &&
                       product.rating !== undefined &&
                       product.rating.length > 0 ? (
-                        <p className={styles.productRating}>⭐ {product.rating}</p>
+                        <p className="text-sm text-muted-foreground flex items-center gap-1">
+                          ⭐ {product.rating}
+                        </p>
                       ) : null}
                       {product.shop_location !== null &&
                       product.shop_location !== undefined &&
                       product.shop_location.length > 0 ? (
-                        <p className={styles.productLocation}>📍 {product.shop_location}</p>
+                        <p className="text-sm text-muted-foreground flex items-center gap-1">
+                          📍 {product.shop_location}
+                        </p>
                       ) : null}
                       <a
                         href={product.product_url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className={styles.productLink}
+                        className="inline-flex items-center text-sm text-primary hover:text-primary/80 transition-colors"
                       >
                         View on Tokopedia →
                       </a>
@@ -302,8 +477,13 @@ export default function SupportPage(): React.JSX.Element {
         ) : null}
       </main>
 
-      <footer className={styles.footer}>
-        <p>🔧 Support Page | Powered by Tokopedia Scraper + AI Analysis</p>
+      {/* Footer */}
+      <footer className="border-t border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 mt-16">
+        <div className="container px-6 py-6 text-center">
+          <p className="text-sm text-muted-foreground">
+            🔧 Support Page | Powered by Tokopedia Scraper + AI Analysis
+          </p>
+        </div>
       </footer>
     </div>
   )
