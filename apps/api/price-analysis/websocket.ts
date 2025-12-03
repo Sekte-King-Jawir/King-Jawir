@@ -6,32 +6,32 @@ export const priceAnalysisWebSocket = new Elysia().ws('/api/price-analysis/strea
     // Handle incoming WebSocket messages for price analysis streaming
     try {
       console.log('Received WebSocket message:', message)
-      
+
       // Message is already parsed by Elysia, no need to JSON.parse
       const data = typeof message === 'string' ? JSON.parse(message) : message
-      
+
       // Validate message structure
       if (!data || typeof data !== 'object') {
         throw new Error('Message must be a valid JSON object')
       }
-      
+
       if (data.type === 'start-analysis') {
         // Validate required fields
         if (!data.query || typeof data.query !== 'string' || data.query.trim() === '') {
           throw new Error('Query field is required and must be a non-empty string')
         }
-        
+
         // Start streaming analysis
         priceAnalysisService
           .streamAnalysis(
             data.query.trim(),
-            (update) => {
+            update => {
               ws.send(JSON.stringify(update))
             },
             data.limit || 10,
             data.userPrice
           )
-          .catch((error) => {
+          .catch(error => {
             console.error('Stream analysis error:', error)
             ws.send(
               JSON.stringify({

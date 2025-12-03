@@ -25,11 +25,10 @@ export default function RootLayout({
 }>): React.JSX.Element {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased min-h-screen bg-background`}>
-        <ThemeProvider
-          defaultTheme="system"
-          storageKey="king-jawir-theme"
-        >
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased min-h-screen bg-background`}
+      >
+        <ThemeProvider defaultTheme="system" storageKey="king-jawir-theme">
           {children}
           <ThemeToggle />
         </ThemeProvider>

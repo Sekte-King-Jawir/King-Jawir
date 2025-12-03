@@ -13,7 +13,7 @@ export default function Home(): React.JSX.Element {
             <span className="text-2xl font-bold text-foreground">King Jawir</span>
           </div>
           <div className="flex items-center gap-4">
-            <Link 
+            <Link
               href="/support"
               className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-9 px-4 py-2"
             >
@@ -35,14 +35,14 @@ export default function Home(): React.JSX.Element {
               </span>
             </h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              Leverage AI-powered insights to analyze Tokopedia marketplace prices, 
-              understand market trends, and make informed pricing decisions for your business.
+              Leverage AI-powered insights to analyze Tokopedia marketplace prices, understand
+              market trends, and make informed pricing decisions for your business.
             </p>
           </div>
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
-            <Link 
+            <Link
               href="/support"
               className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-12 px-8 gap-2 text-base"
             >
@@ -65,8 +65,8 @@ export default function Home(): React.JSX.Element {
             </div>
             <h3 className="text-xl font-semibold text-foreground">Real-time Market Scan</h3>
             <p className="text-muted-foreground">
-              Instantly scan thousands of products across Tokopedia marketplace 
-              to gather comprehensive pricing data.
+              Instantly scan thousands of products across Tokopedia marketplace to gather
+              comprehensive pricing data.
             </p>
           </div>
 
@@ -76,8 +76,8 @@ export default function Home(): React.JSX.Element {
             </div>
             <h3 className="text-xl font-semibold text-foreground">AI-Powered Insights</h3>
             <p className="text-muted-foreground">
-              Get intelligent recommendations and market insights powered by 
-              advanced AI analysis of pricing patterns and trends.
+              Get intelligent recommendations and market insights powered by advanced AI analysis of
+              pricing patterns and trends.
             </p>
           </div>
 
@@ -87,8 +87,8 @@ export default function Home(): React.JSX.Element {
             </div>
             <h3 className="text-xl font-semibold text-foreground">Statistical Analysis</h3>
             <p className="text-muted-foreground">
-              Comprehensive statistical breakdown including min, max, average, 
-              and median prices with market variability insights.
+              Comprehensive statistical breakdown including min, max, average, and median prices
+              with market variability insights.
             </p>
           </div>
         </div>
@@ -119,7 +119,8 @@ export default function Home(): React.JSX.Element {
               </div>
               <h3 className="text-xl font-semibold text-foreground">AI Analysis</h3>
               <p className="text-muted-foreground">
-                Our AI scans Tokopedia, analyzes pricing data, and generates comprehensive market insights
+                Our AI scans Tokopedia, analyzes pricing data, and generates comprehensive market
+                insights
               </p>
             </div>
 
@@ -153,27 +154,63 @@ export default function Home(): React.JSX.Element {
             <div className="space-y-4">
               <h4 className="text-sm font-semibold text-foreground">Product</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
-                <li><Link href="/support" className="hover:text-foreground transition-colors">Price Analysis</Link></li>
-                <li><Link href="#" className="hover:text-foreground transition-colors">API Access</Link></li>
-                <li><Link href="#" className="hover:text-foreground transition-colors">Documentation</Link></li>
+                <li>
+                  <Link href="/support" className="hover:text-foreground transition-colors">
+                    Price Analysis
+                  </Link>
+                </li>
+                <li>
+                  <Link href="#" className="hover:text-foreground transition-colors">
+                    API Access
+                  </Link>
+                </li>
+                <li>
+                  <Link href="#" className="hover:text-foreground transition-colors">
+                    Documentation
+                  </Link>
+                </li>
               </ul>
             </div>
 
             <div className="space-y-4">
               <h4 className="text-sm font-semibold text-foreground">Company</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
-                <li><Link href="#" className="hover:text-foreground transition-colors">About</Link></li>
-                <li><Link href="#" className="hover:text-foreground transition-colors">Contact</Link></li>
-                <li><Link href="#" className="hover:text-foreground transition-colors">Privacy</Link></li>
+                <li>
+                  <Link href="#" className="hover:text-foreground transition-colors">
+                    About
+                  </Link>
+                </li>
+                <li>
+                  <Link href="#" className="hover:text-foreground transition-colors">
+                    Contact
+                  </Link>
+                </li>
+                <li>
+                  <Link href="#" className="hover:text-foreground transition-colors">
+                    Privacy
+                  </Link>
+                </li>
               </ul>
             </div>
 
             <div className="space-y-4">
               <h4 className="text-sm font-semibold text-foreground">Resources</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
-                <li><Link href="#" className="hover:text-foreground transition-colors">Help Center</Link></li>
-                <li><Link href="#" className="hover:text-foreground transition-colors">Tutorials</Link></li>
-                <li><Link href="#" className="hover:text-foreground transition-colors">Community</Link></li>
+                <li>
+                  <Link href="#" className="hover:text-foreground transition-colors">
+                    Help Center
+                  </Link>
+                </li>
+                <li>
+                  <Link href="#" className="hover:text-foreground transition-colors">
+                    Tutorials
+                  </Link>
+                </li>
+                <li>
+                  <Link href="#" className="hover:text-foreground transition-colors">
+                    Community
+                  </Link>
+                </li>
               </ul>
             </div>
           </div>

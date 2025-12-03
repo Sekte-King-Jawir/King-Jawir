@@ -38,7 +38,7 @@ export const priceAnalysisService = {
         type: 'progress',
         step: 'initializing',
         message: '🔍 Initializing price analysis...',
-        progress: 5
+        progress: 5,
       })
 
       await this.delay(1000)
@@ -48,7 +48,7 @@ export const priceAnalysisService = {
         type: 'progress',
         step: 'fetching',
         message: '📊 Scanning Tokopedia marketplace...',
-        progress: 15
+        progress: 15,
       })
 
       let products: any[] = []
@@ -56,9 +56,11 @@ export const priceAnalysisService = {
         products = await priceAnalysisRepository.fetchTokopediaPrices(query, limit)
       } catch (fetchError) {
         console.error('Error fetching products:', fetchError)
-        throw new Error(`Failed to fetch products: ${fetchError instanceof Error ? fetchError.message : 'Unknown error'}`)
+        throw new Error(
+          `Failed to fetch products: ${fetchError instanceof Error ? fetchError.message : 'Unknown error'}`
+        )
       }
-      
+
       if (products.length === 0) {
         throw new Error('No products found for the given query')
       }
@@ -67,7 +69,7 @@ export const priceAnalysisService = {
         type: 'progress',
         step: 'fetching',
         message: `📦 Found ${products.length} products...`,
-        progress: 35
+        progress: 35,
       })
 
       await this.delay(1500)
@@ -77,7 +79,7 @@ export const priceAnalysisService = {
         type: 'progress',
         step: 'calculating',
         message: '📈 Calculating market statistics...',
-        progress: 50
+        progress: 50,
       })
 
       let prices: number[] = []
@@ -87,7 +89,9 @@ export const priceAnalysisService = {
         stats = priceAnalysisRepository.calculateStats(prices)
       } catch (statsError) {
         console.error('Error calculating statistics:', statsError)
-        throw new Error(`Failed to calculate statistics: ${statsError instanceof Error ? statsError.message : 'Unknown error'}`)
+        throw new Error(
+          `Failed to calculate statistics: ${statsError instanceof Error ? statsError.message : 'Unknown error'}`
+        )
       }
 
       await this.delay(1000)
@@ -97,7 +101,7 @@ export const priceAnalysisService = {
         type: 'progress',
         step: 'analyzing',
         message: '🤖 Running AI price analysis...',
-        progress: 65
+        progress: 65,
       })
 
       const productSummary = products.map((p, i) => ({
@@ -117,7 +121,7 @@ export const priceAnalysisService = {
         type: 'progress',
         step: 'insights',
         message: '💡 Generating market insights...',
-        progress: 80
+        progress: 80,
       })
 
       let aiResponse: any
@@ -143,7 +147,7 @@ export const priceAnalysisService = {
         console.error('Error generating AI response:', aiError)
         // Fallback analysis without AI
         const analysis = this.getFallbackAnalysis(stats)
-        
+
         onUpdate({
           type: 'complete',
           progress: 100,
@@ -155,7 +159,7 @@ export const priceAnalysisService = {
               totalProducts: products.length,
             },
             analysis,
-          }
+          },
         })
         return
       }
@@ -167,7 +171,7 @@ export const priceAnalysisService = {
         type: 'progress',
         step: 'finalizing',
         message: '✨ Finalizing recommendations...',
-        progress: 95
+        progress: 95,
       })
 
       let analysis: any
@@ -192,13 +196,12 @@ export const priceAnalysisService = {
             totalProducts: products.length,
           },
           analysis,
-        }
+        },
       })
-
     } catch (error) {
       onUpdate({
         type: 'error',
-        message: error instanceof Error ? error.message : 'Analysis failed'
+        message: error instanceof Error ? error.message : 'Analysis failed',
       })
     }
   },
@@ -395,20 +398,20 @@ export const priceAnalysisService = {
     suggestedPrice?: number
   } {
     const formatRupiah = (num: number) => `Rp${num.toLocaleString('id-ID')}`
-    
+
     const recommendation = `Based on market analysis of available products, prices range from ${formatRupiah(stats.min)} to ${formatRupiah(stats.max)}. The median price of ${formatRupiah(stats.median)} represents a competitive market position for your product.`
-    
+
     const insights = [
       `Market average price is ${formatRupiah(stats.average)}`,
       `Price volatility: ${(((stats.max - stats.min) / stats.average) * 100).toFixed(1)}% range`,
       'Consider product condition, brand reputation, and seller location when setting your price',
-      'Monitor competitor pricing regularly for optimal market positioning'
+      'Monitor competitor pricing regularly for optimal market positioning',
     ]
-    
+
     return {
       recommendation,
       insights,
-      suggestedPrice: stats.median
+      suggestedPrice: stats.median,
     }
   },
 }

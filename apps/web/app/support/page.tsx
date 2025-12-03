@@ -56,7 +56,7 @@ export default function SupportPage(): React.JSX.Element {
     '📈 Calculating market statistics...',
     '🤖 Running AI price analysis...',
     '💡 Generating market insights...',
-    '✨ Finalizing recommendations...'
+    '✨ Finalizing recommendations...',
   ]
 
   useEffect(() => {
@@ -83,34 +83,36 @@ export default function SupportPage(): React.JSX.Element {
     try {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4101'
       const wsUrl = apiUrl.replace('http', 'ws')
-      
+
       const websocket = new WebSocket(`${wsUrl}/api/price-analysis/stream`)
       setWs(websocket)
 
       websocket.onopen = (): void => {
         // Send analysis request
-        websocket.send(JSON.stringify({
-          type: 'start-analysis',
-          query,
-          limit,
-          userPrice: typeof userPrice === 'number' && userPrice > 0 ? userPrice : undefined
-        }))
+        websocket.send(
+          JSON.stringify({
+            type: 'start-analysis',
+            query,
+            limit,
+            userPrice: typeof userPrice === 'number' && userPrice > 0 ? userPrice : undefined,
+          })
+        )
       }
 
       websocket.onmessage = (event): void => {
         try {
           const update = JSON.parse(event.data as string) as WebSocketMessage
-          
+
           switch (update.type) {
             case 'connected': {
               // WebSocket connection established - no action needed
               break
             }
-            
+
             case 'progress': {
               setLoadingProgress(update.progress ?? 0)
               setStreamingMessage(update.message ?? '')
-              
+
               // Map progress to step index
               const progress = update.progress ?? 0
               if (progress <= 10) setCurrentAnalysisStep(0)
@@ -121,7 +123,7 @@ export default function SupportPage(): React.JSX.Element {
               else setCurrentAnalysisStep(5)
               break
             }
-              
+
             case 'complete': {
               setLoadingProgress(100)
               if (update.data !== undefined) {
@@ -131,7 +133,7 @@ export default function SupportPage(): React.JSX.Element {
               websocket.close()
               break
             }
-              
+
             case 'error': {
               setError(update.message ?? 'Analysis failed')
               setLoading(false)
@@ -146,7 +148,7 @@ export default function SupportPage(): React.JSX.Element {
         }
       }
 
-      websocket.onerror = (error) => {
+      websocket.onerror = error => {
         console.error('WebSocket error:', error)
         setError('Connection error occurred')
         setLoading(false)
@@ -155,7 +157,6 @@ export default function SupportPage(): React.JSX.Element {
       websocket.onclose = (): void => {
         setWs(null)
       }
-
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Unknown error occurred')
       setLoading(false)
@@ -191,7 +192,10 @@ export default function SupportPage(): React.JSX.Element {
         >
           <div className="space-y-6">
             <div className="space-y-2">
-              <label htmlFor="query" className="text-sm font-medium text-foreground flex items-center gap-2">
+              <label
+                htmlFor="query"
+                className="text-sm font-medium text-foreground flex items-center gap-2"
+              >
                 <Search size={16} />
                 Product Query
               </label>
@@ -208,7 +212,10 @@ export default function SupportPage(): React.JSX.Element {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <label htmlFor="limit" className="text-sm font-medium text-foreground flex items-center gap-2">
+                <label
+                  htmlFor="limit"
+                  className="text-sm font-medium text-foreground flex items-center gap-2"
+                >
                   <TrendingUp size={16} />
                   Products Limit
                 </label>
@@ -224,7 +231,10 @@ export default function SupportPage(): React.JSX.Element {
               </div>
 
               <div className="space-y-2">
-                <label htmlFor="userPrice" className="text-sm font-medium text-foreground flex items-center gap-2">
+                <label
+                  htmlFor="userPrice"
+                  className="text-sm font-medium text-foreground flex items-center gap-2"
+                >
                   <ShoppingBag size={16} />
                   Your Budget (Optional)
                 </label>
@@ -242,9 +252,9 @@ export default function SupportPage(): React.JSX.Element {
               </div>
             </div>
 
-            <button 
-              type="submit" 
-              disabled={loading} 
+            <button
+              type="submit"
+              disabled={loading}
               className="w-full inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-12 px-6 gap-2"
             >
               {loading ? (
@@ -273,15 +283,17 @@ export default function SupportPage(): React.JSX.Element {
                   <BarChart3 size={48} className="text-primary" />
                 </div>
               </div>
-              
+
               <div>
-                <h3 className="text-2xl font-semibold text-foreground mb-2">Analyzing Market Data</h3>
+                <h3 className="text-2xl font-semibold text-foreground mb-2">
+                  Analyzing Market Data
+                </h3>
                 <p className="text-muted-foreground">This may take up to 30 seconds...</p>
               </div>
-              
+
               <div className="space-y-3">
                 <div className="w-full bg-secondary rounded-full h-3 overflow-hidden">
-                  <div 
+                  <div
                     className="h-full bg-primary transition-all duration-500 ease-out"
                     style={{ width: `${loadingProgress}%` }}
                   />
@@ -293,7 +305,9 @@ export default function SupportPage(): React.JSX.Element {
 
               <div className="space-y-4">
                 <div className="text-lg text-foreground">
-                  {streamingMessage.length > 0 ? streamingMessage : analysisSteps[currentAnalysisStep]}
+                  {streamingMessage.length > 0
+                    ? streamingMessage
+                    : analysisSteps[currentAnalysisStep]}
                 </div>
                 <div className="flex justify-center gap-2">
                   {analysisSteps.map((step, index) => (
@@ -313,7 +327,8 @@ export default function SupportPage(): React.JSX.Element {
                   <div className="text-sm text-left">
                     <strong className="text-foreground">Did you know?</strong>
                     <span className="text-muted-foreground ml-1">
-                      Our AI analyzes pricing patterns, market trends, and competitor data to give you the most accurate price recommendations.
+                      Our AI analyzes pricing patterns, market trends, and competitor data to give
+                      you the most accurate price recommendations.
                     </span>
                   </div>
                 </div>
@@ -376,7 +391,9 @@ export default function SupportPage(): React.JSX.Element {
               <div className="space-y-6">
                 <div className="bg-background/50 rounded-lg p-4">
                   <h3 className="text-lg font-semibold text-foreground mb-2">Recommendation:</h3>
-                  <p className="text-foreground leading-relaxed">{result.analysis.recommendation}</p>
+                  <p className="text-foreground leading-relaxed">
+                    {result.analysis.recommendation}
+                  </p>
                 </div>
 
                 {typeof result.analysis.suggestedPrice === 'number' &&
@@ -393,7 +410,10 @@ export default function SupportPage(): React.JSX.Element {
                   <h3 className="text-lg font-semibold text-foreground mb-3">Key Insights:</h3>
                   <ul className="space-y-2">
                     {result.analysis.insights.map(insight => (
-                      <li key={insight.slice(0, 50)} className="flex items-start gap-2 text-foreground">
+                      <li
+                        key={insight.slice(0, 50)}
+                        className="flex items-start gap-2 text-foreground"
+                      >
                         <span className="text-primary mt-1 text-sm">•</span>
                         {insight}
                       </li>
@@ -410,7 +430,10 @@ export default function SupportPage(): React.JSX.Element {
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {result.products.map(product => (
-                  <div key={product.product_url} className="bg-background/50 rounded-lg overflow-hidden border border-border hover:shadow-lg transition-shadow duration-300">
+                  <div
+                    key={product.product_url}
+                    className="bg-background/50 rounded-lg overflow-hidden border border-border hover:shadow-lg transition-shadow duration-300"
+                  >
                     <Image
                       src={product.image_url}
                       alt={product.name}
