@@ -106,11 +106,7 @@ export default function SupportPage(): React.JSX.Element {
             <BarChart3 className={styles.logoIcon} />
             <span>PriceScope AI</span>
           </div>
-          <button
-            onClick={toggleTheme}
-            className={styles.themeToggle}
-            aria-label="Toggle theme"
-          >
+          <button onClick={toggleTheme} className={styles.themeToggle} aria-label="Toggle theme">
             {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
           </button>
         </div>
@@ -121,7 +117,12 @@ export default function SupportPage(): React.JSX.Element {
       </header>
 
       <main className={styles.main}>
-        <form onSubmit={(e) => { void handleSubmit(e) }} className={styles.form}>
+        <form
+          onSubmit={e => {
+            void handleSubmit(e)
+          }}
+          className={styles.form}
+        >
           <div className={styles.formGroup}>
             <label htmlFor="query">
               <Search size={16} />
@@ -132,7 +133,7 @@ export default function SupportPage(): React.JSX.Element {
                 id="query"
                 type="text"
                 value={query}
-                onChange={(e) => setQuery(e.target.value)}
+                onChange={e => setQuery(e.target.value)}
                 placeholder="Search for products, e.g., iPhone 15 Pro"
                 required
                 className={styles.input}
@@ -151,7 +152,7 @@ export default function SupportPage(): React.JSX.Element {
                   id="limit"
                   type="number"
                   value={limit}
-                  onChange={(e) => setLimit(parseInt(e.target.value))}
+                  onChange={e => setLimit(parseInt(e.target.value))}
                   min="1"
                   max="50"
                   className={styles.input}
@@ -169,7 +170,7 @@ export default function SupportPage(): React.JSX.Element {
                   id="userPrice"
                   type="number"
                   value={userPrice ?? ''}
-                  onChange={(e) =>
+                  onChange={e =>
                     setUserPrice(e.target.value.length > 0 ? parseInt(e.target.value) : undefined)
                   }
                   placeholder="Enter your budget in Rupiah"
@@ -218,9 +219,7 @@ export default function SupportPage(): React.JSX.Element {
                 </div>
                 <div className={styles.statCard}>
                   <span className={styles.statLabel}>Median</span>
-                  <span className={styles.statValue}>
-                    {formatRupiah(result.statistics.median)}
-                  </span>
+                  <span className={styles.statValue}>{formatRupiah(result.statistics.median)}</span>
                 </div>
                 <div className={styles.statCard}>
                   <span className={styles.statLabel}>Maximum</span>
@@ -240,7 +239,8 @@ export default function SupportPage(): React.JSX.Element {
                   <p>{result.analysis.recommendation}</p>
                 </div>
 
-                {typeof result.analysis.suggestedPrice === 'number' && result.analysis.suggestedPrice > 0 ? (
+                {typeof result.analysis.suggestedPrice === 'number' &&
+                result.analysis.suggestedPrice > 0 ? (
                   <div className={styles.suggestedPrice}>
                     <h3>Suggested Price:</h3>
                     <p className={styles.priceHighlight}>
@@ -252,7 +252,7 @@ export default function SupportPage(): React.JSX.Element {
                 <div className={styles.insights}>
                   <h3>Key Insights:</h3>
                   <ul>
-                    {result.analysis.insights.map((insight) => (
+                    {result.analysis.insights.map(insight => (
                       <li key={insight.slice(0, 50)}>{insight}</li>
                     ))}
                   </ul>
@@ -263,7 +263,7 @@ export default function SupportPage(): React.JSX.Element {
             <section className={styles.section}>
               <h2>🛍️ Product List</h2>
               <div className={styles.products}>
-                {result.products.map((product) => (
+                {result.products.map(product => (
                   <div key={product.product_url} className={styles.productCard}>
                     <Image
                       src={product.image_url}
@@ -275,10 +275,14 @@ export default function SupportPage(): React.JSX.Element {
                     <div className={styles.productInfo}>
                       <h4 className={styles.productName}>{product.name}</h4>
                       <p className={styles.productPrice}>{product.price}</p>
-                      {product.rating !== null && product.rating !== undefined && product.rating.length > 0 ? (
+                      {product.rating !== null &&
+                      product.rating !== undefined &&
+                      product.rating.length > 0 ? (
                         <p className={styles.productRating}>⭐ {product.rating}</p>
                       ) : null}
-                      {product.shop_location !== null && product.shop_location !== undefined && product.shop_location.length > 0 ? (
+                      {product.shop_location !== null &&
+                      product.shop_location !== undefined &&
+                      product.shop_location.length > 0 ? (
                         <p className={styles.productLocation}>📍 {product.shop_location}</p>
                       ) : null}
                       <a
@@ -299,9 +303,7 @@ export default function SupportPage(): React.JSX.Element {
       </main>
 
       <footer className={styles.footer}>
-        <p>
-          🔧 Support Page | Powered by Tokopedia Scraper + AI Analysis
-        </p>
+        <p>🔧 Support Page | Powered by Tokopedia Scraper + AI Analysis</p>
       </footer>
     </div>
   )

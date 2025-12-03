@@ -23,16 +23,16 @@ export const priceAnalysisRepository = {
   async fetchTokopediaPrices(query: string, limit: number = 10): Promise<TokopediaProduct[]> {
     const scraperUrl = process.env['SCRAPER_URL'] || 'http://localhost:4103'
     const endpoint = `${scraperUrl}/api/scraper/tokopedia`
-    
+
     try {
       const response = await fetch(`${endpoint}?query=${encodeURIComponent(query)}&limit=${limit}`)
-      
+
       if (!response.ok) {
         throw new Error(`Scraper API returned ${response.status}: ${response.statusText}`)
       }
 
       const result: ScraperResponse = await response.json()
-      
+
       if (!result.success) {
         throw new Error('Scraper API returned unsuccessful response')
       }
@@ -40,7 +40,9 @@ export const priceAnalysisRepository = {
       return result.data
     } catch (error) {
       console.error('Error fetching from scraper:', error)
-      throw new Error(`Failed to fetch prices from scraper: ${error instanceof Error ? error.message : 'Unknown error'}`)
+      throw new Error(
+        `Failed to fetch prices from scraper: ${error instanceof Error ? error.message : 'Unknown error'}`
+      )
     }
   },
 
@@ -69,14 +71,15 @@ export const priceAnalysisRepository = {
 
     const sorted = [...prices].sort((a, b) => a - b)
     const sum = sorted.reduce((acc, price) => acc + price, 0)
-    
+
     return {
       min: sorted[0]!,
       max: sorted[sorted.length - 1]!,
       average: Math.round(sum / sorted.length),
-      median: sorted.length % 2 === 0
-        ? Math.round((sorted[sorted.length / 2 - 1]! + sorted[sorted.length / 2]!) / 2)
-        : sorted[Math.floor(sorted.length / 2)]!,
+      median:
+        sorted.length % 2 === 0
+          ? Math.round((sorted[sorted.length / 2 - 1]! + sorted[sorted.length / 2]!) / 2)
+          : sorted[Math.floor(sorted.length / 2)]!,
     }
   },
 }

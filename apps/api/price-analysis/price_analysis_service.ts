@@ -32,13 +32,13 @@ export const priceAnalysisService = {
   ): Promise<PriceAnalysisResult> {
     // Fetch product data from Tokopedia
     const products = await priceAnalysisRepository.fetchTokopediaPrices(query, limit)
-    
+
     if (products.length === 0) {
       throw new Error('No products found for the given query')
     }
 
     // Parse and calculate statistics
-    const prices = products.map((p) => priceAnalysisRepository.parsePrice(p.price))
+    const prices = products.map(p => priceAnalysisRepository.parsePrice(p.price))
     const stats = priceAnalysisRepository.calculateStats(prices)
 
     // Prepare data for LLM analysis
@@ -56,7 +56,8 @@ export const priceAnalysisService = {
       [
         {
           role: 'system',
-          content: 'You are a pricing analyst expert specializing in Indonesian e-commerce markets. Provide clear, actionable insights.',
+          content:
+            'You are a pricing analyst expert specializing in Indonesian e-commerce markets. Provide clear, actionable insights.',
         },
         {
           role: 'user',
@@ -86,17 +87,11 @@ export const priceAnalysisService = {
   /**
    * Build prompt for LLM analysis
    */
-  buildAnalysisPrompt(
-    query: string,
-    products: any[],
-    stats: any,
-    userPrice?: number
-  ): string {
-    const formatRupiah = (num: number) =>
-      `Rp${num.toLocaleString('id-ID')}`
+  buildAnalysisPrompt(query: string, products: any[], stats: any, userPrice?: number): string {
+    const formatRupiah = (num: number) => `Rp${num.toLocaleString('id-ID')}`
 
     let prompt = `Analyze the following price data for "${query}" from Tokopedia marketplace:\n\n`
-    
+
     prompt += `MARKET STATISTICS:\n`
     prompt += `- Minimum Price: ${formatRupiah(stats.min)}\n`
     prompt += `- Maximum Price: ${formatRupiah(stats.max)}\n`
@@ -122,7 +117,7 @@ export const priceAnalysisService = {
     prompt += `1. RECOMMENDATION: A concise pricing recommendation (1-2 sentences)\n`
     prompt += `2. INSIGHTS: 3-5 key insights about this market segment\n`
     prompt += `3. SUGGESTED_PRICE: A single optimal price point in Indonesian Rupiah (just the number)\n\n`
-    
+
     prompt += `Format your response as:\n`
     prompt += `RECOMMENDATION: [your recommendation]\n`
     prompt += `INSIGHTS:\n- [insight 1]\n- [insight 2]\n- [insight 3]\n`
@@ -134,22 +129,25 @@ export const priceAnalysisService = {
   /**
    * Parse AI response into structured format
    */
-  parseAIResponse(aiText: string, stats: any): {
+  parseAIResponse(
+    aiText: string,
+    stats: any
+  ): {
     recommendation: string
     insights: string[]
     suggestedPrice?: number
   } {
-    const lines = aiText.split('\n').filter((line) => line.trim())
-    
+    const lines = aiText.split('\n').filter(line => line.trim())
+
     let recommendation = ''
     const insights: string[] = []
     let suggestedPrice: number | undefined
 
     let currentSection = ''
-    
+
     for (const line of lines) {
       const trimmed = line.trim()
-      
+
       if (trimmed.startsWith('RECOMMENDATION:')) {
         currentSection = 'recommendation'
         recommendation = trimmed.replace('RECOMMENDATION:', '').trim()
@@ -164,7 +162,11 @@ export const priceAnalysisService = {
         recommendation = trimmed
       } else if (currentSection === 'insights' && trimmed.startsWith('-')) {
         insights.push(trimmed.replace(/^-\s*/, ''))
-      } else if (currentSection === 'insights' && trimmed && !trimmed.startsWith('SUGGESTED_PRICE')) {
+      } else if (
+        currentSection === 'insights' &&
+        trimmed &&
+        !trimmed.startsWith('SUGGESTED_PRICE')
+      ) {
         insights.push(trimmed)
       }
     }
@@ -176,7 +178,9 @@ export const priceAnalysisService = {
 
     if (insights.length === 0) {
       insights.push(`Market average is Rp${stats.average.toLocaleString('id-ID')}`)
-      insights.push(`Price range shows ${((stats.max - stats.min) / stats.average * 100).toFixed(1)}% variability`)
+      insights.push(
+        `Price range shows ${(((stats.max - stats.min) / stats.average) * 100).toFixed(1)}% variability`
+      )
       insights.push('Consider product condition, brand, and seller reputation when pricing')
     }
 
@@ -184,10 +188,10 @@ export const priceAnalysisService = {
       suggestedPrice = stats.median
     }
 
-    return { 
-      recommendation, 
-      insights, 
-      ...(suggestedPrice ? { suggestedPrice } : {})
+    return {
+      recommendation,
+      insights,
+      ...(suggestedPrice ? { suggestedPrice } : {}),
     }
   },
 }

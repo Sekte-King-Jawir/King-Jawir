@@ -36,7 +36,7 @@ export async function generateCompletion(
   }
 ) {
   const messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = []
-  
+
   if (options?.system) {
     messages.push({ role: 'system', content: options.system })
   }
@@ -73,7 +73,7 @@ export async function generateStreamingCompletion(
   }
 ) {
   const messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = []
-  
+
   if (options?.system) {
     messages.push({ role: 'system', content: options.system })
   }
