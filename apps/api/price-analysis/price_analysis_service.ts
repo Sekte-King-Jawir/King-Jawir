@@ -28,9 +28,9 @@ export const priceAnalysisService = {
    */
   async streamAnalysis(
     query: string,
+    onUpdate: (update: any) => void,
     limit: number = 10,
-    userPrice?: number,
-    onUpdate: (update: any) => void
+    userPrice?: number
   ): Promise<void> {
     try {
       // Step 1: Initialize

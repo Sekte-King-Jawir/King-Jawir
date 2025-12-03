@@ -25,11 +25,11 @@ export const priceAnalysisWebSocket = new Elysia().ws('/api/price-analysis/strea
         priceAnalysisService
           .streamAnalysis(
             data.query.trim(),
-            data.limit || 10,
-            data.userPrice,
             (update) => {
               ws.send(JSON.stringify(update))
-            }
+            },
+            data.limit || 10,
+            data.userPrice
           )
           .catch((error) => {
             console.error('Stream analysis error:', error)
