@@ -16,7 +16,10 @@ const initialState: ActionResult = {
   message: '',
 }
 
-async function resetPasswordAction(_prevState: ActionResult, formData: FormData): Promise<ActionResult> {
+async function resetPasswordAction(
+  _prevState: ActionResult,
+  formData: FormData
+): Promise<ActionResult> {
   const token = formData.get('token') as string
   const newPassword = formData.get('newPassword') as string
   const confirmPassword = formData.get('confirmPassword') as string
@@ -47,12 +50,15 @@ async function resetPasswordAction(_prevState: ActionResult, formData: FormData)
       body: JSON.stringify({ token, newPassword }),
     })
 
-    const json = await response.json() as { success?: boolean; message?: string }
+    const json = (await response.json()) as { success?: boolean; message?: string }
 
     if (json.success !== true) {
-      return { 
-        success: false, 
-        message: typeof json.message === 'string' && json.message !== '' ? json.message : 'Gagal reset password' 
+      return {
+        success: false,
+        message:
+          typeof json.message === 'string' && json.message !== ''
+            ? json.message
+            : 'Gagal reset password',
       }
     }
 
@@ -72,14 +78,17 @@ function InvalidToken(): React.JSX.Element {
     <div className={styles.container}>
       <div className={styles.card}>
         <h1 className={styles.title}>Reset Password</h1>
-        <div className={styles.error}>
-          Token reset password tidak ditemukan atau tidak valid
-        </div>
+        <div className={styles.error}>Token reset password tidak ditemukan atau tidak valid</div>
         <p className={styles.subtitle}>Silakan minta link reset password baru</p>
         <Link
           href="/forgot-password"
           className={styles.button}
-          style={{ display: 'block', textAlign: 'center', textDecoration: 'none', marginTop: '1rem' }}
+          style={{
+            display: 'block',
+            textAlign: 'center',
+            textDecoration: 'none',
+            marginTop: '1rem',
+          }}
         >
           Minta Link Baru
         </Link>

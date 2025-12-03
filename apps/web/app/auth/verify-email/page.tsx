@@ -15,15 +15,18 @@ function parseApiResponse(value: unknown): ApiResponse | null {
 
 async function verifyEmail(token: string): Promise<{ success: boolean; message: string }> {
   const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4101'
-  
+
   try {
-    const response = await fetch(`${API_URL}/auth/verify-email?token=${encodeURIComponent(token)}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      cache: 'no-store',
-    })
+    const response = await fetch(
+      `${API_URL}/auth/verify-email?token=${encodeURIComponent(token)}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        cache: 'no-store',
+      }
+    )
 
     const json: unknown = await response.json()
     const data = parseApiResponse(json)
@@ -34,7 +37,12 @@ async function verifyEmail(token: string): Promise<{ success: boolean; message: 
 
     return {
       success: data.success,
-      message: data.message !== '' ? data.message : (data.success ? 'Email berhasil diverifikasi!' : 'Verifikasi gagal'),
+      message:
+        data.message !== ''
+          ? data.message
+          : data.success
+            ? 'Email berhasil diverifikasi!'
+            : 'Verifikasi gagal',
     }
   } catch (err) {
     console.error('Verify email error:', err)
@@ -46,8 +54,8 @@ interface VerifyEmailPageProps {
   searchParams: Promise<{ token?: string }>
 }
 
-export default async function VerifyEmailPage({ 
-  searchParams 
+export default async function VerifyEmailPage({
+  searchParams,
 }: VerifyEmailPageProps): Promise<React.JSX.Element> {
   const params = await searchParams
   const token = params.token
@@ -58,13 +66,16 @@ export default async function VerifyEmailPage({
         <div className={styles.card}>
           <h1 className={styles.title}>Verifikasi Email</h1>
           <div className={styles.error}>Token verifikasi tidak ditemukan</div>
-          <p className={styles.subtitle}>
-            Silakan gunakan link yang dikirim ke email Anda.
-          </p>
-          <Link 
-            href="/resend-verification" 
-            className={styles.button} 
-            style={{ display: 'block', textAlign: 'center', textDecoration: 'none', marginTop: '1rem' }}
+          <p className={styles.subtitle}>Silakan gunakan link yang dikirim ke email Anda.</p>
+          <Link
+            href="/resend-verification"
+            className={styles.button}
+            style={{
+              display: 'block',
+              textAlign: 'center',
+              textDecoration: 'none',
+              marginTop: '1rem',
+            }}
           >
             Kirim Ulang Verifikasi
           </Link>
@@ -91,10 +102,15 @@ export default async function VerifyEmailPage({
             <p className={styles.subtitle}>
               Akun Anda telah diverifikasi. Anda sekarang dapat login.
             </p>
-            <Link 
-              href="/login" 
-              className={styles.button} 
-              style={{ display: 'block', textAlign: 'center', textDecoration: 'none', marginTop: '1rem' }}
+            <Link
+              href="/login"
+              className={styles.button}
+              style={{
+                display: 'block',
+                textAlign: 'center',
+                textDecoration: 'none',
+                marginTop: '1rem',
+              }}
             >
               Login Sekarang
             </Link>
@@ -105,10 +121,15 @@ export default async function VerifyEmailPage({
             <p className={styles.subtitle}>
               Jika token sudah kadaluarsa, Anda dapat meminta verifikasi ulang.
             </p>
-            <Link 
-              href="/resend-verification" 
-              className={styles.button} 
-              style={{ display: 'block', textAlign: 'center', textDecoration: 'none', marginTop: '1rem' }}
+            <Link
+              href="/resend-verification"
+              className={styles.button}
+              style={{
+                display: 'block',
+                textAlign: 'center',
+                textDecoration: 'none',
+                marginTop: '1rem',
+              }}
             >
               Kirim Ulang Verifikasi
             </Link>
