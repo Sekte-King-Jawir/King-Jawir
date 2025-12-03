@@ -29,30 +29,29 @@ const defaultCategories = [
 ]
 
 export default function CategorySection({ categories }: CategorySectionProps): React.JSX.Element {
-  const displayCategories = categories.length > 0 
-    ? categories.map(cat => ({
-        icon: categoryIcons[cat.slug]?.icon ?? '📦',
-        label: cat.name,
-        slug: cat.slug,
-        count: cat.productCount
-      }))
-    : defaultCategories
+  const displayCategories =
+    categories.length > 0
+      ? categories.map(cat => ({
+          icon: categoryIcons[cat.slug]?.icon ?? '📦',
+          label: cat.name,
+          slug: cat.slug,
+          count: cat.productCount,
+        }))
+      : defaultCategories
 
   return (
     <section className="bg-white py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between mb-8">
-          <h2 className="text-lg font-semibold text-gray-900">
-            Browse By Category
-          </h2>
+          <h2 className="text-lg font-semibold text-gray-900">Browse By Category</h2>
           <div className="flex gap-2">
-            <button 
+            <button
               className="w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center text-gray-400 hover:bg-gray-50 text-sm"
               aria-label="Previous"
             >
               ←
             </button>
-            <button 
+            <button
               className="w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center text-gray-400 hover:bg-gray-50 text-sm"
               aria-label="Next"
             >
@@ -71,9 +70,7 @@ export default function CategorySection({ categories }: CategorySectionProps): R
               <div className="w-12 h-12 flex items-center justify-center mb-3 text-3xl group-hover:scale-110 transition-transform">
                 {category.icon}
               </div>
-              <p className="text-sm font-medium text-center text-gray-800">
-                {category.label}
-              </p>
+              <p className="text-sm font-medium text-center text-gray-800">{category.label}</p>
             </Link>
           ))}
         </div>

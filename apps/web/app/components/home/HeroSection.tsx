@@ -40,7 +40,8 @@ export default function HeroSection(): React.JSX.Element {
             <div className="flex-1">
               <h3 className="text-white text-3xl font-medium mb-3">Playstation 5</h3>
               <p className="text-white/70 text-sm max-w-[240px] leading-relaxed">
-                Incredibly powerful CPUs, GPUs, and an SSD with integrated I/O will redefine your PlayStation experience.
+                Incredibly powerful CPUs, GPUs, and an SSD with integrated I/O will redefine your
+                PlayStation experience.
               </p>
             </div>
             <div className="flex items-end">

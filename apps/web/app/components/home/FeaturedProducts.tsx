@@ -51,17 +51,25 @@ function ProductCard({ product }: { product: Product }): React.JSX.Element {
             onError={() => setImgError(true)}
           />
         ) : (
-          <span className="text-5xl group-hover:scale-110 transition-transform">
-            {emoji}
-          </span>
+          <span className="text-5xl group-hover:scale-110 transition-transform">{emoji}</span>
         )}
         {/* Wishlist Button */}
-        <button 
+        <button
           className="absolute top-3 right-3 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow hover:shadow-md transition-all"
           aria-label="Add to wishlist"
         >
-          <svg className="w-4 h-4 text-gray-400 hover:text-red-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+          <svg
+            className="w-4 h-4 text-gray-400 hover:text-red-500 transition-colors"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+            />
           </svg>
         </button>
       </div>
@@ -116,9 +124,7 @@ export default function FeaturedProducts({ products }: FeaturedProductsProps): R
           <button
             onClick={() => setActiveTab('new')}
             className={`text-sm font-medium pb-2 transition-all relative ${
-              activeTab === 'new' 
-                ? 'text-gray-900' 
-                : 'text-gray-400 hover:text-gray-600'
+              activeTab === 'new' ? 'text-gray-900' : 'text-gray-400 hover:text-gray-600'
             }`}
           >
             New Arrival
@@ -129,9 +135,7 @@ export default function FeaturedProducts({ products }: FeaturedProductsProps): R
           <button
             onClick={() => setActiveTab('bestseller')}
             className={`text-sm font-medium pb-2 transition-all relative ${
-              activeTab === 'bestseller' 
-                ? 'text-gray-900' 
-                : 'text-gray-400 hover:text-gray-600'
+              activeTab === 'bestseller' ? 'text-gray-900' : 'text-gray-400 hover:text-gray-600'
             }`}
           >
             Bestseller
@@ -142,9 +146,7 @@ export default function FeaturedProducts({ products }: FeaturedProductsProps): R
           <button
             onClick={() => setActiveTab('featured')}
             className={`text-sm font-medium pb-2 transition-all relative ${
-              activeTab === 'featured' 
-                ? 'text-gray-900' 
-                : 'text-gray-400 hover:text-gray-600'
+              activeTab === 'featured' ? 'text-gray-900' : 'text-gray-400 hover:text-gray-600'
             }`}
           >
             Featured Products
@@ -156,7 +158,7 @@ export default function FeaturedProducts({ products }: FeaturedProductsProps): R
 
         {/* Products Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
-          {products.slice(0, 8).map((product) => (
+          {products.slice(0, 8).map(product => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>
