@@ -50,7 +50,7 @@ export const registerService = {
     })
 
     // Kirim email
-    const verifyUrl = `${process.env['APP_URL']}/auth/verify-email?token=${token}`
+    const verifyUrl = `${process.env['APP_URL']}/verify-email?token=${token}`
     await sendVerificationEmail(email, verifyUrl)
 
     return successResponse('Register berhasil. Cek email untuk verifikasi.', {
