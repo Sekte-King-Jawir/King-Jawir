@@ -1,6 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import Image from 'next/image'
+import { Moon, Sun, Search, TrendingUp, ShoppingBag, BarChart3 } from 'lucide-react'
 import styles from './support.module.css'
 
 interface TokopediaProduct {
@@ -46,6 +48,19 @@ export default function SupportPage(): React.JSX.Element {
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState<PriceAnalysisResult | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [isDarkMode, setIsDarkMode] = useState(false)
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme')
+    const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches
+    setIsDarkMode(savedTheme === 'dark' || (savedTheme === null && systemTheme))
+  }, [])
+
+  const toggleTheme = (): void => {
+    const newTheme = !isDarkMode
+    setIsDarkMode(newTheme)
+    localStorage.setItem('theme', newTheme ? 'dark' : 'light')
+  }
 
   const formatRupiah = (num: number): string => {
     return `Rp${num.toLocaleString('id-ID')}`
@@ -58,23 +73,23 @@ export default function SupportPage(): React.JSX.Element {
     setResult(null)
 
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4101'
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4101'
       const params = new URLSearchParams({
         query,
         limit: limit.toString(),
       })
 
-      if (userPrice && userPrice > 0) {
+      if (typeof userPrice === 'number' && userPrice > 0) {
         params.append('userPrice', userPrice.toString())
       }
 
       const response = await fetch(`${apiUrl}/api/price-analysis?${params.toString()}`)
-      const data: ApiResponse = await response.json()
+      const data: ApiResponse = (await response.json()) as ApiResponse
 
-      if (data.success && data.data) {
+      if (data.success === true && data.data !== null && data.data !== undefined) {
         setResult(data.data)
       } else {
-        setError(data.error?.code || 'Failed to analyze prices')
+        setError(data.error?.code ?? 'Failed to analyze prices')
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Unknown error occurred')
@@ -84,67 +99,110 @@ export default function SupportPage(): React.JSX.Element {
   }
 
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} ${isDarkMode ? styles.dark : styles.light}`}>
       <header className={styles.header}>
-        <h1>🤖 AI Price Analysis Tool</h1>
-        <p>Test Tokopedia price scraping and AI analysis</p>
+        <div className={styles.headerTop}>
+          <div className={styles.logo}>
+            <BarChart3 className={styles.logoIcon} />
+            <span>PriceScope AI</span>
+          </div>
+          <button
+            onClick={toggleTheme}
+            className={styles.themeToggle}
+            aria-label="Toggle theme"
+          >
+            {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
+          </button>
+        </div>
+        <div className={styles.headerContent}>
+          <h1>Intelligent Price Analysis</h1>
+          <p>Discover market insights with AI-powered Tokopedia price analysis</p>
+        </div>
       </header>
 
       <main className={styles.main}>
-        <form onSubmit={handleSubmit} className={styles.form}>
+        <form onSubmit={(e) => { void handleSubmit(e) }} className={styles.form}>
           <div className={styles.formGroup}>
-            <label htmlFor="query">Product Query:</label>
-            <input
-              id="query"
-              type="text"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="e.g., iPhone 15 Pro"
-              required
-              className={styles.input}
-            />
+            <label htmlFor="query">
+              <Search size={16} />
+              Product Query
+            </label>
+            <div className={styles.inputWrapper}>
+              <input
+                id="query"
+                type="text"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Search for products, e.g., iPhone 15 Pro"
+                required
+                className={styles.input}
+              />
+            </div>
           </div>
 
           <div className={styles.formRow}>
             <div className={styles.formGroup}>
-              <label htmlFor="limit">Limit:</label>
-              <input
-                id="limit"
-                type="number"
-                value={limit}
-                onChange={(e) => setLimit(parseInt(e.target.value))}
-                min="1"
-                max="50"
-                className={styles.input}
-              />
+              <label htmlFor="limit">
+                <TrendingUp size={16} />
+                Products Limit
+              </label>
+              <div className={styles.inputWrapper}>
+                <input
+                  id="limit"
+                  type="number"
+                  value={limit}
+                  onChange={(e) => setLimit(parseInt(e.target.value))}
+                  min="1"
+                  max="50"
+                  className={styles.input}
+                />
+              </div>
             </div>
 
             <div className={styles.formGroup}>
-              <label htmlFor="userPrice">Your Price (Optional):</label>
-              <input
-                id="userPrice"
-                type="number"
-                value={userPrice || ''}
-                onChange={(e) =>
-                  setUserPrice(e.target.value ? parseInt(e.target.value) : undefined)
-                }
-                placeholder="e.g., 15000000"
-                min="0"
-                className={styles.input}
-              />
+              <label htmlFor="userPrice">
+                <ShoppingBag size={16} />
+                Your Budget (Optional)
+              </label>
+              <div className={styles.inputWrapper}>
+                <input
+                  id="userPrice"
+                  type="number"
+                  value={userPrice ?? ''}
+                  onChange={(e) =>
+                    setUserPrice(e.target.value.length > 0 ? parseInt(e.target.value) : undefined)
+                  }
+                  placeholder="Enter your budget in Rupiah"
+                  min="0"
+                  className={styles.input}
+                />
+              </div>
             </div>
           </div>
 
-          <button type="submit" disabled={loading} className={styles.button}>
-            {loading ? '⏳ Analyzing...' : '🔍 Analyze Prices'}
+          <button type="submit" disabled={loading} className={styles.submitButton}>
+            {loading ? (
+              <>
+                <div className={styles.spinner} />
+                Analyzing Market Data...
+              </>
+            ) : (
+              <>
+                <Search size={20} />
+                Analyze Market Prices
+              </>
+            )}
           </button>
         </form>
 
-        {error ? <div className={styles.error}>
+        {error !== null && error.length > 0 ? (
+          <div className={styles.error}>
             <strong>❌ Error:</strong> {error}
-          </div> : null}
+          </div>
+        ) : null}
 
-        {result ? <div className={styles.results}>
+        {result !== null ? (
+          <div className={styles.results}>
             <section className={styles.section}>
               <h2>📊 Market Statistics</h2>
               <div className={styles.stats}>
@@ -182,18 +240,20 @@ export default function SupportPage(): React.JSX.Element {
                   <p>{result.analysis.recommendation}</p>
                 </div>
 
-                {result.analysis.suggestedPrice ? <div className={styles.suggestedPrice}>
+                {typeof result.analysis.suggestedPrice === 'number' && result.analysis.suggestedPrice > 0 ? (
+                  <div className={styles.suggestedPrice}>
                     <h3>Suggested Price:</h3>
                     <p className={styles.priceHighlight}>
                       {formatRupiah(result.analysis.suggestedPrice)}
                     </p>
-                  </div> : null}
+                  </div>
+                ) : null}
 
                 <div className={styles.insights}>
                   <h3>Key Insights:</h3>
                   <ul>
-                    {result.analysis.insights.map((insight, idx) => (
-                      <li key={idx}>{insight}</li>
+                    {result.analysis.insights.map((insight) => (
+                      <li key={insight.slice(0, 50)}>{insight}</li>
                     ))}
                   </ul>
                 </div>
@@ -203,18 +263,24 @@ export default function SupportPage(): React.JSX.Element {
             <section className={styles.section}>
               <h2>🛍️ Product List</h2>
               <div className={styles.products}>
-                {result.products.map((product, idx) => (
-                  <div key={idx} className={styles.productCard}>
-                    <img
+                {result.products.map((product) => (
+                  <div key={product.product_url} className={styles.productCard}>
+                    <Image
                       src={product.image_url}
                       alt={product.name}
+                      width={280}
+                      height={200}
                       className={styles.productImage}
                     />
                     <div className={styles.productInfo}>
                       <h4 className={styles.productName}>{product.name}</h4>
                       <p className={styles.productPrice}>{product.price}</p>
-                      {product.rating ? <p className={styles.productRating}>⭐ {product.rating}</p> : null}
-                      {product.shop_location ? <p className={styles.productLocation}>📍 {product.shop_location}</p> : null}
+                      {product.rating !== null && product.rating !== undefined && product.rating.length > 0 ? (
+                        <p className={styles.productRating}>⭐ {product.rating}</p>
+                      ) : null}
+                      {product.shop_location !== null && product.shop_location !== undefined && product.shop_location.length > 0 ? (
+                        <p className={styles.productLocation}>📍 {product.shop_location}</p>
+                      ) : null}
                       <a
                         href={product.product_url}
                         target="_blank"
@@ -228,7 +294,8 @@ export default function SupportPage(): React.JSX.Element {
                 ))}
               </div>
             </section>
-          </div> : null}
+          </div>
+        ) : null}
       </main>
 
       <footer className={styles.footer}>
