@@ -15,31 +15,23 @@ function parseApiResponse(value: unknown): ApiResponse | null {
   return { success: obj.success, message: obj.message }
 }
 
-export async function registerAction(_prevState: ActionResult, formData: FormData): Promise<ActionResult> {
-  const name = formData.get('name') as string
+export async function forgotPasswordAction(
+  _prevState: ActionResult,
+  formData: FormData
+): Promise<ActionResult> {
   const email = formData.get('email') as string
-  const password = formData.get('password') as string
-  const confirmPassword = formData.get('confirmPassword') as string
 
-  if (name === '' || email === '' || password === '' || confirmPassword === '') {
-    return { success: false, message: 'Semua field harus diisi' }
-  }
-
-  if (password !== confirmPassword) {
-    return { success: false, message: 'Password dan konfirmasi password tidak cocok' }
-  }
-
-  if (password.length < 6) {
-    return { success: false, message: 'Password minimal 6 karakter' }
+  if (email === '') {
+    return { success: false, message: 'Email harus diisi' }
   }
 
   try {
-    const response = await fetch(`${API_URL}/auth/register`, {
+    const response = await fetch(`${API_URL}/auth/forgot-password`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ name, email, password }),
+      body: JSON.stringify({ email }),
     })
 
     const json: unknown = await response.json()
@@ -50,16 +42,19 @@ export async function registerAction(_prevState: ActionResult, formData: FormDat
     }
 
     if (data.success === false) {
-      return { success: false, message: data.message !== '' ? data.message : 'Registrasi gagal' }
+      return {
+        success: false,
+        message: data.message !== '' ? data.message : 'Gagal mengirim link reset password',
+      }
     }
 
     return {
       success: true,
-      message: 'Registrasi berhasil! Silakan cek email untuk verifikasi akun.',
-      redirectTo: '/login',
+      message:
+        data.message !== '' ? data.message : 'Link reset password telah dikirim ke email Anda!',
     }
   } catch (err) {
-    console.error('Register error:', err)
+    console.error('Forgot password error:', err)
     return { success: false, message: 'Terjadi kesalahan. Silakan coba lagi.' }
   }
 }

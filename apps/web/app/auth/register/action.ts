@@ -15,20 +15,34 @@ function parseApiResponse(value: unknown): ApiResponse | null {
   return { success: obj.success, message: obj.message }
 }
 
-export async function forgotPasswordAction(_prevState: ActionResult, formData: FormData): Promise<ActionResult> {
+export async function registerAction(
+  _prevState: ActionResult,
+  formData: FormData
+): Promise<ActionResult> {
+  const name = formData.get('name') as string
   const email = formData.get('email') as string
+  const password = formData.get('password') as string
+  const confirmPassword = formData.get('confirmPassword') as string
 
-  if (email === '') {
-    return { success: false, message: 'Email harus diisi' }
+  if (name === '' || email === '' || password === '' || confirmPassword === '') {
+    return { success: false, message: 'Semua field harus diisi' }
+  }
+
+  if (password !== confirmPassword) {
+    return { success: false, message: 'Password dan konfirmasi password tidak cocok' }
+  }
+
+  if (password.length < 6) {
+    return { success: false, message: 'Password minimal 6 karakter' }
   }
 
   try {
-    const response = await fetch(`${API_URL}/auth/forgot-password`, {
+    const response = await fetch(`${API_URL}/auth/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ email }),
+      body: JSON.stringify({ name, email, password }),
     })
 
     const json: unknown = await response.json()
@@ -39,15 +53,16 @@ export async function forgotPasswordAction(_prevState: ActionResult, formData: F
     }
 
     if (data.success === false) {
-      return { success: false, message: data.message !== '' ? data.message : 'Gagal mengirim link reset password' }
+      return { success: false, message: data.message !== '' ? data.message : 'Registrasi gagal' }
     }
 
     return {
       success: true,
-      message: data.message !== '' ? data.message : 'Link reset password telah dikirim ke email Anda!',
+      message: 'Registrasi berhasil! Silakan cek email untuk verifikasi akun.',
+      redirectTo: '/auth/login',
     }
   } catch (err) {
-    console.error('Forgot password error:', err)
+    console.error('Register error:', err)
     return { success: false, message: 'Terjadi kesalahan. Silakan coba lagi.' }
   }
 }

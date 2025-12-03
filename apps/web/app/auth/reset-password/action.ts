@@ -15,7 +15,10 @@ function parseApiResponse(value: unknown): ApiResponse | null {
   return { success: obj.success, message: obj.message }
 }
 
-export async function resetPasswordAction(_prevState: ActionResult, formData: FormData): Promise<ActionResult> {
+export async function resetPasswordAction(
+  _prevState: ActionResult,
+  formData: FormData
+): Promise<ActionResult> {
   const token = formData.get('token') as string
   const newPassword = formData.get('newPassword') as string
   const confirmPassword = formData.get('confirmPassword') as string
@@ -53,13 +56,16 @@ export async function resetPasswordAction(_prevState: ActionResult, formData: Fo
     }
 
     if (data.success === false) {
-      return { success: false, message: data.message !== '' ? data.message : 'Gagal reset password' }
+      return {
+        success: false,
+        message: data.message !== '' ? data.message : 'Gagal reset password',
+      }
     }
 
     return {
       success: true,
       message: 'Password berhasil direset!',
-      redirectTo: '/login',
+      redirectTo: '/auth/login',
     }
   } catch (err) {
     console.error('Reset password error:', err)

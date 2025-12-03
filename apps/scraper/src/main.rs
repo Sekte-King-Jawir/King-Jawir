@@ -2,13 +2,27 @@ mod browser;
 mod config;
 mod tokopedia;
 
-use axum::Router;
+use axum::{Router, extract::Request, middleware::{self, Next}, response::Response};
 use tower_http::cors::{Any, CorsLayer};
 use utoipa::OpenApi;
 use utoipa_swagger_ui::SwaggerUi;
+use std::time::Instant;
 
 use crate::config::{SERVER_HOST, SERVER_PORT};
 use crate::tokopedia::tokopedia_model::Product;
+
+async fn logging_middleware(req: Request, next: Next) -> Response {
+    let start = Instant::now();
+    let method = req.method().clone();
+    let uri = req.uri().clone();
+    
+    let response = next.run(req).await;
+    
+    let elapsed = start.elapsed();
+    println!("⏱️  API Response: {} {} - {:?}", method, uri, elapsed);
+    
+    response
+}
 
 #[derive(OpenApi)]
 #[openapi(
@@ -41,6 +55,7 @@ async fn main() {
     let app = Router::new()
         .merge(tokopedia::router())
         .merge(SwaggerUi::new("/docs").url("/api-docs/openapi.json", ApiDoc::openapi()))
+        .layer(middleware::from_fn(logging_middleware))
         .layer(cors);
 
     // Start server

@@ -10,14 +10,19 @@ import { cartRoutes } from './cart'
 import { orderRoutes, sellerOrderRoutes } from './order'
 import { reviewRoutes, productReviewsRoute } from './review'
 import { adminRoutes } from './admin'
+import { priceAnalysisRoutes } from './price-analysis'
+import { priceAnalysisWebSocket } from './price-analysis/websocket'
 
 const app = new Elysia()
+  .onRequest(({ request }) => {
+    console.log(`[${request.method}] ${request.url} | Origin: ${request.headers.get('origin')}`)
+  })
   .use(
     cors({
-      origin: process.env['WEB_URL'] || 'http://localhost:3000',
+      origin: () => true,
       credentials: true,
-      allowedHeaders: ['Content-Type', 'Authorization'],
-      methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+      methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+      allowedHeaders: ['Content-Type', 'Authorization', 'Cookie', 'X-Requested-With'],
     })
   )
   .use(
@@ -39,6 +44,7 @@ const app = new Elysia()
           { name: 'Orders', description: 'Order management' },
           { name: 'Reviews', description: 'Product reviews' },
           { name: 'Admin', description: 'Admin management' },
+          { name: 'Price Analysis', description: 'AI-powered price analysis from Tokopedia' },
         ],
         components: {
           securitySchemes: {
@@ -69,6 +75,8 @@ const app = new Elysia()
   .use(reviewRoutes)
   .use(productReviewsRoute)
   .use(adminRoutes)
+  .use(priceAnalysisRoutes)
+  .use(priceAnalysisWebSocket)
   .get('/', () => ({ message: 'Marketplace API' }), {
     detail: {
       tags: ['General'],

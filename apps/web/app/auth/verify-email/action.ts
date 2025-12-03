@@ -15,21 +15,21 @@ function parseApiResponse(value: unknown): ApiResponse | null {
   return { success: obj.success, message: obj.message }
 }
 
-export async function resendVerificationAction(_prevState: ActionResult, formData: FormData): Promise<ActionResult> {
-  const email = formData.get('email') as string
-
-  if (email === '') {
-    return { success: false, message: 'Email harus diisi' }
+export async function verifyEmailAction(token: string): Promise<ActionResult> {
+  if (token === '') {
+    return { success: false, message: 'Token verifikasi tidak ditemukan' }
   }
 
   try {
-    const response = await fetch(`${API_URL}/auth/resend-verification`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email }),
-    })
+    const response = await fetch(
+      `${API_URL}/auth/verify-email?token=${encodeURIComponent(token)}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    )
 
     const json: unknown = await response.json()
     const data = parseApiResponse(json)
@@ -39,15 +39,15 @@ export async function resendVerificationAction(_prevState: ActionResult, formDat
     }
 
     if (data.success === false) {
-      return { success: false, message: data.message !== '' ? data.message : 'Gagal mengirim email verifikasi' }
+      return { success: false, message: data.message !== '' ? data.message : 'Verifikasi gagal' }
     }
 
     return {
       success: true,
-      message: data.message !== '' ? data.message : 'Email verifikasi telah dikirim ulang!',
+      message: data.message !== '' ? data.message : 'Email berhasil diverifikasi!',
     }
   } catch (err) {
-    console.error('Resend verification error:', err)
+    console.error('Verify email error:', err)
     return { success: false, message: 'Terjadi kesalahan. Silakan coba lagi.' }
   }
 }
