@@ -24,16 +24,16 @@ function parseApiResponse(value: unknown): LoginApiResponse | null {
   if (typeof value !== 'object' || value === null) return null
   const obj = value as Record<string, unknown>
   if (typeof obj.success !== 'boolean' || typeof obj.message !== 'string') return null
-  
+
   const parsedData = parseLoginData(obj.data)
-  
+
   if (parsedData === undefined) {
     return {
       success: obj.success,
       message: obj.message,
     }
   }
-  
+
   return {
     success: obj.success,
     message: obj.message,
@@ -44,7 +44,7 @@ function parseApiResponse(value: unknown): LoginApiResponse | null {
 function parseLoginData(value: unknown): LoginData | undefined {
   if (typeof value !== 'object' || value === null) return undefined
   const obj = value as Record<string, unknown>
-  
+
   if (
     typeof obj.accessToken !== 'string' ||
     typeof obj.refreshToken !== 'string' ||
@@ -53,7 +53,7 @@ function parseLoginData(value: unknown): LoginData | undefined {
   ) {
     return undefined
   }
-  
+
   const userObj = obj.user as Record<string, unknown>
   if (
     typeof userObj.id !== 'string' ||
@@ -62,7 +62,7 @@ function parseLoginData(value: unknown): LoginData | undefined {
   ) {
     return undefined
   }
-  
+
   return {
     accessToken: obj.accessToken,
     refreshToken: obj.refreshToken,
@@ -74,7 +74,10 @@ function parseLoginData(value: unknown): LoginData | undefined {
   }
 }
 
-export async function loginAction(_prevState: ActionResult, formData: FormData): Promise<ActionResult> {
+export async function loginAction(
+  _prevState: ActionResult,
+  formData: FormData
+): Promise<ActionResult> {
   const email = formData.get('email') as string
   const password = formData.get('password') as string
 
@@ -93,7 +96,7 @@ export async function loginAction(_prevState: ActionResult, formData: FormData):
 
     const json: unknown = await response.json()
     const data = parseApiResponse(json)
-    
+
     if (data === null) {
       return { success: false, message: 'Response tidak valid dari server' }
     }
@@ -102,13 +105,13 @@ export async function loginAction(_prevState: ActionResult, formData: FormData):
       // Cek apakah message mengandung kata "verifikasi" untuk redirect
       const msgLower = data.message.toLowerCase()
       if (msgLower.includes('verifikasi') || msgLower.includes('verified')) {
-        return { 
-          success: false, 
+        return {
+          success: false,
           message: data.message !== '' ? data.message : 'Email belum diverifikasi',
-          redirectTo: '/resend-verification'
+          redirectTo: '/resend-verification',
         }
       }
-      
+
       return { success: false, message: data.message !== '' ? data.message : 'Login gagal' }
     }
 

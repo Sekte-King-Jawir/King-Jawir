@@ -15,7 +15,10 @@ function parseApiResponse(value: unknown): ApiResponse | null {
   return { success: obj.success, message: obj.message }
 }
 
-export async function forgotPasswordAction(_prevState: ActionResult, formData: FormData): Promise<ActionResult> {
+export async function forgotPasswordAction(
+  _prevState: ActionResult,
+  formData: FormData
+): Promise<ActionResult> {
   const email = formData.get('email') as string
 
   if (email === '') {
@@ -39,12 +42,16 @@ export async function forgotPasswordAction(_prevState: ActionResult, formData: F
     }
 
     if (data.success === false) {
-      return { success: false, message: data.message !== '' ? data.message : 'Gagal mengirim link reset password' }
+      return {
+        success: false,
+        message: data.message !== '' ? data.message : 'Gagal mengirim link reset password',
+      }
     }
 
     return {
       success: true,
-      message: data.message !== '' ? data.message : 'Link reset password telah dikirim ke email Anda!',
+      message:
+        data.message !== '' ? data.message : 'Link reset password telah dikirim ke email Anda!',
     }
   } catch (err) {
     console.error('Forgot password error:', err)

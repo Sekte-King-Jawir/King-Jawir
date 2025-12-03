@@ -15,7 +15,10 @@ function parseApiResponse(value: unknown): ApiResponse | null {
   return { success: obj.success, message: obj.message }
 }
 
-export async function resendVerificationAction(_prevState: ActionResult, formData: FormData): Promise<ActionResult> {
+export async function resendVerificationAction(
+  _prevState: ActionResult,
+  formData: FormData
+): Promise<ActionResult> {
   const email = formData.get('email') as string
 
   if (email === '') {
@@ -39,7 +42,10 @@ export async function resendVerificationAction(_prevState: ActionResult, formDat
     }
 
     if (data.success === false) {
-      return { success: false, message: data.message !== '' ? data.message : 'Gagal mengirim email verifikasi' }
+      return {
+        success: false,
+        message: data.message !== '' ? data.message : 'Gagal mengirim email verifikasi',
+      }
     }
 
     return {
