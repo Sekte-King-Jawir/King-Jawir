@@ -10,7 +10,9 @@ export function InvalidToken(): React.JSX.Element {
         <div className="bg-red-50 dark:bg-red-950 text-red-600 dark:text-red-400 px-4 py-3 rounded-lg mb-4 text-sm border border-red-200 dark:border-red-800">
           Token reset password tidak ditemukan atau tidak valid
         </div>
-        <p className="text-center text-gray-500 mb-6 text-sm">Silakan minta link reset password baru</p>
+        <p className="text-center text-gray-500 mb-6 text-sm">
+          Silakan minta link reset password baru
+        </p>
         <Link
           href="/auth/forgot-password"
           className="block text-center no-underline mt-4 px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-base font-semibold transition-colors"

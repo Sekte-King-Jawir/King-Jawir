@@ -11,8 +11,12 @@ export function ResendVerificationForm(): React.JSX.Element {
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-background">
       <div className="w-full max-w-md p-8 rounded-xl bg-background border border-gray-200 dark:border-gray-700 shadow-md dark:shadow-lg">
-        <h1 className="text-2xl font-bold text-center mb-2 text-foreground">Kirim Ulang Verifikasi</h1>
-        <p className="text-center text-gray-500 mb-6 text-sm">Masukkan email Anda untuk mengirim ulang link verifikasi</p>
+        <h1 className="text-2xl font-bold text-center mb-2 text-foreground">
+          Kirim Ulang Verifikasi
+        </h1>
+        <p className="text-center text-gray-500 mb-6 text-sm">
+          Masukkan email Anda untuk mengirim ulang link verifikasi
+        </p>
 
         {state.message !== '' && !state.success && (
           <div className="bg-red-50 dark:bg-red-950 text-red-600 dark:text-red-400 px-4 py-3 rounded-lg mb-4 text-sm border border-red-200 dark:border-red-800">
