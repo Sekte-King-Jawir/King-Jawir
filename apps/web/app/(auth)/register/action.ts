@@ -15,7 +15,10 @@ function parseApiResponse(value: unknown): ApiResponse | null {
   return { success: obj.success, message: obj.message }
 }
 
-export async function registerAction(_prevState: ActionResult, formData: FormData): Promise<ActionResult> {
+export async function registerAction(
+  _prevState: ActionResult,
+  formData: FormData
+): Promise<ActionResult> {
   const name = formData.get('name') as string
   const email = formData.get('email') as string
   const password = formData.get('password') as string

@@ -6,8 +6,8 @@ interface VerifyEmailPageProps {
   searchParams: Promise<{ token?: string }>
 }
 
-export default async function VerifyEmailPage({ 
-  searchParams 
+export default async function VerifyEmailPage({
+  searchParams,
 }: VerifyEmailPageProps): Promise<React.JSX.Element> {
   const params = await searchParams
   const token = params.token
@@ -21,10 +21,15 @@ export default async function VerifyEmailPage({
           <p className={styles.subtitle}>
             Jika token sudah kadaluarsa, Anda dapat meminta verifikasi ulang.
           </p>
-          <Link 
-            href="/resend-verification" 
-            className={styles.button} 
-            style={{ display: 'block', textAlign: 'center', textDecoration: 'none', marginTop: '1rem' }}
+          <Link
+            href="/resend-verification"
+            className={styles.button}
+            style={{
+              display: 'block',
+              textAlign: 'center',
+              textDecoration: 'none',
+              marginTop: '1rem',
+            }}
           >
             Kirim Ulang Verifikasi
           </Link>
@@ -51,10 +56,15 @@ export default async function VerifyEmailPage({
             <p className={styles.subtitle}>
               Akun Anda telah diverifikasi. Anda sekarang dapat login.
             </p>
-            <Link 
-              href="/login" 
-              className={styles.button} 
-              style={{ display: 'block', textAlign: 'center', textDecoration: 'none', marginTop: '1rem' }}
+            <Link
+              href="/login"
+              className={styles.button}
+              style={{
+                display: 'block',
+                textAlign: 'center',
+                textDecoration: 'none',
+                marginTop: '1rem',
+              }}
             >
               Login Sekarang
             </Link>
@@ -65,10 +75,15 @@ export default async function VerifyEmailPage({
             <p className={styles.subtitle}>
               Jika token sudah kadaluarsa, Anda dapat meminta verifikasi ulang.
             </p>
-            <Link 
-              href="/resend-verification" 
-              className={styles.button} 
-              style={{ display: 'block', textAlign: 'center', textDecoration: 'none', marginTop: '1rem' }}
+            <Link
+              href="/resend-verification"
+              className={styles.button}
+              style={{
+                display: 'block',
+                textAlign: 'center',
+                textDecoration: 'none',
+                marginTop: '1rem',
+              }}
             >
               Kirim Ulang Verifikasi
             </Link>
