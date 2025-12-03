@@ -16,11 +16,7 @@ interface SortDropdownProps {
 export function SortDropdown({ options, value, onChange }: SortDropdownProps) {
   return (
     <div className={styles.wrapper}>
-      <select
-        className={styles.select}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-      >
+      <select className={styles.select} value={value} onChange={e => onChange(e.target.value)}>
         {options.map(option => (
           <option key={option.value} value={option.value}>
             {option.label}

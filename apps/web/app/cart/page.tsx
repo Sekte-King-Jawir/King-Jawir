@@ -60,11 +60,7 @@ export default function CartPage() {
         body: JSON.stringify({ quantity }),
       })
       if (res.ok) {
-        setCartItems(prev =>
-          prev.map(item =>
-            item.id === id ? { ...item, quantity } : item
-          )
-        )
+        setCartItems(prev => prev.map(item => (item.id === id ? { ...item, quantity } : item)))
       }
     } catch (error) {
       console.error('Failed to update quantity:', error)

@@ -10,47 +10,42 @@ interface PaginationProps {
   baseUrl?: string
 }
 
-export function Pagination({
-  currentPage,
-  totalPages,
-  onPageChange,
-  baseUrl,
-}: PaginationProps) {
+export function Pagination({ currentPage, totalPages, onPageChange, baseUrl }: PaginationProps) {
   if (totalPages <= 1) return null
 
   const getPageNumbers = () => {
     const pages: (number | string)[] = []
     const showEllipsis = totalPages > 7
-    
+
     if (!showEllipsis) {
       for (let i = 1; i <= totalPages; i++) {
         pages.push(i)
       }
     } else {
       pages.push(1)
-      
+
       if (currentPage > 3) {
         pages.push('...')
       }
-      
+
       const start = Math.max(2, currentPage - 1)
       const end = Math.min(totalPages - 1, currentPage + 1)
-      
+
       for (let i = start; i <= end; i++) {
         if (!pages.includes(i)) {
           pages.push(i)
         }
       }
-      
+
       if (currentPage < totalPages - 2) {
         pages.push('...')
       }
-      
+
       if (!pages.includes(totalPages)) {
         pages.push(totalPages)
       }
     }
-    
+
     return pages
   }
 
@@ -106,11 +101,11 @@ export function Pagination({
       >
         &lt;
       </button>
-      
+
       <div className={styles.pages}>
         {getPageNumbers().map((page, index) => renderPageButton(page, index))}
       </div>
-      
+
       <button
         className={styles.navButton}
         onClick={() => handlePageClick(currentPage + 1)}

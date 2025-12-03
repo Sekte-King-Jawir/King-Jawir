@@ -22,7 +22,11 @@ interface FilterSidebarProps {
   onFilterChange: (key: string, values: string[]) => void
 }
 
-export function FilterSidebar({ filterGroups, selectedFilters, onFilterChange }: FilterSidebarProps) {
+export function FilterSidebar({
+  filterGroups,
+  selectedFilters,
+  onFilterChange,
+}: FilterSidebarProps) {
   const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>(
     filterGroups.reduce((acc, group) => ({ ...acc, [group.key]: true }), {})
   )
@@ -47,9 +51,7 @@ export function FilterSidebar({ filterGroups, selectedFilters, onFilterChange }:
   const getFilteredOptions = (group: FilterGroup) => {
     const searchTerm = searchTerms[group.key]?.toLowerCase() || ''
     if (!searchTerm) return group.options
-    return group.options.filter(option => 
-      option.name.toLowerCase().includes(searchTerm)
-    )
+    return group.options.filter(option => option.name.toLowerCase().includes(searchTerm))
   }
 
   return (
@@ -62,11 +64,9 @@ export function FilterSidebar({ filterGroups, selectedFilters, onFilterChange }:
             aria-expanded={expandedGroups[group.key]}
           >
             <span className={styles.groupTitle}>{group.title}</span>
-            <span className={styles.chevron}>
-              {expandedGroups[group.key] ? '▲' : '▼'}
-            </span>
+            <span className={styles.chevron}>{expandedGroups[group.key] ? '▲' : '▼'}</span>
           </button>
-          
+
           {expandedGroups[group.key] && (
             <div className={styles.groupContent}>
               {group.searchable && (
@@ -76,11 +76,11 @@ export function FilterSidebar({ filterGroups, selectedFilters, onFilterChange }:
                     placeholder="Search"
                     className={styles.searchInput}
                     value={searchTerms[group.key] || ''}
-                    onChange={(e) => handleSearchChange(group.key, e.target.value)}
+                    onChange={e => handleSearchChange(group.key, e.target.value)}
                   />
                 </div>
               )}
-              
+
               <div className={styles.optionsList}>
                 {getFilteredOptions(group).map(option => (
                   <label key={option.id} className={styles.optionLabel}>

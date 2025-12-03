@@ -25,9 +25,7 @@ export function Breadcrumb({ items }: BreadcrumbProps) {
             ) : (
               <span className={styles.current}>{item.label}</span>
             )}
-            {index < items.length - 1 && (
-              <span className={styles.separator}>&gt;</span>
-            )}
+            {index < items.length - 1 && <span className={styles.separator}>&gt;</span>}
           </li>
         ))}
       </ol>

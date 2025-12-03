@@ -53,7 +53,7 @@ export async function getProducts(
   limit = 9
 ): Promise<ProductsResponse> {
   const params = new URLSearchParams()
-  
+
   if (filter?.categoryId) params.set('categoryId', filter.categoryId)
   if (filter?.storeId) params.set('storeId', filter.storeId)
   if (filter?.search) params.set('search', filter.search)

@@ -47,16 +47,17 @@ export function CartItem({
     <div className={styles.cartItem}>
       <div className={styles.imageWrapper}>
         {image ? (
-          <Image
-            src={image}
-            alt={name}
-            width={80}
-            height={80}
-            className={styles.image}
-          />
+          <Image src={image} alt={name} width={80} height={80} className={styles.image} />
         ) : (
           <div className={styles.placeholder}>
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#ccc" strokeWidth="1">
+            <svg
+              width="32"
+              height="32"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#ccc"
+              strokeWidth="1"
+            >
               <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
               <circle cx="8.5" cy="8.5" r="1.5" />
               <polyline points="21,15 16,10 5,21" />
@@ -91,11 +92,7 @@ export function CartItem({
 
       <div className={styles.price}>{formatPrice(price * quantity)}</div>
 
-      <button
-        className={styles.removeButton}
-        onClick={() => onRemove(id)}
-        aria-label="Remove item"
-      >
+      <button className={styles.removeButton} onClick={() => onRemove(id)} aria-label="Remove item">
         ×
       </button>
     </div>

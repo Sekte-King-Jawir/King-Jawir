@@ -48,7 +48,7 @@ export function CartSummary({
           className={styles.input}
           placeholder="Code"
           value={promoCode}
-          onChange={(e) => setPromoCode(e.target.value)}
+          onChange={e => setPromoCode(e.target.value)}
         />
       </div>
 
@@ -60,13 +60,9 @@ export function CartSummary({
             className={styles.input}
             placeholder="Enter Card Number"
             value={cardNumber}
-            onChange={(e) => setCardNumber(e.target.value)}
+            onChange={e => setCardNumber(e.target.value)}
           />
-          <button
-            className={styles.applyButton}
-            onClick={handleApplyCard}
-            disabled={!cardNumber}
-          >
+          <button className={styles.applyButton} onClick={handleApplyCard} disabled={!cardNumber}>
             Apply
           </button>
         </div>

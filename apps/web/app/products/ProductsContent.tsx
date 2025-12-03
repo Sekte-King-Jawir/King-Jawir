@@ -3,13 +3,7 @@
 import { useState, useCallback, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import styles from './page.module.css'
-import {
-  Breadcrumb,
-  FilterSidebar,
-  ProductGrid,
-  Pagination,
-  SortDropdown,
-} from './components'
+import { Breadcrumb, FilterSidebar, ProductGrid, Pagination, SortDropdown } from './components'
 
 interface Product {
   id: string
@@ -92,7 +86,7 @@ export function ProductsContent() {
       setLoading(true)
       try {
         const params = new URLSearchParams()
-        
+
         const categoryIds = selectedFilters['brand'] || []
         if (categoryIds.length > 0 && categoryIds[0]) {
           params.set('categoryId', categoryIds[0])
@@ -124,11 +118,14 @@ export function ProductsContent() {
     setSelectedFilters(prev => ({ ...prev, [key]: values }))
   }, [])
 
-  const handlePageChange = useCallback((page: number) => {
-    const params = new URLSearchParams(searchParams.toString())
-    params.set('page', page.toString())
-    router.push(`/products?${params.toString()}`)
-  }, [router, searchParams])
+  const handlePageChange = useCallback(
+    (page: number) => {
+      const params = new URLSearchParams(searchParams.toString())
+      params.set('page', page.toString())
+      router.push(`/products?${params.toString()}`)
+    },
+    [router, searchParams]
+  )
 
   const handleAddToCart = useCallback((productId: string) => {
     console.log('Add to cart:', productId)
@@ -137,9 +134,7 @@ export function ProductsContent() {
 
   const handleToggleWishlist = useCallback((productId: string) => {
     setWishlistedIds(prev =>
-      prev.includes(productId)
-        ? prev.filter(id => id !== productId)
-        : [...prev, productId]
+      prev.includes(productId) ? prev.filter(id => id !== productId) : [...prev, productId]
     )
   }, [])
 
@@ -204,11 +199,7 @@ export function ProductsContent() {
               Selected Products: <span className={styles.count}>{totalProducts}</span>
             </h1>
 
-            <SortDropdown
-              options={sortOptions}
-              value={sortBy}
-              onChange={setSortBy}
-            />
+            <SortDropdown options={sortOptions} value={sortBy} onChange={setSortBy} />
           </div>
 
           {loading ? (
