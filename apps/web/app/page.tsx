@@ -240,7 +240,9 @@ export default function Home() {
                 🔥 Trending
               </span>
               <h3 className="text-xl font-bold text-white mb-2">Popular Products</h3>
-              <p className="text-white/80 text-sm mb-6">Discover our best-selling items loved by customers</p>
+              <p className="text-white/80 text-sm mb-6">
+                Discover our best-selling items loved by customers
+              </p>
               <button className="px-6 py-2.5 bg-white text-purple-600 font-semibold rounded-full hover:bg-gray-100 transition-all duration-300 text-sm">
                 Shop Now
               </button>
@@ -255,7 +257,9 @@ export default function Home() {
                 ✨ New
               </span>
               <h3 className="text-xl font-bold text-white mb-2">iPad Pro</h3>
-              <p className="text-white/80 text-sm mb-6">Supercharged by M2 chip for ultimate performance</p>
+              <p className="text-white/80 text-sm mb-6">
+                Supercharged by M2 chip for ultimate performance
+              </p>
               <button className="px-6 py-2.5 bg-white text-gray-900 font-semibold rounded-full hover:bg-gray-100 transition-all duration-300 text-sm">
                 Shop Now
               </button>
@@ -270,7 +274,9 @@ export default function Home() {
                 📱 Featured
               </span>
               <h3 className="text-xl font-bold text-white mb-2">Samsung Galaxy</h3>
-              <p className="text-white/80 text-sm mb-6">Experience innovation with Galaxy S24 Ultra</p>
+              <p className="text-white/80 text-sm mb-6">
+                Experience innovation with Galaxy S24 Ultra
+              </p>
               <button className="px-6 py-2.5 bg-white text-blue-600 font-semibold rounded-full hover:bg-gray-100 transition-all duration-300 text-sm">
                 Shop Now
               </button>
