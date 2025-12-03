@@ -13,10 +13,15 @@ import { adminRoutes } from './admin'
 import { priceAnalysisRoutes } from './price-analysis'
 
 const app = new Elysia()
+  .onRequest(({ request }) => {
+    console.log(`[${request.method}] ${request.url} | Origin: ${request.headers.get('origin')}`)
+  })
   .use(
     cors({
-      origin: true,
+      origin: () => true,
       credentials: true,
+      methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+      allowedHeaders: ['Content-Type', 'Authorization', 'Cookie', 'X-Requested-With'],
     })
   )
   .use(

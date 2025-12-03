@@ -46,12 +46,12 @@ impl TokopediaRepository {
             thread::sleep(std::time::Duration::from_millis(500)); // Reduced from 2 seconds
         }
 
-        let hide_images_css = r#"
-            var style = document.createElement('style');
-            style.innerHTML = 'img, picture, svg, canvas { display: none !important; visibility: hidden !important; }';
-            document.head.appendChild(style);
-        "#;
-        let _ = tab.evaluate(hide_images_css, false);
+        // let hide_images_css = r#"
+        //     var style = document.createElement('style');
+        //     style.innerHTML = 'img, picture, svg, canvas { display: none !important; visibility: hidden !important; }';
+        //     document.head.appendChild(style);
+        // "#;
+        // let _ = tab.evaluate(hide_images_css, false);
 
         println!("✅ Page loaded, proceeding with scrolling");
 
