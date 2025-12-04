@@ -1,3 +1,5 @@
+import { logger } from '../lib/logger'
+
 interface TokopediaProduct {
   name: string
   price: string
@@ -39,7 +41,7 @@ export const priceAnalysisRepository = {
 
       return result.data
     } catch (error) {
-      console.error('Error fetching from scraper:', error)
+      logger.error({ msg: 'Error fetching from scraper', error: error instanceof Error ? error.message : 'Unknown' })
       throw new Error(
         `Failed to fetch prices from scraper: ${error instanceof Error ? error.message : 'Unknown error'}`
       )

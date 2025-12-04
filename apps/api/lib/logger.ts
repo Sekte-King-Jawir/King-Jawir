@@ -5,7 +5,7 @@ const isDevelopment = process.env['NODE_ENV'] !== 'production'
 
 export const logger = isDevelopment
   ? pino({
-      level: process.env['LOG_LEVEL'] || 'info',
+      level: process.env['LOG_LEVEL'] || 'debug',
       transport: {
         target: 'pino-pretty',
         options: {

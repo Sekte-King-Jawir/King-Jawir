@@ -1,6 +1,7 @@
 import { Elysia, t } from 'elysia'
 import { priceAnalysisController } from './price_analysis_controller'
 import { successResponse, errorResponse, ErrorCode } from '../lib/response'
+import { logger } from '../lib/logger'
 
 export const priceAnalysisRoutes = new Elysia({ prefix: '/api/price-analysis' }).get(
   '/',
@@ -13,7 +14,7 @@ export const priceAnalysisRoutes = new Elysia({ prefix: '/api/price-analysis' })
       )
       return successResponse('Price analysis completed successfully', result)
     } catch (error) {
-      console.error('Price analysis error:', error)
+      logger.error({ msg: 'Price analysis error', error: error instanceof Error ? error.message : 'Unknown' })
       return errorResponse(
         error instanceof Error ? error.message : 'Failed to analyze prices',
         ErrorCode.INTERNAL_ERROR
