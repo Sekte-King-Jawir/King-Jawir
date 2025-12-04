@@ -1,55 +1,82 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
-import { useCart } from '@/hooks'
-import { productService } from '@/lib/api'
-import { formatPrice } from '@/lib/utils'
+import { ShoppingCart } from 'lucide-react'
+import { formatPrice as formatPriceFn } from '@/lib/utils'
+import { API_CONFIG } from '@/lib/config/api'
+import { ReviewSection } from '@repo/ui'
 import type { Product } from '@/types'
+
+// Import hooks langsung dari file untuk menghindari barrel export pollution
+import { useCart as useCartHook } from '@/hooks/useCart'
+import { useProduct as useProductHook } from '@/hooks/useProduct'
+import { useProductRating as useProductRatingHook } from '@/hooks/useProductRating'
+
+// Type definitions untuk hooks
+interface CartResponse {
+  success: boolean
+  message?: string
+}
+
+interface UseCartResult {
+  addItem: (productId: string, quantity?: number) => Promise<CartResponse>
+  loading: boolean
+}
+
+interface UseProductResult {
+  product: Product | null
+  isLoading: boolean
+  error: string
+}
+
+interface UseProductRatingResult {
+  rating: number
+  totalReviews: number
+  isLoading: boolean
+}
+
+// Wrapper functions dengan explicit types
+function useProduct(slug: string): UseProductResult {
+  return useProductHook(slug) as unknown as UseProductResult
+}
+
+function useCart(): UseCartResult {
+  return useCartHook() as unknown as UseCartResult
+}
+
+function useProductRating(slug: string): UseProductRatingResult {
+  return useProductRatingHook(slug) as unknown as UseProductRatingResult
+}
+
+// Format price wrapper
+function formatPrice(amount: number): string {
+  return (formatPriceFn as (n: number) => string)(amount)
+}
 
 export default function ProductDetailPage(): React.JSX.Element {
   const params = useParams()
   const router = useRouter()
   const slug = params.slug as string
 
-  const [product, setProduct] = useState<Product | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState('')
+  // Hooks
+  const { product, isLoading, error } = useProduct(slug)
+  const { addItem, loading: cartLoading } = useCart()
+  const { rating, totalReviews, isLoading: ratingLoading } = useProductRating(slug)
+
+  // Local state
   const [quantity, setQuantity] = useState(1)
   const [cartMessage, setCartMessage] = useState('')
-
-  const { addItem, loading: isAddingToCart } = useCart()
-
-  useEffect(() => {
-    async function fetchProduct(): Promise<void> {
-      if (slug === '') return
-
-      try {
-        const response = await productService.getBySlug(slug)
-        if (response.success && response.data) {
-          setProduct(response.data.product)
-        } else {
-          setError(response.message ?? 'Produk tidak ditemukan')
-        }
-      } catch {
-        setError('Gagal memuat produk')
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
-    void fetchProduct()
-  }, [slug])
 
   const handleAddToCart = async (): Promise<void> => {
     if (product === null) return
 
     setCartMessage('')
-    const success = await addItem(product.id, quantity)
+    const response = await addItem(product.id, quantity)
 
-    if (success) {
+    if (response.success === true) {
       setCartMessage('Berhasil ditambahkan ke keranjang!')
       setTimeout(() => router.push('/cart'), 1500)
     } else {
@@ -57,7 +84,8 @@ export default function ProductDetailPage(): React.JSX.Element {
     }
   }
 
-  if (isLoading) {
+  // Loading state
+  if (isLoading === true) {
     return (
       <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
         <Navbar />
@@ -68,6 +96,7 @@ export default function ProductDetailPage(): React.JSX.Element {
     )
   }
 
+  // Error state
   if (error !== '' || product === null) {
     return (
       <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
@@ -91,6 +120,14 @@ export default function ProductDetailPage(): React.JSX.Element {
     )
   }
 
+  // Extract values with proper null checks
+  const productImage = product.image
+  const categorySlug = product.category?.slug ?? ''
+  const categoryName = product.category?.name ?? ''
+  const storeLogo = product.store?.logo ?? null
+  const storeName = product.store?.name ?? ''
+  const storeSlug = product.store?.slug ?? ''
+
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
       <Navbar />
@@ -113,8 +150,8 @@ export default function ProductDetailPage(): React.JSX.Element {
           {/* Product Image */}
           <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
             <div className="aspect-square relative">
-              {product.image !== null && product.image !== '' ? (
-                <Image src={product.image} alt={product.name} fill className="object-cover" />
+              {productImage !== null && productImage !== undefined && productImage !== '' ? (
+                <Image src={productImage} alt={product.name} fill className="object-cover" />
               ) : (
                 <div className="w-full h-full flex items-center justify-center bg-slate-100 dark:bg-slate-700">
                   <span className="text-8xl">📦</span>
@@ -126,17 +163,47 @@ export default function ProductDetailPage(): React.JSX.Element {
           {/* Product Info */}
           <div className="space-y-6">
             {/* Category */}
-            {product.category !== null && (
+            {categorySlug !== '' && categoryName !== '' ? (
               <Link
-                href={`/products?category=${product.category.slug}`}
+                href={`/products?category=${categorySlug}`}
                 className="inline-flex items-center px-3 py-1 bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-300 rounded-full text-sm font-medium hover:bg-blue-200 dark:hover:bg-blue-900 transition-colors"
               >
-                {product.category.name}
+                {categoryName}
               </Link>
-            )}
+            ) : null}
 
             {/* Title */}
             <h1 className="text-3xl font-bold text-slate-900 dark:text-white">{product.name}</h1>
+
+            {/* Rating from Hook */}
+            <div className="flex items-center gap-2">
+              {ratingLoading === true ? (
+                <div className="animate-pulse flex items-center gap-2">
+                  <div className="h-5 w-20 bg-slate-200 dark:bg-slate-700 rounded" />
+                  <div className="h-4 w-16 bg-slate-200 dark:bg-slate-700 rounded" />
+                </div>
+              ) : (
+                <>
+                  <div className="flex items-center gap-1">
+                    {[1, 2, 3, 4, 5].map(star => (
+                      <span
+                        key={star}
+                        className={`text-lg ${
+                          star <= Math.round(rating)
+                            ? 'text-yellow-400'
+                            : 'text-slate-300 dark:text-slate-600'
+                        }`}
+                      >
+                        ★
+                      </span>
+                    ))}
+                  </div>
+                  <span className="text-slate-600 dark:text-slate-400">
+                    {rating.toFixed(1)} ({totalReviews} ulasan)
+                  </span>
+                </>
+              )}
+            </div>
 
             {/* Price */}
             <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">
@@ -161,7 +228,9 @@ export default function ProductDetailPage(): React.JSX.Element {
             </div>
 
             {/* Description */}
-            {product.description !== null && product.description !== '' && (
+            {product.description !== null &&
+            product.description !== undefined &&
+            product.description !== '' ? (
               <div className="prose dark:prose-invert max-w-none">
                 <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
                   Deskripsi
@@ -170,34 +239,38 @@ export default function ProductDetailPage(): React.JSX.Element {
                   {product.description}
                 </p>
               </div>
-            )}
+            ) : null}
 
             {/* Store Info */}
-            <Link
-              href={`/stores/${product.store.slug}`}
-              className="flex items-center gap-4 p-4 bg-slate-100 dark:bg-slate-700/50 rounded-xl hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
-            >
-              <div className="w-12 h-12 bg-white dark:bg-slate-600 rounded-lg overflow-hidden shrink-0">
-                {product.store.logo !== null && product.store.logo !== '' ? (
-                  <Image
-                    src={product.store.logo}
-                    alt={product.store.name}
-                    width={48}
-                    height={48}
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center text-2xl">🏪</div>
-                )}
-              </div>
-              <div className="flex-1">
-                <p className="font-medium text-slate-900 dark:text-white">{product.store.name}</p>
-                <p className="text-sm text-slate-500 dark:text-slate-400">Kunjungi Toko →</p>
-              </div>
-            </Link>
+            {storeSlug !== '' && storeName !== '' ? (
+              <Link
+                href={`/stores/${storeSlug}`}
+                className="flex items-center gap-4 p-4 bg-slate-100 dark:bg-slate-700/50 rounded-xl hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+              >
+                <div className="w-12 h-12 bg-white dark:bg-slate-600 rounded-lg overflow-hidden shrink-0">
+                  {storeLogo !== null && storeLogo !== '' ? (
+                    <Image
+                      src={storeLogo}
+                      alt={storeName}
+                      width={48}
+                      height={48}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-2xl">
+                      🏪
+                    </div>
+                  )}
+                </div>
+                <div className="flex-1">
+                  <p className="font-medium text-slate-900 dark:text-white">{storeName}</p>
+                  <p className="text-sm text-slate-500 dark:text-slate-400">Kunjungi Toko →</p>
+                </div>
+              </Link>
+            ) : null}
 
             {/* Add to Cart */}
-            {product.stock > 0 && (
+            {product.stock > 0 ? (
               <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4 space-y-4">
                 {/* Quantity */}
                 <div className="flex items-center gap-4">
@@ -230,7 +303,7 @@ export default function ProductDetailPage(): React.JSX.Element {
                 </div>
 
                 {/* Message */}
-                {cartMessage !== '' && (
+                {cartMessage !== '' ? (
                   <div
                     className={`p-3 rounded-lg text-sm ${
                       cartMessage.includes('Berhasil')
@@ -240,23 +313,24 @@ export default function ProductDetailPage(): React.JSX.Element {
                   >
                     {cartMessage}
                   </div>
-                )}
+                ) : null}
 
                 {/* Button */}
                 <button
                   onClick={() => void handleAddToCart()}
-                  disabled={isAddingToCart}
-                  className="w-full py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+                  disabled={cartLoading === true}
+                  className="w-full py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-medium flex items-center justify-center gap-2"
                 >
-                  {isAddingToCart ? 'Menambahkan...' : '🛒 Tambah ke Keranjang'}
+                  <ShoppingCart className="w-5 h-5" />
+                  {cartLoading === true ? 'Menambahkan...' : 'Tambah ke Keranjang'}
                 </button>
               </div>
-            )}
+            ) : null}
           </div>
         </div>
 
         {/* Review Section */}
-        <ReviewSection productSlug={slug} productId={product.id} />
+        <ReviewSection productSlug={slug} productId={product.id} apiBaseUrl={API_CONFIG.BASE_URL} />
       </main>
     </div>
   )
@@ -280,9 +354,10 @@ function Navbar(): React.JSX.Element {
             </Link>
             <Link
               href="/cart"
-              className="text-slate-600 dark:text-slate-300 hover:text-blue-600 transition-colors"
+              className="text-slate-600 dark:text-slate-300 hover:text-blue-600 transition-colors flex items-center gap-1"
             >
-              🛒 Keranjang
+              <ShoppingCart className="w-5 h-5" />
+              Keranjang
             </Link>
             <Link
               href="/auth/login"
@@ -304,6 +379,7 @@ function LoadingSkeleton(): React.JSX.Element {
       <div className="space-y-6">
         <div className="h-6 bg-slate-200 dark:bg-slate-700 rounded w-24" />
         <div className="h-10 bg-slate-200 dark:bg-slate-700 rounded w-3/4" />
+        <div className="h-6 bg-slate-200 dark:bg-slate-700 rounded w-32" />
         <div className="h-8 bg-slate-200 dark:bg-slate-700 rounded w-32" />
         <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-40" />
         <div className="space-y-2">

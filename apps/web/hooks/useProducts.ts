@@ -2,7 +2,23 @@ import { useState, useCallback } from 'react'
 import { productService, isApiError, type GetProductsParams } from '@/lib/api'
 import type { Product } from '@/types'
 
-export function useProducts() {
+interface ApiResponse {
+  success: boolean
+  message?: string
+}
+
+interface UseProductsResult {
+  products: Product[]
+  loading: boolean
+  error: string | null
+  totalPages: number
+  currentPage: number
+  total: number
+  fetchProducts: (params?: GetProductsParams) => Promise<ApiResponse>
+  fetchProductBySlug: (slug: string) => Promise<ApiResponse>
+}
+
+export function useProducts(): UseProductsResult {
   const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -10,7 +26,7 @@ export function useProducts() {
   const [currentPage, setCurrentPage] = useState(1)
   const [total, setTotal] = useState(0)
 
-  const fetchProducts = useCallback(async (params?: GetProductsParams) => {
+  const fetchProducts = useCallback(async (params?: GetProductsParams): Promise<ApiResponse> => {
     setLoading(true)
     setError(null)
 
@@ -35,7 +51,7 @@ export function useProducts() {
     }
   }, [])
 
-  const fetchProductBySlug = useCallback(async (slug: string) => {
+  const fetchProductBySlug = useCallback(async (slug: string): Promise<ApiResponse> => {
     setLoading(true)
     setError(null)
 

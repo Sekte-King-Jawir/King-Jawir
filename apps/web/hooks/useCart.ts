@@ -2,14 +2,31 @@ import { useState, useCallback } from 'react'
 import { cartService, isApiError } from '@/lib/api'
 import type { CartItem } from '@/types'
 
-export function useCart() {
+interface CartResponse {
+  success: boolean
+  message?: string
+}
+
+interface UseCartResult {
+  items: CartItem[]
+  totalItems: number
+  totalPrice: number
+  loading: boolean
+  error: string | null
+  fetchCart: () => Promise<CartResponse>
+  addItem: (productId: string, quantity?: number) => Promise<CartResponse>
+  updateQuantity: (itemId: string, quantity: number) => Promise<CartResponse>
+  removeItem: (itemId: string) => Promise<CartResponse>
+}
+
+export function useCart(): UseCartResult {
   const [items, setItems] = useState<CartItem[]>([])
   const [totalItems, setTotalItems] = useState(0)
   const [totalPrice, setTotalPrice] = useState(0)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  const fetchCart = useCallback(async () => {
+  const fetchCart = useCallback(async (): Promise<CartResponse> => {
     setLoading(true)
     setError(null)
 
@@ -33,7 +50,7 @@ export function useCart() {
   }, [])
 
   const addItem = useCallback(
-    async (productId: string, quantity = 1) => {
+    async (productId: string, quantity = 1): Promise<CartResponse> => {
       setLoading(true)
       setError(null)
 
@@ -57,7 +74,7 @@ export function useCart() {
   )
 
   const updateQuantity = useCallback(
-    async (itemId: string, quantity: number) => {
+    async (itemId: string, quantity: number): Promise<CartResponse> => {
       setLoading(true)
       setError(null)
 
@@ -81,7 +98,7 @@ export function useCart() {
   )
 
   const removeItem = useCallback(
-    async (itemId: string) => {
+    async (itemId: string): Promise<CartResponse> => {
       setLoading(true)
       setError(null)
 

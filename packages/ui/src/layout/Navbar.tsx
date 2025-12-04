@@ -124,7 +124,8 @@ export default function Navbar({ user, onLogout }: NavbarProps): React.ReactElem
                   </svg>
                 </button>
 
-                {showUserMenu ? <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-100 py-2 z-50">
+                {showUserMenu ? (
+                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-100 py-2 z-50">
                     <Link
                       href="/profile"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-violet-50 hover:text-violet-600 transition-colors"
@@ -167,7 +168,8 @@ export default function Navbar({ user, onLogout }: NavbarProps): React.ReactElem
                     >
                       Keluar
                     </button>
-                  </div> : null}
+                  </div>
+                ) : null}
               </div>
             ) : (
               <>

@@ -1,21 +1,31 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, type JSX } from 'react'
 
-const API_URL = (process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4101') + '/api'
+// ============================================================================
+// TYPES
+// ============================================================================
 
-interface Review {
+export interface ReviewUser {
+  id: string
+  name: string
+}
+
+export interface Review {
   id: string
   rating: number
   comment: string | null
   createdAt: string
-  user: {
-    id: string
-    name: string
-  }
+  user: ReviewUser
 }
 
-interface ReviewsApiResponse {
+export interface ReviewStats {
+  avgRating: number
+  totalReviews: number
+  distribution: Record<string, number>
+}
+
+export interface ReviewsApiResponse {
   success: boolean
   message: string
   data?: {
@@ -26,26 +36,92 @@ interface ReviewsApiResponse {
       total: number
       totalPages: number
     }
-    stats: {
-      avgRating: number
-      totalReviews: number
-      distribution: Record<string, number>
-    }
+    stats: ReviewStats
   }
 }
 
-interface ReviewStats {
-  avgRating: number
-  totalReviews: number
-  distribution: Record<string, number>
-}
-
-interface ReviewSectionProps {
+export interface ReviewSectionProps {
   productSlug: string
   productId: string
+  /** API base URL */
+  apiBaseUrl: string
 }
 
-export function ReviewSection({ productSlug, productId }: ReviewSectionProps): React.JSX.Element {
+// ============================================================================
+// HELPER FUNCTIONS
+// ============================================================================
+
+function formatDate(dateString: string): string {
+  return new Date(dateString).toLocaleDateString('id-ID', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  })
+}
+
+// ============================================================================
+// SUB-COMPONENTS
+// ============================================================================
+
+function StarIcon({ filled, className }: { filled: boolean; className?: string }): JSX.Element {
+  return (
+    <span
+      className={`${filled ? 'text-yellow-400' : 'text-slate-300 dark:text-slate-600'} ${className ?? ''}`}
+    >
+      ★
+    </span>
+  )
+}
+
+function StarRating({ rating, size = 'text-sm' }: { rating: number; size?: string }): JSX.Element {
+  return (
+    <div className={`flex gap-0.5 ${size}`}>
+      {[1, 2, 3, 4, 5].map(star => (
+        <StarIcon key={star} filled={star <= rating} />
+      ))}
+    </div>
+  )
+}
+
+function ReviewsSkeleton(): JSX.Element {
+  return (
+    <div className="animate-pulse">
+      <div className="flex gap-8 mb-8 pb-8 border-b border-slate-200 dark:border-slate-700">
+        <div>
+          <div className="h-12 w-16 bg-slate-200 dark:bg-slate-700 rounded mb-2" />
+          <div className="h-4 w-24 bg-slate-200 dark:bg-slate-700 rounded" />
+        </div>
+        <div className="flex-1 space-y-2">
+          {[1, 2, 3, 4, 5].map(i => (
+            <div key={i} className="h-2 bg-slate-200 dark:bg-slate-700 rounded" />
+          ))}
+        </div>
+      </div>
+      <div className="space-y-6">
+        {[1, 2, 3].map(i => (
+          <div key={i} className="flex gap-4">
+            <div className="w-10 h-10 bg-slate-200 dark:bg-slate-700 rounded-full" />
+            <div className="flex-1 space-y-2">
+              <div className="h-4 w-32 bg-slate-200 dark:bg-slate-700 rounded" />
+              <div className="h-4 w-20 bg-slate-200 dark:bg-slate-700 rounded" />
+              <div className="h-4 w-full bg-slate-200 dark:bg-slate-700 rounded" />
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+// ============================================================================
+// MAIN COMPONENT
+// ============================================================================
+
+export function ReviewSection({
+  productSlug,
+  productId,
+  apiBaseUrl,
+}: ReviewSectionProps): JSX.Element {
   const [reviews, setReviews] = useState<Review[]>([])
   const [stats, setStats] = useState<ReviewStats | null>(null)
   const [isLoading, setIsLoading] = useState(true)
@@ -62,7 +138,7 @@ export function ReviewSection({ productSlug, productId }: ReviewSectionProps): R
 
   const fetchReviews = useCallback(async (): Promise<void> => {
     try {
-      const res = await fetch(`${API_URL}/products/${productSlug}/reviews?page=${page}&limit=5`)
+      const res = await fetch(`${apiBaseUrl}/products/${productSlug}/reviews?page=${page}&limit=5`)
       const data = (await res.json()) as ReviewsApiResponse
 
       if (data.success && data.data !== undefined) {
@@ -75,14 +151,13 @@ export function ReviewSection({ productSlug, productId }: ReviewSectionProps): R
     } finally {
       setIsLoading(false)
     }
-  }, [productSlug, page])
+  }, [apiBaseUrl, productSlug, page])
 
   // Check if user can review (has purchased)
   useEffect(() => {
     const checkCanReview = async (): Promise<void> => {
       try {
-        // Check if user has purchased this product by checking orders
-        const res = await fetch(`${API_URL}/orders`, {
+        const res = await fetch(`${apiBaseUrl}/orders`, {
           credentials: 'include',
         })
         const data = (await res.json()) as {
@@ -96,7 +171,6 @@ export function ReviewSection({ productSlug, productId }: ReviewSectionProps): R
         }
 
         if (data.success && data.data !== undefined) {
-          // User can review if they have a DELIVERED order with this product
           const hasPurchased = data.data.orders.some(
             order =>
               order.status === 'DELIVERED' &&
@@ -105,13 +179,12 @@ export function ReviewSection({ productSlug, productId }: ReviewSectionProps): R
           setCanReview(hasPurchased)
         }
       } catch {
-        // Not logged in or error - can't review
         setCanReview(false)
       }
     }
 
     void checkCanReview()
-  }, [productId])
+  }, [apiBaseUrl, productId])
 
   useEffect(() => {
     void fetchReviews()
@@ -122,7 +195,7 @@ export function ReviewSection({ productSlug, productId }: ReviewSectionProps): R
     setSubmitMessage('')
 
     try {
-      const res = await fetch(`${API_URL}/reviews`, {
+      const res = await fetch(`${apiBaseUrl}/reviews`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -140,7 +213,6 @@ export function ReviewSection({ productSlug, productId }: ReviewSectionProps): R
         setComment('')
         setRating(5)
         setShowForm(false)
-        // Refresh reviews
         setPage(1)
         void fetchReviews()
       } else {
@@ -151,14 +223,6 @@ export function ReviewSection({ productSlug, productId }: ReviewSectionProps): R
     } finally {
       setIsSubmitting(false)
     }
-  }
-
-  const formatDate = (dateString: string): string => {
-    return new Date(dateString).toLocaleDateString('id-ID', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    })
   }
 
   return (
@@ -174,7 +238,7 @@ export function ReviewSection({ productSlug, productId }: ReviewSectionProps): R
         ) : (
           <>
             {/* Stats */}
-            {stats !== null && stats.totalReviews > 0 && (
+            {stats !== null && stats.totalReviews > 0 ? (
               <div className="flex flex-col md:flex-row gap-8 mb-8 pb-8 border-b border-slate-200 dark:border-slate-700">
                 {/* Average Rating */}
                 <div className="text-center md:text-left">
@@ -182,18 +246,7 @@ export function ReviewSection({ productSlug, productId }: ReviewSectionProps): R
                     {stats.avgRating.toFixed(1)}
                   </div>
                   <div className="flex items-center justify-center md:justify-start gap-1 mb-1">
-                    {[1, 2, 3, 4, 5].map(star => (
-                      <span
-                        key={star}
-                        className={`text-xl ${
-                          star <= Math.round(stats.avgRating)
-                            ? 'text-yellow-400'
-                            : 'text-slate-300 dark:text-slate-600'
-                        }`}
-                      >
-                        ★
-                      </span>
-                    ))}
+                    <StarRating rating={Math.round(stats.avgRating)} size="text-xl" />
                   </div>
                   <p className="text-slate-500 dark:text-slate-400 text-sm">
                     {stats.totalReviews} ulasan
@@ -225,26 +278,26 @@ export function ReviewSection({ productSlug, productId }: ReviewSectionProps): R
                   })}
                 </div>
               </div>
-            )}
+            ) : null}
 
             {/* Add Review Button */}
-            {canReview === true && showForm === false && (
+            {canReview === true && showForm === false ? (
               <button
                 onClick={() => setShowForm(true)}
                 className="mb-6 px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors font-medium"
               >
                 ✍️ Tulis Ulasan
               </button>
-            )}
+            ) : null}
 
             {/* Review Form */}
-            {showForm === true && (
+            {showForm === true ? (
               <div className="mb-8 p-6 bg-slate-50 dark:bg-slate-700/50 rounded-xl">
                 <h3 className="font-semibold text-slate-900 dark:text-white mb-4">
                   Tulis Ulasan Anda
                 </h3>
 
-                {/* Rating */}
+                {/* Rating Input */}
                 <div className="mb-4">
                   <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                     Rating
@@ -267,7 +320,7 @@ export function ReviewSection({ productSlug, productId }: ReviewSectionProps): R
                   </div>
                 </div>
 
-                {/* Comment */}
+                {/* Comment Input */}
                 <div className="mb-4">
                   <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                     Komentar (opsional)
@@ -284,7 +337,7 @@ export function ReviewSection({ productSlug, productId }: ReviewSectionProps): R
                 </div>
 
                 {/* Submit Message */}
-                {submitMessage !== '' && (
+                {submitMessage !== '' ? (
                   <div
                     className={`mb-4 p-3 rounded-lg text-sm ${
                       submitMessage.includes('berhasil')
@@ -294,7 +347,7 @@ export function ReviewSection({ productSlug, productId }: ReviewSectionProps): R
                   >
                     {submitMessage}
                   </div>
-                )}
+                ) : null}
 
                 {/* Buttons */}
                 <div className="flex gap-3">
@@ -316,7 +369,7 @@ export function ReviewSection({ productSlug, productId }: ReviewSectionProps): R
                   </button>
                 </div>
               </div>
-            )}
+            ) : null}
 
             {/* Reviews List */}
             {reviews.length === 0 ? (
@@ -355,25 +408,14 @@ export function ReviewSection({ productSlug, productId }: ReviewSectionProps): R
                         </div>
 
                         {/* Rating */}
-                        <div className="flex gap-0.5 mb-2">
-                          {[1, 2, 3, 4, 5].map(star => (
-                            <span
-                              key={star}
-                              className={`text-sm ${
-                                star <= review.rating
-                                  ? 'text-yellow-400'
-                                  : 'text-slate-300 dark:text-slate-600'
-                              }`}
-                            >
-                              ★
-                            </span>
-                          ))}
-                        </div>
+                        <StarRating rating={review.rating} />
 
                         {/* Comment */}
-                        {review.comment !== null && review.comment !== '' && (
-                          <p className="text-slate-600 dark:text-slate-400">{review.comment}</p>
-                        )}
+                        {review.comment !== null && review.comment !== '' ? (
+                          <p className="text-slate-600 dark:text-slate-400 mt-2">
+                            {review.comment}
+                          </p>
+                        ) : null}
                       </div>
                     </div>
                   </div>
@@ -382,7 +424,7 @@ export function ReviewSection({ productSlug, productId }: ReviewSectionProps): R
             )}
 
             {/* Pagination */}
-            {totalPages > 1 && (
+            {totalPages > 1 ? (
               <div className="flex justify-center gap-2 mt-8">
                 <button
                   onClick={() => setPage(p => Math.max(1, p - 1))}
@@ -402,42 +444,9 @@ export function ReviewSection({ productSlug, productId }: ReviewSectionProps): R
                   Selanjutnya
                 </button>
               </div>
-            )}
+            ) : null}
           </>
         )}
-      </div>
-    </div>
-  )
-}
-
-function ReviewsSkeleton(): React.JSX.Element {
-  return (
-    <div className="animate-pulse">
-      {/* Stats skeleton */}
-      <div className="flex gap-8 mb-8 pb-8 border-b border-slate-200 dark:border-slate-700">
-        <div>
-          <div className="h-12 w-16 bg-slate-200 dark:bg-slate-700 rounded mb-2" />
-          <div className="h-4 w-24 bg-slate-200 dark:bg-slate-700 rounded" />
-        </div>
-        <div className="flex-1 space-y-2">
-          {[1, 2, 3, 4, 5].map(i => (
-            <div key={i} className="h-2 bg-slate-200 dark:bg-slate-700 rounded" />
-          ))}
-        </div>
-      </div>
-
-      {/* Reviews skeleton */}
-      <div className="space-y-6">
-        {[1, 2, 3].map(i => (
-          <div key={i} className="flex gap-4">
-            <div className="w-10 h-10 bg-slate-200 dark:bg-slate-700 rounded-full" />
-            <div className="flex-1 space-y-2">
-              <div className="h-4 w-32 bg-slate-200 dark:bg-slate-700 rounded" />
-              <div className="h-4 w-20 bg-slate-200 dark:bg-slate-700 rounded" />
-              <div className="h-4 w-full bg-slate-200 dark:bg-slate-700 rounded" />
-            </div>
-          </div>
-        ))}
       </div>
     </div>
   )

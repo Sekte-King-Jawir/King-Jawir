@@ -2,6 +2,7 @@
 export { useCountdown } from './useCountdown'
 export { useWishlist } from './useWishlist'
 export { useProductRating } from './useProductRating'
+export { useProduct } from './useProduct'
 export { useAuth } from './useAuth'
 export { useCart } from './useCart'
 export { useProducts } from './useProducts'

@@ -2,12 +2,16 @@
 
 import { useState, useCallback, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { Search, Filter, ShoppingCart, Grid3x3, List, Star } from 'lucide-react'
+import { Search, Filter, ShoppingCart, Grid3x3, List } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { useProducts, useCategories, useCart } from '@/hooks'
-import { formatPrice } from '@/lib/utils'
-import type { Product, Category } from '@/types'
+import { ProductListCard } from '@repo/ui'
+// Import hooks langsung dari file untuk menghindari barrel export pollution
+import { useProducts } from '@/hooks/useProducts'
+import { useCategories } from '@/hooks/useCategories'
+import { useCart } from '@/hooks/useCart'
+import { useProductRating } from '@/hooks/useProductRating'
+import type { Product } from '@/types'
 
 const sortOptions = [
   { value: 'newest', label: 'Terbaru' },
@@ -25,7 +29,83 @@ const priceRanges = [
   { id: '5000000-up', label: 'Di atas Rp 5jt', min: 5000000, max: 999999999 },
 ]
 
-export function ProductsContent() {
+// Wrapper untuk Next.js Link
+function NextLink({
+  href,
+  className,
+  children,
+}: {
+  href: string
+  className?: string
+  children: React.ReactNode
+}): React.JSX.Element {
+  return (
+    <Link href={href} className={className}>
+      {children}
+    </Link>
+  )
+}
+
+// Wrapper untuk Next.js Image
+function NextImage({
+  src,
+  alt,
+  fill,
+  className,
+}: {
+  src: string
+  alt: string
+  fill?: boolean
+  className?: string
+}): React.JSX.Element {
+  return <Image src={src} alt={alt} fill={fill === true} className={className} />
+}
+
+// Type-safe wrapper for formatPrice - inlined to avoid import issues
+function safeFormatPrice(price: number): string {
+  return new Intl.NumberFormat('id-ID', {
+    style: 'currency',
+    currency: 'IDR',
+    minimumFractionDigits: 0,
+  }).format(price)
+}
+
+// Product Card Item dengan Rating Hook
+interface ProductCardItemProps {
+  product: Product
+  onAddToCart: (productId: string) => void
+}
+
+function ProductCardItem({ product, onAddToCart }: ProductCardItemProps): React.JSX.Element {
+  const { rating, totalReviews, isLoading } = useProductRating(product.slug)
+
+  return (
+    <ProductListCard
+      id={product.id}
+      name={product.name}
+      slug={product.slug}
+      price={Number(product.price)}
+      stock={product.stock}
+      image={product.image ?? null}
+      store={{
+        name: product.store.name,
+        slug: product.store.slug,
+      }}
+      ratingData={{
+        rating,
+        totalReviews,
+        isLoading,
+      }}
+      onAddToCart={() => onAddToCart(product.id)}
+      linkComponent={NextLink}
+      imageComponent={NextImage}
+      formatPrice={safeFormatPrice}
+      cartIcon={<ShoppingCart className="w-4 h-4" />}
+    />
+  )
+}
+
+export function ProductsContent(): React.JSX.Element {
   const router = useRouter()
   const searchParams = useSearchParams()
 
@@ -39,6 +119,7 @@ export function ProductsContent() {
   const [searchQuery, setSearchQuery] = useState('')
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
   const [showFilters, setShowFilters] = useState(true)
+  const [cartMessage, setCartMessage] = useState('')
 
   // Fetch categories on mount
   useEffect(() => {
@@ -48,36 +129,40 @@ export function ProductsContent() {
   // Fetch products when filters change
   useEffect(() => {
     const priceRange = priceRanges.find(r => r.id === selectedPriceRange)
-    void fetchProducts({
+    const params: Record<string, unknown> = {
       page: currentPage,
       limit: 12,
-      search: searchQuery || undefined,
-      categoryId: selectedCategory || undefined,
-      minPrice: priceRange && priceRange.id !== 'all' ? priceRange.min : undefined,
-      maxPrice: priceRange && priceRange.id !== 'all' ? priceRange.max : undefined,
-      sortBy: sortBy as 'newest' | 'price-asc' | 'price-desc',
-    })
+    }
+    if (searchQuery !== '') params.search = searchQuery
+    if (selectedCategory !== '') params.categoryId = selectedCategory
+    if (priceRange !== null && priceRange !== undefined && priceRange.id !== 'all') {
+      params.minPrice = priceRange.min
+      params.maxPrice = priceRange.max
+    }
+    void fetchProducts(params as Parameters<typeof fetchProducts>[0])
   }, [selectedCategory, selectedPriceRange, sortBy, searchQuery, currentPage, fetchProducts])
 
   const handleAddToCart = useCallback(
-    async (productId: string) => {
-      const success = await addItem(productId, 1)
-      if (success) {
-        alert('Produk berhasil ditambahkan ke keranjang!')
-        router.push('/cart')
-      } else {
-        alert('Gagal menambahkan ke keranjang. Silakan login terlebih dahulu.')
-      }
+    (productId: string): void => {
+      void (async () => {
+        const response = await addItem(productId, 1)
+        if (response.success === true) {
+          setCartMessage('Produk berhasil ditambahkan ke keranjang!')
+          router.push('/cart')
+        } else {
+          setCartMessage('Gagal menambahkan ke keranjang. Silakan login terlebih dahulu.')
+        }
+      })()
     },
     [addItem, router]
   )
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
+    <div className="min-h-screen bg-linear-to-br from-slate-50 via-white to-slate-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
       <div className="container mx-auto px-4 py-8 max-w-7xl">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300 bg-clip-text text-transparent mb-2">
+          <h1 className="text-4xl font-bold bg-linear-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300 bg-clip-text text-transparent mb-2">
             Semua Produk
           </h1>
           <p className="text-slate-600 dark:text-slate-400">
@@ -163,7 +248,7 @@ export function ProductsContent() {
                       }`}
                     >
                       <span>{cat.name}</span>
-                      {cat._count?.products ? (
+                      {typeof cat._count?.products === 'number' && cat._count.products > 0 ? (
                         <span className="text-xs text-slate-400">{cat._count.products}</span>
                       ) : null}
                     </button>
@@ -219,6 +304,19 @@ export function ProductsContent() {
 
           {/* Products Grid */}
           <main className="flex-1">
+            {/* Cart Message */}
+            {cartMessage !== '' ? (
+              <div
+                className={`mb-4 p-3 rounded-lg text-sm ${
+                  cartMessage.includes('berhasil')
+                    ? 'bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400'
+                    : 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400'
+                }`}
+              >
+                {cartMessage}
+              </div>
+            ) : null}
+
             <div className="mb-4 flex items-center justify-between">
               <p className="text-slate-600 dark:text-slate-400">
                 Menampilkan{' '}
@@ -229,10 +327,10 @@ export function ProductsContent() {
               </p>
             </div>
 
-            {loading ? (
+            {loading === true ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {[...Array(6)].map((_, i) => (
-                  <div key={i} className="animate-pulse">
+                {Array.from({ length: 6 }).map((_, i) => (
+                  <div key={`skeleton-${String(i)}`} className="animate-pulse">
                     <div className="bg-slate-200 dark:bg-slate-700 rounded-2xl h-64 mb-4" />
                     <div className="bg-slate-200 dark:bg-slate-700 rounded h-4 mb-2" />
                     <div className="bg-slate-200 dark:bg-slate-700 rounded h-4 w-2/3" />
@@ -260,95 +358,23 @@ export function ProductsContent() {
                 }
               >
                 {products.map(product => (
-                  <div
+                  <ProductCardItem
                     key={product.id}
-                    className="group bg-white dark:bg-slate-800 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-300"
-                  >
-                    <Link href={`/products/${product.slug}`} className="block">
-                      <div className="relative aspect-square overflow-hidden bg-slate-100 dark:bg-slate-700">
-                        {product.image ? (
-                          <Image
-                            src={product.image}
-                            alt={product.name}
-                            fill
-                            className="object-cover group-hover:scale-105 transition-transform duration-300"
-                          />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center">
-                            <ShoppingCart className="w-16 h-16 text-slate-300 dark:text-slate-600" />
-                          </div>
-                        )}
-                        {product.stock < 10 && product.stock > 0 && (
-                          <div className="absolute top-3 left-3 px-3 py-1 bg-orange-500 text-white text-xs font-semibold rounded-full">
-                            Stok terbatas
-                          </div>
-                        )}
-                        {product.stock === 0 && (
-                          <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
-                            <span className="text-white font-bold text-lg">Stok Habis</span>
-                          </div>
-                        )}
-                      </div>
-                    </Link>
-
-                    <div className="p-4">
-                      <Link href={`/products/${product.slug}`}>
-                        <h3 className="font-semibold text-slate-900 dark:text-white mb-1 line-clamp-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                          {product.name}
-                        </h3>
-                      </Link>
-
-                      <Link
-                        href={`/stores/${product.store.slug}`}
-                        className="text-sm text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 mb-2 block"
-                      >
-                        {product.store.name}
-                      </Link>
-
-                      <div className="flex items-baseline gap-2 mb-3">
-                        <span className="text-2xl font-bold text-slate-900 dark:text-white">
-                          {formatPrice(product.price)}
-                        </span>
-                      </div>
-
-                      <div className="flex items-center gap-1 mb-4">
-                        {[...Array(5)].map((_, i) => (
-                          <Star
-                            key={i}
-                            className={`w-4 h-4 ${
-                              i < 4
-                                ? 'fill-yellow-400 text-yellow-400'
-                                : 'fill-slate-200 text-slate-200 dark:fill-slate-600 dark:text-slate-600'
-                            }`}
-                          />
-                        ))}
-                        <span className="text-sm text-slate-500 dark:text-slate-400 ml-1">
-                          (4.0)
-                        </span>
-                      </div>
-
-                      <button
-                        onClick={() => handleAddToCart(product.id)}
-                        disabled={product.stock === 0}
-                        className="w-full py-2.5 px-4 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold rounded-xl transition-all disabled:from-slate-300 disabled:to-slate-400 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg shadow-blue-500/25"
-                      >
-                        <ShoppingCart className="w-4 h-4" />
-                        {product.stock === 0 ? 'Stok Habis' : 'Tambah ke Keranjang'}
-                      </button>
-                    </div>
-                  </div>
+                    product={product}
+                    onAddToCart={handleAddToCart}
+                  />
                 ))}
               </div>
             )}
 
             {/* Pagination */}
-            {totalPages > 1 && (
+            {totalPages > 1 ? (
               <div className="mt-8 flex justify-center gap-2">
-                {[...Array(totalPages)].map((_, i) => {
+                {Array.from({ length: totalPages }).map((_, i) => {
                   const page = i + 1
                   return (
                     <button
-                      key={page}
+                      key={`page-${String(page)}`}
                       onClick={() => {
                         const params = new URLSearchParams(searchParams.toString())
                         params.set('page', page.toString())
@@ -365,7 +391,7 @@ export function ProductsContent() {
                   )
                 })}
               </div>
-            )}
+            ) : null}
           </main>
         </div>
       </div>
