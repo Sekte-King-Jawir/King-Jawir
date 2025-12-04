@@ -19,9 +19,12 @@ interface UseWishlistReturn {
 export function useWishlist(): UseWishlistReturn {
   const [wishlist, setWishlist] = useState<Set<string>>(new Set())
 
-  const isInWishlist = useCallback((productId: string): boolean => {
-    return wishlist.has(productId)
-  }, [wishlist])
+  const isInWishlist = useCallback(
+    (productId: string): boolean => {
+      return wishlist.has(productId)
+    },
+    [wishlist]
+  )
 
   const addToWishlist = useCallback((productId: string) => {
     setWishlist(prev => new Set(prev).add(productId))

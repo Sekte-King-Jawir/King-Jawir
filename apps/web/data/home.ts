@@ -105,10 +105,42 @@ export const products: Product[] = [
 // ============================================================================
 
 export const flashDeals: FlashDeal[] = [
-  { id: 1, name: 'iPad Pro M2', emoji: '📱', price: 999, originalPrice: 1199, discount: 17, sold: 234 },
-  { id: 2, name: 'AirPods Max', emoji: '🎧', price: 429, originalPrice: 549, discount: 22, sold: 567 },
-  { id: 3, name: 'GoPro Hero 11', emoji: '📷', price: 349, originalPrice: 499, discount: 30, sold: 189 },
-  { id: 4, name: 'Nintendo Switch', emoji: '🎮', price: 279, originalPrice: 349, discount: 20, sold: 892 },
+  {
+    id: 1,
+    name: 'iPad Pro M2',
+    emoji: '📱',
+    price: 999,
+    originalPrice: 1199,
+    discount: 17,
+    sold: 234,
+  },
+  {
+    id: 2,
+    name: 'AirPods Max',
+    emoji: '🎧',
+    price: 429,
+    originalPrice: 549,
+    discount: 22,
+    sold: 567,
+  },
+  {
+    id: 3,
+    name: 'GoPro Hero 11',
+    emoji: '📷',
+    price: 349,
+    originalPrice: 499,
+    discount: 30,
+    sold: 189,
+  },
+  {
+    id: 4,
+    name: 'Nintendo Switch',
+    emoji: '🎮',
+    price: 279,
+    originalPrice: 349,
+    discount: 20,
+    sold: 892,
+  },
 ]
 
 // ============================================================================
@@ -129,10 +161,38 @@ export const brands: Brand[] = [
 // ============================================================================
 
 export const collections: Collection[] = [
-  { id: 1, name: 'Trending', emoji: '🔥', count: 156, gradient: 'from-orange-500 to-red-500', description: 'Produk paling dicari' },
-  { id: 2, name: 'New Arrival', emoji: '✨', count: 48, gradient: 'from-blue-500 to-cyan-400', description: 'Baru datang' },
-  { id: 3, name: 'Best Seller', emoji: '⭐', count: 89, gradient: 'from-amber-500 to-yellow-400', description: 'Paling laris' },
-  { id: 4, name: 'Sale', emoji: '🏷️', count: 234, gradient: 'from-green-500 to-emerald-400', description: 'Diskon spesial' },
+  {
+    id: 1,
+    name: 'Trending',
+    emoji: '🔥',
+    count: 156,
+    gradient: 'from-orange-500 to-red-500',
+    description: 'Produk paling dicari',
+  },
+  {
+    id: 2,
+    name: 'New Arrival',
+    emoji: '✨',
+    count: 48,
+    gradient: 'from-blue-500 to-cyan-400',
+    description: 'Baru datang',
+  },
+  {
+    id: 3,
+    name: 'Best Seller',
+    emoji: '⭐',
+    count: 89,
+    gradient: 'from-amber-500 to-yellow-400',
+    description: 'Paling laris',
+  },
+  {
+    id: 4,
+    name: 'Sale',
+    emoji: '🏷️',
+    count: 234,
+    gradient: 'from-green-500 to-emerald-400',
+    description: 'Diskon spesial',
+  },
 ]
 
 // ============================================================================
@@ -145,7 +205,8 @@ export const testimonials: Testimonial[] = [
     name: 'Budi Santoso',
     avatar: '👨',
     role: 'Pelanggan Setia',
-    content: 'Pelayanan sangat memuaskan! Produk original dan pengiriman cepat. Pasti akan belanja lagi di sini.',
+    content:
+      'Pelayanan sangat memuaskan! Produk original dan pengiriman cepat. Pasti akan belanja lagi di sini.',
     rating: 5,
   },
   {
@@ -153,7 +214,8 @@ export const testimonials: Testimonial[] = [
     name: 'Siti Rahma',
     avatar: '👩',
     role: 'Tech Enthusiast',
-    content: 'Harga kompetitif dengan kualitas produk yang terjamin. Customer service juga sangat responsif.',
+    content:
+      'Harga kompetitif dengan kualitas produk yang terjamin. Customer service juga sangat responsif.',
     rating: 5,
   },
   {
