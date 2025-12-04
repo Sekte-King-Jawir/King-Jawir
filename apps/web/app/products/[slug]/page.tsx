@@ -254,6 +254,9 @@ export default function ProductDetailPage(): React.JSX.Element {
             )}
           </div>
         </div>
+
+        {/* Review Section */}
+        <ReviewSection productSlug={slug} productId={product.id} />
       </main>
     </div>
   )

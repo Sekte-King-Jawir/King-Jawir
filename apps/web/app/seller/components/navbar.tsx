@@ -3,7 +3,7 @@
 import Link from 'next/link'
 
 interface NavbarProps {
-  userName?: string
+  userName?: string | undefined
 }
 
 export function Navbar({ userName }: NavbarProps): React.JSX.Element {

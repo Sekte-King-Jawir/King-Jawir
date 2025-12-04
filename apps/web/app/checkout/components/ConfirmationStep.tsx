@@ -1,8 +1,18 @@
 'use client'
 
 import Image from 'next/image'
-import type { Address } from '../page'
 import styles from './ConfirmationStep.module.css'
+
+interface Address {
+  id: string
+  label: string
+  recipientName: string
+  phone: string
+  address: string
+  city: string
+  postalCode: string
+  isDefault: boolean
+}
 
 interface CartItemData {
   id: string
@@ -52,7 +62,7 @@ export function ConfirmationStep({
   total,
   onBack,
   onPlaceOrder,
-}: ConfirmationStepProps) {
+}: ConfirmationStepProps): React.JSX.Element {
   return (
     <div className={styles.container}>
       <h2 className={styles.title}>Order Confirmation</h2>
@@ -61,7 +71,7 @@ export function ConfirmationStep({
       {/* Shipping Address */}
       <div className={styles.section}>
         <h3 className={styles.sectionTitle}>Shipping Address</h3>
-        {selectedAddress ? (
+        {selectedAddress !== undefined ? (
           <div className={styles.addressCard}>
             <div className={styles.addressHeader}>
               <span className={styles.addressLabel}>{selectedAddress.label}</span>
@@ -83,7 +93,7 @@ export function ConfirmationStep({
         <h3 className={styles.sectionTitle}>Payment Method</h3>
         <div className={styles.paymentCard}>
           <span className={styles.paymentMethod}>
-            {paymentMethodLabels[selectedPaymentMethod] || 'Not selected'}
+            {paymentMethodLabels[selectedPaymentMethod] ?? 'Not selected'}
           </span>
         </div>
       </div>
@@ -95,7 +105,7 @@ export function ConfirmationStep({
           {cartItems.map(item => (
             <div key={item.id} className={styles.orderItem}>
               <div className={styles.itemImage}>
-                {item.product.image ? (
+                {item.product.image !== null && item.product.image !== '' ? (
                   <Image
                     src={item.product.image}
                     alt={item.product.name}
