@@ -54,16 +54,17 @@ KEMBALIKAN HANYA query yang sudah dioptimasi, TANPA penjelasan, TANPA tanda kuti
         [
           {
             role: 'system',
-            content: 'Kamu adalah query optimizer. Return HANYA optimized query string, tanpa penjelasan apapun.'
+            content:
+              'Kamu adalah query optimizer. Return HANYA optimized query string, tanpa penjelasan apapun.',
           },
           {
             role: 'user',
-            content: prompt
-          }
+            content: prompt,
+          },
         ],
         {
           temperature: 0.3,
-          maxTokens: 100
+          maxTokens: 100,
         }
       )
 
