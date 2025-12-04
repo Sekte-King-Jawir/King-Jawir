@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { loginAction } from './action'
 import { initialState } from '../_shared/types'
 
-const API_URL = process.env['NEXT_PUBLIC_API_URL'] ?? 'http://localhost:4101'
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4101'
 
 function GoogleIcon(): React.JSX.Element {
   return (

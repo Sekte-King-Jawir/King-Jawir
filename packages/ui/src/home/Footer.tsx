@@ -94,13 +94,15 @@ export default function Footer(): React.JSX.Element {
           <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
             <div className="text-center lg:text-left">
               <h3 className="text-2xl font-bold mb-2">Dapatkan Update Terbaru 📬</h3>
-              <p className="text-gray-400">Subscribe untuk promo eksklusif dan info produk terbaru</p>
+              <p className="text-gray-400">
+                Subscribe untuk promo eksklusif dan info produk terbaru
+              </p>
             </div>
-            <form className="flex w-full max-w-md" onSubmit={(e) => e.preventDefault()}>
+            <form className="flex w-full max-w-md" onSubmit={e => e.preventDefault()}>
               <input
                 type="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={e => setEmail(e.target.value)}
                 placeholder="Masukkan email kamu"
                 className="flex-1 px-5 py-3.5 bg-white/10 border border-white/20 rounded-l-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
               />
@@ -129,12 +131,13 @@ export default function Footer(): React.JSX.Element {
               </span>
             </Link>
             <p className="text-gray-400 text-sm leading-relaxed mb-6 max-w-xs">
-              Platform e-commerce terpercaya untuk semua kebutuhan elektronik dan gadget premium dengan harga terbaik.
+              Platform e-commerce terpercaya untuk semua kebutuhan elektronik dan gadget premium
+              dengan harga terbaik.
             </p>
-            
+
             {/* Social Links */}
             <div className="flex gap-3">
-              {socialLinks.map((social) => (
+              {socialLinks.map(social => (
                 <a
                   key={social.name}
                   href={social.href}
@@ -153,7 +156,7 @@ export default function Footer(): React.JSX.Element {
               Layanan
             </h4>
             <ul className="space-y-3">
-              {footerLinks.services.map((link) => (
+              {footerLinks.services.map(link => (
                 <li key={link.name}>
                   <Link
                     href={link.href}
@@ -172,7 +175,7 @@ export default function Footer(): React.JSX.Element {
               Bantuan
             </h4>
             <ul className="space-y-3">
-              {footerLinks.assistance.map((link) => (
+              {footerLinks.assistance.map(link => (
                 <li key={link.name}>
                   <Link
                     href={link.href}
@@ -191,7 +194,7 @@ export default function Footer(): React.JSX.Element {
               Perusahaan
             </h4>
             <ul className="space-y-3">
-              {footerLinks.company.map((link) => (
+              {footerLinks.company.map(link => (
                 <li key={link.name}>
                   <Link
                     href={link.href}
@@ -213,7 +216,8 @@ export default function Footer(): React.JSX.Element {
               <div className="flex items-start gap-3">
                 <span className="text-xl">📍</span>
                 <p className="text-gray-400 text-sm">
-                  Jakarta, Indonesia<br />
+                  Jakarta, Indonesia
+                  <br />
                   12345
                 </p>
               </div>
@@ -248,9 +252,9 @@ export default function Footer(): React.JSX.Element {
             <div className="flex items-center gap-4">
               <span className="text-gray-500 text-sm">Metode Pembayaran:</span>
               <div className="flex gap-2">
-                {paymentMethods.map((method, index) => (
+                {paymentMethods.map(method => (
                   <div
-                    key={index}
+                    key={method}
                     className="w-12 h-8 bg-white/10 rounded-lg flex items-center justify-center text-lg"
                   >
                     {method}

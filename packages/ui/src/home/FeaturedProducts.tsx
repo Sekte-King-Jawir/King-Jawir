@@ -3,12 +3,28 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useState } from 'react'
-import { useProductRating } from '@/hooks'
-import type { Product } from '@/types'
 
-// ============================================================================
-// CONSTANTS - UI Configuration (tidak ada logika bisnis)
-// ============================================================================
+interface Product {
+  id: string
+  name: string
+  slug: string
+  price: number
+  stock: number
+  image: string | null
+  category: {
+    id: string
+    name: string
+    slug: string
+  } | null
+  store: {
+    id: string
+    name: string
+  } | null
+}
+
+interface FeaturedProductsProps {
+  products: Product[]
+}
 
 const categoryEmojis: Record<string, string> = {
   elektronik: '📱',
@@ -33,34 +49,20 @@ const categoryColors: Record<string, { bg: string; text: string }> = {
   gaming: { bg: 'bg-indigo-100', text: 'text-indigo-600' },
 }
 
-// ============================================================================
-// PROPS INTERFACES
-// ============================================================================
-
-interface FeaturedProductsProps {
-  products: Product[]
-}
-
-interface ProductCardProps {
-  product: Product
-  index: number
-}
-
-// ============================================================================
-// PRODUCT CARD - Pure UI Component with hooks
-// ============================================================================
-
-function ProductCard({ product, index }: ProductCardProps): React.JSX.Element {
+function ProductCard({ product, index }: { product: Product; index: number }): React.JSX.Element {
   const [imgError, setImgError] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
   const [isLiked, setIsLiked] = useState(false)
 
-  // Business logic extracted to custom hook
-  const { rating, reviews } = useProductRating(product.id, index)
-  
   const categorySlug = product.category?.slug ?? ''
   const emoji = categoryEmojis[categorySlug] ?? '📦'
   const colors = categoryColors[categorySlug] ?? { bg: 'bg-gray-100', text: 'text-gray-600' }
+
+  // Generate consistent rating based on product id (deterministic)
+  const parsedId = parseInt(product.id, 10)
+  const idNum = Number.isNaN(parsedId) || parsedId === 0 ? index + 1 : parsedId
+  const rating = (4.0 + (idNum % 10) / 10).toFixed(1)
+  const reviews = 50 + ((idNum * 37) % 450)
 
   return (
     <div
@@ -83,31 +85,37 @@ function ProductCard({ product, index }: ProductCardProps): React.JSX.Element {
           />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center">
-            <span className={`text-7xl transition-all duration-500 ${isHovered ? 'scale-125 rotate-12' : 'scale-100'}`}>
+            <span
+              className={`text-7xl transition-all duration-500 ${isHovered ? 'scale-125 rotate-12' : 'scale-100'}`}
+            >
               {emoji}
             </span>
           </div>
         )}
 
         {/* Overlay on Hover */}
-        <div className={`absolute inset-0 bg-black/5 transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`} />
+        <div
+          className={`absolute inset-0 bg-black/5 transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`}
+        />
 
         {/* Top Actions */}
         <div className="absolute top-4 left-4 right-4 flex justify-between items-start">
           {/* Category Badge */}
-          <span className={`px-3 py-1 rounded-full text-xs font-semibold ${colors.bg} ${colors.text}`}>
+          <span
+            className={`px-3 py-1 rounded-full text-xs font-semibold ${colors.bg} ${colors.text}`}
+          >
             {product.category?.name ?? 'Product'}
           </span>
-          
+
           {/* Wishlist Button */}
           <button
-            onClick={(e) => {
+            onClick={e => {
               e.preventDefault()
               setIsLiked(!isLiked)
             }}
             className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ${
-              isLiked 
-                ? 'bg-red-500 text-white shadow-lg shadow-red-500/30' 
+              isLiked
+                ? 'bg-red-500 text-white shadow-lg shadow-red-500/30'
                 : 'bg-white/80 backdrop-blur-sm text-gray-400 hover:bg-white hover:text-red-500 shadow-md'
             }`}
             aria-label="Add to wishlist"
@@ -129,7 +137,9 @@ function ProductCard({ product, index }: ProductCardProps): React.JSX.Element {
         </div>
 
         {/* Quick Actions on Hover */}
-        <div className={`absolute bottom-4 left-4 right-4 flex gap-2 transition-all duration-300 ${isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+        <div
+          className={`absolute bottom-4 left-4 right-4 flex gap-2 transition-all duration-300 ${isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+        >
           <Link
             href={`/product/${product.slug}`}
             className="flex-1 py-3 bg-gray-900 text-white text-sm font-semibold rounded-xl text-center hover:bg-gray-800 transition-colors shadow-lg"
@@ -137,8 +147,18 @@ function ProductCard({ product, index }: ProductCardProps): React.JSX.Element {
             Beli Sekarang
           </Link>
           <button className="w-12 h-12 bg-white/90 backdrop-blur-sm rounded-xl flex items-center justify-center hover:bg-white transition-colors shadow-lg">
-            <svg className="w-5 h-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+            <svg
+              className="w-5 h-5 text-gray-600"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+              />
             </svg>
           </button>
         </div>
@@ -154,10 +174,10 @@ function ProductCard({ product, index }: ProductCardProps): React.JSX.Element {
       {/* Product Info */}
       <div className="p-5">
         {/* Store Name */}
-        {product.store && (
+        {product.store !== null && product.store !== undefined && (
           <p className="text-xs text-gray-400 mb-1 font-medium">{product.store.name}</p>
         )}
-        
+
         {/* Product Name */}
         <h3 className="font-semibold text-gray-900 line-clamp-2 mb-2 min-h-[2.5rem] group-hover:text-blue-600 transition-colors">
           {product.name}
@@ -226,9 +246,7 @@ export default function FeaturedProducts({ products }: FeaturedProductsProps): R
             <span className="inline-block px-3 py-1 bg-emerald-100 text-emerald-600 text-xs font-semibold rounded-full mb-3">
               PRODUK UNGGULAN
             </span>
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900">
-              Produk Pilihan Terbaik
-            </h2>
+            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900">Produk Pilihan Terbaik</h2>
             <p className="text-gray-500 mt-2 max-w-md">
               Koleksi produk berkualitas dengan harga terbaik untuk kamu
             </p>
@@ -236,7 +254,7 @@ export default function FeaturedProducts({ products }: FeaturedProductsProps): R
 
           {/* Tabs */}
           <div className="flex bg-gray-100 rounded-2xl p-1.5">
-            {tabs.map((tab) => (
+            {tabs.map(tab => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
@@ -268,7 +286,12 @@ export default function FeaturedProducts({ products }: FeaturedProductsProps): R
           >
             Lihat Semua Produk
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M14 5l7 7m0 0l-7 7m7-7H3"
+              />
             </svg>
           </Link>
         </div>

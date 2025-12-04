@@ -1,7 +1,7 @@
-'use client'
+﻿'use client'
 
-import Navbar from './components/Navbar'
 import {
+  Navbar,
   HeroSection,
   CategorySection,
   FeaturedProducts,

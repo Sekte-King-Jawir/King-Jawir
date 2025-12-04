@@ -25,24 +25,36 @@ export default function PromoBanner(): React.JSX.Element {
               <span className="animate-bounce">🎉</span>
               <span className="text-white text-sm font-semibold">Promo Spesial Akhir Tahun</span>
             </div>
-            
+
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-4 leading-tight">
-              Diskon Besar<br />
+              Diskon Besar
+              <br />
               <span className="text-yellow-300 drop-shadow-lg">Hingga 70%!</span>
             </h2>
-            
+
             <p className="text-white/80 text-lg mb-8 max-w-md mx-auto md:mx-0">
-              Dapatkan produk impianmu dengan harga spesial. Promo terbatas hanya sampai akhir bulan!
+              Dapatkan produk impianmu dengan harga spesial. Promo terbatas hanya sampai akhir
+              bulan!
             </p>
-            
+
             <div className="flex flex-wrap gap-4 justify-center md:justify-start">
               <Link
                 href="/product"
                 className="group px-8 py-4 bg-white text-indigo-600 font-bold rounded-2xl hover:bg-gray-100 transition-all shadow-xl hover:shadow-2xl hover:-translate-y-1 flex items-center gap-2"
               >
                 Belanja Sekarang
-                <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                <svg
+                  className="w-5 h-5 group-hover:translate-x-1 transition-transform"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M14 5l7 7m0 0l-7 7m7-7H3"
+                  />
                 </svg>
               </Link>
               <Link
@@ -75,21 +87,21 @@ export default function PromoBanner(): React.JSX.Element {
             <div className="relative">
               {/* Glow Effect */}
               <div className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full blur-3xl opacity-50 animate-pulse scale-125" />
-              
+
               {/* Product Card */}
               <div className="relative bg-white/10 backdrop-blur-xl rounded-[2rem] p-8 border border-white/20 shadow-2xl">
                 {/* Discount Badge */}
                 <div className="absolute -top-4 -right-4 bg-red-500 text-white px-4 py-2 rounded-full font-bold shadow-lg shadow-red-500/30 animate-bounce">
                   -22%
                 </div>
-                
+
                 <span className="text-8xl md:text-9xl block text-center">🎧</span>
-                
+
                 <div className="text-center mt-6">
                   <p className="text-white/60 text-sm mb-1">Apple</p>
                   <p className="text-white font-bold text-2xl mb-2">AirPods Max</p>
                   <p className="text-white/60 text-sm mb-4">High-Fidelity Audio Experience</p>
-                  
+
                   <div className="flex items-center justify-center gap-3 mb-6">
                     <span className="text-4xl font-black text-yellow-300">$429</span>
                     <span className="text-white/60 line-through text-lg">$549</span>
@@ -98,15 +110,19 @@ export default function PromoBanner(): React.JSX.Element {
                   {/* Rating */}
                   <div className="flex items-center justify-center gap-2 mb-6">
                     <div className="flex">
-                      {[1, 2, 3, 4, 5].map((star) => (
-                        <svg key={star} className="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 20 20">
+                      {[1, 2, 3, 4, 5].map(star => (
+                        <svg
+                          key={star}
+                          className="w-5 h-5 text-yellow-400 fill-current"
+                          viewBox="0 0 20 20"
+                        >
                           <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                         </svg>
                       ))}
                     </div>
                     <span className="text-white/60 text-sm">(2.5k reviews)</span>
                   </div>
-                  
+
                   <button className="w-full py-4 bg-white text-gray-900 font-bold rounded-xl hover:bg-gray-100 transition-all shadow-lg">
                     Add to Cart 🛒
                   </button>
@@ -126,10 +142,16 @@ export default function PromoBanner(): React.JSX.Element {
       </div>
 
       {/* Custom Animation */}
+      {/* eslint-disable-next-line react/no-unknown-property */}
       <style jsx>{`
         @keyframes float {
-          0%, 100% { transform: translateY(0px) rotate(0deg); }
-          50% { transform: translateY(-10px) rotate(5deg); }
+          0%,
+          100% {
+            transform: translateY(0px) rotate(0deg);
+          }
+          50% {
+            transform: translateY(-10px) rotate(5deg);
+          }
         }
         .animate-float {
           animation: float 3s ease-in-out infinite;
