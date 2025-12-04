@@ -26,12 +26,7 @@ interface UseCountdownReturn {
  * Memisahkan logika timer dari UI component
  */
 export function useCountdown(options: UseCountdownOptions = {}): UseCountdownReturn {
-  const {
-    initialHours = 12,
-    initialMinutes = 45,
-    initialSeconds = 30,
-    onComplete,
-  } = options
+  const { initialHours = 12, initialMinutes = 45, initialSeconds = 30, onComplete } = options
 
   const [timeLeft, setTimeLeft] = useState<TimeLeft>({
     hours: initialHours,
@@ -42,14 +37,17 @@ export function useCountdown(options: UseCountdownOptions = {}): UseCountdownRet
   const [isExpired, setIsExpired] = useState(false)
 
   // Reset timer function
-  const reset = useCallback((hours?: number, minutes?: number, seconds?: number) => {
-    setTimeLeft({
-      hours: hours ?? initialHours,
-      minutes: minutes ?? initialMinutes,
-      seconds: seconds ?? initialSeconds,
-    })
-    setIsExpired(false)
-  }, [initialHours, initialMinutes, initialSeconds])
+  const reset = useCallback(
+    (hours?: number, minutes?: number, seconds?: number) => {
+      setTimeLeft({
+        hours: hours ?? initialHours,
+        minutes: minutes ?? initialMinutes,
+        seconds: seconds ?? initialSeconds,
+      })
+      setIsExpired(false)
+    },
+    [initialHours, initialMinutes, initialSeconds]
+  )
 
   // Countdown logic
   useEffect(() => {
