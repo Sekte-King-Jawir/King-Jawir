@@ -40,7 +40,7 @@ export function ChangePasswordForm({
           <input
             type={showPasswords.current ? 'text' : 'password'}
             value={formData.currentPassword}
-            onChange={(e) => setFormData({ ...formData, currentPassword: e.target.value })}
+            onChange={e => setFormData({ ...formData, currentPassword: e.target.value })}
             className="w-full px-4 py-2 pr-10 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
           />
@@ -62,7 +62,7 @@ export function ChangePasswordForm({
           <input
             type={showPasswords.new ? 'text' : 'password'}
             value={formData.newPassword}
-            onChange={(e) => setFormData({ ...formData, newPassword: e.target.value })}
+            onChange={e => setFormData({ ...formData, newPassword: e.target.value })}
             className="w-full px-4 py-2 pr-10 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
             minLength={6}
@@ -86,7 +86,7 @@ export function ChangePasswordForm({
           <input
             type={showPasswords.confirm ? 'text' : 'password'}
             value={formData.confirmPassword}
-            onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+            onChange={e => setFormData({ ...formData, confirmPassword: e.target.value })}
             className="w-full px-4 py-2 pr-10 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
           />

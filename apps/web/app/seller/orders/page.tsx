@@ -171,7 +171,7 @@ export default function SellerOrdersPage(): React.JSX.Element {
             <div className="mb-6">
               <select
                 value={statusFilter}
-                onChange={(e) => {
+                onChange={e => {
                   setStatusFilter(e.target.value)
                   setPage(1)
                 }}
@@ -220,7 +220,7 @@ function LoadingSkeleton(): React.JSX.Element {
       </div>
       <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700">
         <div className="p-4 space-y-4">
-          {[1, 2, 3, 4, 5].map((n) => (
+          {[1, 2, 3, 4, 5].map(n => (
             <div key={`skeleton-${n}`} className="h-20 bg-slate-100 dark:bg-slate-700 rounded" />
           ))}
         </div>

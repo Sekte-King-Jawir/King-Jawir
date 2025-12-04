@@ -26,7 +26,7 @@ export function UpdateStatusModal({
   const [selectedStatus, setSelectedStatus] = useState('')
 
   // Filter available status transitions
-  const availableStatuses = statusOptions.filter((opt) => {
+  const availableStatuses = statusOptions.filter(opt => {
     if (order.status === 'PENDING') {
       return opt.value === 'PAID' || opt.value === 'CANCELLED'
     }
@@ -50,12 +50,10 @@ export function UpdateStatusModal({
         <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">
           Update Status Pesanan
         </h3>
-        <p className="text-slate-600 dark:text-slate-400 mb-6">
-          Order #{order.id.slice(0, 8)}
-        </p>
+        <p className="text-slate-600 dark:text-slate-400 mb-6">Order #{order.id.slice(0, 8)}</p>
 
         <div className="space-y-3 mb-6">
-          {availableStatuses.map((opt) => (
+          {availableStatuses.map(opt => (
             <label
               key={opt.value}
               className={`flex items-start gap-3 p-4 border rounded-xl cursor-pointer transition-colors ${
@@ -69,7 +67,7 @@ export function UpdateStatusModal({
                 name="status"
                 value={opt.value}
                 checked={selectedStatus === opt.value}
-                onChange={(e) => setSelectedStatus(e.target.value)}
+                onChange={e => setSelectedStatus(e.target.value)}
                 className="mt-1"
               />
               <div>

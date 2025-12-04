@@ -9,7 +9,11 @@ interface ProfileFormProps {
   isSubmitting: boolean
 }
 
-export function ProfileForm({ profile, onSubmit, isSubmitting }: ProfileFormProps): React.JSX.Element {
+export function ProfileForm({
+  profile,
+  onSubmit,
+  isSubmitting,
+}: ProfileFormProps): React.JSX.Element {
   const [formData, setFormData] = useState({
     name: profile.name,
     phone: profile.phone ?? '',
@@ -39,9 +43,7 @@ export function ProfileForm({ profile, onSubmit, isSubmitting }: ProfileFormProp
       onSubmit={handleSubmit}
       className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-6"
     >
-      <h2 className="font-semibold text-slate-900 dark:text-white mb-4">
-        Informasi Profil
-      </h2>
+      <h2 className="font-semibold text-slate-900 dark:text-white mb-4">Informasi Profil</h2>
 
       <div className="space-y-4">
         <div>
@@ -51,7 +53,7 @@ export function ProfileForm({ profile, onSubmit, isSubmitting }: ProfileFormProp
           <input
             type="text"
             value={formData.name}
-            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            onChange={e => setFormData({ ...formData, name: e.target.value })}
             className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
           />
@@ -64,7 +66,7 @@ export function ProfileForm({ profile, onSubmit, isSubmitting }: ProfileFormProp
           <input
             type="tel"
             value={formData.phone}
-            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+            onChange={e => setFormData({ ...formData, phone: e.target.value })}
             placeholder="08xxxxxxxxxx"
             className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
@@ -76,7 +78,7 @@ export function ProfileForm({ profile, onSubmit, isSubmitting }: ProfileFormProp
           </label>
           <textarea
             value={formData.address}
-            onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+            onChange={e => setFormData({ ...formData, address: e.target.value })}
             placeholder="Alamat lengkap..."
             rows={3}
             className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
@@ -89,7 +91,7 @@ export function ProfileForm({ profile, onSubmit, isSubmitting }: ProfileFormProp
           </label>
           <textarea
             value={formData.bio}
-            onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
+            onChange={e => setFormData({ ...formData, bio: e.target.value })}
             placeholder="Ceritakan sedikit tentang dirimu..."
             rows={2}
             className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"

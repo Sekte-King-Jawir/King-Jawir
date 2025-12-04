@@ -46,7 +46,9 @@ function OrderHistoryContent(): React.JSX.Element {
   const [orders, setOrders] = useState<Order[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState('')
-  const [successMessage, setSuccessMessage] = useState(showSuccess ? 'Pesanan berhasil dibuat!' : '')
+  const [successMessage, setSuccessMessage] = useState(
+    showSuccess ? 'Pesanan berhasil dibuat!' : ''
+  )
 
   useEffect(() => {
     async function fetchOrders(): Promise<void> {
@@ -159,7 +161,7 @@ function OrderHistoryContent(): React.JSX.Element {
         </div>
       ) : (
         <div className="space-y-6">
-          {orders.map((order) => (
+          {orders.map(order => (
             <div
               key={order.id}
               className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden"
@@ -187,7 +189,7 @@ function OrderHistoryContent(): React.JSX.Element {
 
               {/* Order Items */}
               <div className="divide-y divide-slate-100 dark:divide-slate-700/50">
-                {order.items.map((item) => (
+                {order.items.map(item => (
                   <div key={item.id} className="px-6 py-4 flex items-center gap-4">
                     <div className="w-16 h-16 bg-slate-100 dark:bg-slate-700 rounded-lg overflow-hidden shrink-0 relative">
                       {item.product.image !== null && item.product.image !== '' ? (
@@ -250,9 +252,7 @@ export default function OrderHistoryPage(): React.JSX.Element {
       <Navbar />
 
       <main className="max-w-4xl mx-auto px-4 py-8">
-        <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-8">
-          Riwayat Pesanan
-        </h1>
+        <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-8">Riwayat Pesanan</h1>
 
         <Suspense fallback={<LoadingSkeleton />}>
           <OrderHistoryContent />
@@ -300,7 +300,7 @@ function Navbar(): React.JSX.Element {
 function LoadingSkeleton(): React.JSX.Element {
   return (
     <div className="space-y-6 animate-pulse">
-      {[1, 2, 3].map((i) => (
+      {[1, 2, 3].map(i => (
         <div key={i} className="bg-slate-200 dark:bg-slate-700 rounded-2xl h-48" />
       ))}
     </div>

@@ -21,15 +21,11 @@ export function DeleteModal({
             <span className="text-3xl">⚠️</span>
           </div>
 
-          <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">
-            Hapus Produk?
-          </h3>
+          <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">Hapus Produk?</h3>
           <p className="text-slate-600 dark:text-slate-400 mb-6">
             Anda yakin ingin menghapus produk{' '}
-            <span className="font-semibold text-slate-900 dark:text-white">
-              {productName}
-            </span>
-            ? Tindakan ini tidak dapat dibatalkan.
+            <span className="font-semibold text-slate-900 dark:text-white">{productName}</span>?
+            Tindakan ini tidak dapat dibatalkan.
           </p>
 
           <div className="flex items-center gap-3">

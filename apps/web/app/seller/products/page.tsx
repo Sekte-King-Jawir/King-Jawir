@@ -266,12 +266,14 @@ export default function SellerProductsPage(): React.JSX.Element {
       </div>
 
       {/* Create Modal */}
-      {showForm ? <ProductForm
+      {showForm ? (
+        <ProductForm
           categories={categories}
           onSubmit={handleCreateProduct}
           onCancel={() => setShowForm(false)}
           isLoading={isSubmitting}
-        /> : null}
+        />
+      ) : null}
 
       {/* Edit Modal */}
       {editingProduct !== null && (
@@ -309,7 +311,7 @@ function LoadingSkeleton(): React.JSX.Element {
       </div>
       <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700">
         <div className="p-4 space-y-4">
-          {[1, 2, 3, 4, 5].map((n) => (
+          {[1, 2, 3, 4, 5].map(n => (
             <div key={`skeleton-${n}`} className="h-16 bg-slate-100 dark:bg-slate-700 rounded" />
           ))}
         </div>

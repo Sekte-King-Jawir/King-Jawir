@@ -74,10 +74,7 @@ export default function CheckoutPage(): React.JSX.Element {
     }).format(price)
   }
 
-  const totalAmount = cartItems.reduce(
-    (sum, item) => sum + item.product.price * item.quantity,
-    0
-  )
+  const totalAmount = cartItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0)
 
   const handleCheckout = async (): Promise<void> => {
     if (shippingAddress.trim() === '') {
@@ -98,7 +95,11 @@ export default function CheckoutPage(): React.JSX.Element {
         }),
       })
 
-      const data = (await res.json()) as { success: boolean; message: string; data?: { order: { id: string } } }
+      const data = (await res.json()) as {
+        success: boolean
+        message: string
+        data?: { order: { id: string } }
+      }
 
       if (data.success) {
         router.push(`/orders?success=true`)
@@ -153,9 +154,7 @@ export default function CheckoutPage(): React.JSX.Element {
       <Navbar />
 
       <main className="max-w-4xl mx-auto px-4 py-8">
-        <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-8">
-          Checkout
-        </h1>
+        <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-8">Checkout</h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Cart Items */}
@@ -168,7 +167,7 @@ export default function CheckoutPage(): React.JSX.Element {
               </div>
 
               <div className="divide-y divide-slate-200 dark:divide-slate-700">
-                {cartItems.map((item) => (
+                {cartItems.map(item => (
                   <div key={item.id} className="px-6 py-4 flex items-center gap-4">
                     <div className="w-16 h-16 bg-slate-100 dark:bg-slate-700 rounded-lg overflow-hidden shrink-0">
                       {item.product.image !== null && item.product.image !== '' ? (
@@ -211,7 +210,7 @@ export default function CheckoutPage(): React.JSX.Element {
               </h2>
               <textarea
                 value={shippingAddress}
-                onChange={(e) => setShippingAddress(e.target.value)}
+                onChange={e => setShippingAddress(e.target.value)}
                 placeholder="Masukkan alamat lengkap pengiriman..."
                 rows={4}
                 className="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-xl bg-white dark:bg-slate-700 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"

@@ -143,12 +143,7 @@ export default function ProductDetailPage(): React.JSX.Element {
           <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
             <div className="aspect-square relative">
               {product.image !== null && product.image !== '' ? (
-                <Image
-                  src={product.image}
-                  alt={product.name}
-                  fill
-                  className="object-cover"
-                />
+                <Image src={product.image} alt={product.name} fill className="object-cover" />
               ) : (
                 <div className="w-full h-full flex items-center justify-center bg-slate-100 dark:bg-slate-700">
                   <span className="text-8xl">📦</span>
@@ -170,9 +165,7 @@ export default function ProductDetailPage(): React.JSX.Element {
             )}
 
             {/* Title */}
-            <h1 className="text-3xl font-bold text-slate-900 dark:text-white">
-              {product.name}
-            </h1>
+            <h1 className="text-3xl font-bold text-slate-900 dark:text-white">{product.name}</h1>
 
             {/* Price */}
             <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">
@@ -223,18 +216,12 @@ export default function ProductDetailPage(): React.JSX.Element {
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center text-2xl">
-                    🏪
-                  </div>
+                  <div className="w-full h-full flex items-center justify-center text-2xl">🏪</div>
                 )}
               </div>
               <div className="flex-1">
-                <p className="font-medium text-slate-900 dark:text-white">
-                  {product.store.name}
-                </p>
-                <p className="text-sm text-slate-500 dark:text-slate-400">
-                  Kunjungi Toko →
-                </p>
+                <p className="font-medium text-slate-900 dark:text-white">{product.store.name}</p>
+                <p className="text-sm text-slate-500 dark:text-slate-400">Kunjungi Toko →</p>
               </div>
             </Link>
 

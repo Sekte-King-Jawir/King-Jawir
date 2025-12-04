@@ -159,9 +159,7 @@ export default function ProfilePage(): React.JSX.Element {
       <Navbar />
 
       <main className="max-w-2xl mx-auto px-4 py-8">
-        <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-8">
-          Profil Saya
-        </h1>
+        <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-8">Profil Saya</h1>
 
         {successMessage !== '' && (
           <div className="mb-6 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl text-green-600 dark:text-green-400 flex items-center gap-2">
@@ -189,9 +187,7 @@ export default function ProfilePage(): React.JSX.Element {
 
           {/* Account Info */}
           <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-6">
-            <h2 className="font-semibold text-slate-900 dark:text-white mb-4">
-              Informasi Akun
-            </h2>
+            <h2 className="font-semibold text-slate-900 dark:text-white mb-4">Informasi Akun</h2>
             <div className="space-y-4">
               <div>
                 <p className="text-sm text-slate-500 dark:text-slate-400">Email</p>
@@ -230,9 +226,7 @@ export default function ProfilePage(): React.JSX.Element {
           {/* Password Section */}
           <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-6">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="font-semibold text-slate-900 dark:text-white">
-                Keamanan
-              </h2>
+              <h2 className="font-semibold text-slate-900 dark:text-white">Keamanan</h2>
               {!showPasswordForm && (
                 <button
                   onClick={() => setShowPasswordForm(true)}

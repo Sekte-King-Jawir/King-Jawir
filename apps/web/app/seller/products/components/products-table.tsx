@@ -67,7 +67,7 @@ export function ProductsTable({
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
-            {products.map((product) => (
+            {products.map(product => (
               <tr
                 key={product.id}
                 className="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors"

@@ -12,11 +12,26 @@ interface OrdersTableProps {
 }
 
 const statusLabels: Record<string, { label: string; color: string }> = {
-  PENDING: { label: 'Menunggu Pembayaran', color: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-300' },
-  PAID: { label: 'Sudah Dibayar', color: 'bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300' },
-  SHIPPED: { label: 'Dikirim', color: 'bg-purple-100 text-purple-800 dark:bg-purple-900/50 dark:text-purple-300' },
-  DELIVERED: { label: 'Selesai', color: 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300' },
-  CANCELLED: { label: 'Dibatalkan', color: 'bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-300' },
+  PENDING: {
+    label: 'Menunggu Pembayaran',
+    color: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-300',
+  },
+  PAID: {
+    label: 'Sudah Dibayar',
+    color: 'bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300',
+  },
+  SHIPPED: {
+    label: 'Dikirim',
+    color: 'bg-purple-100 text-purple-800 dark:bg-purple-900/50 dark:text-purple-300',
+  },
+  DELIVERED: {
+    label: 'Selesai',
+    color: 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300',
+  },
+  CANCELLED: {
+    label: 'Dibatalkan',
+    color: 'bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-300',
+  },
 }
 
 export function OrdersTable({
@@ -60,7 +75,7 @@ export function OrdersTable({
 
   return (
     <div className="space-y-4">
-      {orders.map((order) => (
+      {orders.map(order => (
         <div
           key={order.id}
           className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden"
@@ -96,9 +111,7 @@ export function OrdersTable({
           <div className="px-6 py-3 bg-slate-50 dark:bg-slate-700/30 border-b border-slate-200 dark:border-slate-700">
             <p className="text-sm">
               <span className="text-slate-500 dark:text-slate-400">Pembeli: </span>
-              <span className="font-medium text-slate-900 dark:text-white">
-                {order.user.name}
-              </span>
+              <span className="font-medium text-slate-900 dark:text-white">{order.user.name}</span>
               <span className="text-slate-400 dark:text-slate-500"> ({order.user.email})</span>
             </p>
             {order.shippingAddress !== undefined && order.shippingAddress !== null && (
@@ -110,7 +123,7 @@ export function OrdersTable({
 
           {/* Order Items */}
           <div className="px-6 py-4 space-y-3">
-            {order.items.map((item) => (
+            {order.items.map(item => (
               <div key={item.id} className="flex items-center gap-4">
                 <div className="w-12 h-12 bg-slate-100 dark:bg-slate-700 rounded-lg overflow-hidden shrink-0">
                   {item.product.image !== null && item.product.image !== '' ? (
@@ -122,9 +135,7 @@ export function OrdersTable({
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center text-xl">
-                      📦
-                    </div>
+                    <div className="w-full h-full flex items-center justify-center text-xl">📦</div>
                   )}
                 </div>
                 <div className="flex-1 min-w-0">
