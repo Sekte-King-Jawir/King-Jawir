@@ -87,7 +87,9 @@ export const productService = {
     limit?: number
   }): Promise<ApiResponse<PaginatedResponse<Product>>> {
     const query = buildQueryString(params || {})
-    return apiClient.get<PaginatedResponse<Product>>(`${API_ENDPOINTS.PRODUCTS.MY_PRODUCTS}${query}`)
+    return apiClient.get<PaginatedResponse<Product>>(
+      `${API_ENDPOINTS.PRODUCTS.MY_PRODUCTS}${query}`
+    )
   },
 }
 
@@ -139,7 +141,9 @@ export const storeService = {
     params?: { page?: number; limit?: number }
   ): Promise<ApiResponse<PaginatedResponse<Product>>> {
     const query = buildQueryString(params || {})
-    return apiClient.get<PaginatedResponse<Product>>(`${API_ENDPOINTS.STORES.PRODUCTS(slug)}${query}`)
+    return apiClient.get<PaginatedResponse<Product>>(
+      `${API_ENDPOINTS.STORES.PRODUCTS(slug)}${query}`
+    )
   },
 
   async getMyStore(): Promise<ApiResponse<StoreResponse>> {
@@ -201,7 +205,10 @@ export interface CreateOrderRequest {
 }
 
 export const orderService = {
-  async getAll(params?: { page?: number; limit?: number }): Promise<ApiResponse<PaginatedResponse<Order>>> {
+  async getAll(params?: {
+    page?: number
+    limit?: number
+  }): Promise<ApiResponse<PaginatedResponse<Order>>> {
     const query = buildQueryString(params || {})
     return apiClient.get<PaginatedResponse<Order>>(`${API_ENDPOINTS.ORDERS.LIST}${query}`)
   },
@@ -323,7 +330,7 @@ export const priceAnalysisService = {
     const wsUrl = `${API_CONFIG.WS_URL}${API_ENDPOINTS.PRICE_ANALYSIS.STREAM}`
     const ws = new WebSocket(wsUrl)
 
-    ws.onmessage = (event) => {
+    ws.onmessage = event => {
       try {
         const data = JSON.parse(event.data)
         onMessage(data)
@@ -332,7 +339,7 @@ export const priceAnalysisService = {
       }
     }
 
-    ws.onerror = (event) => {
+    ws.onerror = event => {
       if (onError) {
         onError(new Error('WebSocket error'))
       }

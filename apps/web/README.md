@@ -68,7 +68,7 @@ import { productService, cartService, authService } from '@/lib/api'
 // Get products
 const response = await productService.getAll({ page: 1, limit: 10 })
 
-// Add to cart  
+// Add to cart
 await cartService.addItem({ productId: 'xxx', quantity: 1 })
 
 // Login
@@ -130,6 +130,7 @@ import type { User, Product, Order, CartItem } from '@/types'
 ```
 
 Main types:
+
 - `User` - User with role
 - `Product` - Product with category & store
 - `CartItem` - Cart item
@@ -145,9 +146,11 @@ Main types:
 - **Modern Effects** - Gradients & shadows
 
 ```tsx
-<div className="bg-gradient-to-r from-blue-500 to-blue-600 
+<div
+  className="bg-gradient-to-r from-blue-500 to-blue-600 
                 dark:from-blue-600 dark:to-blue-700
-                rounded-xl shadow-lg hover:scale-105 transition-all">
+                rounded-xl shadow-lg hover:scale-105 transition-all"
+>
   Button
 </div>
 ```
@@ -155,20 +158,24 @@ Main types:
 ## 📱 Pages
 
 **Public:**
+
 - `/` - Homepage
 - `/products` - Product listing
 - `/auth/login` - Login
 
 **Protected:**
+
 - `/cart` - Shopping cart
 - `/orders` - Order history
 - `/profile` - User profile
 
 **Seller:**
+
 - `/seller/store` - Manage store
 - `/seller/products` - Manage products
 
 **Admin:**
+
 - `/admin` - Dashboard
 - `/admin/users` - User management
 
@@ -193,6 +200,7 @@ bun run lint        # Linting
 ## 🐛 Troubleshooting
 
 **API Not Connecting:**
+
 ```bash
 # Check API status
 curl http://localhost:4101
@@ -205,6 +213,7 @@ echo $NEXT_PUBLIC_API_URL
 Pastikan API allows origin `http://localhost:4102`
 
 **Cookie Not Sent:**
+
 - Gunakan `credentials: 'include'`
 - Check SameSite cookie settings
 

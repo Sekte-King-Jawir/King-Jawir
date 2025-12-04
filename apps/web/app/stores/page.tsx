@@ -16,7 +16,7 @@ export default function StoresPage(): React.JSX.Element {
     const fetchStores = async (): Promise<void> => {
       try {
         const response = await storeService.getAll()
-        
+
         if (response.success && response.data) {
           setStores(response.data.stores)
         } else {

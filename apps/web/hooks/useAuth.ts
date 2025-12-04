@@ -9,57 +9,51 @@ export function useAuth() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  const login = useCallback(
-    async (credentials: LoginRequest) => {
-      setLoading(true)
-      setError(null)
+  const login = useCallback(async (credentials: LoginRequest) => {
+    setLoading(true)
+    setError(null)
 
-      try {
-        const response = await authService.login(credentials)
-        
-        if (response.success && response.data) {
-          setUser(response.data.user)
-          return { success: true, user: response.data.user }
-        }
+    try {
+      const response = await authService.login(credentials)
 
-        setError(response.message)
-        return { success: false, error: response.message }
-      } catch (err) {
-        const message = isApiError(err) ? err.message : 'Login failed'
-        setError(message)
-        return { success: false, error: message }
-      } finally {
-        setLoading(false)
+      if (response.success && response.data) {
+        setUser(response.data.user)
+        return { success: true, user: response.data.user }
       }
-    },
-    []
-  )
 
-  const register = useCallback(
-    async (data: RegisterRequest) => {
-      setLoading(true)
-      setError(null)
+      setError(response.message)
+      return { success: false, error: response.message }
+    } catch (err) {
+      const message = isApiError(err) ? err.message : 'Login failed'
+      setError(message)
+      return { success: false, error: message }
+    } finally {
+      setLoading(false)
+    }
+  }, [])
 
-      try {
-        const response = await authService.register(data)
-        
-        if (response.success && response.data) {
-          setUser(response.data.user)
-          return { success: true, user: response.data.user }
-        }
+  const register = useCallback(async (data: RegisterRequest) => {
+    setLoading(true)
+    setError(null)
 
-        setError(response.message)
-        return { success: false, error: response.message }
-      } catch (err) {
-        const message = isApiError(err) ? err.message : 'Registration failed'
-        setError(message)
-        return { success: false, error: message }
-      } finally {
-        setLoading(false)
+    try {
+      const response = await authService.register(data)
+
+      if (response.success && response.data) {
+        setUser(response.data.user)
+        return { success: true, user: response.data.user }
       }
-    },
-    []
-  )
+
+      setError(response.message)
+      return { success: false, error: response.message }
+    } catch (err) {
+      const message = isApiError(err) ? err.message : 'Registration failed'
+      setError(message)
+      return { success: false, error: message }
+    } finally {
+      setLoading(false)
+    }
+  }, [])
 
   const logout = useCallback(async () => {
     setLoading(true)
@@ -84,7 +78,7 @@ export function useAuth() {
 
     try {
       const response = await authService.me()
-      
+
       if (response.success && response.data) {
         setUser(response.data.user)
         return response.data.user

@@ -46,10 +46,7 @@ export class ApiClient {
     this.timeout = timeout || API_CONFIG.TIMEOUT
   }
 
-  private async request<T>(
-    endpoint: string,
-    options: RequestInit = {}
-  ): Promise<ApiResponse<T>> {
+  private async request<T>(endpoint: string, options: RequestInit = {}): Promise<ApiResponse<T>> {
     const controller = new AbortController()
     const timeoutId = setTimeout(() => controller.abort(), this.timeout)
 
@@ -116,11 +113,7 @@ export class ApiClient {
     })
   }
 
-  async patch<T>(
-    endpoint: string,
-    body?: unknown,
-    options?: RequestInit
-  ): Promise<ApiResponse<T>> {
+  async patch<T>(endpoint: string, body?: unknown, options?: RequestInit): Promise<ApiResponse<T>> {
     return this.request<T>(endpoint, {
       ...options,
       method: 'PATCH',
@@ -143,15 +136,17 @@ export const apiClient = new ApiClient()
 // UTILITY FUNCTIONS
 // ============================================================================
 
-export function buildQueryString(params: Record<string, string | number | boolean | undefined>): string {
+export function buildQueryString(
+  params: Record<string, string | number | boolean | undefined>
+): string {
   const searchParams = new URLSearchParams()
-  
+
   Object.entries(params).forEach(([key, value]) => {
     if (value !== undefined && value !== null && value !== '') {
       searchParams.set(key, String(value))
     }
   })
-  
+
   const query = searchParams.toString()
   return query ? `?${query}` : ''
 }

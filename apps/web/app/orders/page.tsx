@@ -106,9 +106,7 @@ function OrderHistoryContent(): React.JSX.Element {
                     #{order.id.slice(0, 8)}
                   </p>
                 </div>
-                <div className="flex items-center gap-3">
-                  {getStatusBadge(order.status)}
-                </div>
+                <div className="flex items-center gap-3">{getStatusBadge(order.status)}</div>
               </div>
 
               {/* Order Items */}

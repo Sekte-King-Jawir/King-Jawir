@@ -1,5 +1,9 @@
 import { useState, useCallback, useRef, useEffect } from 'react'
-import { priceAnalysisService, type PriceAnalysisRequest, type PriceAnalysisResult } from '@/lib/api'
+import {
+  priceAnalysisService,
+  type PriceAnalysisRequest,
+  type PriceAnalysisResult,
+} from '@/lib/api'
 
 interface StreamMessage {
   type: 'progress' | 'complete' | 'error'
@@ -67,7 +71,7 @@ export function usePriceAnalysis() {
           setLoading(false)
         }
       },
-      (err) => {
+      err => {
         setError(err.message)
         setLoading(false)
       },
