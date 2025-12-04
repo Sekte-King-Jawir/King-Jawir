@@ -11,6 +11,7 @@ export const ProductPlain = t.Object(
     categoryId: t.String(),
     name: t.String(),
     slug: t.String(),
+    description: __nullable__(t.String()),
     price: t.Number(),
     stock: t.Integer(),
     image: __nullable__(t.String()),
@@ -27,6 +28,8 @@ export const ProductRelations = t.Object(
         userId: t.String(),
         name: t.String(),
         slug: t.String(),
+        description: __nullable__(t.String()),
+        logo: __nullable__(t.String()),
         createdAt: t.Date(),
       },
       { additionalProperties: false },
@@ -82,6 +85,7 @@ export const ProductPlainInputCreate = t.Object(
   {
     name: t.String(),
     slug: t.String(),
+    description: t.Optional(__nullable__(t.String())),
     price: t.Number(),
     stock: t.Optional(t.Integer()),
     image: t.Optional(__nullable__(t.String())),
@@ -93,6 +97,7 @@ export const ProductPlainInputUpdate = t.Object(
   {
     name: t.Optional(t.String()),
     slug: t.Optional(t.String()),
+    description: t.Optional(__nullable__(t.String())),
     price: t.Optional(t.Number()),
     stock: t.Optional(t.Integer()),
     image: t.Optional(__nullable__(t.String())),
@@ -294,6 +299,7 @@ export const ProductWhere = t.Partial(
           categoryId: t.String(),
           name: t.String(),
           slug: t.String(),
+          description: t.String(),
           price: t.Number(),
           stock: t.Integer(),
           image: t.String(),
@@ -342,6 +348,7 @@ export const ProductWhereUnique = t.Recursive(
               categoryId: t.String(),
               name: t.String(),
               slug: t.String(),
+              description: t.String(),
               price: t.Number(),
               stock: t.Integer(),
               image: t.String(),
@@ -364,6 +371,7 @@ export const ProductSelect = t.Partial(
       categoryId: t.Boolean(),
       name: t.Boolean(),
       slug: t.Boolean(),
+      description: t.Boolean(),
       price: t.Boolean(),
       stock: t.Boolean(),
       image: t.Boolean(),
@@ -409,6 +417,9 @@ export const ProductOrderBy = t.Partial(
         additionalProperties: false,
       }),
       slug: t.Union([t.Literal("asc"), t.Literal("desc")], {
+        additionalProperties: false,
+      }),
+      description: t.Union([t.Literal("asc"), t.Literal("desc")], {
         additionalProperties: false,
       }),
       price: t.Union([t.Literal("asc"), t.Literal("desc")], {

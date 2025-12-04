@@ -85,6 +85,7 @@ export const productRoutes = new Elysia({ prefix: '/products' })
         price: body.price,
         stock: body.stock,
         ...(body.slug && { slug: body.slug }),
+        ...(body.description && { description: body.description }),
         ...(body.image && { image: body.image }),
       })
 
@@ -99,6 +100,7 @@ export const productRoutes = new Elysia({ prefix: '/products' })
         categoryId: t.String(),
         name: v.name(),
         slug: t.Optional(v.slug()),
+        description: t.Optional(t.String({ maxLength: 5000 })),
         price: v.price(),
         stock: v.stock(),
         image: t.Optional(v.url()),
@@ -140,6 +142,7 @@ export const productRoutes = new Elysia({ prefix: '/products' })
         categoryId: t.Optional(t.String()),
         name: t.Optional(v.name()),
         slug: t.Optional(v.slug()),
+        description: t.Optional(t.String({ maxLength: 5000 })),
         price: t.Optional(v.price()),
         stock: t.Optional(v.stock()),
         image: t.Optional(v.url()),
