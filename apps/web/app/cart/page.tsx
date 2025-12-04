@@ -39,7 +39,8 @@ export default function CartPage() {
         })
         if (res.ok) {
           const data = await res.json()
-          setCartItems(data.data || [])
+          // API returns { items, totalItems, totalPrice }
+          setCartItems(data.data?.items || [])
         }
       } catch (error) {
         console.error('Failed to fetch cart:', error)

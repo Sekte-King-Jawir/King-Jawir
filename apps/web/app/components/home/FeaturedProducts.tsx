@@ -74,7 +74,7 @@ function ProductCard({ product, index }: { product: Product; index: number }): R
       }}
     >
       {/* Product Image Container */}
-      <div className="relative aspect-square bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden">
+      <div className="relative aspect-square bg-linear-to-br from-gray-50 to-gray-100 overflow-hidden">
         {product.image !== null && product.image !== '' && !imgError ? (
           <Image
             src={product.image}
@@ -179,7 +179,7 @@ function ProductCard({ product, index }: { product: Product; index: number }): R
         )}
 
         {/* Product Name */}
-        <h3 className="font-semibold text-gray-900 line-clamp-2 mb-2 min-h-[2.5rem] group-hover:text-blue-600 transition-colors">
+        <h3 className="font-semibold text-gray-900 line-clamp-2 mb-2 min-h-10 group-hover:text-blue-600 transition-colors">
           {product.name}
         </h3>
 
@@ -227,7 +227,7 @@ export default function FeaturedProducts({ products }: FeaturedProductsProps): R
     return (
       <section className="bg-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-3xl p-16 text-center">
+          <div className="bg-linear-to-br from-gray-50 to-gray-100 rounded-3xl p-16 text-center">
             <span className="text-6xl mb-4 block">📦</span>
             <h3 className="text-xl font-bold text-gray-900 mb-2">Belum Ada Produk</h3>
             <p className="text-gray-500">Produk akan segera tersedia</p>
@@ -238,7 +238,7 @@ export default function FeaturedProducts({ products }: FeaturedProductsProps): R
   }
 
   return (
-    <section className="bg-gradient-to-b from-white to-gray-50 py-16 lg:py-20">
+    <section className="bg-linear-to-b from-white to-gray-50 py-16 lg:py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">

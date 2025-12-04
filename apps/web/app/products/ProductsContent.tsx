@@ -127,10 +127,28 @@ export function ProductsContent() {
     [router, searchParams]
   )
 
-  const handleAddToCart = useCallback((productId: string) => {
-    console.log('Add to cart:', productId)
-    // TODO: Implement add to cart
-  }, [])
+  const handleAddToCart = useCallback(
+    async (productId: string) => {
+      try {
+        const res = await fetch(`${API_BASE_URL}/cart`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({ productId, quantity: 1 }),
+        })
+        if (res.ok) {
+          router.push('/cart')
+        } else {
+          const data = await res.json()
+          alert(data.message || 'Failed to add to cart. Please login first.')
+        }
+      } catch (error) {
+        console.error('Failed to add to cart:', error)
+        alert('Failed to add to cart')
+      }
+    },
+    [router]
+  )
 
   const handleToggleWishlist = useCallback((productId: string) => {
     setWishlistedIds(prev =>
