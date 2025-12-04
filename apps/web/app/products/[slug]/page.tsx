@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -14,6 +14,7 @@ import type { Product } from '@/types'
 import { useCart as useCartHook } from '@/hooks/useCart'
 import { useProduct as useProductHook } from '@/hooks/useProduct'
 import { useProductRating as useProductRatingHook } from '@/hooks/useProductRating'
+import { useAuth } from '@/hooks/useAuth'
 
 // Type definitions untuk hooks
 interface CartResponse {
@@ -65,12 +66,18 @@ export default function ProductDetailPage(): React.JSX.Element {
   const { product, isLoading, error } = useProduct(slug)
   const { addItem, loading: cartLoading } = useCart()
   const { rating, totalReviews, isLoading: ratingLoading } = useProductRating(slug)
+  const { isAuthenticated, checkAuth } = useAuth()
 
   // Local state
   const [quantity, setQuantity] = useState(1)
   const [cartMessage, setCartMessage] = useState('')
 
   const handleAddToCart = async (): Promise<void> => {
+    if (!isAuthenticated) {
+      router.push('/auth/login')
+      return
+    }
+
     if (product === null) return
 
     setCartMessage('')
@@ -80,9 +87,14 @@ export default function ProductDetailPage(): React.JSX.Element {
       setCartMessage('Berhasil ditambahkan ke keranjang!')
       setTimeout(() => router.push('/cart'), 1500)
     } else {
-      setCartMessage('Gagal menambah ke keranjang. Silakan login terlebih dahulu.')
+      setCartMessage('Gagal menambah ke keranjang. Silakan coba lagi.')
     }
   }
+
+  // Ensure auth status checked on mount if UI didn't already call it
+  useEffect(() => {
+    void checkAuth()
+  }, [checkAuth])
 
   // Loading state
   if (isLoading === true) {

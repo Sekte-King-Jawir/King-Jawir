@@ -11,6 +11,7 @@ import { useProducts } from '@/hooks/useProducts'
 import { useCategories } from '@/hooks/useCategories'
 import { useCart } from '@/hooks/useCart'
 import { useProductRating } from '@/hooks/useProductRating'
+import { useAuth } from '@/hooks/useAuth'
 import type { Product } from '@/types'
 
 const sortOptions = [
@@ -74,9 +75,10 @@ function safeFormatPrice(price: number): string {
 interface ProductCardItemProps {
   product: Product
   onAddToCart: (productId: string) => void
+  isAuthenticated?: boolean
 }
 
-function ProductCardItem({ product, onAddToCart }: ProductCardItemProps): React.JSX.Element {
+function ProductCardItem({ product, onAddToCart, isAuthenticated }: ProductCardItemProps): React.JSX.Element {
   const { rating, totalReviews, isLoading } = useProductRating(product.slug)
 
   return (
@@ -97,6 +99,7 @@ function ProductCardItem({ product, onAddToCart }: ProductCardItemProps): React.
         isLoading,
       }}
       onAddToCart={() => onAddToCart(product.id)}
+      showAddToCart={isAuthenticated}
       linkComponent={NextLink}
       imageComponent={NextImage}
       formatPrice={safeFormatPrice}
@@ -112,6 +115,7 @@ export function ProductsContent(): React.JSX.Element {
   const { products, loading, totalPages, currentPage, fetchProducts } = useProducts()
   const { categories, fetchCategories } = useCategories()
   const { addItem } = useCart()
+  const { isAuthenticated, checkAuth } = useAuth()
 
   const [selectedCategory, setSelectedCategory] = useState<string>('')
   const [selectedPriceRange, setSelectedPriceRange] = useState<string>('all')
@@ -124,7 +128,8 @@ export function ProductsContent(): React.JSX.Element {
   // Fetch categories on mount
   useEffect(() => {
     void fetchCategories()
-  }, [fetchCategories])
+    void checkAuth()
+  }, [fetchCategories, checkAuth])
 
   // Fetch products when filters change
   useEffect(() => {
@@ -144,17 +149,22 @@ export function ProductsContent(): React.JSX.Element {
 
   const handleAddToCart = useCallback(
     (productId: string): void => {
+      if (!isAuthenticated) {
+        router.push('/auth/login')
+        return
+      }
+
       void (async () => {
         const response = await addItem(productId, 1)
         if (response.success === true) {
           setCartMessage('Produk berhasil ditambahkan ke keranjang!')
           router.push('/cart')
         } else {
-          setCartMessage('Gagal menambahkan ke keranjang. Silakan login terlebih dahulu.')
+          setCartMessage('Gagal menambahkan ke keranjang. Silakan coba lagi.')
         }
       })()
     },
-    [addItem, router]
+    [addItem, router, isAuthenticated]
   )
 
   return (
@@ -362,6 +372,7 @@ export function ProductsContent(): React.JSX.Element {
                     key={product.id}
                     product={product}
                     onAddToCart={handleAddToCart}
+                    isAuthenticated={isAuthenticated}
                   />
                 ))}
               </div>

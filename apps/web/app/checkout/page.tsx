@@ -6,17 +6,26 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useCart, useOrders } from '@/hooks'
 import { formatPrice } from '@/lib/utils'
+import {
+  CheckoutCard,
+  CheckoutSummary,
+  CheckoutSkeleton
+} from '@repo/ui'
 
 export default function CheckoutPage(): React.JSX.Element {
   const router = useRouter()
-  const { items: cartItems, loading: isLoading } = useCart()
+  const { items: cartItems, loading: isLoading, fetchCart } = useCart()
   const { createOrder, loading: isSubmitting, error: orderError } = useOrders()
 
   const [error, setError] = useState('')
-  const [shippingAddress, setShippingAddress] = useState('')
+
+  // Fetch cart on mount
+  useEffect(() => {
+    void fetchCart()
+  }, [fetchCart])
 
   useEffect(() => {
-    if (orderError) {
+    if (orderError !== null && orderError !== '') {
       setError(orderError)
     }
   }, [orderError])
@@ -24,16 +33,11 @@ export default function CheckoutPage(): React.JSX.Element {
   const totalAmount = cartItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0)
 
   const handleCheckout = async (): Promise<void> => {
-    if (shippingAddress.trim() === '') {
-      setError('Alamat pengiriman wajib diisi')
-      return
-    }
-
     setError('')
 
     try {
-      const order = await createOrder({ shippingAddress })
-      if (order) {
+      const order = await createOrder()
+      if (order !== null) {
         // Redirect to orders page with success message
         router.push('/orders?success=true')
       }
@@ -44,13 +48,7 @@ export default function CheckoutPage(): React.JSX.Element {
   }
 
   if (isLoading) {
-    return (
-      <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
-        <main className="max-w-4xl mx-auto px-4 py-8">
-          <LoadingSkeleton />
-        </main>
-      </div>
-    )
+    return <CheckoutSkeleton />
   }
 
   if (cartItems.length === 0) {
@@ -82,125 +80,33 @@ export default function CheckoutPage(): React.JSX.Element {
       <main className="max-w-4xl mx-auto px-4 py-8">
         <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-8">Checkout</h1>
 
+        {error !== '' && (
+          <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg text-red-600 dark:text-red-400">
+            {error}
+          </div>
+        )}
+
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Cart Items */}
-          <div className="lg:col-span-2 space-y-4">
-            <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
-              <div className="px-6 py-4 border-b border-slate-200 dark:border-slate-700">
-                <h2 className="font-semibold text-slate-900 dark:text-white">
-                  Pesanan Anda ({cartItems.length} item)
-                </h2>
-              </div>
-
-              <div className="divide-y divide-slate-200 dark:divide-slate-700">
-                {cartItems.map(item => (
-                  <div key={item.id} className="px-6 py-4 flex items-center gap-4">
-                    <div className="w-16 h-16 bg-slate-100 dark:bg-slate-700 rounded-lg overflow-hidden shrink-0">
-                      {item.product.image !== null && item.product.image !== '' ? (
-                        <Image
-                          src={item.product.image}
-                          alt={item.product.name}
-                          width={64}
-                          height={64}
-                          className="w-full h-full object-cover"
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center text-2xl">
-                          📦
-                        </div>
-                      )}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="font-medium text-slate-900 dark:text-white truncate">
-                        {item.product.name}
-                      </p>
-                      <p className="text-sm text-slate-500 dark:text-slate-400">
-                        {item.quantity} x {formatPrice(item.product.price)}
-                      </p>
-                      <p className="text-xs text-slate-400 dark:text-slate-500">
-                        {item.product.store.name}
-                      </p>
-                    </div>
-                    <p className="font-semibold text-slate-900 dark:text-white">
-                      {formatPrice(item.product.price * item.quantity)}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Shipping Address */}
-            <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-6">
-              <h2 className="font-semibold text-slate-900 dark:text-white mb-4">
-                Alamat Pengiriman
-              </h2>
-              <textarea
-                value={shippingAddress}
-                onChange={e => setShippingAddress(e.target.value)}
-                placeholder="Masukkan alamat lengkap pengiriman..."
-                rows={4}
-                className="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-xl bg-white dark:bg-slate-700 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
-              />
-            </div>
+          <div className="lg:col-span-2 space-y-6">
+            <CheckoutCard
+              items={cartItems}
+              imageComponent={Image}
+              formatPrice={formatPrice}
+            />
           </div>
 
           {/* Order Summary */}
           <div className="lg:col-span-1">
-            <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-6 sticky top-24">
-              <h2 className="font-semibold text-slate-900 dark:text-white mb-4">
-                Ringkasan Pesanan
-              </h2>
-
-              <div className="space-y-3 mb-6">
-                <div className="flex justify-between text-slate-600 dark:text-slate-400">
-                  <span>Subtotal</span>
-                  <span>{formatPrice(totalAmount)}</span>
-                </div>
-                <div className="flex justify-between text-slate-600 dark:text-slate-400">
-                  <span>Ongkos Kirim</span>
-                  <span className="text-green-600">Gratis</span>
-                </div>
-                <div className="border-t border-slate-200 dark:border-slate-700 pt-3 flex justify-between">
-                  <span className="font-semibold text-slate-900 dark:text-white">Total</span>
-                  <span className="font-bold text-xl text-blue-600 dark:text-blue-400">
-                    {formatPrice(totalAmount)}
-                  </span>
-                </div>
-              </div>
-
-              {error !== '' && (
-                <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg text-red-600 dark:text-red-400 text-sm">
-                  {error}
-                </div>
-              )}
-
-              <button
-                onClick={() => void handleCheckout()}
-                disabled={isSubmitting}
-                className="w-full py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-medium"
-              >
-                {isSubmitting ? 'Memproses...' : 'Buat Pesanan'}
-              </button>
-
-              <p className="text-xs text-slate-500 dark:text-slate-400 text-center mt-4">
-                Dengan melakukan pemesanan, Anda menyetujui syarat dan ketentuan yang berlaku
-              </p>
-            </div>
+            <CheckoutSummary
+              totalAmount={totalAmount}
+              isSubmitting={isSubmitting}
+              onCheckout={() => void handleCheckout()}
+              formatPrice={formatPrice}
+            />
           </div>
         </div>
       </main>
-    </div>
-  )
-}
-
-function LoadingSkeleton(): React.JSX.Element {
-  return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 animate-pulse">
-      <div className="lg:col-span-2 space-y-4">
-        <div className="bg-slate-200 dark:bg-slate-700 rounded-2xl h-64" />
-        <div className="bg-slate-200 dark:bg-slate-700 rounded-2xl h-40" />
-      </div>
-      <div className="bg-slate-200 dark:bg-slate-700 rounded-2xl h-64" />
     </div>
   )
 }

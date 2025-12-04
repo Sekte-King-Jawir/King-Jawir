@@ -27,6 +27,7 @@ export interface ProductListCardProps {
   store: ProductListCardStore
   ratingData?: ProductListCardRatingData | undefined
   onAddToCart?: (() => void) | undefined
+  showAddToCart?: boolean | undefined
   /** Custom link component (e.g., Next.js Link) */
   linkComponent?:
     | React.ComponentType<{
@@ -153,6 +154,7 @@ export function ProductListCard({
   store,
   ratingData,
   onAddToCart,
+  showAddToCart = true,
   linkComponent: LinkComponent,
   imageComponent: ImageComponent,
   formatPrice = defaultFormatPrice,
@@ -239,17 +241,24 @@ export function ProductListCard({
           )}
         </div>
 
-        <button
-          onClick={e => {
-            e.preventDefault()
-            onAddToCart?.()
-          }}
-          disabled={stock === 0}
-          className="w-full py-2.5 px-4 bg-linear-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold rounded-xl transition-all disabled:from-slate-300 disabled:to-slate-400 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg shadow-blue-500/25"
-        >
-          {CartIcon}
-          {stock === 0 ? 'Stok Habis' : 'Tambah ke Keranjang'}
-        </button>
+        {showAddToCart ? (
+          <button
+            onClick={e => {
+              e.preventDefault()
+              onAddToCart?.()
+            }}
+            disabled={stock === 0}
+            className="w-full py-2.5 px-4 bg-linear-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold rounded-xl transition-all disabled:from-slate-300 disabled:to-slate-400 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg shadow-blue-500/25"
+          >
+            {CartIcon}
+            {stock === 0 ? 'Stok Habis' : 'Tambah ke Keranjang'}
+          </button>
+        ) : (
+          <div className="w-full py-2.5 px-4 bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 font-semibold rounded-xl flex items-center justify-center gap-2">
+            <span className="w-4 h-4">{CartIcon}</span>
+            Login untuk membeli
+          </div>
+        )}
       </div>
     </div>
   )

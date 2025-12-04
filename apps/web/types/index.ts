@@ -92,15 +92,10 @@ export interface Order {
   userId: string
   total: number
   status: OrderStatus
-  shippingAddress: string
   createdAt: string
-  updatedAt: string
+  updatedAt?: string
   items: OrderItem[]
-  user: User
-}
-
-export interface CreateOrderData {
-  shippingAddress: string
+  user?: User
 }
 
 // ============================================================================

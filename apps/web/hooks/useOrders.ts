@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react'
-import { orderService } from '@/lib/api'
-import type { Order, CreateOrderData } from '@/types'
+import { orderService, isApiError } from '@/lib/api'
+import type { Order } from '@/types'
 
 interface UseOrdersReturn {
   orders: Order[]
@@ -9,12 +9,12 @@ interface UseOrdersReturn {
   error: string | null
   fetchOrders: () => Promise<void>
   fetchOrderById: (id: string) => Promise<void>
-  createOrder: (data: CreateOrderData) => Promise<Order | null>
+  createOrder: () => Promise<Order | null>
 }
 
 /**
  * Custom hook for order management
- * Handles order history, order details, and order creation
+ * Handles order history, order details, and order creation (checkout)
  */
 export function useOrders(): UseOrdersReturn {
   const [orders, setOrders] = useState<Order[]>([])
@@ -26,10 +26,14 @@ export function useOrders(): UseOrdersReturn {
     setLoading(true)
     setError(null)
     try {
-      const data = await orderService.getOrders()
-      setOrders(data)
+      const response = await orderService.getAll()
+      if (response.success === true && response.data !== undefined && response.data !== null) {
+        // API returns orders in data with pagination info
+        const ordersData = (response.data as unknown as { orders: Order[] }).orders
+        setOrders(ordersData ?? [])
+      }
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Failed to fetch orders'
+      const message = isApiError(err) ? err.message : 'Failed to fetch orders'
       setError(message)
       console.error('Fetch orders error:', err)
     } finally {
@@ -41,10 +45,12 @@ export function useOrders(): UseOrdersReturn {
     setLoading(true)
     setError(null)
     try {
-      const data = await orderService.getOrderById(id)
-      setOrder(data)
+      const response = await orderService.getById(id)
+      if (response.success === true && response.data !== undefined && response.data !== null) {
+        setOrder(response.data.order)
+      }
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Failed to fetch order'
+      const message = isApiError(err) ? err.message : 'Failed to fetch order'
       setError(message)
       console.error('Fetch order error:', err)
     } finally {
@@ -53,16 +59,20 @@ export function useOrders(): UseOrdersReturn {
   }, [])
 
   const createOrder = useCallback(
-    async (data: CreateOrderData): Promise<Order | null> => {
+    async (): Promise<Order | null> => {
       setLoading(true)
       setError(null)
       try {
-        const newOrder = await orderService.createOrder(data)
-        // Refresh orders list after creating
-        await fetchOrders()
-        return newOrder
+        // API checkout takes items from cart automatically
+        const response = await orderService.checkout()
+        if (response.success === true && response.data !== undefined && response.data !== null) {
+          // Refresh orders list after creating
+          await fetchOrders()
+          return response.data
+        }
+        return null
       } catch (err) {
-        const message = err instanceof Error ? err.message : 'Failed to create order'
+        const message = isApiError(err) ? err.message : 'Failed to create order'
         setError(message)
         console.error('Create order error:', err)
         return null

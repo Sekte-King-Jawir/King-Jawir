@@ -25,18 +25,18 @@ export interface ReviewStats {
   distribution: Record<string, number>
 }
 
+// API response format from the backend
 export interface ReviewsApiResponse {
   success: boolean
   message: string
   data?: {
     reviews: Review[]
-    pagination: {
-      page: number
-      limit: number
-      total: number
-      totalPages: number
-    }
-    stats: ReviewStats
+    total: number
+    page: number
+    limit: number
+    totalPages: number
+    averageRating: number
+    reviewCount: number
   }
 }
 
@@ -138,13 +138,23 @@ export function ReviewSection({
 
   const fetchReviews = useCallback(async (): Promise<void> => {
     try {
-      const res = await fetch(`${apiBaseUrl}/products/${productSlug}/reviews?page=${page}&limit=5`)
+      const res = await fetch(`${apiBaseUrl}/api/products/${productSlug}/reviews?page=${page}&limit=5`)
       const data = (await res.json()) as ReviewsApiResponse
 
       if (data.success && data.data !== undefined) {
         setReviews(data.data.reviews)
-        setStats(data.data.stats)
-        setTotalPages(data.data.pagination.totalPages)
+        // Convert API response to stats format
+        const distribution: Record<string, number> = {}
+        data.data.reviews.forEach(review => {
+          const key = String(review.rating)
+          distribution[key] = (distribution[key] ?? 0) + 1
+        })
+        setStats({
+          avgRating: data.data.averageRating,
+          totalReviews: data.data.reviewCount,
+          distribution,
+        })
+        setTotalPages(data.data.totalPages)
       }
     } catch {
       console.error('Failed to fetch reviews')
@@ -153,11 +163,11 @@ export function ReviewSection({
     }
   }, [apiBaseUrl, productSlug, page])
 
-  // Check if user can review (has purchased)
+  // Check if user can review (has purchased with DONE status)
   useEffect(() => {
     const checkCanReview = async (): Promise<void> => {
       try {
-        const res = await fetch(`${apiBaseUrl}/orders`, {
+        const res = await fetch(`${apiBaseUrl}/api/orders`, {
           credentials: 'include',
         })
         const data = (await res.json()) as {
@@ -173,7 +183,7 @@ export function ReviewSection({
         if (data.success && data.data !== undefined) {
           const hasPurchased = data.data.orders.some(
             order =>
-              order.status === 'DELIVERED' &&
+              order.status === 'DONE' &&
               order.items.some(item => item.product.id === productId)
           )
           setCanReview(hasPurchased)
@@ -195,7 +205,7 @@ export function ReviewSection({
     setSubmitMessage('')
 
     try {
-      const res = await fetch(`${apiBaseUrl}/reviews`, {
+      const res = await fetch(`${apiBaseUrl}/api/reviews`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',

@@ -148,10 +148,7 @@ function OrderHistoryContent(): React.JSX.Element {
               {/* Order Footer */}
               <div className="px-6 py-4 bg-slate-50 dark:bg-slate-700/30 flex flex-wrap items-center justify-between gap-4">
                 <div className="text-sm text-slate-600 dark:text-slate-400">
-                  <span className="font-medium">Alamat:</span>{' '}
-                  {order.shippingAddress.length > 50
-                    ? `${order.shippingAddress.slice(0, 50)}...`
-                    : order.shippingAddress}
+                  <span className="font-medium">{order.items.length} item</span>
                 </div>
                 <div className="text-right">
                   <p className="text-sm text-slate-500 dark:text-slate-400">Total</p>

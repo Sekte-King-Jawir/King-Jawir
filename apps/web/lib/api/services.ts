@@ -196,14 +196,6 @@ export interface OrderResponse {
   order: Order
 }
 
-export interface CreateOrderRequest {
-  shippingAddress: string
-  items: {
-    productId: string
-    quantity: number
-  }[]
-}
-
 export const orderService = {
   async getAll(params?: {
     page?: number
@@ -217,8 +209,9 @@ export const orderService = {
     return apiClient.get<OrderResponse>(API_ENDPOINTS.ORDERS.BY_ID(orderId))
   },
 
-  async create(data: CreateOrderRequest): Promise<ApiResponse<OrderResponse>> {
-    return apiClient.post<OrderResponse>(API_ENDPOINTS.ORDERS.CREATE, data)
+  // Checkout - creates order from current cart items
+  async checkout(): Promise<ApiResponse<Order>> {
+    return apiClient.post<Order>(API_ENDPOINTS.ORDERS.CREATE)
   },
 
   async getSellerOrders(params?: {

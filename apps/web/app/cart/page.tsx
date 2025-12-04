@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback } from 'react'
+import { useCallback, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useCart } from '@/hooks'
 import styles from './page.module.css'
@@ -8,7 +8,12 @@ import { CartItem, CartSummary } from './components'
 
 export default function CartPage() {
   const router = useRouter()
-  const { items: cartItems, loading, updateQuantity, removeItem } = useCart()
+  const { items: cartItems, loading, updateQuantity, removeItem, fetchCart } = useCart()
+
+  // Fetch cart on mount
+  useEffect(() => {
+    void fetchCart()
+  }, [fetchCart])
 
   const handleUpdateQuantity = useCallback(
     async (id: string, quantity: number) => {
