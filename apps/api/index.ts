@@ -12,10 +12,51 @@ import { reviewRoutes, productReviewsRoute } from './review'
 import { adminRoutes } from './admin'
 import { priceAnalysisRoutes } from './price-analysis'
 import { priceAnalysisWebSocket } from './price-analysis/websocket'
+import { logger } from './lib/logger'
 
 const app = new Elysia()
   .onRequest(({ request }) => {
-    console.log(`[${request.method}] ${request.url} | Origin: ${request.headers.get('origin')}`)
+    const startTime = Date.now()
+    ;(request as any).__startTime = startTime
+  })
+  .onAfterHandle(({ request, set }) => {
+    const startTime = (request as any).__startTime || Date.now()
+    const duration = Date.now() - startTime
+    const status = set.status || 200
+    const url = new URL(request.url)
+    
+    const origin = request.headers.get('origin') 
+      || request.headers.get('referer')
+      || request.headers.get('host')
+      || 'direct'
+    
+    const logData = {
+      msg: `${request.method} ${url.pathname} ${status} ${duration}ms`,
+      method: request.method,
+      path: url.pathname,
+      status,
+      duration: `${duration}ms`,
+      origin,
+    }
+    
+    if (status >= 500) {
+      logger.error(logData)
+    } else if (status >= 400) {
+      logger.warn(logData)
+    } else {
+      logger.info(logData)
+    }
+  })
+  .onError(({ request, error, code }) => {
+    const url = new URL(request.url)
+    logger.error({
+      msg: `${request.method} ${url.pathname} ERROR`,
+      method: request.method,
+      path: url.pathname,
+      error: error.message,
+      code,
+      stack: error.stack,
+    })
   })
   .use(
     cors({
@@ -87,7 +128,7 @@ const app = new Elysia()
   .listen(process.env['API_PORT'] || 4101)
 
 const port = process.env['API_PORT'] || 4101
-console.log(`🚀 Server running at http://localhost:${port}`)
-console.log(`📚 Swagger docs at http://localhost:${port}/docs`)
+logger.info(`🚀 Server running at http://localhost:${port}`)
+logger.info(`📚 Swagger docs at http://localhost:${port}/docs`)
 
 export { app }
