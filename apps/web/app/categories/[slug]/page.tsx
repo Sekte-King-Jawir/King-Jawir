@@ -4,136 +4,31 @@ import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4101'
-
-interface Category {
-  id: string
-  name: string
-  slug: string
-  productCount: number
-}
-
-interface Product {
-  id: string
-  name: string
-  slug: string
-  price: number
-  stock: number
-  image: string | null
-  store: {
-    id: string
-    name: string
-    slug: string
-  }
-  category: {
-    id: string
-    name: string
-    slug: string
-  }
-  avgRating: number
-  reviewCount: number
-}
-
-interface CategoryApiResponse {
-  success: boolean
-  message: string
-  data?: {
-    category: Category
-  }
-}
-
-interface ProductsApiResponse {
-  success: boolean
-  message: string
-  data?: {
-    products: Product[]
-    pagination: {
-      page: number
-      limit: number
-      total: number
-      totalPages: number
-    }
-  }
-}
+import { useProducts, useCategories } from '@/hooks'
+import type { Product } from '@/types'
 
 export default function CategoryDetailPage(): React.JSX.Element {
   const params = useParams()
   const slug = params.slug as string
 
-  const [category, setCategory] = useState<Category | null>(null)
-  const [products, setProducts] = useState<Product[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState('')
+  const { categories } = useCategories()
+  const category = categories.find(cat => cat.slug === slug)
+
+  const { products, loading, totalPages: hookTotalPages, fetchProducts } = useProducts()
   const [page, setPage] = useState(1)
-  const [totalPages, setTotalPages] = useState(1)
   const [sortBy, setSortBy] = useState<'newest' | 'price-low' | 'price-high' | 'popular'>('newest')
-
-  // Fetch category info
-  useEffect(() => {
-    const fetchCategory = async (): Promise<void> => {
-      try {
-        const res = await fetch(`${API_URL}/categories/${slug}`)
-        const result = (await res.json()) as CategoryApiResponse
-
-        if (result.success && result.data !== undefined) {
-          setCategory(result.data.category)
-        } else {
-          setError(result.message ?? 'Kategori tidak ditemukan')
-        }
-      } catch {
-        setError('Gagal memuat kategori')
-      }
-    }
-
-    if (slug !== '') {
-      void fetchCategory()
-    }
-  }, [slug])
+  const totalPages = hookTotalPages
 
   // Fetch products by category
   useEffect(() => {
-    const fetchProducts = async (): Promise<void> => {
-      if (category === null) return
-
-      setIsLoading(true)
-      try {
-        const res = await fetch(
-          `${API_URL}/products?categoryId=${category.id}&page=${page}&limit=20`
-        )
-        const result = (await res.json()) as ProductsApiResponse
-
-        if (result.success && result.data !== undefined) {
-          const sortedProducts = [...result.data.products]
-
-          // Sort products based on selection
-          switch (sortBy) {
-            case 'price-low':
-              sortedProducts.sort((a, b) => a.price - b.price)
-              break
-            case 'price-high':
-              sortedProducts.sort((a, b) => b.price - a.price)
-              break
-            case 'popular':
-              sortedProducts.sort((a, b) => b.reviewCount - a.reviewCount)
-              break
-            case 'newest':
-              // newest - keep default order
-              break
-          }
-
-          setProducts(sortedProducts)
-          setTotalPages(result.data.pagination.totalPages)
-        }
-      } catch {
-        console.error('Failed to fetch products')
-      } finally {
-        setIsLoading(false)
-      }
+    if (category !== undefined && category !== null) {
+      void fetchProducts({
+        categoryId: category.id,
+        page,
+        limit: 12,
+      })
     }
-
-    void fetchProducts()
-  }, [category, page, sortBy])
+  }, [category, page, fetchProducts])
 
   const formatPrice = (price: number): string => {
     return new Intl.NumberFormat('id-ID', {
@@ -143,7 +38,7 @@ export default function CategoryDetailPage(): React.JSX.Element {
     }).format(price)
   }
 
-  if (error !== '') {
+  if (category === undefined || category === null) {
     return (
       <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
         <Navbar />
@@ -152,7 +47,9 @@ export default function CategoryDetailPage(): React.JSX.Element {
           <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
             Kategori tidak ditemukan
           </h1>
-          <p className="text-slate-600 dark:text-slate-400 mb-6">{error}</p>
+          <p className="text-slate-600 dark:text-slate-400 mb-6">
+            Kategori dengan slug "{slug}" tidak ditemukan
+          </p>
           <Link
             href="/categories"
             className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors"
@@ -214,7 +111,7 @@ export default function CategoryDetailPage(): React.JSX.Element {
 
       {/* Products Grid */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {isLoading ? (
+        {loading ? (
           <ProductsSkeleton />
         ) : products.length === 0 ? (
           <EmptyProducts />
@@ -339,14 +236,8 @@ function ProductCard({
         {/* Price */}
         <p className="font-bold text-blue-600 dark:text-blue-400">{formatPrice(product.price)}</p>
 
-        {/* Rating */}
-        {product.reviewCount > 0 && (
-          <div className="flex items-center gap-1 mt-2 text-xs text-slate-500 dark:text-slate-400">
-            <span className="text-yellow-500">★</span>
-            <span>{product.avgRating.toFixed(1)}</span>
-            <span>({product.reviewCount})</span>
-          </div>
-        )}
+        {/* Stock info */}
+        <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Stok: {product.stock}</p>
       </div>
     </Link>
   )
