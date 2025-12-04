@@ -22,7 +22,7 @@ const app = new Elysia()
   .onAfterHandle(({ request, set }) => {
     const startTime = (request as any).__startTime || Date.now()
     const duration = Date.now() - startTime
-    const status = set.status || 200
+    const status = typeof set.status === 'number' ? set.status : 200
     const url = new URL(request.url)
     
     const origin = request.headers.get('origin') 
@@ -53,9 +53,9 @@ const app = new Elysia()
       msg: `${request.method} ${url.pathname} ERROR`,
       method: request.method,
       path: url.pathname,
-      error: error.message,
+      error: error instanceof Error ? error.message : String(error),
       code,
-      stack: error.stack,
+      stack: error instanceof Error ? error.stack : undefined,
     })
   })
   .use(
