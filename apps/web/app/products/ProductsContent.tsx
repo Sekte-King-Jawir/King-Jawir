@@ -78,7 +78,11 @@ interface ProductCardItemProps {
   isAuthenticated?: boolean
 }
 
-function ProductCardItem({ product, onAddToCart, isAuthenticated }: ProductCardItemProps): React.JSX.Element {
+function ProductCardItem({
+  product,
+  onAddToCart,
+  isAuthenticated,
+}: ProductCardItemProps): React.JSX.Element {
   const { rating, totalReviews, isLoading } = useProductRating(product.slug)
 
   return (

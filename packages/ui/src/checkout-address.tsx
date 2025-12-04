@@ -24,9 +24,7 @@ export function CheckoutAddress({
   return (
     <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
       <div className="px-6 py-4 border-b border-slate-200 dark:border-slate-700">
-        <h2 className="font-semibold text-slate-900 dark:text-white">
-          Alamat Pengiriman
-        </h2>
+        <h2 className="font-semibold text-slate-900 dark:text-white">Alamat Pengiriman</h2>
       </div>
 
       <div className="p-6">
@@ -41,7 +39,7 @@ export function CheckoutAddress({
             <textarea
               id="shipping-address"
               value={shippingAddress}
-              onChange={(e) => onShippingAddressChange(e.target.value)}
+              onChange={e => onShippingAddressChange(e.target.value)}
               placeholder="Masukkan alamat lengkap pengiriman..."
               rows={4}
               className={`w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-700 dark:border-slate-600 dark:text-white ${
@@ -50,9 +48,7 @@ export function CheckoutAddress({
                   : 'border-slate-300 dark:border-slate-600'
               }`}
             />
-            {error ? <p className="mt-1 text-sm text-red-600 dark:text-red-400">
-                {error}
-              </p> : null}
+            {error ? <p className="mt-1 text-sm text-red-600 dark:text-red-400">{error}</p> : null}
           </div>
         </div>
       </div>

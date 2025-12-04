@@ -71,15 +71,7 @@ function DefaultImage({
   height: number
   className?: string
 }): JSX.Element {
-  return (
-    <img
-      src={src}
-      alt={alt}
-      width={width}
-      height={height}
-      className={className}
-    />
-  )
+  return <img src={src} alt={alt} width={width} height={height} className={className} />
 }
 
 // ============================================================================
@@ -92,14 +84,16 @@ export function CheckoutCard({
   currencyOptions = { locale: 'id-ID', currency: 'IDR' },
   formatPrice: customFormatPrice,
 }: CheckoutCardProps): JSX.Element {
-  const formatPrice = customFormatPrice ?? ((price: number): string => {
-    return new Intl.NumberFormat(currencyOptions.locale, {
-      style: 'currency',
-      currency: currencyOptions.currency,
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(price)
-  })
+  const formatPrice =
+    customFormatPrice ??
+    ((price: number): string => {
+      return new Intl.NumberFormat(currencyOptions.locale, {
+        style: 'currency',
+        currency: currencyOptions.currency,
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+      }).format(price)
+    })
 
   // Use provided components or defaults
   const ImageWrapper = ImageComponent ?? DefaultImage
@@ -126,26 +120,24 @@ export function CheckoutCard({
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center text-2xl">
-                    📦
-                  </div>
+                  <div className="w-full h-full flex items-center justify-center text-2xl">📦</div>
                 )}
               </div>
-            <div className="flex-1 min-w-0">
-              <p className="font-medium text-slate-900 dark:text-white truncate">
-                {item.product.name}
-              </p>
-              <p className="text-sm text-slate-500 dark:text-slate-400">
-                {item.quantity} x {formatPrice(item.product.price)}
-              </p>
-              <p className="text-xs text-slate-400 dark:text-slate-500">
-                {item.product.store.name}
+              <div className="flex-1 min-w-0">
+                <p className="font-medium text-slate-900 dark:text-white truncate">
+                  {item.product.name}
+                </p>
+                <p className="text-sm text-slate-500 dark:text-slate-400">
+                  {item.quantity} x {formatPrice(item.product.price)}
+                </p>
+                <p className="text-xs text-slate-400 dark:text-slate-500">
+                  {item.product.store.name}
+                </p>
+              </div>
+              <p className="font-semibold text-slate-900 dark:text-white">
+                {formatPrice(item.product.price * item.quantity)}
               </p>
             </div>
-            <p className="font-semibold text-slate-900 dark:text-white">
-              {formatPrice(item.product.price * item.quantity)}
-            </p>
-          </div>
           )
         })}
       </div>

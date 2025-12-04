@@ -138,7 +138,9 @@ export function ReviewSection({
 
   const fetchReviews = useCallback(async (): Promise<void> => {
     try {
-      const res = await fetch(`${apiBaseUrl}/api/products/${productSlug}/reviews?page=${page}&limit=5`)
+      const res = await fetch(
+        `${apiBaseUrl}/api/products/${productSlug}/reviews?page=${page}&limit=5`
+      )
       const data = (await res.json()) as ReviewsApiResponse
 
       if (data.success && data.data !== undefined) {
@@ -183,8 +185,7 @@ export function ReviewSection({
         if (data.success && data.data !== undefined) {
           const hasPurchased = data.data.orders.some(
             order =>
-              order.status === 'DONE' &&
-              order.items.some(item => item.product.id === productId)
+              order.status === 'DONE' && order.items.some(item => item.product.id === productId)
           )
           setCanReview(hasPurchased)
         }

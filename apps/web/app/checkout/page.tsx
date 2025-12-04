@@ -6,11 +6,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useCart, useOrders } from '@/hooks'
 import { formatPrice } from '@/lib/utils'
-import {
-  CheckoutCard,
-  CheckoutSummary,
-  CheckoutSkeleton
-} from '@repo/ui'
+import { CheckoutCard, CheckoutSummary, CheckoutSkeleton } from '@repo/ui'
 
 export default function CheckoutPage(): React.JSX.Element {
   const router = useRouter()
@@ -89,11 +85,7 @@ export default function CheckoutPage(): React.JSX.Element {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Cart Items */}
           <div className="lg:col-span-2 space-y-6">
-            <CheckoutCard
-              items={cartItems}
-              imageComponent={Image}
-              formatPrice={formatPrice}
-            />
+            <CheckoutCard items={cartItems} imageComponent={Image} formatPrice={formatPrice} />
           </div>
 
           {/* Order Summary */}
