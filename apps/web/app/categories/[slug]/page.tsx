@@ -13,7 +13,7 @@ export default function CategoryDetailPage(): React.JSX.Element {
 
   const { categories } = useCategories()
   const category = categories.find(cat => cat.slug === slug)
-  
+
   const { products, loading, totalPages: hookTotalPages, fetchProducts } = useProducts()
   const [page, setPage] = useState(1)
   const [sortBy, setSortBy] = useState<'newest' | 'price-low' | 'price-high' | 'popular'>('newest')
@@ -47,7 +47,9 @@ export default function CategoryDetailPage(): React.JSX.Element {
           <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
             Kategori tidak ditemukan
           </h1>
-          <p className="text-slate-600 dark:text-slate-400 mb-6">Kategori dengan slug "{slug}" tidak ditemukan</p>
+          <p className="text-slate-600 dark:text-slate-400 mb-6">
+            Kategori dengan slug "{slug}" tidak ditemukan
+          </p>
           <Link
             href="/categories"
             className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors"
@@ -235,9 +237,7 @@ function ProductCard({
         <p className="font-bold text-blue-600 dark:text-blue-400">{formatPrice(product.price)}</p>
 
         {/* Stock info */}
-        <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-          Stok: {product.stock}
-        </p>
+        <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Stok: {product.stock}</p>
       </div>
     </Link>
   )
