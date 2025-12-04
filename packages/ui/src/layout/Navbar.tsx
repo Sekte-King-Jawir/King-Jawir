@@ -2,10 +2,24 @@
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
 
-export default function Navbar(): React.ReactElement {
+interface User {
+  id: string
+  name: string
+  email: string
+  avatar?: string | null
+  role: string
+}
+
+interface NavbarProps {
+  user?: User | null
+  onLogout?: () => void
+}
+
+export default function Navbar({ user, onLogout }: NavbarProps): React.ReactElement {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const [cartCount] = useState(3)
+  const [showUserMenu, setShowUserMenu] = useState(false)
 
   useEffect(() => {
     const handleScroll = (): void => {
@@ -75,27 +89,111 @@ export default function Navbar(): React.ReactElement {
             <div className="hidden sm:block w-px h-8 bg-gray-200 mx-2" />
 
             {/* Profile / Login */}
-            <Link
-              href="/auth/login"
-              className="hidden sm:flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-gray-700 hover:text-violet-600 hover:bg-violet-50 rounded-xl transition-all"
-            >
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                />
-              </svg>
-              <span className="hidden lg:block">Masuk</span>
-            </Link>
+            {user ? (
+              <div className="relative hidden sm:block">
+                <button
+                  onClick={() => setShowUserMenu(!showUserMenu)}
+                  className="flex items-center gap-2 px-3 py-2 hover:bg-violet-50 rounded-xl transition-all"
+                >
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center text-white font-semibold text-sm">
+                    {user.avatar ? (
+                      <img
+                        src={user.avatar}
+                        alt={user.name}
+                        className="w-full h-full rounded-full object-cover"
+                      />
+                    ) : (
+                      user.name.charAt(0).toUpperCase()
+                    )}
+                  </div>
+                  <span className="hidden lg:block text-sm font-medium text-gray-700">
+                    {user.name}
+                  </span>
+                  <svg
+                    className="w-4 h-4 text-gray-400"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </button>
 
-            <Link
-              href="/auth/register"
-              className="hidden md:flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-violet-600 to-indigo-600 rounded-xl hover:shadow-lg hover:shadow-violet-500/30 hover:-translate-y-0.5 transition-all"
-            >
-              Daftar
-            </Link>
+                {showUserMenu ? <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-100 py-2 z-50">
+                    <Link
+                      href="/profile"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-violet-50 hover:text-violet-600 transition-colors"
+                      onClick={() => setShowUserMenu(false)}
+                    >
+                      Profil Saya
+                    </Link>
+                    <Link
+                      href="/orders"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-violet-50 hover:text-violet-600 transition-colors"
+                      onClick={() => setShowUserMenu(false)}
+                    >
+                      Pesanan Saya
+                    </Link>
+                    {user.role === 'SELLER' || user.role === 'ADMIN' ? (
+                      <Link
+                        href="/seller"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-violet-50 hover:text-violet-600 transition-colors"
+                        onClick={() => setShowUserMenu(false)}
+                      >
+                        Dashboard Seller
+                      </Link>
+                    ) : null}
+                    {user.role === 'ADMIN' ? (
+                      <Link
+                        href="/admin"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-violet-50 hover:text-violet-600 transition-colors"
+                        onClick={() => setShowUserMenu(false)}
+                      >
+                        Admin Panel
+                      </Link>
+                    ) : null}
+                    <div className="border-t border-gray-100 my-2" />
+                    <button
+                      onClick={() => {
+                        setShowUserMenu(false)
+                        onLogout?.()
+                      }}
+                      className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
+                    >
+                      Keluar
+                    </button>
+                  </div> : null}
+              </div>
+            ) : (
+              <>
+                <Link
+                  href="/auth/login"
+                  className="hidden sm:flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-gray-700 hover:text-violet-600 hover:bg-violet-50 rounded-xl transition-all"
+                >
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                    />
+                  </svg>
+                  <span className="hidden lg:block">Masuk</span>
+                </Link>
+
+                <Link
+                  href="/auth/register"
+                  className="hidden md:flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-violet-600 to-indigo-600 rounded-xl hover:shadow-lg hover:shadow-violet-500/30 hover:-translate-y-0.5 transition-all"
+                >
+                  Daftar
+                </Link>
+              </>
+            )}
 
             {/* Mobile Menu Button */}
             <button
@@ -194,22 +292,80 @@ export default function Navbar(): React.ReactElement {
             </div>
 
             {/* Mobile Auth Buttons */}
-            <div className="flex gap-2 pt-2">
-              <Link
-                href="/auth/login"
-                onClick={() => setIsMenuOpen(false)}
-                className="flex-1 py-3 text-center text-sm font-semibold text-violet-600 bg-violet-100 rounded-xl hover:bg-violet-200 transition-all"
-              >
-                Masuk
-              </Link>
-              <Link
-                href="/auth/register"
-                onClick={() => setIsMenuOpen(false)}
-                className="flex-1 py-3 text-center text-sm font-semibold text-white bg-gradient-to-r from-violet-600 to-indigo-600 rounded-xl hover:shadow-lg transition-all"
-              >
-                Daftar
-              </Link>
-            </div>
+            {user ? (
+              <div className="bg-white rounded-xl p-4">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center text-white font-semibold">
+                    {user.avatar !== null && user.avatar !== undefined && user.avatar !== '' ? (
+                      <img
+                        src={user.avatar}
+                        alt={user.name}
+                        className="w-full h-full rounded-full object-cover"
+                      />
+                    ) : (
+                      user.name.charAt(0).toUpperCase()
+                    )}
+                  </div>
+                  <div>
+                    <p className="font-semibold text-gray-900">{user.name}</p>
+                    <p className="text-sm text-gray-500">{user.email}</p>
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <Link
+                    href="/orders"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="block py-2 px-3 text-sm text-gray-700 hover:bg-violet-50 hover:text-violet-600 rounded-lg transition-colors"
+                  >
+                    Pesanan Saya
+                  </Link>
+                  {user.role === 'SELLER' || user.role === 'ADMIN' ? (
+                    <Link
+                      href="/seller"
+                      onClick={() => setIsMenuOpen(false)}
+                      className="block py-2 px-3 text-sm text-gray-700 hover:bg-violet-50 hover:text-violet-600 rounded-lg transition-colors"
+                    >
+                      Dashboard Seller
+                    </Link>
+                  ) : null}
+                  {user.role === 'ADMIN' ? (
+                    <Link
+                      href="/admin"
+                      onClick={() => setIsMenuOpen(false)}
+                      className="block py-2 px-3 text-sm text-gray-700 hover:bg-violet-50 hover:text-violet-600 rounded-lg transition-colors"
+                    >
+                      Admin Panel
+                    </Link>
+                  ) : null}
+                  <button
+                    onClick={() => {
+                      setIsMenuOpen(false)
+                      onLogout?.()
+                    }}
+                    className="block w-full text-left py-2 px-3 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                  >
+                    Keluar
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="flex gap-2 pt-2">
+                <Link
+                  href="/auth/login"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="flex-1 py-3 text-center text-sm font-semibold text-violet-600 bg-violet-100 rounded-xl hover:bg-violet-200 transition-all"
+                >
+                  Masuk
+                </Link>
+                <Link
+                  href="/auth/register"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="flex-1 py-3 text-center text-sm font-semibold text-white bg-gradient-to-r from-violet-600 to-indigo-600 rounded-xl hover:shadow-lg transition-all"
+                >
+                  Daftar
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </div>
