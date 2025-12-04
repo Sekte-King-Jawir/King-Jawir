@@ -144,7 +144,7 @@ describe('Profile Service', () => {
 // Integration tests for TypeBox validation at route level
 // NOTE: These tests require the server to be running on localhost:4101
 describe('Profile Route Validation (TypeBox)', () => {
-  const BASE_URL = 'http://localhost:4101'
+  const BASE_URL = 'http://localhost:4101/api'
   let accessToken: string | undefined
 
   // Helper to login and get token

@@ -14,7 +14,7 @@ import type {
 import { Navbar, Sidebar } from '../components'
 import { StoreInfoCard, StoreForm } from './components'
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4101'
+const API_URL = (process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4101') + '/api'
 
 export default function SellerStorePage(): React.JSX.Element {
   const router = useRouter()

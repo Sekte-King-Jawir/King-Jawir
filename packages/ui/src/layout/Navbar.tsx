@@ -33,37 +33,6 @@ export default function Navbar(): React.ReactElement {
             </span>
           </Link>
 
-          {/* Search Bar - Desktop */}
-          <div className="hidden md:flex flex-1 max-w-xl mx-4">
-            <div className="relative w-full group">
-              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                <svg
-                  className="w-5 h-5 text-gray-400 group-focus-within:text-violet-500 transition-colors"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                  />
-                </svg>
-              </div>
-              <input
-                type="text"
-                placeholder="Cari produk, kategori, atau brand..."
-                className="w-full pl-12 pr-4 py-3 bg-gray-100 border-2 border-transparent rounded-2xl text-sm text-gray-900 placeholder-gray-500 focus:outline-none focus:bg-white focus:border-violet-500 focus:ring-4 focus:ring-violet-500/10 transition-all"
-              />
-              <button className="absolute inset-y-0 right-0 pr-3 flex items-center">
-                <kbd className="hidden lg:inline-flex items-center gap-1 px-2 py-1 bg-gray-200 rounded-lg text-xs text-gray-500 font-medium">
-                  <span>⌘</span>K
-                </kbd>
-              </button>
-            </div>
-          </div>
-
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-1">
             <Link
@@ -73,54 +42,15 @@ export default function Navbar(): React.ReactElement {
               Home
             </Link>
             <Link
-              href="/product"
+              href="/products"
               className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-violet-600 hover:bg-violet-50 rounded-xl transition-all"
             >
               Produk
-            </Link>
-            <Link
-              href="/category"
-              className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-violet-600 hover:bg-violet-50 rounded-xl transition-all"
-            >
-              Kategori
-            </Link>
-            <Link
-              href="/promo"
-              className="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-rose-500 to-pink-500 rounded-xl hover:shadow-lg hover:shadow-rose-500/30 hover:-translate-y-0.5 transition-all"
-            >
-              🔥 Promo
             </Link>
           </nav>
 
           {/* Right Actions */}
           <div className="flex items-center gap-2">
-            {/* Search Button - Mobile */}
-            <button className="md:hidden p-2.5 text-gray-600 hover:text-violet-600 hover:bg-violet-50 rounded-xl transition-all">
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                />
-              </svg>
-            </button>
-
-            {/* Wishlist */}
-            <Link
-              href="/favourites"
-              className="relative p-2.5 text-gray-600 hover:text-violet-600 hover:bg-violet-50 rounded-xl transition-all hidden sm:flex"
-            >
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                />
-              </svg>
-            </Link>
-
             {/* Cart */}
             <Link
               href="/cart"
@@ -202,30 +132,6 @@ export default function Navbar(): React.ReactElement {
       >
         <div className="bg-gray-50 border-t border-gray-100">
           <div className="max-w-7xl mx-auto px-4 py-4 space-y-3">
-            {/* Mobile Search */}
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                <svg
-                  className="w-5 h-5 text-gray-400"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                  />
-                </svg>
-              </div>
-              <input
-                type="text"
-                placeholder="Cari produk..."
-                className="w-full pl-12 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20"
-              />
-            </div>
-
             {/* Mobile Nav Links */}
             <nav className="grid grid-cols-2 gap-2">
               <Link
@@ -239,7 +145,7 @@ export default function Navbar(): React.ReactElement {
                 <span className="font-medium">Home</span>
               </Link>
               <Link
-                href="/product"
+                href="/products"
                 onClick={() => setIsMenuOpen(false)}
                 className="flex items-center gap-3 p-3 bg-white rounded-xl text-gray-700 hover:bg-violet-50 hover:text-violet-600 transition-all"
               >
@@ -247,26 +153,6 @@ export default function Navbar(): React.ReactElement {
                   📦
                 </span>
                 <span className="font-medium">Produk</span>
-              </Link>
-              <Link
-                href="/category"
-                onClick={() => setIsMenuOpen(false)}
-                className="flex items-center gap-3 p-3 bg-white rounded-xl text-gray-700 hover:bg-violet-50 hover:text-violet-600 transition-all"
-              >
-                <span className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                  📂
-                </span>
-                <span className="font-medium">Kategori</span>
-              </Link>
-              <Link
-                href="/promo"
-                onClick={() => setIsMenuOpen(false)}
-                className="flex items-center gap-3 p-3 bg-gradient-to-r from-rose-500 to-pink-500 rounded-xl text-white transition-all"
-              >
-                <span className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
-                  🔥
-                </span>
-                <span className="font-medium">Promo</span>
               </Link>
             </nav>
 
@@ -276,7 +162,7 @@ export default function Navbar(): React.ReactElement {
             {/* Mobile Quick Links */}
             <div className="flex gap-2">
               <Link
-                href="/favourites"
+                href="/cart"
                 onClick={() => setIsMenuOpen(false)}
                 className="flex-1 flex items-center justify-center gap-2 p-3 bg-white rounded-xl text-gray-600 hover:bg-violet-50 hover:text-violet-600 transition-all"
               >
@@ -285,10 +171,10 @@ export default function Navbar(): React.ReactElement {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth={2}
-                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                    d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
                   />
                 </svg>
-                <span className="text-sm font-medium">Wishlist</span>
+                <span className="text-sm font-medium">Keranjang</span>
               </Link>
               <Link
                 href="/profile"

@@ -1,7 +1,8 @@
 import type { ApiResponse, Product, Category, PaginatedResponse } from '@/types'
 
 // Base API URL - bisa dari environment variable
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4101'
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4101'
+const API_BASE_URL = `${BASE_URL}/api`
 
 /**
  * Generic fetch wrapper dengan error handling

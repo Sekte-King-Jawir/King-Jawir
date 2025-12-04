@@ -13,7 +13,7 @@ import type { User, AuthMeResponse } from '../types'
 import { Navbar, Sidebar } from '../components'
 import { ProductsTable, ProductForm, DeleteModal } from './components/index'
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4101'
+const API_URL = (process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4101') + '/api'
 
 export default function SellerProductsPage(): React.JSX.Element {
   const router = useRouter()
