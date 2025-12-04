@@ -63,8 +63,14 @@ const app = new Elysia()
   .use(
     rateLimit({
       duration: 60000,
-      max: 100,
-      errorResponse: new Response('Rate limit exceeded', { status: 429 }),
+      max: 200, // Increased for development
+      errorResponse: new Response(
+        JSON.stringify({ success: false, message: 'Rate limit exceeded. Please wait a moment.' }),
+        { 
+          status: 429, 
+          headers: { 'Content-Type': 'application/json' }
+        }
+      ),
     })
   )
   .use(
