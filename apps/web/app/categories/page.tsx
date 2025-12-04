@@ -1,24 +1,9 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4101'
-
-interface Category {
-  id: string
-  name: string
-  slug: string
-  productCount: number
-}
-
-interface CategoriesApiResponse {
-  success: boolean
-  message: string
-  data?: {
-    categories: Category[]
-  }
-}
+import { useCategories } from '@/hooks'
+import type { Category } from '@/types'
 
 // Icon mapping untuk kategori
 const categoryIcons: Record<string, string> = {
@@ -55,31 +40,9 @@ const categoryColors: string[] = [
 ]
 
 export default function CategoriesPage(): React.JSX.Element {
-  const [categories, setCategories] = useState<Category[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState('')
+  const { categories, loading, error: hookError } = useCategories()
   const [searchQuery, setSearchQuery] = useState('')
-
-  useEffect(() => {
-    const fetchCategories = async (): Promise<void> => {
-      try {
-        const res = await fetch(`${API_URL}/categories`)
-        const result = (await res.json()) as CategoriesApiResponse
-
-        if (result.success && result.data !== undefined) {
-          setCategories(result.data.categories)
-        } else {
-          setError(result.message ?? 'Gagal memuat kategori')
-        }
-      } catch {
-        setError('Gagal memuat kategori')
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
-    void fetchCategories()
-  }, [])
+  const error = hookError ?? ''
 
   const filteredCategories = categories.filter(cat =>
     cat.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -156,7 +119,7 @@ export default function CategoriesPage(): React.JSX.Element {
 
       {/* Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {isLoading ? (
+        {loading ? (
           <LoadingSkeleton />
         ) : error !== '' ? (
           <ErrorState message={error} />
