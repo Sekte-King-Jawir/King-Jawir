@@ -93,7 +93,6 @@ export default function ProfilePage(): React.JSX.Element {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
-        <Navbar />
         <main className="max-w-2xl mx-auto px-4 py-8">
           <LoadingSkeleton />
         </main>
@@ -104,7 +103,6 @@ export default function ProfilePage(): React.JSX.Element {
   if (!user) {
     return (
       <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
-        <Navbar />
         <main className="max-w-2xl mx-auto px-4 py-8 text-center">
           <p>Loading profile...</p>
         </main>
@@ -116,8 +114,6 @@ export default function ProfilePage(): React.JSX.Element {
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
-      <Navbar />
-
       <main className="max-w-2xl mx-auto px-4 py-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-slate-900 dark:text-white mb-2">Profil Saya</h1>
@@ -176,11 +172,13 @@ export default function ProfilePage(): React.JSX.Element {
               <div>
                 <p className="text-sm text-slate-500 dark:text-slate-400">Bergabung</p>
                 <p className="text-slate-900 dark:text-white">
-                  {new Date(profile.createdAt).toLocaleDateString('id-ID', {
-                    day: 'numeric',
-                    month: 'long',
-                    year: 'numeric',
-                  })}
+                  {profile.createdAt
+                    ? new Date(profile.createdAt).toLocaleDateString('id-ID', {
+                        day: 'numeric',
+                        month: 'long',
+                        year: 'numeric',
+                      })
+                    : '-'}
                 </p>
               </div>
             </div>
@@ -251,35 +249,6 @@ export default function ProfilePage(): React.JSX.Element {
         </div>
       </main>
     </div>
-  )
-}
-
-function Navbar(): React.JSX.Element {
-  return (
-    <nav className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 sticky top-0 z-50">
-      <div className="max-w-2xl mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
-          <Link href="/" className="flex items-center gap-2">
-            <span className="text-2xl">👑</span>
-            <span className="font-bold text-xl text-slate-900 dark:text-white">King Jawir</span>
-          </Link>
-          <div className="flex items-center gap-4">
-            <Link
-              href="/orders"
-              className="text-slate-600 dark:text-slate-300 hover:text-blue-600 transition-colors"
-            >
-              Pesanan
-            </Link>
-            <Link
-              href="/cart"
-              className="text-slate-600 dark:text-slate-300 hover:text-blue-600 transition-colors"
-            >
-              🛒 Keranjang
-            </Link>
-          </div>
-        </div>
-      </div>
-    </nav>
   )
 }
 

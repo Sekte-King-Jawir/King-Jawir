@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { storeService } from '@/lib/api'
 import type { Store } from '@/types'
 import type { StoreProduct } from '../types'
-import { Navbar, StoreHeader, StoreProducts } from './components'
+import { StoreHeader, StoreProducts } from './components'
 
 export default function StoreDetailPage(): React.JSX.Element {
   const params = useParams()
@@ -56,7 +56,6 @@ export default function StoreDetailPage(): React.JSX.Element {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
-        <Navbar />
         <main className="max-w-6xl mx-auto px-4 py-8">
           <LoadingSkeleton />
         </main>
@@ -68,7 +67,6 @@ export default function StoreDetailPage(): React.JSX.Element {
   if (error !== '' || store === null) {
     return (
       <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
-        <Navbar />
         <main className="max-w-6xl mx-auto px-4 py-8">
           <ErrorState message={error} />
         </main>
@@ -78,8 +76,6 @@ export default function StoreDetailPage(): React.JSX.Element {
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
-      <Navbar />
-
       <main className="max-w-6xl mx-auto px-4 py-8">
         {/* Breadcrumb */}
         <nav className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-6">

@@ -53,6 +53,12 @@ export const loginService = {
         name: user.name,
         role: user.role,
         emailVerified: user.emailVerified,
+        avatar: user.avatar,
+        phone: user.phone,
+        address: user.address,
+        bio: user.bio,
+        createdAt: user.createdAt.toISOString(),
+        updatedAt: user.updatedAt.toISOString(),
       },
     })
   },

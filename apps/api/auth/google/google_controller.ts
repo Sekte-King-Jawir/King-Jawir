@@ -27,6 +27,11 @@ export const googleController = {
         avatar: user.avatar,
         emailVerified: user.emailVerified,
         role: user.role,
+        phone: user.phone,
+        address: user.address,
+        bio: user.bio,
+        createdAt: user.createdAt.toISOString(),
+        updatedAt: user.updatedAt.toISOString(),
       },
       isNewUser,
     }

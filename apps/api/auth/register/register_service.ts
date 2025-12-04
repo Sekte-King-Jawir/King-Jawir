@@ -54,7 +54,19 @@ export const registerService = {
     await sendVerificationEmail(email, verifyUrl)
 
     return successResponse('Register berhasil. Cek email untuk verifikasi.', {
-      user: { id: user.id, email: user.email, name: user.name },
+      user: {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        role: user.role,
+        emailVerified: user.emailVerified,
+        avatar: user.avatar,
+        phone: user.phone,
+        address: user.address,
+        bio: user.bio,
+        createdAt: user.createdAt.toISOString(),
+        updatedAt: user.updatedAt.toISOString(),
+      },
     })
   },
 }

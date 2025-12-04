@@ -171,8 +171,6 @@ function OrderHistoryContent(): React.JSX.Element {
 export default function OrderHistoryPage(): React.JSX.Element {
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
-      <Navbar />
-
       <main className="max-w-4xl mx-auto px-4 py-8">
         <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-8">Riwayat Pesanan</h1>
 
@@ -181,41 +179,6 @@ export default function OrderHistoryPage(): React.JSX.Element {
         </Suspense>
       </main>
     </div>
-  )
-}
-
-function Navbar(): React.JSX.Element {
-  return (
-    <nav className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 sticky top-0 z-50">
-      <div className="max-w-4xl mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
-          <Link href="/" className="flex items-center gap-2">
-            <span className="text-2xl">👑</span>
-            <span className="font-bold text-xl text-slate-900 dark:text-white">King Jawir</span>
-          </Link>
-          <div className="flex items-center gap-4">
-            <Link
-              href="/products"
-              className="text-slate-600 dark:text-slate-300 hover:text-blue-600 transition-colors"
-            >
-              Produk
-            </Link>
-            <Link
-              href="/cart"
-              className="text-slate-600 dark:text-slate-300 hover:text-blue-600 transition-colors"
-            >
-              🛒 Keranjang
-            </Link>
-            <Link
-              href="/profile"
-              className="text-slate-600 dark:text-slate-300 hover:text-blue-600 transition-colors"
-            >
-              Profil
-            </Link>
-          </div>
-        </div>
-      </div>
-    </nav>
   )
 }
 

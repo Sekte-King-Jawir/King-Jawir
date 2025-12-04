@@ -50,39 +50,6 @@ export default function CategoriesPage(): React.JSX.Element {
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
-      {/* Navbar */}
-      <nav className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <Link href="/" className="flex items-center gap-2">
-              <span className="text-2xl">👑</span>
-              <span className="font-bold text-xl text-slate-900 dark:text-white">King Jawir</span>
-            </Link>
-
-            <div className="flex items-center gap-4">
-              <Link
-                href="/products"
-                className="text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-              >
-                Produk
-              </Link>
-              <Link
-                href="/stores"
-                className="text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-              >
-                Toko
-              </Link>
-              <Link
-                href="/price-analysis"
-                className="text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-              >
-                Analisis Harga
-              </Link>
-            </div>
-          </div>
-        </div>
-      </nav>
-
       {/* Header */}
       <div className="bg-linear-to-br from-blue-600 to-purple-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">

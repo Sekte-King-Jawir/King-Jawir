@@ -4,12 +4,18 @@ import { useEffect, useState } from 'react'
 import { Navbar } from '@repo/ui'
 import { authService } from '@/lib/api'
 import type { User } from '@/types'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 
 export function NavbarWrapper() {
   const router = useRouter()
+  const pathname = usePathname()
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
+
+  const isHiddenRoute =
+    pathname?.startsWith('/admin') ||
+    pathname?.startsWith('/seller') ||
+    pathname?.startsWith('/auth')
 
   useEffect(() => {
     const checkAuth = async (): Promise<void> => {
@@ -77,6 +83,10 @@ export function NavbarWrapper() {
         router.push('/')
         router.refresh()
       })
+  }
+
+  if (isHiddenRoute) {
+    return null
   }
 
   if (loading) {

@@ -1,4 +1,4 @@
-import { API_CONFIG } from '@/lib/config/api'
+import { API_CONFIG, API_ENDPOINTS } from '@/lib/config/api'
 
 // ============================================================================
 // TYPE DEFINITIONS
@@ -66,8 +66,25 @@ export class ApiClient {
       const data = await response.json()
 
       if (!response.ok) {
-        // If unauthorized (401) or token invalid, clear storage
+        // If unauthorized (401) or token invalid, try to refresh token
         if (response.status === 401 || data.error?.code === 'UNAUTHORIZED') {
+          // Don't try to refresh if we're already refreshing or logging in
+          const isAuthRequest =
+            endpoint.includes('/auth/refresh') || endpoint.includes('/auth/login')
+
+          if (!isAuthRequest) {
+            try {
+              // Try to refresh token
+              await this.post(API_ENDPOINTS.AUTH.REFRESH)
+
+              // Retry original request
+              return await this.request<T>(endpoint, options)
+            } catch (refreshError) {
+              // Refresh failed, proceed to logout
+              console.error('Token refresh failed:', refreshError)
+            }
+          }
+
           if (typeof window !== 'undefined') {
             localStorage.removeItem('user')
             localStorage.removeItem('token')

@@ -88,7 +88,6 @@ export default function ProductDetailPage(): React.JSX.Element {
   if (isLoading === true) {
     return (
       <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
-        <Navbar />
         <main className="max-w-6xl mx-auto px-4 py-8">
           <LoadingSkeleton />
         </main>
@@ -100,7 +99,6 @@ export default function ProductDetailPage(): React.JSX.Element {
   if (error !== '' || product === null) {
     return (
       <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
-        <Navbar />
         <main className="max-w-6xl mx-auto px-4 py-8">
           <div className="text-center py-20">
             <div className="text-6xl mb-4">😕</div>
@@ -130,8 +128,6 @@ export default function ProductDetailPage(): React.JSX.Element {
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
-      <Navbar />
-
       <main className="max-w-6xl mx-auto px-4 py-8">
         {/* Breadcrumb */}
         <nav className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400 mb-8">
@@ -333,42 +329,6 @@ export default function ProductDetailPage(): React.JSX.Element {
         <ReviewSection productSlug={slug} productId={product.id} apiBaseUrl={API_CONFIG.BASE_URL} />
       </main>
     </div>
-  )
-}
-
-function Navbar(): React.JSX.Element {
-  return (
-    <nav className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 sticky top-0 z-50">
-      <div className="max-w-6xl mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
-          <Link href="/" className="flex items-center gap-2">
-            <span className="text-2xl">👑</span>
-            <span className="font-bold text-xl text-slate-900 dark:text-white">King Jawir</span>
-          </Link>
-          <div className="flex items-center gap-4">
-            <Link
-              href="/products"
-              className="text-slate-600 dark:text-slate-300 hover:text-blue-600 transition-colors"
-            >
-              Produk
-            </Link>
-            <Link
-              href="/cart"
-              className="text-slate-600 dark:text-slate-300 hover:text-blue-600 transition-colors flex items-center gap-1"
-            >
-              <ShoppingCart className="w-5 h-5" />
-              Keranjang
-            </Link>
-            <Link
-              href="/auth/login"
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-            >
-              Masuk
-            </Link>
-          </div>
-        </div>
-      </div>
-    </nav>
   )
 }
 

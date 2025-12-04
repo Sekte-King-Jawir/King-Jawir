@@ -41,7 +41,6 @@ export default function CategoryDetailPage(): React.JSX.Element {
   if (category === undefined || category === null) {
     return (
       <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
-        <Navbar />
         <div className="max-w-7xl mx-auto px-4 py-20 text-center">
           <div className="text-6xl mb-4">😢</div>
           <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
@@ -63,8 +62,6 @@ export default function CategoryDetailPage(): React.JSX.Element {
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
-      <Navbar />
-
       {/* Header */}
       <div className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -149,42 +146,6 @@ export default function CategoryDetailPage(): React.JSX.Element {
         )}
       </div>
     </div>
-  )
-}
-
-function Navbar(): React.JSX.Element {
-  return (
-    <nav className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          <Link href="/" className="flex items-center gap-2">
-            <span className="text-2xl">👑</span>
-            <span className="font-bold text-xl text-slate-900 dark:text-white">King Jawir</span>
-          </Link>
-
-          <div className="flex items-center gap-4">
-            <Link
-              href="/categories"
-              className="text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-            >
-              Kategori
-            </Link>
-            <Link
-              href="/products"
-              className="text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-            >
-              Produk
-            </Link>
-            <Link
-              href="/stores"
-              className="text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-            >
-              Toko
-            </Link>
-          </div>
-        </div>
-      </div>
-    </nav>
   )
 }
 

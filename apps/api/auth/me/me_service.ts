@@ -17,6 +17,11 @@ export const meService = {
         avatar: user.avatar,
         role: user.role,
         emailVerified: user.emailVerified,
+        phone: user.phone,
+        address: user.address,
+        bio: user.bio,
+        createdAt: user.createdAt.toISOString(),
+        updatedAt: user.updatedAt.toISOString(),
       },
     })
   },
