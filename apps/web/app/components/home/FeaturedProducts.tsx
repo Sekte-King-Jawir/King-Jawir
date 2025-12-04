@@ -59,7 +59,8 @@ function ProductCard({ product, index }: { product: Product; index: number }): R
   const colors = categoryColors[categorySlug] ?? { bg: 'bg-gray-100', text: 'text-gray-600' }
 
   // Generate consistent rating based on product id (deterministic)
-  const idNum = parseInt(product.id, 10) || index + 1
+  const parsedId = parseInt(product.id, 10)
+  const idNum = Number.isNaN(parsedId) || parsedId === 0 ? index + 1 : parsedId
   const rating = (4.0 + (idNum % 10) / 10).toFixed(1)
   const reviews = 50 + ((idNum * 37) % 450)
 
@@ -173,7 +174,7 @@ function ProductCard({ product, index }: { product: Product; index: number }): R
       {/* Product Info */}
       <div className="p-5">
         {/* Store Name */}
-        {product.store && (
+        {product.store !== null && product.store !== undefined && (
           <p className="text-xs text-gray-400 mb-1 font-medium">{product.store.name}</p>
         )}
 

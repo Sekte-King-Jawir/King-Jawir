@@ -6,3 +6,10 @@ export { default as NewArrivals } from './NewArrivals'
 export { default as PopularProducts } from './PopularProducts'
 export { default as Newsletter } from './Newsletter'
 export { default as Footer } from './Footer'
+export { default as FlashSaleSection } from './FlashSaleSection'
+export { default as BrandsSection } from './BrandsSection'
+export { default as CollectionShowcase } from './CollectionShowcase'
+export { default as TestimonialsSection } from './TestimonialsSection'
+
+// Re-export Navbar from @repo/ui (layout component)
+export { Navbar } from '@repo/ui'

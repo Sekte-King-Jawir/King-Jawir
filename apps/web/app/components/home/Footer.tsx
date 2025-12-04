@@ -252,9 +252,9 @@ export default function Footer(): React.JSX.Element {
             <div className="flex items-center gap-4">
               <span className="text-gray-500 text-sm">Metode Pembayaran:</span>
               <div className="flex gap-2">
-                {paymentMethods.map((method, index) => (
+                {paymentMethods.map(method => (
                   <div
-                    key={index}
+                    key={method}
                     className="w-12 h-8 bg-white/10 rounded-lg flex items-center justify-center text-lg"
                   >
                     {method}

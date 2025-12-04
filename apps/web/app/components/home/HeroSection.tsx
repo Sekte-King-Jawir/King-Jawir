@@ -47,8 +47,8 @@ export default function HeroSection(): React.JSX.Element {
       >
         {/* Decorative Elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-10 right-10 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-10 left-10 w-80 h-80 bg-white/5 rounded-full blur-3xl"></div>
+          <div className="absolute top-10 right-10 w-64 h-64 bg-white/10 rounded-full blur-3xl" />
+          <div className="absolute bottom-10 left-10 w-80 h-80 bg-white/5 rounded-full blur-3xl" />
         </div>
 
         {/* Content */}
@@ -107,9 +107,9 @@ export default function HeroSection(): React.JSX.Element {
 
           {/* Slide Indicators */}
           <div className="flex gap-2 justify-center mt-12">
-            {slides.map((_, index) => (
+            {slides.map((slide, index) => (
               <button
-                key={index}
+                key={slide.tag}
                 onClick={() => setCurrentSlide(index)}
                 className={`h-2 rounded-full transition-all duration-300 ${
                   currentSlide === index ? 'w-8 bg-white' : 'w-2 bg-white/40 hover:bg-white/60'

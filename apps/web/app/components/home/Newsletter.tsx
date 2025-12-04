@@ -6,9 +6,9 @@ export default function Newsletter(): React.JSX.Element {
   const [email, setEmail] = useState('')
   const [isSubmitted, setIsSubmitted] = useState(false)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent): void => {
     e.preventDefault()
-    if (email) {
+    if (email !== '') {
       setIsSubmitted(true)
       setTimeout(() => setIsSubmitted(false), 3000)
       setEmail('')
@@ -59,9 +59,9 @@ export default function Newsletter(): React.JSX.Element {
 
           {/* Features */}
           <div className="flex flex-wrap justify-center gap-4 md:gap-6 mb-10">
-            {features.map((feature, index) => (
+            {features.map(feature => (
               <div
-                key={index}
+                key={feature.text}
                 className="flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/10"
               >
                 <span className="text-xl">{feature.icon}</span>
@@ -175,6 +175,7 @@ export default function Newsletter(): React.JSX.Element {
       </div>
 
       {/* Custom Animations */}
+      {/* eslint-disable-next-line react/no-unknown-property */}
       <style jsx>{`
         @keyframes float {
           0%,

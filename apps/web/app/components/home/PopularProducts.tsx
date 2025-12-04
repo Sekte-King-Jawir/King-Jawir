@@ -38,7 +38,7 @@ const categoryEmojis: Record<string, string> = {
 export default function PopularProducts({ products }: PopularProductsProps): React.JSX.Element {
   const [activeIndex, setActiveIndex] = useState(0)
 
-  if (!products || products.length === 0) {
+  if (products === null || products === undefined || products.length === 0) {
     return <div className="hidden" />
   }
 
@@ -80,7 +80,9 @@ export default function PopularProducts({ products }: PopularProductsProps): Rea
               <div className="text-center">
                 <div className="relative mb-6">
                   <div className="absolute inset-0 bg-gradient-to-r from-purple-500/30 to-pink-500/30 rounded-full blur-3xl scale-75" />
-                  {featuredProduct?.image ? (
+                  {featuredProduct?.image !== null &&
+                  featuredProduct?.image !== undefined &&
+                  featuredProduct?.image !== '' ? (
                     <div className="relative w-48 h-48 mx-auto">
                       <Image
                         src={featuredProduct.image}
@@ -172,7 +174,9 @@ export default function PopularProducts({ products }: PopularProductsProps): Rea
                   <div
                     className={`w-16 h-16 rounded-xl flex items-center justify-center ${isActive ? 'bg-white/20' : 'bg-white/10'}`}
                   >
-                    {product.image ? (
+                    {product.image !== null &&
+                    product.image !== undefined &&
+                    product.image !== '' ? (
                       <Image
                         src={product.image}
                         alt={product.name}
@@ -225,6 +229,7 @@ export default function PopularProducts({ products }: PopularProductsProps): Rea
       </div>
 
       {/* Custom Animation */}
+      {/* eslint-disable-next-line react/no-unknown-property */}
       <style jsx>{`
         @keyframes float {
           0%,
