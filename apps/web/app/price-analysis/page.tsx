@@ -1,103 +1,53 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Image from 'next/image'
 import { Search, ShoppingBag, BarChart3 } from 'lucide-react'
 import { ThemeToggle } from '@repo/ui'
+import { usePriceAnalysis } from '@/hooks'
+import { formatPrice } from '@/lib/utils'
 
-interface TokopediaProduct {
-  name: string
-  price: string
-  rating?: string
-  image_url: string
-  product_url: string
-  shop_location?: string
-}
-
-interface PriceAnalysisResult {
-  query: string
-  products: TokopediaProduct[]
-  statistics: {
-    min: number
-    max: number
-    average: number
-    median: number
-    totalProducts: number
-  }
-  analysis: {
-    recommendation: string
-    insights: string[]
-    suggestedPrice?: number
-  }
-}
-
-interface WebSocketMessage {
-  type: 'connected' | 'progress' | 'complete' | 'error'
-  message?: string
-  progress?: number
-  data?: PriceAnalysisResult
-}
+const analysisSteps = [
+  '🔍 Initializing price analysis...',
+  '📊 Scanning Tokopedia marketplace...',
+  '📈 Calculating market statistics...',
+  '🤖 Running AI price analysis...',
+  '💡 Generating market insights...',
+  '✨ Finalizing recommendations...',
+]
 
 export default function SupportPage(): React.JSX.Element {
   const [query, setQuery] = useState('')
-  const limit = 60 // Fixed limit
   const [userPrice, setUserPrice] = useState<number | undefined>(undefined)
-  const [loading, setLoading] = useState(false)
-  const [result, setResult] = useState<PriceAnalysisResult | null>(null)
-  const [error, setError] = useState<string | null>(null)
-  const [loadingProgress, setLoadingProgress] = useState(0)
-  const [currentAnalysisStep, setCurrentAnalysisStep] = useState(0)
-  const [streamingMessage, setStreamingMessage] = useState('')
-  const [ws, setWs] = useState<WebSocket | null>(null)
+  
+  const { 
+    result, 
+    loading, 
+    error, 
+    streamProgress, 
+    streamMessage, 
+    analyzeWithStream,
+    cancelStream 
+  } = usePriceAnalysis()
 
-  const analysisSteps = [
-    '🔍 Initializing price analysis...',
-    '📊 Scanning Tokopedia marketplace...',
-    '📈 Calculating market statistics...',
-    '🤖 Running AI price analysis...',
-    '💡 Generating market insights...',
-    '✨ Finalizing recommendations...',
-  ]
-
-  useEffect(() => {
-    return () => {
-      if (ws !== null) {
-        ws.close()
-      }
-    }
-  }, [ws])
+  const limit = 60
+  const currentAnalysisStep = Math.floor((streamProgress / 100) * (analysisSteps.length - 1))
 
   const formatRupiah = (num: number): string => {
-    return `Rp${num.toLocaleString('id-ID')}`
+    return formatPrice(num)
   }
 
   const handleSubmit = (e: React.FormEvent): void => {
     e.preventDefault()
-    setLoading(true)
-    setError(null)
-    setResult(null)
-    setLoadingProgress(0)
-    setCurrentAnalysisStep(0)
-    setStreamingMessage('')
+    analyzeWithStream({
+      query,
+      limit,
+      userPrice: typeof userPrice === 'number' && userPrice > 0 ? userPrice : undefined,
+    })
+  }
 
-    try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4101'
-      const wsUrl = apiUrl.replace('http', 'ws')
-
-      const websocket = new WebSocket(`${wsUrl}/api/price-analysis/stream`)
-      setWs(websocket)
-
-      websocket.onopen = (): void => {
-        // Send analysis request
-        websocket.send(
-          JSON.stringify({
-            type: 'start-analysis',
-            query,
-            limit,
-            userPrice: typeof userPrice === 'number' && userPrice > 0 ? userPrice : undefined,
-          })
-        )
-      }
+  const handleCancel = (): void => {
+    cancelStream()
 
       websocket.onmessage = (event): void => {
         try {

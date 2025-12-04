@@ -1,93 +1,28 @@
 'use client'
 
-import { useState, useCallback, useEffect } from 'react'
+import { useCallback } from 'react'
 import { useRouter } from 'next/navigation'
+import { useCart } from '@/hooks'
 import styles from './page.module.css'
 import { CartItem, CartSummary } from './components'
 
-interface CartItemData {
-  id: string
-  productId: string
-  quantity: number
-  product: {
-    id: string
-    name: string
-    slug: string
-    price: number
-    stock: number
-    image: string | null
-    store: {
-      id: string
-      name: string
-      slug: string
-    }
-  }
-}
-
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4101'
-
 export default function CartPage() {
   const router = useRouter()
-  const [cartItems, setCartItems] = useState<CartItemData[]>([])
-  const [loading, setLoading] = useState(true)
-  const [updating, setUpdating] = useState(false)
+  const { items: cartItems, loading, updateQuantity, removeItem } = useCart()
 
-  // Fetch cart items
-  useEffect(() => {
-    async function fetchCart() {
-      try {
-        const res = await fetch(`${API_BASE_URL}/cart`, {
-          credentials: 'include',
-        })
-        if (res.ok) {
-          const data = await res.json()
-          // API returns { items, totalItems, totalPrice }
-          setCartItems(data.data?.items || [])
-        }
-      } catch (error) {
-        console.error('Failed to fetch cart:', error)
-      } finally {
-        setLoading(false)
-      }
-    }
-    fetchCart()
-  }, [])
+  const handleUpdateQuantity = useCallback(
+    async (id: string, quantity: number) => {
+      await updateQuantity(id, quantity)
+    },
+    [updateQuantity]
+  )
 
-  const handleUpdateQuantity = useCallback(async (id: string, quantity: number) => {
-    setUpdating(true)
-    try {
-      const res = await fetch(`${API_BASE_URL}/cart/${id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({ quantity }),
-      })
-      if (res.ok) {
-        setCartItems(prev => prev.map(item => (item.id === id ? { ...item, quantity } : item)))
-      }
-    } catch (error) {
-      console.error('Failed to update quantity:', error)
-    } finally {
-      setUpdating(false)
-    }
-  }, [])
-
-  const handleRemoveItem = useCallback(async (id: string) => {
-    setUpdating(true)
-    try {
-      const res = await fetch(`${API_BASE_URL}/cart/${id}`, {
-        method: 'DELETE',
-        credentials: 'include',
-      })
-      if (res.ok) {
-        setCartItems(prev => prev.filter(item => item.id !== id))
-      }
-    } catch (error) {
-      console.error('Failed to remove item:', error)
-    } finally {
-      setUpdating(false)
-    }
-  }, [])
+  const handleRemoveItem = useCallback(
+    async (id: string) => {
+      await removeItem(id)
+    },
+    [removeItem]
+  )
 
   const handleCheckout = useCallback(() => {
     if (cartItems.length === 0) {
@@ -150,7 +85,7 @@ export default function CartPage() {
             estimatedTax={estimatedTax}
             shippingCost={shippingCost}
             onCheckout={handleCheckout}
-            isLoading={updating}
+            isLoading={loading}
           />
         </div>
       </div>

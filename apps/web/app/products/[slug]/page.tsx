@@ -4,34 +4,34 @@ import { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
-import type { ProductDetail, ProductApiResponse } from './types'
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4101'
+import { useCart } from '@/hooks'
+import { productService } from '@/lib/api'
+import { formatPrice } from '@/lib/utils'
+import type { Product } from '@/types'
 
 export default function ProductDetailPage(): React.JSX.Element {
   const params = useParams()
   const router = useRouter()
   const slug = params.slug as string
 
-  const [product, setProduct] = useState<ProductDetail | null>(null)
+  const [product, setProduct] = useState<Product | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState('')
   const [quantity, setQuantity] = useState(1)
-  const [isAddingToCart, setIsAddingToCart] = useState(false)
   const [cartMessage, setCartMessage] = useState('')
+
+  const { addItem, loading: isAddingToCart } = useCart()
 
   useEffect(() => {
     async function fetchProduct(): Promise<void> {
       if (slug === '') return
 
       try {
-        const res = await fetch(`${API_URL}/products/${slug}`)
-        const data = (await res.json()) as ProductApiResponse
-
-        if (data.success && data.data !== undefined) {
-          setProduct(data.data.product)
+        const response = await productService.getBySlug(slug)
+        if (response.success && response.data) {
+          setProduct(response.data.product)
         } else {
-          setError(data.message ?? 'Produk tidak ditemukan')
+          setError(response.message ?? 'Produk tidak ditemukan')
         }
       } catch {
         setError('Gagal memuat produk')
@@ -43,46 +43,17 @@ export default function ProductDetailPage(): React.JSX.Element {
     void fetchProduct()
   }, [slug])
 
-  const formatPrice = (price: number): string => {
-    return new Intl.NumberFormat('id-ID', {
-      style: 'currency',
-      currency: 'IDR',
-      minimumFractionDigits: 0,
-    }).format(price)
-  }
-
   const handleAddToCart = async (): Promise<void> => {
     if (product === null) return
 
-    setIsAddingToCart(true)
     setCartMessage('')
-
-    try {
-      const res = await fetch(`${API_URL}/cart`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({
-          productId: product.id,
-          quantity,
-        }),
-      })
-
-      const data = (await res.json()) as { success: boolean; message: string }
-
-      if (data.success) {
-        setCartMessage('Berhasil ditambahkan ke keranjang!')
-      } else {
-        if (data.message?.includes('login') === true) {
-          router.push('/auth/login')
-          return
-        }
-        setCartMessage(data.message ?? 'Gagal menambah ke keranjang')
-      }
-    } catch {
-      setCartMessage('Gagal menambah ke keranjang')
-    } finally {
-      setIsAddingToCart(false)
+    const success = await addItem(product.id, quantity)
+    
+    if (success) {
+      setCartMessage('Berhasil ditambahkan ke keranjang!')
+      setTimeout(() => router.push('/cart'), 1500)
+    } else {
+      setCartMessage('Gagal menambah ke keranjang. Silakan login terlebih dahulu.')
     }
   }
 

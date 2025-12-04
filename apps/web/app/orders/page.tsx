@@ -4,74 +4,22 @@ import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4101'
-
-interface OrderItem {
-  id: string
-  quantity: number
-  price: number
-  product: {
-    id: string
-    name: string
-    slug: string
-    image: string | null
-  }
-}
-
-interface Order {
-  id: string
-  status: 'PENDING' | 'PAID' | 'SHIPPED' | 'DELIVERED' | 'CANCELLED'
-  totalAmount: number
-  shippingAddress: string
-  createdAt: string
-  items: OrderItem[]
-  store: {
-    id: string
-    name: string
-    slug: string
-  }
-}
-
-interface OrdersApiResponse {
-  success: boolean
-  message: string
-  data?: Order[]
-}
+import { useOrders } from '@/hooks'
+import { formatPrice, formatDate } from '@/lib/utils'
+import type { Order, OrderStatus, OrderItem } from '@/types'
 
 function OrderHistoryContent(): React.JSX.Element {
   const searchParams = useSearchParams()
   const showSuccess = searchParams.get('success') === 'true'
 
-  const [orders, setOrders] = useState<Order[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState('')
+  const { orders, loading: isLoading, error, fetchOrders } = useOrders()
   const [successMessage, setSuccessMessage] = useState(
     showSuccess ? 'Pesanan berhasil dibuat!' : ''
   )
 
   useEffect(() => {
-    async function fetchOrders(): Promise<void> {
-      try {
-        const res = await fetch(`${API_URL}/orders`, {
-          credentials: 'include',
-        })
-        const data = (await res.json()) as OrdersApiResponse
-
-        if (data.success && data.data !== undefined) {
-          setOrders(data.data)
-        } else {
-          setError(data.message ?? 'Gagal memuat pesanan')
-        }
-      } catch {
-        setError('Gagal memuat pesanan')
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
-    void fetchOrders()
-  }, [])
+    fetchOrders()
+  }, [fetchOrders])
 
   useEffect(() => {
     if (successMessage !== '') {
@@ -83,37 +31,19 @@ function OrderHistoryContent(): React.JSX.Element {
     return undefined
   }, [successMessage])
 
-  const formatPrice = (price: number): string => {
-    return new Intl.NumberFormat('id-ID', {
-      style: 'currency',
-      currency: 'IDR',
-      minimumFractionDigits: 0,
-    }).format(price)
-  }
-
-  const formatDate = (dateString: string): string => {
-    return new Date(dateString).toLocaleDateString('id-ID', {
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    })
-  }
-
-  const getStatusBadge = (status: Order['status']): React.JSX.Element => {
-    const styles = {
+  const getStatusBadge = (status: OrderStatus): React.JSX.Element => {
+    const styles: Record<OrderStatus, string> = {
       PENDING: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400',
       PAID: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400',
       SHIPPED: 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400',
-      DELIVERED: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
+      DONE: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
       CANCELLED: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400',
     }
-    const labels = {
+    const labels: Record<OrderStatus, string> = {
       PENDING: 'Menunggu Pembayaran',
       PAID: 'Dibayar',
       SHIPPED: 'Dikirim',
-      DELIVERED: 'Selesai',
+      DONE: 'Selesai',
       CANCELLED: 'Dibatalkan',
     }
 
@@ -161,7 +91,7 @@ function OrderHistoryContent(): React.JSX.Element {
         </div>
       ) : (
         <div className="space-y-6">
-          {orders.map(order => (
+          {orders.map((order: Order) => (
             <div
               key={order.id}
               className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden"
@@ -177,19 +107,13 @@ function OrderHistoryContent(): React.JSX.Element {
                   </p>
                 </div>
                 <div className="flex items-center gap-3">
-                  <Link
-                    href={`/stores/${order.store.slug}`}
-                    className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
-                  >
-                    {order.store.name}
-                  </Link>
                   {getStatusBadge(order.status)}
                 </div>
               </div>
 
               {/* Order Items */}
               <div className="divide-y divide-slate-100 dark:divide-slate-700/50">
-                {order.items.map(item => (
+                {order.items.map((item: OrderItem) => (
                   <div key={item.id} className="px-6 py-4 flex items-center gap-4">
                     <div className="w-16 h-16 bg-slate-100 dark:bg-slate-700 rounded-lg overflow-hidden shrink-0 relative">
                       {item.product.image !== null && item.product.image !== '' ? (
@@ -234,7 +158,7 @@ function OrderHistoryContent(): React.JSX.Element {
                 <div className="text-right">
                   <p className="text-sm text-slate-500 dark:text-slate-400">Total</p>
                   <p className="font-bold text-lg text-blue-600 dark:text-blue-400">
-                    {formatPrice(order.totalAmount)}
+                    {formatPrice(order.total)}
                   </p>
                 </div>
               </div>

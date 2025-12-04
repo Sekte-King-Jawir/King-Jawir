@@ -3,53 +3,34 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import type { UserProfile, UpdateProfileData, ChangePasswordData } from './types'
+import { useAuth } from '@/hooks'
+import { profileService, authService } from '@/lib/api'
+import type { UpdateProfileData, ChangePasswordData } from './types'
 import { ProfileForm } from './components/profile-form'
 import { ChangePasswordForm } from './components/change-password-form'
 import { AvatarSection } from './components/avatar-section'
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4101'
-
-interface ProfileApiResponse {
-  success: boolean
-  message: string
-  data?: UserProfile
-}
-
 export default function ProfilePage(): React.JSX.Element {
   const router = useRouter()
+  const { user, checkAuth } = useAuth()
 
-  const [profile, setProfile] = useState<UserProfile | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState('')
   const [successMessage, setSuccessMessage] = useState('')
-
   const [isUpdatingProfile, setIsUpdatingProfile] = useState(false)
   const [isChangingPassword, setIsChangingPassword] = useState(false)
   const [showPasswordForm, setShowPasswordForm] = useState(false)
 
   useEffect(() => {
-    async function fetchProfile(): Promise<void> {
-      try {
-        const res = await fetch(`${API_URL}/profile`, {
-          credentials: 'include',
-        })
-        const data = (await res.json()) as ProfileApiResponse
-
-        if (data.success && data.data !== undefined) {
-          setProfile(data.data)
-        } else {
-          router.push('/auth/login')
-        }
-      } catch {
-        setError('Gagal memuat profil')
-      } finally {
-        setIsLoading(false)
+    async function loadProfile(): Promise<void> {
+      const authenticated = await checkAuth()
+      if (!authenticated) {
+        router.push('/auth/login')
       }
+      setIsLoading(false)
     }
-
-    void fetchProfile()
-  }, [router])
+    void loadProfile()
+  }, [checkAuth, router])
 
   const showSuccess = (message: string): void => {
     setSuccessMessage(message)
@@ -61,20 +42,12 @@ export default function ProfilePage(): React.JSX.Element {
     setError('')
 
     try {
-      const res = await fetch(`${API_URL}/profile`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify(data),
-      })
-
-      const result = (await res.json()) as ProfileApiResponse
-
-      if (result.success && result.data !== undefined) {
-        setProfile(result.data)
+      const response = await profileService.update(data)
+      if (response.success) {
+        await checkAuth() // Refresh user data
         showSuccess('Profil berhasil diperbarui')
       } else {
-        setError(result.message ?? 'Gagal memperbarui profil')
+        setError(response.message ?? 'Gagal memperbarui profil')
       }
     } catch {
       setError('Gagal memperbarui profil')
@@ -93,23 +66,13 @@ export default function ProfilePage(): React.JSX.Element {
     setError('')
 
     try {
-      const res = await fetch(`${API_URL}/auth/change-password`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({
-          currentPassword: data.currentPassword,
-          newPassword: data.newPassword,
-        }),
-      })
+      const response = await authService.changePassword(data.currentPassword, data.newPassword)
 
-      const result = (await res.json()) as { success: boolean; message: string }
-
-      if (result.success) {
+      if (response.success) {
         showSuccess('Password berhasil diubah')
         setShowPasswordForm(false)
       } else {
-        setError(result.message ?? 'Gagal mengubah password')
+        setError(response.message ?? 'Gagal mengubah password')
       }
     } catch {
       setError('Gagal mengubah password')
@@ -120,10 +83,7 @@ export default function ProfilePage(): React.JSX.Element {
 
   const handleLogout = async (): Promise<void> => {
     try {
-      await fetch(`${API_URL}/auth/logout`, {
-        method: 'POST',
-        credentials: 'include',
-      })
+      await authService.logout()
       router.push('/auth/login')
     } catch {
       router.push('/auth/login')
@@ -141,29 +101,33 @@ export default function ProfilePage(): React.JSX.Element {
     )
   }
 
-  if (profile === null) {
+  if (!user) {
     return (
       <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
         <Navbar />
-        <main className="max-w-2xl mx-auto px-4 py-8">
-          <div className="text-center py-20">
-            <p className="text-slate-600 dark:text-slate-400">Gagal memuat profil</p>
-          </div>
+        <main className="max-w-2xl mx-auto px-4 py-8 text-center">
+          <p>Loading profile...</p>
         </main>
       </div>
     )
   }
+
+  const profile = user
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
       <Navbar />
 
       <main className="max-w-2xl mx-auto px-4 py-8">
-        <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-8">Profil Saya</h1>
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-slate-900 dark:text-white mb-2">Profil Saya</h1>
+          <p className="text-slate-600 dark:text-slate-400">
+            Kelola informasi profil Anda untuk keamanan akun
+          </p>
+        </div>
 
         {successMessage !== '' && (
-          <div className="mb-6 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl text-green-600 dark:text-green-400 flex items-center gap-2">
-            <span className="text-xl">✅</span>
+          <div className="mb-6 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl text-green-600 dark:text-green-400">
             {successMessage}
           </div>
         )}
@@ -175,12 +139,11 @@ export default function ProfilePage(): React.JSX.Element {
         )}
 
         <div className="space-y-6">
-          {/* Avatar Section */}
-          <AvatarSection profile={profile} />
+          <AvatarSection profile={profile as any} />
 
           {/* Profile Form */}
           <ProfileForm
-            profile={profile}
+            profile={profile as any}
             onSubmit={handleUpdateProfile}
             isSubmitting={isUpdatingProfile}
           />

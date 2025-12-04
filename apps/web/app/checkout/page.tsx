@@ -4,75 +4,22 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4101'
-
-interface CartItem {
-  id: string
-  quantity: number
-  product: {
-    id: string
-    name: string
-    slug: string
-    price: number
-    stock: number
-    image: string | null
-    store: {
-      id: string
-      name: string
-      slug: string
-    }
-  }
-}
-
-interface CartApiResponse {
-  success: boolean
-  message: string
-  data?: {
-    items: CartItem[]
-    total: number
-  }
-}
+import { useCart, useOrders } from '@/hooks'
+import { formatPrice } from '@/lib/utils'
 
 export default function CheckoutPage(): React.JSX.Element {
   const router = useRouter()
+  const { items: cartItems, loading: isLoading } = useCart()
+  const { createOrder, loading: isSubmitting, error: orderError } = useOrders()
 
-  const [cartItems, setCartItems] = useState<CartItem[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState('')
   const [shippingAddress, setShippingAddress] = useState('')
 
   useEffect(() => {
-    async function fetchCart(): Promise<void> {
-      try {
-        const res = await fetch(`${API_URL}/cart`, {
-          credentials: 'include',
-        })
-        const data = (await res.json()) as CartApiResponse
-
-        if (data.success && data.data !== undefined) {
-          setCartItems(data.data.items)
-        } else {
-          router.push('/auth/login')
-        }
-      } catch {
-        setError('Gagal memuat keranjang')
-      } finally {
-        setIsLoading(false)
-      }
+    if (orderError) {
+      setError(orderError)
     }
-
-    void fetchCart()
-  }, [router])
-
-  const formatPrice = (price: number): string => {
-    return new Intl.NumberFormat('id-ID', {
-      style: 'currency',
-      currency: 'IDR',
-      minimumFractionDigits: 0,
-    }).format(price)
-  }
+  }, [orderError])
 
   const totalAmount = cartItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0)
 
@@ -82,41 +29,17 @@ export default function CheckoutPage(): React.JSX.Element {
       return
     }
 
-    setIsSubmitting(true)
     setError('')
 
     try {
-      const res = await fetch(`${API_URL}/orders`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('accessToken') || ''}`,
-        },
-        credentials: 'include',
-      })
-
-      const data = (await res.json()) as {
-        success: boolean
-        message: string
-        data?: { order: { id: string } }
-      }
-
-      if (res.ok && data.success) {
-        // Clear cart locally
-        setCartItems([])
+      const order = await createOrder({ shippingAddress })
+      if (order) {
         // Redirect to orders page with success message
         router.push('/orders?success=true')
-      } else if (res.status === 401) {
-        setError('Sesi login habis. Silakan login kembali.')
-        setTimeout(() => router.push('/auth/login'), 2000)
-      } else {
-        setError(data.message || 'Gagal membuat pesanan. Silakan coba lagi.')
       }
     } catch (err) {
       console.error('Checkout error:', err)
       setError('Terjadi kesalahan. Pastikan koneksi internet Anda stabil.')
-    } finally {
-      setIsSubmitting(false)
     }
   }
 

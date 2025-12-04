@@ -26,6 +26,13 @@ export function formatRupiah(amount: number): string {
 }
 
 /**
+ * Alias for formatRupiah (for consistency with API)
+ */
+export function formatPrice(amount: number): string {
+  return formatRupiah(amount)
+}
+
+/**
  * Truncate text dengan ellipsis
  */
 export function truncateText(text: string, maxLength: number): string {
@@ -98,5 +105,91 @@ export function shuffleArray<T>(array: T[]): T[] {
     newArray[i] = newArray[j]!
     newArray[j] = temp!
   }
+  return newArray
+}
+
+/**
+ * Format date to Indonesian locale
+ */
+export function formatDate(date: string | Date, options?: Intl.DateTimeFormatOptions): string {
+  const dateObj = typeof date === 'string' ? new Date(date) : date
+  return new Intl.DateTimeFormat('id-ID', options || {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  }).format(dateObj)
+}
+
+/**
+ * Format relative time (e.g., "2 hari yang lalu")
+ */
+export function formatRelativeTime(date: string | Date): string {
+  const dateObj = typeof date === 'string' ? new Date(date) : date
+  const now = new Date()
+  const diffMs = now.getTime() - dateObj.getTime()
+  const diffSec = Math.floor(diffMs / 1000)
+  const diffMin = Math.floor(diffSec / 60)
+  const diffHour = Math.floor(diffMin / 60)
+  const diffDay = Math.floor(diffHour / 24)
+
+  if (diffSec < 60) return 'Baru saja'
+  if (diffMin < 60) return `${diffMin} menit yang lalu`
+  if (diffHour < 24) return `${diffHour} jam yang lalu`
+  if (diffDay < 7) return `${diffDay} hari yang lalu`
+  if (diffDay < 30) return `${Math.floor(diffDay / 7)} minggu yang lalu`
+  if (diffDay < 365) return `${Math.floor(diffDay / 30)} bulan yang lalu`
+  return `${Math.floor(diffDay / 365)} tahun yang lalu`
+}
+
+/**
+ * Calculate discount percentage
+ */
+export function calculateDiscount(originalPrice: number, discountedPrice: number): number {
+  if (originalPrice <= 0) return 0
+  return Math.round(((originalPrice - discountedPrice) / originalPrice) * 100)
+}
+
+/**
+ * Format number with thousand separators
+ */
+export function formatNumber(num: number): string {
+  return new Intl.NumberFormat('id-ID').format(num)
+}
+
+/**
+ * Validate email format
+ */
+export function isValidEmail(email: string): boolean {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  return emailRegex.test(email)
+}
+
+/**
+ * Validate Indonesian phone number
+ */
+export function isValidPhone(phone: string): boolean {
+  const phoneRegex = /^(\+62|62|0)[2-9]\d{7,11}$/
+  return phoneRegex.test(phone)
+}
+
+/**
+ * Get initials from name
+ */
+export function getInitials(name: string): string {
+  return name
+    .split(' ')
+    .map(word => word[0])
+    .join('')
+    .toUpperCase()
+    .slice(0, 2)
+}
+
+/**
+ * Clamp number between min and max
+ */
+export function clamp(value: number, min: number, max: number): number {
+  return Math.min(Math.max(value, min), max)
+}
+
   return newArray
 }

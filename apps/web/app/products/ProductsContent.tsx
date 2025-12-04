@@ -5,44 +5,9 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { Search, Filter, ShoppingCart, Grid3x3, List, Star } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
-
-interface Product {
-  id: string
-  name: string
-  slug: string
-  price: number
-  stock: number
-  image: string | null
-  category: {
-    id: string
-    name: string
-    slug: string
-  }
-  store: {
-    id: string
-    name: string
-    slug: string
-  }
-}
-
-interface Category {
-  id: string
-  name: string
-  slug: string
-  _count?: {
-    products: number
-  }
-}
-
-interface ProductsData {
-  products: Product[]
-  total: number
-  page: number
-  limit: number
-  totalPages: number
-}
-
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4101'
+import { useProducts, useCategories, useCart } from '@/hooks'
+import { formatPrice } from '@/lib/utils'
+import type { Product, Category } from '@/types'
 
 const sortOptions = [
   { value: 'newest', label: 'Terbaru' },
@@ -64,12 +29,10 @@ export function ProductsContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
 
-  const [products, setProducts] = useState<Product[]>([])
-  const [categories, setCategories] = useState<Category[]>([])
-  const [loading, setLoading] = useState(true)
-  const [totalProducts, setTotalProducts] = useState(0)
-  const [currentPage, setCurrentPage] = useState(1)
-  const [totalPages, setTotalPages] = useState(1)
+  const { products, loading, totalPages, currentPage, fetchProducts } = useProducts()
+  const { categories, fetchCategories } = useCategories()
+  const { addItem } = useCart()
+
   const [selectedCategory, setSelectedCategory] = useState<string>('')
   const [selectedPriceRange, setSelectedPriceRange] = useState<string>('all')
   const [sortBy, setSortBy] = useState('newest')
@@ -77,116 +40,37 @@ export function ProductsContent() {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
   const [showFilters, setShowFilters] = useState(true)
 
-  // Fetch categories
+  // Fetch categories on mount
   useEffect(() => {
-    async function fetchCategories() {
-      try {
-        const res = await fetch(`${API_BASE_URL}/categories`)
-        if (res.ok) {
-          const data = await res.json()
-          setCategories(data.data?.categories || [])
-        }
-      } catch (error) {
-        console.error('Failed to fetch categories:', error)
-      }
-    }
-    fetchCategories()
-  }, [])
+    void fetchCategories()
+  }, [fetchCategories])
 
-  // Fetch products
+  // Fetch products when filters change
   useEffect(() => {
-    async function fetchProducts() {
-      setLoading(true)
-      try {
-        const params = new URLSearchParams()
-
-        if (selectedCategory) {
-          params.set('categoryId', selectedCategory)
-        }
-
-        if (searchQuery) {
-          params.set('search', searchQuery)
-        }
-
-        const page = searchParams.get('page') || '1'
-        params.set('page', page)
-        params.set('limit', '12')
-
-        const res = await fetch(`${API_BASE_URL}/products?${params.toString()}`)
-        if (res.ok) {
-          const data = await res.json()
-          const productsData: ProductsData = data.data
-
-          let filteredProducts = productsData.products || []
-
-          // Filter by price range
-          if (selectedPriceRange && selectedPriceRange !== 'all') {
-            const range = priceRanges.find(r => r.id === selectedPriceRange)
-            if (range) {
-              filteredProducts = filteredProducts.filter(
-                p => p.price >= range.min && p.price <= range.max
-              )
-            }
-          }
-
-          // Sort products
-          filteredProducts = [...filteredProducts].sort((a, b) => {
-            switch (sortBy) {
-              case 'price-asc':
-                return a.price - b.price
-              case 'price-desc':
-                return b.price - a.price
-              case 'newest':
-              default:
-                return 0
-            }
-          })
-
-          setProducts(filteredProducts)
-          setTotalProducts(filteredProducts.length)
-          setCurrentPage(productsData.page || 1)
-          setTotalPages(productsData.totalPages || 1)
-        }
-      } catch (error) {
-        console.error('Failed to fetch products:', error)
-      } finally {
-        setLoading(false)
-      }
-    }
-    fetchProducts()
-  }, [selectedCategory, selectedPriceRange, sortBy, searchQuery, searchParams])
+    const priceRange = priceRanges.find(r => r.id === selectedPriceRange)
+    void fetchProducts({
+      page: currentPage,
+      limit: 12,
+      search: searchQuery || undefined,
+      categoryId: selectedCategory || undefined,
+      minPrice: priceRange && priceRange.id !== 'all' ? priceRange.min : undefined,
+      maxPrice: priceRange && priceRange.id !== 'all' ? priceRange.max : undefined,
+      sortBy: sortBy as 'newest' | 'price-asc' | 'price-desc',
+    })
+  }, [selectedCategory, selectedPriceRange, sortBy, searchQuery, currentPage, fetchProducts])
 
   const handleAddToCart = useCallback(
     async (productId: string) => {
-      try {
-        const res = await fetch(`${API_BASE_URL}/cart`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          credentials: 'include',
-          body: JSON.stringify({ productId, quantity: 1 }),
-        })
-        if (res.ok) {
-          alert('Produk berhasil ditambahkan ke keranjang!')
-          router.push('/cart')
-        } else {
-          const data = await res.json()
-          alert(data.message || 'Gagal menambahkan ke keranjang. Silakan login terlebih dahulu.')
-        }
-      } catch (error) {
-        console.error('Failed to add to cart:', error)
-        alert('Gagal menambahkan ke keranjang')
+      const success = await addItem(productId, 1)
+      if (success) {
+        alert('Produk berhasil ditambahkan ke keranjang!')
+        router.push('/cart')
+      } else {
+        alert('Gagal menambahkan ke keranjang. Silakan login terlebih dahulu.')
       }
     },
-    [router]
+    [addItem, router]
   )
-
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('id-ID', {
-      style: 'currency',
-      currency: 'IDR',
-      minimumFractionDigits: 0,
-    }).format(price)
-  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
@@ -348,7 +232,7 @@ export function ProductsContent() {
               <p className="text-slate-600 dark:text-slate-400">
                 Menampilkan{' '}
                 <span className="font-semibold text-slate-900 dark:text-white">
-                  {totalProducts}
+                  {products.length}
                 </span>{' '}
                 produk
               </p>
