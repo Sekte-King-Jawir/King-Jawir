@@ -5,6 +5,7 @@ import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import type { ProductDetail, ProductApiResponse } from './types'
+import { ReviewSection } from './components'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4101'
 
@@ -283,6 +284,9 @@ export default function ProductDetailPage(): React.JSX.Element {
             )}
           </div>
         </div>
+
+        {/* Review Section */}
+        <ReviewSection productSlug={slug} productId={product.id} />
       </main>
     </div>
   )
