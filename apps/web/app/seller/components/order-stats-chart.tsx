@@ -8,7 +8,7 @@ interface OrderStatsChartProps {
 
 export function OrderStatsChart({ stats }: OrderStatsChartProps): React.JSX.Element {
   const total = stats.completedOrders + stats.pendingOrders + stats.cancelledOrders
-  
+
   const getPercentage = (value: number): number => {
     if (total === 0) return 0
     return Math.round((value / total) * 100)
@@ -20,9 +20,7 @@ export function OrderStatsChart({ stats }: OrderStatsChartProps): React.JSX.Elem
 
   return (
     <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
-      <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-6">
-        Status Pesanan
-      </h3>
+      <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-6">Status Pesanan</h3>
 
       {total === 0 ? (
         <div className="text-center py-8">

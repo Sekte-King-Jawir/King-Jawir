@@ -38,11 +38,8 @@ export default function SellerDashboardPage(): React.JSX.Element {
             <div className="animate-pulse space-y-6">
               <div className="h-8 bg-slate-200 dark:bg-slate-700 rounded w-48" />
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                {[1, 2, 3, 4].map((i) => (
-                  <div
-                    key={i}
-                    className="h-32 bg-slate-200 dark:bg-slate-700 rounded-xl"
-                  />
+                {[1, 2, 3, 4].map(i => (
+                  <div key={i} className="h-32 bg-slate-200 dark:bg-slate-700 rounded-xl" />
                 ))}
               </div>
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -88,12 +85,7 @@ export default function SellerDashboardPage(): React.JSX.Element {
                 onClick={() => void refresh()}
                 className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition-colors"
               >
-                <svg
-                  className="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"

@@ -29,9 +29,7 @@ export function StatCard({ title, value, icon, trend, color }: StatCardProps): R
           <p className="text-sm font-medium text-slate-500 dark:text-slate-400">{title}</p>
           <p className="text-2xl font-bold text-slate-900 dark:text-white mt-1">{value}</p>
           {trend !== undefined && (
-            <p
-              className={`text-sm mt-1 ${trend.isPositive ? 'text-green-600' : 'text-red-600'}`}
-            >
+            <p className={`text-sm mt-1 ${trend.isPositive ? 'text-green-600' : 'text-red-600'}`}>
               {trend.isPositive ? '↑' : '↓'} {Math.abs(trend.value)}%
             </p>
           )}

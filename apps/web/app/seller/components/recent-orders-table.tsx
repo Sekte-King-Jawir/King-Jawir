@@ -9,11 +9,26 @@ interface RecentOrdersTableProps {
 }
 
 const statusConfig = {
-  PENDING: { label: 'Menunggu', color: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400' },
-  PAID: { label: 'Dibayar', color: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400' },
-  SHIPPED: { label: 'Dikirim', color: 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400' },
-  DONE: { label: 'Selesai', color: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400' },
-  CANCELLED: { label: 'Dibatalkan', color: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400' },
+  PENDING: {
+    label: 'Menunggu',
+    color: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400',
+  },
+  PAID: {
+    label: 'Dibayar',
+    color: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400',
+  },
+  SHIPPED: {
+    label: 'Dikirim',
+    color: 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400',
+  },
+  DONE: {
+    label: 'Selesai',
+    color: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
+  },
+  CANCELLED: {
+    label: 'Dibatalkan',
+    color: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400',
+  },
 }
 
 export function RecentOrdersTable({ orders }: RecentOrdersTableProps): React.JSX.Element {
@@ -62,9 +77,7 @@ export function RecentOrdersTable({ orders }: RecentOrdersTableProps): React.JSX
   return (
     <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700">
       <div className="p-6 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between">
-        <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
-          Pesanan Terbaru
-        </h3>
+        <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Pesanan Terbaru</h3>
         <Link
           href="/seller/orders"
           className="text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
@@ -94,7 +107,7 @@ export function RecentOrdersTable({ orders }: RecentOrdersTableProps): React.JSX
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
-            {orders.map((order) => {
+            {orders.map(order => {
               const status = statusConfig[order.status]
               const orderTotal = order.items.reduce(
                 (sum, item) => sum + item.price * item.quantity,
@@ -145,12 +158,8 @@ export function RecentOrdersTable({ orders }: RecentOrdersTableProps): React.JSX
                     </div>
                   </td>
                   <td className="px-6 py-4">
-                    <p className="text-sm text-slate-900 dark:text-white">
-                      {order.user.name}
-                    </p>
-                    <p className="text-xs text-slate-500 dark:text-slate-400">
-                      {order.user.email}
-                    </p>
+                    <p className="text-sm text-slate-900 dark:text-white">{order.user.name}</p>
+                    <p className="text-xs text-slate-500 dark:text-slate-400">{order.user.email}</p>
                   </td>
                   <td className="px-6 py-4">
                     <p className="text-sm font-medium text-slate-900 dark:text-white">

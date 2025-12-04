@@ -139,7 +139,7 @@ export function useSellerDashboard(): UseSellerDashboardReturn {
         let completedOrders = 0
         let cancelledOrders = 0
 
-        orders.forEach((order) => {
+        orders.forEach(order => {
           // Calculate revenue from items (seller's portion)
           const orderRevenue = order.items.reduce(
             (sum, item) => sum + item.price * item.quantity,
@@ -156,7 +156,7 @@ export function useSellerDashboard(): UseSellerDashboardReturn {
           }
         })
 
-        setStats((prev) => ({
+        setStats(prev => ({
           ...prev,
           totalRevenue,
           totalOrders: ordersData.data?.pagination.total ?? 0,
@@ -170,7 +170,7 @@ export function useSellerDashboard(): UseSellerDashboardReturn {
       }
 
       if (productsData.success && productsData.data !== undefined) {
-        setStats((prev) => ({
+        setStats(prev => ({
           ...prev,
           totalProducts: productsData.data?.pagination.total ?? 0,
         }))

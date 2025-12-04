@@ -52,9 +52,7 @@ export function TopProductsCard({ products }: TopProductsCardProps): React.JSX.E
   return (
     <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700">
       <div className="p-6 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between">
-        <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
-          Produk Populer
-        </h3>
+        <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Produk Populer</h3>
         <Link
           href="/seller/products"
           className="text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
@@ -108,9 +106,7 @@ export function TopProductsCard({ products }: TopProductsCardProps): React.JSX.E
               <p className="text-sm font-medium text-slate-900 dark:text-white">
                 {formatCurrency(product.price)}
               </p>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
-                Stok: {product.stock}
-              </p>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Stok: {product.stock}</p>
             </div>
           </div>
         ))}
