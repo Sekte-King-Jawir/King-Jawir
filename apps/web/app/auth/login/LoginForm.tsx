@@ -38,7 +38,7 @@ export function LoginForm(): React.JSX.Element {
   return (
     <form onSubmit={handleSubmit} className={styles.form}>
       <h2 className={styles.title}>Masuk ke Akun</h2>
-      
+
       {error && <div className={styles.error}>{error}</div>}
 
       <div className={styles.inputGroup}>
@@ -47,7 +47,7 @@ export function LoginForm(): React.JSX.Element {
           type="email"
           id="email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={e => setEmail(e.target.value)}
           placeholder="masukkan email Anda"
           required
           className={styles.input}
@@ -60,7 +60,7 @@ export function LoginForm(): React.JSX.Element {
           type="password"
           id="password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={e => setPassword(e.target.value)}
           placeholder="masukkan password Anda"
           required
           className={styles.input}

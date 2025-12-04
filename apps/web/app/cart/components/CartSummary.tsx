@@ -32,28 +32,30 @@ export function CartSummary({
   }
 
   const localFormatPrice = (price: number): string => {
-    return propFormatPrice ? propFormatPrice(price) : new Intl.NumberFormat('id-ID', {
-      style: 'currency',
-      currency: 'IDR',
-      minimumFractionDigits: 0,
-    }).format(price)
+    return propFormatPrice
+      ? propFormatPrice(price)
+      : new Intl.NumberFormat('id-ID', {
+          style: 'currency',
+          currency: 'IDR',
+          minimumFractionDigits: 0,
+        }).format(price)
   }
 
   return (
     <div className={styles.summaryCard}>
       <h2 className={styles.title}>Ringkasan Pesanan</h2>
-      
+
       <div className={styles.summaryItems}>
         <div className={styles.summaryRow}>
           <span className={styles.label}>Subtotal:</span>
           <span className={styles.value}>{localFormatPrice(totalAmount)}</span>
         </div>
-        
+
         <div className={styles.summaryRow}>
           <span className={styles.label}>Ongkir:</span>
           <span className={styles.value}>Gratis</span>
         </div>
-        
+
         <div className={styles.summaryRow}>
           <span className={styles.label}>Total:</span>
           <span className={styles.total}>{localFormatPrice(totalAmount)}</span>

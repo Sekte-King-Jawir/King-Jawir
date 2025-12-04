@@ -88,7 +88,9 @@ export const storeService = {
   },
 
   // Get my store
-  async getMyStore(userId: string): Promise<ReturnType<typeof successResponse> | ReturnType<typeof errorResponse>> {
+  async getMyStore(
+    userId: string
+  ): Promise<ReturnType<typeof successResponse> | ReturnType<typeof errorResponse>> {
     const store = await storeRepository.findByUserId(userId)
 
     if (!store) {
@@ -139,7 +141,9 @@ export const storeService = {
   },
 
   // Get store by slug (public)
-  async getBySlug(slug: string): Promise<ReturnType<typeof successResponse> | ReturnType<typeof errorResponse>> {
+  async getBySlug(
+    slug: string
+  ): Promise<ReturnType<typeof successResponse> | ReturnType<typeof errorResponse>> {
     const store = await storeRepository.findBySlug(slug)
 
     if (!store) {
@@ -161,7 +165,9 @@ export const storeService = {
   },
 
   // Delete store (downgrade SELLER -> CUSTOMER)
-  async deleteStore(userId: string): Promise<ReturnType<typeof successResponse> | ReturnType<typeof errorResponse>> {
+  async deleteStore(
+    userId: string
+  ): Promise<ReturnType<typeof successResponse> | ReturnType<typeof errorResponse>> {
     const store = await storeRepository.findByUserId(userId)
 
     if (!store) {

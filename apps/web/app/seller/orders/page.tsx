@@ -7,7 +7,7 @@ import type { User, AuthMeResponse } from '../types'
 import { Navbar, Sidebar } from '../components'
 import { OrdersTable, UpdateStatusModal } from './components/index'
 
-const API_URL = `${process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4101'  }/api`
+const API_URL = `${process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4101'}/api`
 
 export default function SellerOrdersPage(): React.JSX.Element {
   const router = useRouter()
