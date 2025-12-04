@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { Search, TrendingUp, ShoppingBag, BarChart3 } from 'lucide-react'
-import { HeaderThemeToggle } from '@repo/ui/theme/theme-toggle'
+import { ThemeToggle } from '@repo/ui'
 
 interface TokopediaProduct {
   name: string
@@ -164,27 +164,22 @@ export default function SupportPage(): React.JSX.Element {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950">
-      {/* Header */}
-      <header className="border-b border-border/40 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container flex h-16 items-center justify-between px-6">
-          <div className="flex items-center gap-2">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 flex flex-col items-center justify-center px-4 py-12">
+      <ThemeToggle />
+
+      <main className="w-full max-w-4xl mx-auto">
+        {/* Hero Section */}
+        <div className="text-center mb-10">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-primary/10 mb-6">
             <BarChart3 className="h-8 w-8 text-primary" />
-            <span className="text-2xl font-bold text-foreground">PriceScope AI</span>
           </div>
-          <HeaderThemeToggle />
-        </div>
-        <div className="container px-6 pb-8 pt-4">
-          <h1 className="text-4xl font-bold tracking-tight text-foreground mb-2">
-            Intelligent Price Analysis
+          <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-4">
+            PriceScope AI
           </h1>
-          <p className="text-xl text-muted-foreground">
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Discover market insights with AI-powered Tokopedia price analysis
           </p>
         </div>
-      </header>
-
-      <main className="container px-6 py-8">
         {/* Form */}
         <form
           onSubmit={handleSubmit}
@@ -478,12 +473,8 @@ export default function SupportPage(): React.JSX.Element {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 mt-16">
-        <div className="container px-6 py-6 text-center">
-          <p className="text-sm text-muted-foreground">
-            🔧 Support Page | Powered by Tokopedia Scraper + AI Analysis
-          </p>
-        </div>
+      <footer className="mt-12 text-center">
+        <p className="text-sm text-muted-foreground">Powered by Tokopedia Scraper + AI Analysis</p>
       </footer>
     </div>
   )

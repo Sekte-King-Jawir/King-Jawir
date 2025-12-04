@@ -125,7 +125,7 @@ function LoadingSkeleton(): React.JSX.Element {
           <div className="h-6 bg-slate-200 dark:bg-slate-700 rounded w-1/4" />
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-6">
-          {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+          {[1, 2, 3, 4, 5, 6, 7, 8].map(i => (
             <div key={i} className="bg-slate-100 dark:bg-slate-700/50 rounded-xl overflow-hidden">
               <div className="aspect-square bg-slate-200 dark:bg-slate-700" />
               <div className="p-3">
@@ -148,7 +148,9 @@ function ErrorState({ message }: ErrorStateProps): React.JSX.Element {
   return (
     <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 p-12 text-center">
       <span className="text-6xl mb-4 block">😕</span>
-      <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Toko Tidak Ditemukan</h2>
+      <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
+        Toko Tidak Ditemukan
+      </h2>
       <p className="text-slate-600 dark:text-slate-400 mb-6">
         {message !== '' ? message : 'Maaf, toko yang Anda cari tidak tersedia.'}
       </p>

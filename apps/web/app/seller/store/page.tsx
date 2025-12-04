@@ -79,7 +79,7 @@ export default function SellerStorePage(): React.JSX.Element {
 
       if (result.success && result.data !== undefined) {
         setStore(result.data.store)
-        setUser((prev) => (prev !== null ? { ...prev, role: 'SELLER' } : null))
+        setUser(prev => (prev !== null ? { ...prev, role: 'SELLER' } : null))
         setSuccess('Toko berhasil dibuat! Anda sekarang menjadi SELLER.')
       } else {
         setError(result.message ?? 'Gagal membuat toko')

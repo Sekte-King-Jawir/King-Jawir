@@ -5,7 +5,10 @@ export const storeController = {
     return storeService.getAll()
   },
 
-  async create(userId: string, data: { name: string; slug?: string; description?: string; logo?: string }) {
+  async create(
+    userId: string,
+    data: { name: string; slug?: string; description?: string; logo?: string }
+  ) {
     return storeService.create(userId, data)
   },
 
@@ -13,7 +16,10 @@ export const storeController = {
     return storeService.getMyStore(userId)
   },
 
-  async update(userId: string, data: { name?: string; slug?: string; description?: string; logo?: string }) {
+  async update(
+    userId: string,
+    data: { name?: string; slug?: string; description?: string; logo?: string }
+  ) {
     return storeService.update(userId, data)
   },
 

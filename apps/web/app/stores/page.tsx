@@ -42,7 +42,7 @@ export default function StoresPage(): React.JSX.Element {
     void fetchStores()
   }, [])
 
-  const filteredStores = stores.filter((store) =>
+  const filteredStores = stores.filter(store =>
     store.name.toLowerCase().includes(searchQuery.toLowerCase())
   )
 
@@ -54,9 +54,7 @@ export default function StoresPage(): React.JSX.Element {
           <div className="flex items-center justify-between h-16">
             <Link href="/" className="flex items-center gap-2">
               <span className="text-2xl">👑</span>
-              <span className="font-bold text-xl text-slate-900 dark:text-white">
-                King Jawir
-              </span>
+              <span className="font-bold text-xl text-slate-900 dark:text-white">King Jawir</span>
             </Link>
 
             <div className="flex items-center gap-4">
@@ -80,9 +78,7 @@ export default function StoresPage(): React.JSX.Element {
       {/* Header */}
       <div className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <h1 className="text-3xl font-bold text-slate-900 dark:text-white mb-4">
-            Jelajahi Toko
-          </h1>
+          <h1 className="text-3xl font-bold text-slate-900 dark:text-white mb-4">Jelajahi Toko</h1>
           <p className="text-slate-600 dark:text-slate-400 mb-6">
             Temukan berbagai toko dengan produk berkualitas dari seller terpercaya
           </p>
@@ -93,7 +89,7 @@ export default function StoresPage(): React.JSX.Element {
               type="text"
               placeholder="Cari toko..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={e => setSearchQuery(e.target.value)}
               className="w-full px-4 py-3 pl-12 border border-slate-300 dark:border-slate-600 rounded-xl bg-white dark:bg-slate-700 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
             <svg
@@ -141,7 +137,7 @@ export default function StoresPage(): React.JSX.Element {
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {filteredStores.map((store) => (
+              {filteredStores.map(store => (
                 <StoreCard key={store.id} store={store} />
               ))}
             </div>
@@ -174,12 +170,7 @@ function StoreCard({ store }: StoreCardProps): React.JSX.Element {
         {/* Store Logo/Banner */}
         <div className="h-32 bg-linear-to-br from-blue-500 to-purple-600 relative">
           {store.logo !== undefined && store.logo !== null && store.logo !== '' ? (
-            <Image
-              src={store.logo}
-              alt={store.name}
-              fill
-              className="object-cover"
-            />
+            <Image src={store.logo} alt={store.name} fill className="object-cover" />
           ) : (
             <div className="absolute inset-0 flex items-center justify-center">
               <span className="text-5xl">🏪</span>
@@ -220,7 +211,7 @@ function StoreCard({ store }: StoreCardProps): React.JSX.Element {
 function StoresLoadingSkeleton(): React.JSX.Element {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-      {[1, 2, 3, 4, 5, 6, 7, 8].map((n) => (
+      {[1, 2, 3, 4, 5, 6, 7, 8].map(n => (
         <div
           key={`skeleton-${n}`}
           className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden animate-pulse"

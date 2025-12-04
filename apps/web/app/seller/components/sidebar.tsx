@@ -35,7 +35,7 @@ export function Sidebar({ storeName }: SidebarProps): React.JSX.Element {
       {/* Navigation */}
       <nav className="p-4">
         <ul className="space-y-1">
-          {menuItems.map((item) => {
+          {menuItems.map(item => {
             const isActive = pathname === item.href
             return (
               <li key={item.href}>
