@@ -41,13 +41,13 @@ export default function CartPage() {
     (sum, item) => sum + Number(item.product.price) * item.quantity,
     0
   )
-  const estimatedTax = Math.round(subtotal * 0.02) // 2% tax
-  const shippingCost = cartItems.length > 0 ? 29 : 0
+  const estimatedTax = Math.round(subtotal * 0.11) // PPN 11%
+  const shippingCost = cartItems.length > 0 ? 15000 : 0
 
   if (loading) {
     return (
       <div className={styles.container}>
-        <div className={styles.loading}>Loading cart...</div>
+        <div className={styles.loading}>Memuat keranjang...</div>
       </div>
     )
   }
@@ -56,13 +56,13 @@ export default function CartPage() {
     <div className={styles.container}>
       <div className={styles.layout}>
         <div className={styles.cartSection}>
-          <h1 className={styles.title}>Shopping Cart</h1>
+          <h1 className={styles.title}>Keranjang Belanja</h1>
 
           {cartItems.length === 0 ? (
             <div className={styles.emptyCart}>
-              <p>Your cart is empty</p>
+              <p>Keranjang Anda kosong</p>
               <a href="/products" className={styles.continueLink}>
-                Continue Shopping
+                Lanjut Belanja
               </a>
             </div>
           ) : (

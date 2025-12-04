@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 
-const API_URL = (process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4101') + '/api'
+const API_URL = `${process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4101'}/api`
 
 // Types
 export interface SellerStats {

@@ -1,11 +1,11 @@
 'use client'
 
 import { createContext, useContext, useEffect, useState, useCallback, ReactNode } from 'react'
-import { useRouter, usePathname } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { authService, type LoginRequest, type RegisterRequest, isApiError } from '@/lib/api'
 import type { User } from '@/types'
 
-interface AuthContextType {
+export interface AuthContextType {
   user: User | null
   loading: boolean
   error: string | null

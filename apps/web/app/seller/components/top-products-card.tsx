@@ -2,10 +2,26 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import type { SellerProduct } from '@/hooks'
+
+// Local type to match SellerProduct from hooks
+interface SellerProductLocal {
+  id: string
+  name: string
+  slug: string
+  price: number
+  stock: number
+  image: string | null
+  reviewCount: number
+  createdAt: string
+  category: {
+    id: string
+    name: string
+    slug: string
+  }
+}
 
 interface TopProductsCardProps {
-  products: SellerProduct[]
+  products: SellerProductLocal[]
 }
 
 export function TopProductsCard({ products }: TopProductsCardProps): React.JSX.Element {

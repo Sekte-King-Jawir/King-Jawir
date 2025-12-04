@@ -1,9 +1,17 @@
 'use client'
 
-import type { SellerStats } from '@/hooks'
+// Local type to match SellerStats from hooks
+interface SellerStatsLocal {
+  totalRevenue: number
+  totalOrders: number
+  totalProducts: number
+  pendingOrders: number
+  completedOrders: number
+  cancelledOrders: number
+}
 
 interface OrderStatsChartProps {
-  stats: SellerStats
+  stats: SellerStatsLocal
 }
 
 export function OrderStatsChart({ stats }: OrderStatsChartProps): React.JSX.Element {

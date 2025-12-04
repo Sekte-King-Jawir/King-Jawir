@@ -1,4 +1,19 @@
-import type { Category, Product, FlashDeal, Brand, Collection, Testimonial } from '@/types'
+import type { Category, FlashDeal, Brand, Collection, Testimonial } from '@/types'
+
+// ============================================================================
+// HOME PAGE DATA TYPES - Data showcase untuk landing page
+// ============================================================================
+
+interface HomeProduct {
+  id: string
+  name: string
+  slug: string
+  price: number
+  stock: number
+  image: string | null
+  category: { id: string; name: string; slug: string }
+  store: { id: string; name: string }
+}
 
 // ============================================================================
 // CATEGORIES DATA
@@ -14,10 +29,10 @@ export const categories: Category[] = [
 ]
 
 // ============================================================================
-// PRODUCTS DATA
+// PRODUCTS DATA - Untuk showcase homepage
 // ============================================================================
 
-export const products: Product[] = [
+export const products: HomeProduct[] = [
   {
     id: '1',
     name: 'Apple iPhone 14 Pro Max 128GB Deep Purple',

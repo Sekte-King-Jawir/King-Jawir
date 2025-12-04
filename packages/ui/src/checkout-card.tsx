@@ -114,10 +114,11 @@ export function CheckoutCard({
       <div className="divide-y divide-slate-200 dark:divide-slate-700">
         {items.map(item => {
           const imageSrc: string | null | undefined = item.product.image
+          const hasValidImage = imageSrc !== null && imageSrc !== undefined && imageSrc.trim() !== ''
           return (
             <div key={item.id} className="px-6 py-4 flex items-center gap-4">
               <div className="w-16 h-16 bg-slate-100 dark:bg-slate-700 rounded-lg overflow-hidden shrink-0">
-                {imageSrc?.trim() ? (
+                {hasValidImage ? (
                   <ImageWrapper
                     src={imageSrc}
                     alt={item.product.name}

@@ -22,9 +22,9 @@ export function CartSummary({
   const [cardNumber, setCardNumber] = useState('')
 
   const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('en-US', {
+    return new Intl.NumberFormat('id-ID', {
       style: 'currency',
-      currency: 'USD',
+      currency: 'IDR',
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(price)
@@ -39,31 +39,31 @@ export function CartSummary({
 
   return (
     <div className={styles.summary}>
-      <h2 className={styles.title}>Order Summary</h2>
+      <h2 className={styles.title}>Ringkasan Pesanan</h2>
 
       <div className={styles.inputGroup}>
-        <label className={styles.label}>Discount code / Promo code</label>
+        <label className={styles.label}>Kode Promo</label>
         <input
           type="text"
           className={styles.input}
-          placeholder="Code"
+          placeholder="Masukkan kode"
           value={promoCode}
           onChange={e => setPromoCode(e.target.value)}
         />
       </div>
 
       <div className={styles.inputGroup}>
-        <label className={styles.label}>Your bonus card number</label>
+        <label className={styles.label}>Nomor Kartu Bonus</label>
         <div className={styles.inputWithButton}>
           <input
             type="text"
             className={styles.input}
-            placeholder="Enter Card Number"
+            placeholder="Masukkan nomor kartu"
             value={cardNumber}
             onChange={e => setCardNumber(e.target.value)}
           />
           <button className={styles.applyButton} onClick={handleApplyCard} disabled={!cardNumber}>
-            Apply
+            Terapkan
           </button>
         </div>
       </div>
@@ -74,11 +74,11 @@ export function CartSummary({
           <span className={styles.rowValue}>{formatPrice(subtotal)}</span>
         </div>
         <div className={styles.row}>
-          <span className={styles.rowLabel}>Estimated Tax</span>
+          <span className={styles.rowLabel}>Pajak</span>
           <span className={styles.rowValue}>{formatPrice(estimatedTax)}</span>
         </div>
         <div className={styles.row}>
-          <span className={styles.rowLabel}>Estimated shipping & Handling</span>
+          <span className={styles.rowLabel}>Ongkos Kirim</span>
           <span className={styles.rowValue}>{formatPrice(shippingCost)}</span>
         </div>
       </div>
@@ -93,7 +93,7 @@ export function CartSummary({
         onClick={onCheckout}
         disabled={isLoading || subtotal === 0}
       >
-        {isLoading ? 'Processing...' : 'Checkout'}
+        {isLoading ? 'Memproses...' : 'Bayar Sekarang'}
       </button>
     </div>
   )

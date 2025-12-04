@@ -1,6 +1,14 @@
 'use client'
 
-import type { SellerStats } from '@/hooks'
+// Local type to match SellerStats from hooks
+interface SellerStatsLocal {
+  totalRevenue: number
+  totalOrders: number
+  totalProducts: number
+  pendingOrders: number
+  completedOrders: number
+  cancelledOrders: number
+}
 
 interface StatCardProps {
   title: string
@@ -41,7 +49,7 @@ export function StatCard({ title, value, icon, trend, color }: StatCardProps): R
 }
 
 interface StatsGridProps {
-  stats: SellerStats
+  stats: SellerStatsLocal
 }
 
 export function StatsGrid({ stats }: StatsGridProps): React.JSX.Element {

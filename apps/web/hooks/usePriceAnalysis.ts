@@ -3,18 +3,28 @@ import {
   priceAnalysisService,
   type PriceAnalysisRequest,
   type PriceAnalysisResult,
+  type WebSocketMessage,
 } from '@/lib/api'
 
-interface StreamMessage {
-  type: 'progress' | 'complete' | 'error'
-  step?: string
-  message?: string
-  progress?: number
-  data?: PriceAnalysisResult
-  error?: string
+interface StreamMessage extends WebSocketMessage {
+  type: string
+  step?: string | undefined
+  data?: PriceAnalysisResult | undefined
+  error?: string | undefined
 }
 
-export function usePriceAnalysis() {
+interface UsePriceAnalysisReturn {
+  loading: boolean
+  error: string | null
+  result: PriceAnalysisResult | null
+  streamProgress: number
+  streamMessage: string
+  analyze: (data: PriceAnalysisRequest) => Promise<{ success: boolean; message?: string; data?: PriceAnalysisResult }>
+  analyzeWithStream: (data: PriceAnalysisRequest) => void
+  cancelStream: () => void
+}
+
+export function usePriceAnalysis(): UsePriceAnalysisReturn {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [result, setResult] = useState<PriceAnalysisResult | null>(null)
@@ -30,7 +40,7 @@ export function usePriceAnalysis() {
     try {
       const response = await priceAnalysisService.analyze(data)
 
-      if (response.success && response.data) {
+      if (response.success && response.data !== undefined && response.data !== null) {
         setResult(response.data)
       }
 
@@ -52,22 +62,23 @@ export function usePriceAnalysis() {
     setStreamMessage('Memulai analisis...')
 
     // Close existing connection if any
-    if (wsRef.current) {
+    if (wsRef.current !== null) {
       wsRef.current.close()
     }
 
     const ws = priceAnalysisService.createStreamConnection(
-      (message: StreamMessage) => {
-        if (message.type === 'progress') {
-          setStreamProgress(message.progress || 0)
-          setStreamMessage(message.message || '')
-        } else if (message.type === 'complete') {
-          setResult(message.data || null)
+      (message: WebSocketMessage) => {
+        const streamMsg = message as StreamMessage
+        if (streamMsg.type === 'progress') {
+          setStreamProgress(streamMsg.progress ?? 0)
+          setStreamMessage(streamMsg.message ?? '')
+        } else if (streamMsg.type === 'complete') {
+          setResult(streamMsg.data ?? null)
           setLoading(false)
           setStreamProgress(100)
           setStreamMessage('Analisis selesai!')
-        } else if (message.type === 'error') {
-          setError(message.error || 'Analisis gagal')
+        } else if (streamMsg.type === 'error') {
+          setError(streamMsg.error ?? 'Analisis gagal')
           setLoading(false)
         }
       },
@@ -94,7 +105,7 @@ export function usePriceAnalysis() {
   }, [])
 
   const cancelStream = useCallback(() => {
-    if (wsRef.current) {
+    if (wsRef.current !== null) {
       wsRef.current.close()
       wsRef.current = null
       setLoading(false)
@@ -104,7 +115,7 @@ export function usePriceAnalysis() {
   // Cleanup on unmount
   useEffect(() => {
     return () => {
-      if (wsRef.current) {
+      if (wsRef.current !== null) {
         wsRef.current.close()
       }
     }

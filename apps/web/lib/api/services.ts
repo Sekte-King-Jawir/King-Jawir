@@ -31,23 +31,23 @@ export interface UserResponse {
 }
 
 export const authService = {
-  async me(): Promise<ApiResponse<UserResponse>> {
+  me(): Promise<ApiResponse<UserResponse>> {
     return apiClient.get<UserResponse>(API_ENDPOINTS.AUTH.ME)
   },
 
-  async login(data: LoginRequest): Promise<ApiResponse<UserResponse>> {
+  login(data: LoginRequest): Promise<ApiResponse<UserResponse>> {
     return apiClient.post<UserResponse>(API_ENDPOINTS.AUTH.LOGIN, data)
   },
 
-  async register(data: RegisterRequest): Promise<ApiResponse<UserResponse>> {
+  register(data: RegisterRequest): Promise<ApiResponse<UserResponse>> {
     return apiClient.post<UserResponse>(API_ENDPOINTS.AUTH.REGISTER, data)
   },
 
-  async logout(): Promise<ApiResponse<void>> {
+  logout(): Promise<ApiResponse<void>> {
     return apiClient.post<void>(API_ENDPOINTS.AUTH.LOGOUT)
   },
 
-  async changePassword(oldPassword: string, newPassword: string): Promise<ApiResponse<void>> {
+  changePassword(oldPassword: string, newPassword: string): Promise<ApiResponse<void>> {
     return apiClient.post<void>(API_ENDPOINTS.AUTH.CHANGE_PASSWORD, {
       oldPassword,
       newPassword,
@@ -73,20 +73,20 @@ export interface ProductResponse {
 }
 
 export const productService = {
-  async getAll(params?: GetProductsParams): Promise<ApiResponse<PaginatedResponse<Product>>> {
-    const query = buildQueryString(params || {})
+  getAll(params?: GetProductsParams): Promise<ApiResponse<PaginatedResponse<Product>>> {
+    const query = params !== undefined ? buildQueryString(params as Record<string, string | number | boolean | undefined>) : ''
     return apiClient.get<PaginatedResponse<Product>>(`${API_ENDPOINTS.PRODUCTS.LIST}${query}`)
   },
 
-  async getBySlug(slug: string): Promise<ApiResponse<ProductResponse>> {
+  getBySlug(slug: string): Promise<ApiResponse<ProductResponse>> {
     return apiClient.get<ProductResponse>(API_ENDPOINTS.PRODUCTS.BY_SLUG(slug))
   },
 
-  async getMyProducts(params?: {
+  getMyProducts(params?: {
     page?: number
     limit?: number
   }): Promise<ApiResponse<PaginatedResponse<Product>>> {
-    const query = buildQueryString(params || {})
+    const query = params !== undefined ? buildQueryString(params as Record<string, string | number | boolean | undefined>) : ''
     return apiClient.get<PaginatedResponse<Product>>(
       `${API_ENDPOINTS.PRODUCTS.MY_PRODUCTS}${query}`
     )
@@ -106,11 +106,11 @@ export interface CategoryResponse {
 }
 
 export const categoryService = {
-  async getAll(): Promise<ApiResponse<CategoriesResponse>> {
+  getAll(): Promise<ApiResponse<CategoriesResponse>> {
     return apiClient.get<CategoriesResponse>(API_ENDPOINTS.CATEGORIES.LIST)
   },
 
-  async getBySlug(slug: string): Promise<ApiResponse<CategoryResponse>> {
+  getBySlug(slug: string): Promise<ApiResponse<CategoryResponse>> {
     return apiClient.get<CategoryResponse>(API_ENDPOINTS.CATEGORIES.BY_SLUG(slug))
   },
 }
@@ -128,25 +128,25 @@ export interface StoreResponse {
 }
 
 export const storeService = {
-  async getAll(): Promise<ApiResponse<StoresResponse>> {
+  getAll(): Promise<ApiResponse<StoresResponse>> {
     return apiClient.get<StoresResponse>(API_ENDPOINTS.STORES.LIST)
   },
 
-  async getBySlug(slug: string): Promise<ApiResponse<StoreResponse>> {
+  getBySlug(slug: string): Promise<ApiResponse<StoreResponse>> {
     return apiClient.get<StoreResponse>(API_ENDPOINTS.STORES.BY_SLUG(slug))
   },
 
-  async getStoreProducts(
+  getStoreProducts(
     slug: string,
     params?: { page?: number; limit?: number }
   ): Promise<ApiResponse<PaginatedResponse<Product>>> {
-    const query = buildQueryString(params || {})
+    const query = params !== undefined ? buildQueryString(params as Record<string, string | number | boolean | undefined>) : ''
     return apiClient.get<PaginatedResponse<Product>>(
       `${API_ENDPOINTS.STORES.PRODUCTS(slug)}${query}`
     )
   },
 
-  async getMyStore(): Promise<ApiResponse<StoreResponse>> {
+  getMyStore(): Promise<ApiResponse<StoreResponse>> {
     return apiClient.get<StoreResponse>(API_ENDPOINTS.STORES.MY_STORE)
   },
 }
@@ -167,19 +167,19 @@ export interface AddToCartRequest {
 }
 
 export const cartService = {
-  async getCart(): Promise<ApiResponse<CartResponse>> {
+  getCart(): Promise<ApiResponse<CartResponse>> {
     return apiClient.get<CartResponse>(API_ENDPOINTS.CART.GET)
   },
 
-  async addItem(data: AddToCartRequest): Promise<ApiResponse<CartItem>> {
+  addItem(data: AddToCartRequest): Promise<ApiResponse<CartItem>> {
     return apiClient.post<CartItem>(API_ENDPOINTS.CART.ADD, data)
   },
 
-  async updateQuantity(itemId: string, quantity: number): Promise<ApiResponse<CartItem>> {
+  updateQuantity(itemId: string, quantity: number): Promise<ApiResponse<CartItem>> {
     return apiClient.put<CartItem>(API_ENDPOINTS.CART.UPDATE(itemId), { quantity })
   },
 
-  async removeItem(itemId: string): Promise<ApiResponse<void>> {
+  removeItem(itemId: string): Promise<ApiResponse<void>> {
     return apiClient.delete<void>(API_ENDPOINTS.CART.REMOVE(itemId))
   },
 }
@@ -197,28 +197,28 @@ export interface OrderResponse {
 }
 
 export const orderService = {
-  async getAll(params?: {
+  getAll(params?: {
     page?: number
     limit?: number
   }): Promise<ApiResponse<PaginatedResponse<Order>>> {
-    const query = buildQueryString(params || {})
+    const query = params !== undefined ? buildQueryString(params as Record<string, string | number | boolean | undefined>) : ''
     return apiClient.get<PaginatedResponse<Order>>(`${API_ENDPOINTS.ORDERS.LIST}${query}`)
   },
 
-  async getById(orderId: string): Promise<ApiResponse<OrderResponse>> {
+  getById(orderId: string): Promise<ApiResponse<OrderResponse>> {
     return apiClient.get<OrderResponse>(API_ENDPOINTS.ORDERS.BY_ID(orderId))
   },
 
   // Checkout - creates order from current cart items
-  async checkout(): Promise<ApiResponse<Order>> {
+  checkout(): Promise<ApiResponse<Order>> {
     return apiClient.post<Order>(API_ENDPOINTS.ORDERS.CREATE)
   },
 
-  async getSellerOrders(params?: {
+  getSellerOrders(params?: {
     page?: number
     limit?: number
   }): Promise<ApiResponse<PaginatedResponse<Order>>> {
-    const query = buildQueryString(params || {})
+    const query = params !== undefined ? buildQueryString(params as Record<string, string | number | boolean | undefined>) : ''
     return apiClient.get<PaginatedResponse<Order>>(`${API_ENDPOINTS.ORDERS.SELLER_ORDERS}${query}`)
   },
 }
@@ -239,11 +239,11 @@ export interface CreateReviewRequest {
 }
 
 export const reviewService = {
-  async getProductReviews(productSlug: string): Promise<ApiResponse<ReviewsResponse>> {
+  getProductReviews(productSlug: string): Promise<ApiResponse<ReviewsResponse>> {
     return apiClient.get<ReviewsResponse>(API_ENDPOINTS.REVIEWS.PRODUCT(productSlug))
   },
 
-  async create(data: CreateReviewRequest): Promise<ApiResponse<Review>> {
+  create(data: CreateReviewRequest): Promise<ApiResponse<Review>> {
     return apiClient.post<Review>(API_ENDPOINTS.REVIEWS.CREATE, data)
   },
 }
@@ -265,11 +265,11 @@ export interface UpdateProfileRequest {
 }
 
 export const profileService = {
-  async get(): Promise<ApiResponse<ProfileResponse>> {
+  get(): Promise<ApiResponse<ProfileResponse>> {
     return apiClient.get<ProfileResponse>(API_ENDPOINTS.PROFILE.GET)
   },
 
-  async update(data: UpdateProfileRequest): Promise<ApiResponse<ProfileResponse>> {
+  update(data: UpdateProfileRequest): Promise<ApiResponse<ProfileResponse>> {
     return apiClient.put<ProfileResponse>(API_ENDPOINTS.PROFILE.UPDATE, data)
   },
 }
@@ -319,37 +319,44 @@ export interface PriceAnalysisResult {
   recommendation?: string
 }
 
+export interface WebSocketMessage {
+  type: string
+  data?: unknown
+  message?: string
+  progress?: number
+}
+
 export const priceAnalysisService = {
-  async analyze(data: PriceAnalysisRequest): Promise<ApiResponse<PriceAnalysisResult>> {
+  analyze(data: PriceAnalysisRequest): Promise<ApiResponse<PriceAnalysisResult>> {
     return apiClient.post<PriceAnalysisResult>(API_ENDPOINTS.PRICE_ANALYSIS.ANALYZE, data)
   },
 
   // WebSocket streaming connection
   createStreamConnection(
-    onMessage: (data: any) => void,
+    onMessage: (data: WebSocketMessage) => void,
     onError?: (error: Error) => void,
     onClose?: () => void
   ): WebSocket {
     const wsUrl = `${API_CONFIG.WS_URL}${API_ENDPOINTS.PRICE_ANALYSIS.STREAM}`
     const ws = new WebSocket(wsUrl)
 
-    ws.onmessage = event => {
+    ws.onmessage = (event: MessageEvent<string>) => {
       try {
-        const data = JSON.parse(event.data)
+        const data = JSON.parse(event.data) as WebSocketMessage
         onMessage(data)
       } catch (err) {
         console.error('Failed to parse WebSocket message:', err)
       }
     }
 
-    ws.onerror = event => {
-      if (onError) {
+    ws.onerror = () => {
+      if (onError !== undefined) {
         onError(new Error('WebSocket error'))
       }
     }
 
     ws.onclose = () => {
-      if (onClose) {
+      if (onClose !== undefined) {
         onClose()
       }
     }

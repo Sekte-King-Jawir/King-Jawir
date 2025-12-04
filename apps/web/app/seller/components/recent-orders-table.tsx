@@ -2,13 +2,47 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import type { SellerOrder } from '@/hooks'
 
-interface RecentOrdersTableProps {
-  orders: SellerOrder[]
+// Local types to match SellerOrder from hooks
+interface OrderItem {
+  id: string
+  quantity: number
+  price: number
+  product: {
+    id: string
+    name: string
+    slug: string
+    image: string | null
+  }
 }
 
-const statusConfig = {
+interface SellerOrderLocal {
+  id: string
+  status: 'PENDING' | 'PAID' | 'SHIPPED' | 'DONE' | 'CANCELLED'
+  total: number
+  createdAt: string
+  user: {
+    id: string
+    name: string
+    email: string
+    phone: string | null
+    address: string | null
+  }
+  items: OrderItem[]
+}
+
+interface RecentOrdersTableProps {
+  orders: SellerOrderLocal[]
+}
+
+type OrderStatus = 'PENDING' | 'PAID' | 'SHIPPED' | 'DONE' | 'CANCELLED'
+
+interface StatusConfigItem {
+  label: string
+  color: string
+}
+
+const statusConfig: Record<OrderStatus, StatusConfigItem> = {
   PENDING: {
     label: 'Menunggu',
     color: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400',

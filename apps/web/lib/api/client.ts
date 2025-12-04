@@ -66,8 +66,12 @@ export class ApiClient {
       const data = (await response.json()) as Record<string, unknown>
 
       if (!response.ok) {
+        // Extract error info from response
+        const errorObj = data.error as { code?: string; details?: unknown } | undefined
+        const errorCode = errorObj?.code ?? 'UNKNOWN_ERROR'
+
         // If unauthorized (401) or token invalid, try to refresh token
-        if (response.status === 401 || data.error?.code === 'UNAUTHORIZED') {
+        if (response.status === 401 || errorCode === 'UNAUTHORIZED') {
           // Don't try to refresh if we're already refreshing or logging in
           const isAuthRequest =
             endpoint.includes('/auth/refresh') || endpoint.includes('/auth/login')
@@ -91,9 +95,7 @@ export class ApiClient {
           }
         }
 
-        const errorObj = data.error as { code?: string; details?: unknown } | undefined
         const message = typeof data.message === 'string' ? data.message : 'Request failed'
-        const errorCode = typeof errorObj?.code === 'string' ? errorObj.code : 'UNKNOWN_ERROR'
         const errorDetails = errorObj?.details
 
         throw new ApiClientError(message, errorCode, response.status, errorDetails)

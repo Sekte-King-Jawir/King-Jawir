@@ -18,7 +18,7 @@ function OrderHistoryContent(): React.JSX.Element {
   )
 
   useEffect(() => {
-    fetchOrders()
+    void fetchOrders()
   }, [fetchOrders])
 
   useEffect(() => {
