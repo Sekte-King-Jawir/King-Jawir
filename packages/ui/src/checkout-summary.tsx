@@ -32,21 +32,21 @@ export function CheckoutSummary({
   currencyOptions = { locale: 'id-ID', currency: 'IDR' },
   formatPrice: customFormatPrice,
 }: CheckoutSummaryProps): JSX.Element {
-  const formatPrice = customFormatPrice ?? ((price: number): string => {
-    return new Intl.NumberFormat(currencyOptions.locale, {
-      style: 'currency',
-      currency: currencyOptions.currency,
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(price)
-  })
+  const formatPrice =
+    customFormatPrice ??
+    ((price: number): string => {
+      return new Intl.NumberFormat(currencyOptions.locale, {
+        style: 'currency',
+        currency: currencyOptions.currency,
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+      }).format(price)
+    })
 
   return (
     <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
       <div className="px-6 py-4 border-b border-slate-200 dark:border-slate-700">
-        <h2 className="font-semibold text-slate-900 dark:text-white">
-          Ringkasan Pesanan
-        </h2>
+        <h2 className="font-semibold text-slate-900 dark:text-white">Ringkasan Pesanan</h2>
       </div>
 
       <div className="p-6">
