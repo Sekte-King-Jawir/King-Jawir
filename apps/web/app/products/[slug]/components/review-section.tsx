@@ -165,9 +165,7 @@ export function ReviewSection({ productSlug, productId }: ReviewSectionProps): R
     <div className="mt-12 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
       {/* Header */}
       <div className="px-6 py-4 border-b border-slate-200 dark:border-slate-700">
-        <h2 className="text-xl font-bold text-slate-900 dark:text-white">
-          Ulasan Produk
-        </h2>
+        <h2 className="text-xl font-bold text-slate-900 dark:text-white">Ulasan Produk</h2>
       </div>
 
       <div className="p-6">
