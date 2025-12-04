@@ -66,7 +66,7 @@ export function NavbarWrapper() {
   const handleLogout = (): void => {
     authService
       .logout()
-      .catch((error) => {
+      .catch(error => {
         console.error('Logout failed:', error)
       })
       .finally(() => {
