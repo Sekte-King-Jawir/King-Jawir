@@ -72,10 +72,10 @@ export default function HomePage(): React.JSX.Element {
               🚀 Analisis Sekarang
             </Link>
             <Link
-              href="#how-it-works"
+              href="/products"
               className="w-full sm:w-auto px-8 py-4 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 rounded-xl font-semibold text-lg border-2 border-slate-200 dark:border-slate-700 hover:border-blue-400 dark:hover:border-blue-600 transition-all"
             >
-              📖 Cara Kerja
+              🛒 Coba Integrasi Marketplace
             </Link>
           </div>
         </div>

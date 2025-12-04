@@ -1,11 +1,12 @@
 import { Elysia } from 'elysia'
 import { priceAnalysisService } from './price_analysis_service'
+import { logger } from '../lib/logger'
 
 export const priceAnalysisWebSocket = new Elysia().ws('/api/price-analysis/stream', {
   message(ws, message) {
     // Handle incoming WebSocket messages for price analysis streaming
     try {
-      console.log('Received WebSocket message:', message)
+      logger.debug({ msg: 'WebSocket message received', message })
 
       // Message is already parsed by Elysia, no need to JSON.parse
       const data = typeof message === 'string' ? JSON.parse(message) : message
@@ -32,7 +33,10 @@ export const priceAnalysisWebSocket = new Elysia().ws('/api/price-analysis/strea
             data.userPrice
           )
           .catch(error => {
-            console.error('Stream analysis error:', error)
+            logger.error({
+              msg: 'Stream analysis error',
+              error: error instanceof Error ? error.message : 'Unknown',
+            })
             ws.send(
               JSON.stringify({
                 type: 'error',
@@ -49,7 +53,10 @@ export const priceAnalysisWebSocket = new Elysia().ws('/api/price-analysis/strea
         )
       }
     } catch (error) {
-      console.error('WebSocket message parsing error:', error)
+      logger.error({
+        msg: 'WebSocket parsing error',
+        error: error instanceof Error ? error.message : 'Unknown',
+      })
       ws.send(
         JSON.stringify({
           type: 'error',
@@ -59,7 +66,7 @@ export const priceAnalysisWebSocket = new Elysia().ws('/api/price-analysis/strea
     }
   },
   open(ws) {
-    console.log('WebSocket connection opened for price analysis')
+    logger.info('WebSocket connection opened for price analysis')
     ws.send(
       JSON.stringify({
         type: 'connected',
@@ -68,6 +75,6 @@ export const priceAnalysisWebSocket = new Elysia().ws('/api/price-analysis/strea
     )
   },
   close() {
-    console.log('WebSocket connection closed')
+    logger.info('WebSocket connection closed')
   },
 })

@@ -44,8 +44,12 @@ export interface ApiResponse<T = unknown> {
   }
 }
 
+// Import logger
+import { logger } from './logger'
+
 // Success Response Helper
 export function successResponse<T>(message: string, data?: T): ApiResponse<T> {
+  logger.debug({ msg: '✅ Success response', message, hasData: !!data })
   return {
     success: true,
     message,
@@ -59,6 +63,7 @@ export function errorResponse(
   code: ErrorCodeType,
   details?: Record<string, string> | null
 ): ApiResponse<never> {
+  logger.warn({ msg: '⚠️  Error response', code, message, details })
   return {
     success: false,
     message,
