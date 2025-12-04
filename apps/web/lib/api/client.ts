@@ -67,7 +67,8 @@ export class ApiClient {
 
       if (!response.ok) {
         // If unauthorized (401) or token invalid, clear storage
-        if (response.status === 401 || data.error?.code === 'UNAUTHORIZED') {
+        const errorObj = data.error as { code?: string; details?: unknown } | undefined
+        if (response.status === 401 || errorObj?.code === 'UNAUTHORIZED') {
           if (typeof window !== 'undefined') {
             localStorage.removeItem('user')
             localStorage.removeItem('token')
@@ -76,16 +77,10 @@ export class ApiClient {
           }
         }
 
-        throw new ApiClientError(
-          data.message || 'Request failed',
-          data.error?.code || 'UNKNOWN_ERROR',
-          response.status,
-          data.error?.details
-        )
         const message = typeof data.message === 'string' ? data.message : 'Request failed'
-        const errorObj = data.error as Record<string, unknown> | undefined
         const errorCode = typeof errorObj?.code === 'string' ? errorObj.code : 'UNKNOWN_ERROR'
         const errorDetails = errorObj?.details
+
         throw new ApiClientError(message, errorCode, response.status, errorDetails)
       }
 
