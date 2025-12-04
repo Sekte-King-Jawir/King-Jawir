@@ -190,9 +190,7 @@ export default function CategoryDetailPage(): React.JSX.Element {
                 {category?.name ?? 'Memuat...'}
               </h1>
               <p className="text-slate-600 dark:text-slate-400 mt-1">
-                {category !== null
-                  ? `${category.productCount} produk ditemukan`
-                  : 'Memuat...'}
+                {category !== null ? `${category.productCount} produk ditemukan` : 'Memuat...'}
               </p>
             </div>
 

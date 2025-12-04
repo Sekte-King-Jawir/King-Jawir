@@ -167,13 +167,7 @@ export default function CategoriesPage(): React.JSX.Element {
             {filteredCategories.map((category, index) => {
               const colorIndex = index % categoryColors.length
               const colorClass = categoryColors[colorIndex] ?? 'from-blue-500 to-cyan-400'
-              return (
-                <CategoryCard
-                  key={category.id}
-                  category={category}
-                  colorClass={colorClass}
-                />
-              )
+              return <CategoryCard key={category.id} category={category} colorClass={colorClass} />
             })}
           </div>
         )}
@@ -213,9 +207,7 @@ function CategoryCard({
         </h3>
 
         {/* Product Count */}
-        <p className="text-sm text-slate-500 dark:text-slate-400">
-          {category.productCount} produk
-        </p>
+        <p className="text-sm text-slate-500 dark:text-slate-400">{category.productCount} produk</p>
       </div>
 
       {/* Arrow indicator */}
