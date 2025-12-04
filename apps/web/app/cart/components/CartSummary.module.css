@@ -1,0 +1,146 @@
+.summary {
+  background: #fff;
+  border: 1px solid #f0f0f0;
+  border-radius: 12px;
+  padding: 24px;
+  position: sticky;
+  top: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #000;
+  margin: 0 0 24px 0;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.inputGroup {
+  margin-bottom: 16px;
+}
+
+.label {
+  display: block;
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.input:focus {
+  border-color: #000;
+}
+
+.input::placeholder {
+  color: #999;
+}
+
+.inputWithButton {
+  display: flex;
+  gap: 8px;
+}
+
+.inputWithButton .input {
+  flex: 1;
+}
+
+.applyButton {
+  padding: 12px 20px;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #000;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.applyButton:hover:not(:disabled) {
+  border-color: #000;
+}
+
+.applyButton:disabled {
+  color: #999;
+  cursor: not-allowed;
+}
+
+.breakdown {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+}
+
+.rowLabel {
+  font-size: 14px;
+  color: #666;
+}
+
+.rowValue {
+  font-size: 14px;
+  font-weight: 500;
+  color: #000;
+}
+
+.totalRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+  margin-top: 8px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.totalLabel {
+  font-size: 16px;
+  font-weight: 600;
+  color: #000;
+}
+
+.totalValue {
+  font-size: 20px;
+  font-weight: 700;
+  color: #000;
+}
+
+.checkoutButton {
+  width: 100%;
+  padding: 16px 24px;
+  background: #000;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 16px;
+}
+
+.checkoutButton:hover:not(:disabled) {
+  background: #333;
+}
+
+.checkoutButton:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}

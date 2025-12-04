@@ -63,7 +63,7 @@ export const googleRoute = new Elysia()
   // Google OAuth callback
   .get(
     '/google/callback',
-    async ({ query, set, cookie, jwtAccess, jwtRefresh }) => {
+    async ({ query, set, cookie, jwtAccess, jwtRefresh, redirect }) => {
       const { code, state } = query
 
       if (!code || !state) {
@@ -127,21 +127,25 @@ export const googleRoute = new Elysia()
         path: '/',
       })
 
-      // Return JSON untuk testing (nanti ganti ke redirect)
-      return {
-        success: true,
-        message: 'Google login successful',
-        data: {
-          user: result.user,
-          isNewUser: result.isNewUser,
-          accessToken,
-          refreshToken,
-        },
-      }
+      // Set user cookie (non-httpOnly for client access)
+      cookie['user']?.set({
+        value: JSON.stringify({
+          id: result.user!.id,
+          email: result.user!.email,
+          name: result.user!.name,
+          avatar: result.user!.avatar,
+          role: result.user!.role,
+        }),
+        httpOnly: false,
+        secure: isProduction,
+        sameSite: 'lax',
+        maxAge: 7 * 24 * 60 * 60,
+        path: '/',
+      })
 
-      // Redirect ke frontend (uncomment untuk production)
-      // const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000'
-      // return redirect(`${frontendUrl}/auth/callback?isNewUser=${result.isNewUser}`)
+      // Redirect ke frontend
+      const frontendUrl = process.env['WEB_URL'] || 'http://localhost:4102'
+      return redirect(`${frontendUrl}?login=success`)
     },
     {
       query: t.Object({

@@ -11,6 +11,7 @@ import { orderRoutes, sellerOrderRoutes } from './order'
 import { reviewRoutes, productReviewsRoute } from './review'
 import { adminRoutes } from './admin'
 import { priceAnalysisRoutes } from './price-analysis'
+import { priceAnalysisWebSocket } from './price-analysis/websocket'
 
 const app = new Elysia()
   .onRequest(({ request }) => {
@@ -75,6 +76,7 @@ const app = new Elysia()
   .use(productReviewsRoute)
   .use(adminRoutes)
   .use(priceAnalysisRoutes)
+  .use(priceAnalysisWebSocket)
   .get('/', () => ({ message: 'Marketplace API' }), {
     detail: {
       tags: ['General'],

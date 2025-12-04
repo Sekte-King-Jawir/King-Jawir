@@ -1,0 +1,8 @@
+export { default as HeroSection } from './HeroSection'
+export { default as FeaturedProducts } from './FeaturedProducts'
+export { default as CategorySection } from './CategorySection'
+export { default as PromoBanner } from './PromoBanner'
+export { default as NewArrivals } from './NewArrivals'
+export { default as PopularProducts } from './PopularProducts'
+export { default as Newsletter } from './Newsletter'
+export { default as Footer } from './Footer'

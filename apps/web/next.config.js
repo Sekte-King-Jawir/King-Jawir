@@ -5,17 +5,13 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: '**',
+        hostname: 'via.placeholder.com',
       },
       {
-        protocol: 'http',
-        hostname: '**',
+        protocol: 'https',
+        hostname: '*.googleusercontent.com',
       },
     ],
-    unoptimized: false,
-    dangerouslyAllowSVG: true,
-    contentDispositionType: 'attachment',
-    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
 }
 

@@ -20,10 +20,15 @@
   "devDependencies": {
     "@repo/eslint-config": "*",
     "@repo/typescript-config": "*",
+    "@tailwindcss/postcss": "^4.1.17",
+    "@tailwindcss/typography": "^0.5.19",
     "@types/bun": "latest",
     "@types/react": "19.2.2",
     "@types/react-dom": "19.2.2",
+    "autoprefixer": "^10.4.22",
     "eslint": "^9.39.1",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.17",
     "typescript": "5.9.2"
   }
 }

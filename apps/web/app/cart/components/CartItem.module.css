@@ -1,0 +1,149 @@
+.cartItem {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 20px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.cartItem:last-child {
+  border-bottom: none;
+}
+
+.imageWrapper {
+  width: 80px;
+  height: 80px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #f8f8f8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.details {
+  flex: 1;
+  min-width: 0;
+}
+
+.name {
+  font-size: 14px;
+  font-weight: 500;
+  color: #000;
+  margin: 0 0 4px 0;
+  line-height: 1.4;
+}
+
+.productId {
+  font-size: 12px;
+  color: #999;
+  margin: 0;
+}
+
+.quantityControls {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.quantityButton {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  border: none;
+  font-size: 16px;
+  color: #333;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.quantityButton:hover:not(:disabled) {
+  background: #f5f5f5;
+}
+
+.quantityButton:disabled {
+  color: #ccc;
+  cursor: not-allowed;
+}
+
+.quantity {
+  min-width: 40px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+  color: #000;
+  border-left: 1px solid #e0e0e0;
+  border-right: 1px solid #e0e0e0;
+  padding: 6px 0;
+}
+
+.price {
+  font-size: 16px;
+  font-weight: 600;
+  color: #000;
+  min-width: 80px;
+  text-align: right;
+}
+
+.removeButton {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #999;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.removeButton:hover {
+  color: #000;
+}
+
+@media (max-width: 640px) {
+  .cartItem {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .details {
+    flex: 1 1 calc(100% - 100px);
+  }
+
+  .quantityControls {
+    order: 3;
+  }
+
+  .price {
+    order: 4;
+    min-width: auto;
+  }
+
+  .removeButton {
+    order: 5;
+  }
+}
