@@ -120,33 +120,6 @@ export default function HeroSection(): React.JSX.Element {
         </div>
       </div>
 
-      {/* Quick Categories */}
-      <div className="bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {[
-              { name: 'Elektronik', icon: '📱', count: 234 },
-              { name: 'Fashion', icon: '👕', count: 567 },
-              { name: 'Rumah Tangga', icon: '🏠', count: 189 },
-              { name: 'Olahraga', icon: '⚽', count: 145 },
-            ].map((cat) => (
-              <Link
-                key={cat.name}
-                href={`/category/${cat.name.toLowerCase().replace(' ', '-')}`}
-                className="flex items-center gap-3 p-4 rounded-xl bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors group"
-              >
-                <span className="text-2xl">{cat.icon}</span>
-                <div>
-                  <div className="font-semibold text-gray-900 dark:text-white group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors">
-                    {cat.name}
-                  </div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">{cat.count} Produk</div>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </div>
     </section>
   )
 }

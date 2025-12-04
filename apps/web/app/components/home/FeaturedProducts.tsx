@@ -3,28 +3,12 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useState } from 'react'
+import { useProductRating } from '@/hooks'
+import type { Product } from '@/types'
 
-interface Product {
-  id: string
-  name: string
-  slug: string
-  price: number
-  stock: number
-  image: string | null
-  category: {
-    id: string
-    name: string
-    slug: string
-  } | null
-  store: {
-    id: string
-    name: string
-  } | null
-}
-
-interface FeaturedProductsProps {
-  products: Product[]
-}
+// ============================================================================
+// CONSTANTS - UI Configuration (tidak ada logika bisnis)
+// ============================================================================
 
 const categoryEmojis: Record<string, string> = {
   elektronik: '📱',
@@ -49,19 +33,34 @@ const categoryColors: Record<string, { bg: string; text: string }> = {
   gaming: { bg: 'bg-indigo-100', text: 'text-indigo-600' },
 }
 
-function ProductCard({ product, index }: { product: Product; index: number }): React.JSX.Element {
+// ============================================================================
+// PROPS INTERFACES
+// ============================================================================
+
+interface FeaturedProductsProps {
+  products: Product[]
+}
+
+interface ProductCardProps {
+  product: Product
+  index: number
+}
+
+// ============================================================================
+// PRODUCT CARD - Pure UI Component with hooks
+// ============================================================================
+
+function ProductCard({ product, index }: ProductCardProps): React.JSX.Element {
   const [imgError, setImgError] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
   const [isLiked, setIsLiked] = useState(false)
+
+  // Business logic extracted to custom hook
+  const { rating, reviews } = useProductRating(product.id, index)
   
   const categorySlug = product.category?.slug ?? ''
   const emoji = categoryEmojis[categorySlug] ?? '📦'
   const colors = categoryColors[categorySlug] ?? { bg: 'bg-gray-100', text: 'text-gray-600' }
-
-  // Generate consistent rating based on product id (deterministic)
-  const idNum = parseInt(product.id, 10) || index + 1
-  const rating = (4.0 + (idNum % 10) / 10).toFixed(1)
-  const reviews = 50 + ((idNum * 37) % 450)
 
   return (
     <div
