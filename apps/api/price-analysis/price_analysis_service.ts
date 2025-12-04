@@ -3,6 +3,7 @@ import { generateChatCompletion } from '../lib/ai'
 
 interface PriceAnalysisResult {
   query: string
+  optimizedQuery?: string
   products: TokopediaProduct[]
   statistics: {
     min: number
@@ -19,6 +20,62 @@ interface PriceAnalysisResult {
 }
 
 export const priceAnalysisService = {
+  /**
+   * Optimize search query using AI to make it more specific and relevant
+   * @param query - Original user query
+   * @returns Optimized query string
+   */
+  async optimizeSearchQuery(query: string): Promise<string> {
+    try {
+      const prompt = `Kamu adalah search query optimizer untuk marketplace Indonesia (Tokopedia).
+
+Query user: "${query}"
+
+Tugas:
+1. Jika query hanya menyebutkan merek/model TANPA menyebut aksesori, tambahkan kata kunci spesifik produk utama
+2. Jika query SUDAH menyebutkan aksesori/produk spesifik (case, charger, dll), JANGAN ubah
+3. Gunakan bahasa Indonesia untuk marketplace lokal
+4. Buat query lebih spesifik dan menghindari hasil yang tidak relevan
+
+Contoh:
+- "iphone" → "iphone smartphone" (tambahkan kata kunci produk utama)
+- "samsung" → "samsung hp" (tambahkan kata kunci)
+- "laptop asus" → "laptop asus" (sudah spesifik)
+- "case iphone" → "case iphone" (JANGAN ubah, user memang cari case)
+- "charger samsung" → "charger samsung" (JANGAN ubah, user memang cari charger)
+- "macbook" → "macbook laptop" (tambahkan kata kunci)
+- "iphone 15" → "iphone 15 smartphone" (tambahkan kata kunci)
+- "sepatu nike" → "sepatu nike" (sudah spesifik)
+- "tempered glass iphone" → "tempered glass iphone" (JANGAN ubah)
+
+KEMBALIKAN HANYA query yang sudah dioptimasi, TANPA penjelasan, TANPA tanda kutip.`
+
+      const response = await generateChatCompletion(
+        [
+          {
+            role: 'system',
+            content: 'Kamu adalah query optimizer. Return HANYA optimized query string, tanpa penjelasan apapun.'
+          },
+          {
+            role: 'user',
+            content: prompt
+          }
+        ],
+        {
+          temperature: 0.3,
+          maxTokens: 100
+        }
+      )
+
+      const optimized = response.text.trim().replace(/["'`]/g, '').replace(/\n/g, ' ')
+      console.log(`🔍 Query optimization: "${query}" → "${optimized}"`)
+      return optimized || query
+    } catch (error) {
+      console.error('Error optimizing query:', error)
+      return query // Fallback to original query
+    }
+  },
+
   /**
    * Stream price analysis with real-time updates
    * @param query - Product search query
@@ -41,19 +98,27 @@ export const priceAnalysisService = {
         progress: 5,
       })
 
-      await this.delay(1000)
+      // Step 1.5: Optimize query with AI
+      onUpdate({
+        type: 'progress',
+        step: 'optimizing',
+        message: '🤖 Optimizing search query with AI...',
+        progress: 10,
+      })
+
+      const optimizedQuery = await this.optimizeSearchQuery(query)
 
       // Step 2: Fetch products
       onUpdate({
         type: 'progress',
         step: 'fetching',
-        message: '📊 Scanning Tokopedia marketplace...',
+        message: `📊 Searching for "${optimizedQuery}"...`,
         progress: 15,
       })
 
       let products: any[] = []
       try {
-        products = await priceAnalysisRepository.fetchTokopediaPrices(query, limit)
+        products = await priceAnalysisRepository.fetchTokopediaPrices(optimizedQuery, limit)
       } catch (fetchError) {
         console.error('Error fetching products:', fetchError)
         throw new Error(
@@ -190,6 +255,7 @@ export const priceAnalysisService = {
         progress: 100,
         data: {
           query,
+          optimizedQuery,
           products,
           statistics: {
             ...stats,
@@ -224,8 +290,12 @@ export const priceAnalysisService = {
     limit: number = 10,
     userPrice?: number
   ): Promise<PriceAnalysisResult> {
+    // Optimize query with AI
+    const optimizedQuery = await this.optimizeSearchQuery(query)
+    console.log(`🔍 Using optimized query: "${optimizedQuery}"`)
+
     // Fetch product data from Tokopedia
-    const products = await priceAnalysisRepository.fetchTokopediaPrices(query, limit)
+    const products = await priceAnalysisRepository.fetchTokopediaPrices(optimizedQuery, limit)
 
     if (products.length === 0) {
       throw new Error('No products found for the given query')
@@ -269,6 +339,7 @@ export const priceAnalysisService = {
 
     return {
       query,
+      optimizedQuery,
       products,
       statistics: {
         ...stats,

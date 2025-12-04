@@ -96,14 +96,22 @@ impl TokopediaService {
             }
         }
 
-        // Cache the result for 1 day (86400 seconds) if Redis is available
-        if let Some(conn) = &mut redis_conn {
-            if let Ok(products_json) = serde_json::to_string(&products) {
-                match conn.set_ex::<_, _, ()>(&cache_key, products_json, 86400).await {
-                    Ok(_) => println!("🗄️  Cached result for query: {query} (TTL: 1 day)"),
-                    Err(e) => println!("⚠️  Failed to cache result: {}", e),
+        // Only cache if we have sufficient results (at least the requested limit)
+        // This prevents caching empty or incomplete results
+        let should_cache = !products.is_empty() && products.len() >= limit;
+        
+        if should_cache {
+            // Cache the result for 1 day (86400 seconds) if Redis is available
+            if let Some(conn) = &mut redis_conn {
+                if let Ok(products_json) = serde_json::to_string(&products) {
+                    match conn.set_ex::<_, _, ()>(&cache_key, products_json, 86400).await {
+                        Ok(_) => println!("🗄️  Cached {} products for query: {query} (TTL: 1 day)", products.len()),
+                        Err(e) => println!("⚠️  Failed to cache result: {}", e),
+                    }
                 }
             }
+        } else {
+            println!("⚠️  Not caching: found {} products but requested {}", products.len(), limit);
         }
 
         Ok(products)
