@@ -35,22 +35,34 @@ impl TokopediaService {
         let cache_key = format!("tokopedia:{}", query);
         
         let conn_start = Instant::now();
-        let mut redis_conn = self.redis_client.get_async_connection().await?;
-        println!("⏱️  Redis connection: {:?}", conn_start.elapsed());
+        // Try to connect to Redis, but don't fail if it's not available
+        let mut redis_conn = match self.redis_client.get_async_connection().await {
+            Ok(conn) => {
+                println!("⏱️  Redis connection: {:?}", conn_start.elapsed());
+                Some(conn)
+            },
+            Err(e) => {
+                println!("⚠️  Redis connection failed: {}. Continuing without cache.", e);
+                None
+            }
+        };
 
-        // Try to get cached result
-        let cache_start = Instant::now();
-        if let Ok(cached) = redis_conn.get::<_, String>(&cache_key).await {
-            println!("⏱️  Redis GET: {:?}", cache_start.elapsed());
-            if !cached.is_empty() {
-                let parse_start = Instant::now();
-                let mut products: Vec<Product> = serde_json::from_str(&cached)?;
-                println!("⏱️  JSON parse: {:?}", parse_start.elapsed());
-                
-                // Apply limit to cached results
-                products.truncate(limit);
-                println!("🗄️  Cache hit for query: {query}, returning {} products (total: {:?})", products.len(), start.elapsed());
-                return Ok(products);
+        // Try to get cached result if Redis is available
+        if let Some(conn) = &mut redis_conn {
+            let cache_start = Instant::now();
+            if let Ok(cached) = conn.get::<_, String>(&cache_key).await {
+                println!("⏱️  Redis GET: {:?}", cache_start.elapsed());
+                if !cached.is_empty() {
+                    let parse_start = Instant::now();
+                    if let Ok(mut products) = serde_json::from_str::<Vec<Product>>(&cached) {
+                        println!("⏱️  JSON parse: {:?}", parse_start.elapsed());
+                        
+                        // Apply limit to cached results
+                        products.truncate(limit);
+                        println!("🗄️  Cache hit for query: {query}, returning {} products (total: {:?})", products.len(), start.elapsed());
+                        return Ok(products);
+                    }
+                }
             }
         }
 
@@ -84,10 +96,15 @@ impl TokopediaService {
             }
         }
 
-        // Cache the result for 1 day (86400 seconds)
-        let products_json = serde_json::to_string(&products)?;
-        let _: () = redis_conn.set_ex(&cache_key, products_json, 86400).await?;
-        println!("🗄️  Cached result for query: {query} (TTL: 1 day)");
+        // Cache the result for 1 day (86400 seconds) if Redis is available
+        if let Some(conn) = &mut redis_conn {
+            if let Ok(products_json) = serde_json::to_string(&products) {
+                match conn.set_ex::<_, _, ()>(&cache_key, products_json, 86400).await {
+                    Ok(_) => println!("🗄️  Cached result for query: {query} (TTL: 1 day)"),
+                    Err(e) => println!("⚠️  Failed to cache result: {}", e),
+                }
+            }
+        }
 
         Ok(products)
     }
