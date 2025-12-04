@@ -130,10 +130,42 @@ function FlashSaleSection() {
   }, [])
 
   const flashDeals = [
-    { id: 1, name: 'iPad Pro M2', emoji: '📱', price: 999, originalPrice: 1199, discount: 17, sold: 234 },
-    { id: 2, name: 'AirPods Max', emoji: '🎧', price: 429, originalPrice: 549, discount: 22, sold: 567 },
-    { id: 3, name: 'GoPro Hero 11', emoji: '📷', price: 349, originalPrice: 499, discount: 30, sold: 189 },
-    { id: 4, name: 'Nintendo Switch', emoji: '🎮', price: 279, originalPrice: 349, discount: 20, sold: 892 },
+    {
+      id: 1,
+      name: 'iPad Pro M2',
+      emoji: '📱',
+      price: 999,
+      originalPrice: 1199,
+      discount: 17,
+      sold: 234,
+    },
+    {
+      id: 2,
+      name: 'AirPods Max',
+      emoji: '🎧',
+      price: 429,
+      originalPrice: 549,
+      discount: 22,
+      sold: 567,
+    },
+    {
+      id: 3,
+      name: 'GoPro Hero 11',
+      emoji: '📷',
+      price: 349,
+      originalPrice: 499,
+      discount: 30,
+      sold: 189,
+    },
+    {
+      id: 4,
+      name: 'Nintendo Switch',
+      emoji: '🎮',
+      price: 279,
+      originalPrice: 349,
+      discount: 20,
+      sold: 892,
+    },
   ]
 
   return (
@@ -151,7 +183,9 @@ function FlashSaleSection() {
           <div className="text-center lg:text-left">
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full mb-4">
               <span className="animate-pulse text-xl">⚡</span>
-              <span className="text-white font-bold text-sm uppercase tracking-wider">Flash Sale</span>
+              <span className="text-white font-bold text-sm uppercase tracking-wider">
+                Flash Sale
+              </span>
             </div>
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-3">
               Mega Deals! 🔥
@@ -168,11 +202,16 @@ function FlashSaleSection() {
               { value: timeLeft.minutes, label: 'Menit' },
               { value: timeLeft.seconds, label: 'Detik' },
             ].map((item, i) => (
-              <div key={i} className="bg-white rounded-2xl p-4 md:p-5 min-w-[80px] md:min-w-[100px] text-center shadow-xl shadow-black/10">
+              <div
+                key={i}
+                className="bg-white rounded-2xl p-4 md:p-5 min-w-[80px] md:min-w-[100px] text-center shadow-xl shadow-black/10"
+              >
                 <div className="text-3xl md:text-4xl font-black text-gray-900 tabular-nums">
                   {String(item.value).padStart(2, '0')}
                 </div>
-                <div className="text-xs text-gray-500 font-semibold uppercase tracking-wider mt-1">{item.label}</div>
+                <div className="text-xs text-gray-500 font-semibold uppercase tracking-wider mt-1">
+                  {item.label}
+                </div>
               </div>
             ))}
           </div>
@@ -201,7 +240,7 @@ function FlashSaleSection() {
 
               {/* Info */}
               <h3 className="font-bold text-gray-900 mb-2 text-sm md:text-base">{deal.name}</h3>
-              
+
               {/* Progress Bar */}
               <div className="mb-3">
                 <div className="flex justify-between text-xs text-gray-500 mb-1">
@@ -209,7 +248,7 @@ function FlashSaleSection() {
                   <span>Tersisa {1000 - deal.sold}</span>
                 </div>
                 <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
-                  <div 
+                  <div
                     className="h-full bg-gradient-to-r from-rose-500 to-pink-500 rounded-full transition-all duration-1000"
                     style={{ width: `${(deal.sold / 1000) * 100}%` }}
                   />
@@ -236,7 +275,12 @@ function FlashSaleSection() {
           >
             Lihat Semua Promo
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M14 5l7 7m0 0l-7 7m7-7H3"
+              />
             </svg>
           </Link>
         </div>
@@ -266,13 +310,17 @@ function BrandsSection() {
           Brand Terpercaya & Official Partner
         </p>
         <div className="flex flex-wrap items-center justify-center gap-6 md:gap-12 lg:gap-16">
-          {brands.map((brand) => (
+          {brands.map(brand => (
             <div
               key={brand.name}
               className="flex items-center gap-3 px-6 py-3 rounded-2xl opacity-60 hover:opacity-100 hover:bg-gray-100 transition-all cursor-pointer group"
             >
-              <span className="text-4xl md:text-5xl group-hover:scale-125 transition-transform duration-300">{brand.emoji}</span>
-              <span className="text-lg md:text-xl font-bold text-gray-700 hidden sm:block">{brand.name}</span>
+              <span className="text-4xl md:text-5xl group-hover:scale-125 transition-transform duration-300">
+                {brand.emoji}
+              </span>
+              <span className="text-lg md:text-xl font-bold text-gray-700 hidden sm:block">
+                {brand.name}
+              </span>
             </div>
           ))}
         </div>
@@ -287,10 +335,38 @@ function BrandsSection() {
 
 function CollectionShowcase() {
   const collections = [
-    { id: 1, name: 'Trending', emoji: '🔥', count: 156, gradient: 'from-orange-500 to-red-500', description: 'Produk paling dicari' },
-    { id: 2, name: 'New Arrival', emoji: '✨', count: 48, gradient: 'from-blue-500 to-cyan-400', description: 'Baru datang' },
-    { id: 3, name: 'Best Seller', emoji: '⭐', count: 89, gradient: 'from-amber-500 to-yellow-400', description: 'Paling laris' },
-    { id: 4, name: 'Sale', emoji: '🏷️', count: 234, gradient: 'from-green-500 to-emerald-400', description: 'Diskon spesial' },
+    {
+      id: 1,
+      name: 'Trending',
+      emoji: '🔥',
+      count: 156,
+      gradient: 'from-orange-500 to-red-500',
+      description: 'Produk paling dicari',
+    },
+    {
+      id: 2,
+      name: 'New Arrival',
+      emoji: '✨',
+      count: 48,
+      gradient: 'from-blue-500 to-cyan-400',
+      description: 'Baru datang',
+    },
+    {
+      id: 3,
+      name: 'Best Seller',
+      emoji: '⭐',
+      count: 89,
+      gradient: 'from-amber-500 to-yellow-400',
+      description: 'Paling laris',
+    },
+    {
+      id: 4,
+      name: 'Sale',
+      emoji: '🏷️',
+      count: 234,
+      gradient: 'from-green-500 to-emerald-400',
+      description: 'Diskon spesial',
+    },
   ]
 
   return (
@@ -318,7 +394,7 @@ function CollectionShowcase() {
             >
               {/* Glow effect */}
               <div className="absolute inset-0 bg-white/0 group-hover:bg-white/10 transition-all duration-500" />
-              
+
               {/* Pattern */}
               <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAxOGMtNi42MjcgMC0xMiA1LjM3My0xMiAxMnM1LjM3MyAxMiAxMiAxMiAxMi01LjM3MyAxMi0xMi01LjM3My0xMi0xMi0xMnptMCAyMGMtNC40MTggMC04LTMuNTgyLTgtOHMzLjU4Mi04IDgtOCA4IDMuNTgyIDggOC0zLjU4MiA4LTggOHoiIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iLjEiLz48L2c+PC9zdmc+')] opacity-30" />
 
@@ -327,7 +403,9 @@ function CollectionShowcase() {
                   {item.emoji}
                 </span>
                 <div>
-                  <h3 className="text-white text-xl md:text-2xl lg:text-3xl font-bold mb-1">{item.name}</h3>
+                  <h3 className="text-white text-xl md:text-2xl lg:text-3xl font-bold mb-1">
+                    {item.name}
+                  </h3>
                   <p className="text-white/70 text-sm mb-1">{item.description}</p>
                   <p className="text-white/90 text-sm font-semibold">{item.count} Produk</p>
                 </div>
@@ -335,8 +413,18 @@ function CollectionShowcase() {
 
               {/* Arrow */}
               <div className="absolute bottom-6 right-6 w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all transform translate-y-4 group-hover:translate-y-0 duration-500">
-                <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                <svg
+                  className="w-6 h-6 text-white"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M14 5l7 7m0 0l-7 7m7-7H3"
+                  />
                 </svg>
               </div>
             </Link>
@@ -358,7 +446,8 @@ function TestimonialsSection() {
       name: 'Budi Santoso',
       avatar: '👨',
       role: 'Pelanggan Setia',
-      content: 'Pelayanan sangat memuaskan! Produk original dan pengiriman cepat. Pasti akan belanja lagi di sini.',
+      content:
+        'Pelayanan sangat memuaskan! Produk original dan pengiriman cepat. Pasti akan belanja lagi di sini.',
       rating: 5,
     },
     {
@@ -366,7 +455,8 @@ function TestimonialsSection() {
       name: 'Siti Rahma',
       avatar: '👩',
       role: 'Tech Enthusiast',
-      content: 'Harga kompetitif dengan kualitas produk yang terjamin. Customer service juga sangat responsif.',
+      content:
+        'Harga kompetitif dengan kualitas produk yang terjamin. Customer service juga sangat responsif.',
       rating: 5,
     },
     {
@@ -395,7 +485,7 @@ function TestimonialsSection() {
         </div>
 
         <div className="grid md:grid-cols-3 gap-6">
-          {testimonials.map((testimonial) => (
+          {testimonials.map(testimonial => (
             <div
               key={testimonial.id}
               className="bg-white rounded-3xl p-6 md:p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100"

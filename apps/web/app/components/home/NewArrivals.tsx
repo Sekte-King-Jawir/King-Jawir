@@ -51,12 +51,8 @@ export default function NewArrivals({ products }: NewArrivalsProps): React.JSX.E
             <span className="inline-flex items-center gap-2 px-3 py-1 bg-gradient-to-r from-blue-500 to-cyan-500 text-white text-xs font-semibold rounded-full mb-3">
               <span className="animate-pulse">✨</span> BARU DATANG
             </span>
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900">
-              Produk Terbaru
-            </h2>
-            <p className="text-gray-500 mt-2">
-              Koleksi terbaru yang baru saja hadir di toko kami
-            </p>
+            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900">Produk Terbaru</h2>
+            <p className="text-gray-500 mt-2">Koleksi terbaru yang baru saja hadir di toko kami</p>
           </div>
           <Link
             href="/product?sort=newest"
@@ -64,7 +60,12 @@ export default function NewArrivals({ products }: NewArrivalsProps): React.JSX.E
           >
             Lihat Semua
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M14 5l7 7m0 0l-7 7m7-7H3"
+              />
             </svg>
           </Link>
         </div>
@@ -84,7 +85,9 @@ export default function NewArrivals({ products }: NewArrivalsProps): React.JSX.E
                 onMouseEnter={() => setHoveredId(product.id)}
                 onMouseLeave={() => setHoveredId(null)}
               >
-                <div className={`relative bg-gradient-to-br from-gray-50 to-gray-100 rounded-3xl overflow-hidden transition-all duration-500 ${isHovered ? 'shadow-2xl -translate-y-2' : 'shadow-md'}`}>
+                <div
+                  className={`relative bg-gradient-to-br from-gray-50 to-gray-100 rounded-3xl overflow-hidden transition-all duration-500 ${isHovered ? 'shadow-2xl -translate-y-2' : 'shadow-md'}`}
+                >
                   {/* New Badge */}
                   {isNew && (
                     <div className="absolute top-3 left-3 z-10 px-3 py-1 bg-gradient-to-r from-blue-500 to-cyan-500 text-white text-xs font-bold rounded-full shadow-lg">
@@ -102,13 +105,17 @@ export default function NewArrivals({ products }: NewArrivalsProps): React.JSX.E
                         className="object-contain p-4 group-hover:scale-110 transition-transform duration-500"
                       />
                     ) : (
-                      <span className={`text-6xl transition-all duration-500 ${isHovered ? 'scale-125 rotate-12' : 'scale-100'}`}>
+                      <span
+                        className={`text-6xl transition-all duration-500 ${isHovered ? 'scale-125 rotate-12' : 'scale-100'}`}
+                      >
                         {emoji}
                       </span>
                     )}
-                    
+
                     {/* Overlay */}
-                    <div className={`absolute inset-0 bg-gradient-to-t from-black/50 to-transparent transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`}>
+                    <div
+                      className={`absolute inset-0 bg-gradient-to-t from-black/50 to-transparent transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`}
+                    >
                       <div className="absolute bottom-4 left-4 right-4">
                         <button className="w-full py-2.5 bg-white text-gray-900 text-sm font-semibold rounded-xl hover:bg-gray-100 transition-colors">
                           Lihat Detail
