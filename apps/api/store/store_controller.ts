@@ -1,15 +1,25 @@
 import { storeService } from './store_service'
 
 export const storeController = {
-  async create(userId: string, name: string, slug?: string) {
-    return storeService.create(userId, { name, ...(slug !== undefined && { slug }) })
+  async getAll() {
+    return storeService.getAll()
+  },
+
+  async create(
+    userId: string,
+    data: { name: string; slug?: string; description?: string; logo?: string }
+  ) {
+    return storeService.create(userId, data)
   },
 
   async getMyStore(userId: string) {
     return storeService.getMyStore(userId)
   },
 
-  async update(userId: string, data: { name?: string; slug?: string }) {
+  async update(
+    userId: string,
+    data: { name?: string; slug?: string; description?: string; logo?: string }
+  ) {
     return storeService.update(userId, data)
   },
 

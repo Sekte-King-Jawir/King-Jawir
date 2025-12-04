@@ -10,6 +10,8 @@ export const StorePlain = t.Object(
     userId: t.String(),
     name: t.String(),
     slug: t.String(),
+    description: __nullable__(t.String()),
+    logo: __nullable__(t.String()),
     createdAt: t.Date(),
   },
   { additionalProperties: false },
@@ -46,6 +48,7 @@ export const StoreRelations = t.Object(
           categoryId: t.String(),
           name: t.String(),
           slug: t.String(),
+          description: __nullable__(t.String()),
           price: t.Number(),
           stock: t.Integer(),
           image: __nullable__(t.String()),
@@ -60,12 +63,22 @@ export const StoreRelations = t.Object(
 );
 
 export const StorePlainInputCreate = t.Object(
-  { name: t.String(), slug: t.String() },
+  {
+    name: t.String(),
+    slug: t.String(),
+    description: t.Optional(__nullable__(t.String())),
+    logo: t.Optional(__nullable__(t.String())),
+  },
   { additionalProperties: false },
 );
 
 export const StorePlainInputUpdate = t.Object(
-  { name: t.Optional(t.String()), slug: t.Optional(t.String()) },
+  {
+    name: t.Optional(t.String()),
+    slug: t.Optional(t.String()),
+    description: t.Optional(__nullable__(t.String())),
+    logo: t.Optional(__nullable__(t.String())),
+  },
   { additionalProperties: false },
 );
 
@@ -158,6 +171,8 @@ export const StoreWhere = t.Partial(
           userId: t.String(),
           name: t.String(),
           slug: t.String(),
+          description: t.String(),
+          logo: t.String(),
           createdAt: t.Date(),
         },
         { additionalProperties: false },
@@ -206,6 +221,8 @@ export const StoreWhereUnique = t.Recursive(
               userId: t.String(),
               name: t.String(),
               slug: t.String(),
+              description: t.String(),
+              logo: t.String(),
               createdAt: t.Date(),
             },
             { additionalProperties: false },
@@ -224,6 +241,8 @@ export const StoreSelect = t.Partial(
       userId: t.Boolean(),
       name: t.Boolean(),
       slug: t.Boolean(),
+      description: t.Boolean(),
+      logo: t.Boolean(),
       createdAt: t.Boolean(),
       user: t.Boolean(),
       products: t.Boolean(),
@@ -253,6 +272,12 @@ export const StoreOrderBy = t.Partial(
         additionalProperties: false,
       }),
       slug: t.Union([t.Literal("asc"), t.Literal("desc")], {
+        additionalProperties: false,
+      }),
+      description: t.Union([t.Literal("asc"), t.Literal("desc")], {
+        additionalProperties: false,
+      }),
+      logo: t.Union([t.Literal("asc"), t.Literal("desc")], {
         additionalProperties: false,
       }),
       createdAt: t.Union([t.Literal("asc"), t.Literal("desc")], {

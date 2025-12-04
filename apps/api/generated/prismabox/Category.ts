@@ -19,6 +19,7 @@ export const CategoryRelations = t.Object(
           categoryId: t.String(),
           name: t.String(),
           slug: t.String(),
+          description: __nullable__(t.String()),
           price: t.Number(),
           stock: t.Integer(),
           image: __nullable__(t.String()),
