@@ -189,8 +189,8 @@ export interface ApiResponse<T = unknown> {
 }
 
 export interface PaginatedResponse<T> {
-  products?: T[]  // Legacy support
-  items?: T[]     // New format
+  products?: T[] // Legacy support
+  items?: T[] // New format
   total: number
   page: number
   limit: number

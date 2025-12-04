@@ -48,7 +48,7 @@ export default function ProductDetailPage(): React.JSX.Element {
 
     setCartMessage('')
     const success = await addItem(product.id, quantity)
-    
+
     if (success) {
       setCartMessage('Berhasil ditambahkan ke keranjang!')
       setTimeout(() => router.push('/cart'), 1500)
