@@ -70,9 +70,7 @@ export class ApiClient {
         const errorObj = data.error as { code?: string; details?: unknown } | undefined
         if (response.status === 401 || errorObj?.code === 'UNAUTHORIZED') {
           if (typeof window !== 'undefined') {
-            localStorage.removeItem('user')
-            localStorage.removeItem('token')
-            // Trigger a storage event to notify other components
+            // Dispatch event to notify components to clear auth state
             window.dispatchEvent(new Event('auth-cleared'))
           }
         }

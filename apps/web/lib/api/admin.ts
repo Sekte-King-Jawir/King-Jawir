@@ -3,7 +3,7 @@
  * Handles all API calls to admin endpoints
  */
 
-const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4101') + '/api'
+const API_BASE_URL = `${process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4101'  }/api`
 
 // Types
 export interface User {
@@ -149,10 +149,11 @@ export interface Store {
   }
 }
 
-// Helper to get auth token from localStorage or cookies
-function getAuthToken(): string | null {
-  if (typeof window === 'undefined') return null
-  return localStorage.getItem('accessToken')
+// Helper to get auth token from cookies (via fetch with credentials)
+function getAuthHeaders(): Record<string, string> {
+  return {
+    'Content-Type': 'application/json',
+  }
 }
 
 // API Client
@@ -176,11 +177,9 @@ export const adminApi = {
     if (params?.role !== null && params?.role !== undefined && params.role.length > 0)
       queryParams.append('role', params.role)
 
-    const token = getAuthToken()
     const response = await fetch(`${API_BASE_URL}/admin/users?${queryParams.toString()}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      headers: getAuthHeaders(),
+      credentials: 'include',
     })
 
     if (!response.ok) {
@@ -195,11 +194,9 @@ export const adminApi = {
    * Get user detail by ID
    */
   async getUserById(userId: string): Promise<User> {
-    const token = getAuthToken()
     const response = await fetch(`${API_BASE_URL}/admin/users/${userId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      headers: getAuthHeaders(),
+      credentials: 'include',
     })
 
     if (!response.ok) {
@@ -214,13 +211,10 @@ export const adminApi = {
    * Update user role
    */
   async updateUserRole(userId: string, role: 'CUSTOMER' | 'SELLER' | 'ADMIN'): Promise<User> {
-    const token = getAuthToken()
     const response = await fetch(`${API_BASE_URL}/admin/users/${userId}/role`, {
       method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
+      headers: getAuthHeaders(),
+      credentials: 'include',
       body: JSON.stringify({ role }),
     })
 
@@ -237,12 +231,10 @@ export const adminApi = {
    * Delete user
    */
   async deleteUser(userId: string): Promise<void> {
-    const token = getAuthToken()
     const response = await fetch(`${API_BASE_URL}/admin/users/${userId}`, {
       method: 'DELETE',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      headers: getAuthHeaders(),
+      credentials: 'include',
     })
 
     if (!response.ok) {
@@ -255,11 +247,9 @@ export const adminApi = {
    * Get dashboard statistics
    */
   async getStats(): Promise<Stats> {
-    const token = getAuthToken()
     const response = await fetch(`${API_BASE_URL}/admin/stats`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      headers: getAuthHeaders(),
+      credentials: 'include',
     })
 
     if (!response.ok) {

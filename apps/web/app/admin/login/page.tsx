@@ -62,14 +62,9 @@ export default function AdminLoginPage(): React.ReactElement {
         throw new Error('Access denied. Admin role required.')
       }
 
-      // Store tokens
-      localStorage.setItem('accessToken', data.data.accessToken)
-      localStorage.setItem('refreshToken', data.data.refreshToken)
-      localStorage.setItem('user', JSON.stringify(data.data.user))
-
       console.warn('✅ Login successful, redirecting...')
 
-      // Redirect to admin dashboard
+      // Redirect to admin dashboard (tokens are stored in cookies by server)
       router.push('/admin')
     } catch (err) {
       console.error('💥 Login error:', err)
