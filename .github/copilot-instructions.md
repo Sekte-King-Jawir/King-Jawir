@@ -86,6 +86,14 @@ bun run knip                   # Detect unused exports/dependencies
 
 If a file grows large, split by domain or feature.
 
+### ⛔ No Dummy/Placeholder Data
+**NEVER add fake, dummy, or placeholder data** in code. All data must come from:
+- Database via Prisma queries
+- External APIs (scraper, AI services)
+- User input through forms
+
+Do not hardcode sample products, users, or mock responses outside of test files.
+
 ### Elysia Route Definitions
 Routes use TypeBox (`t`) for validation with Swagger documentation:
 ```typescript
