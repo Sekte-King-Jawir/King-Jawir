@@ -1,0 +1,490 @@
+'use client'
+
+import { useState, useEffect } from 'react'
+import Image from 'next/image'
+import { Search, TrendingUp, ShoppingBag, BarChart3 } from 'lucide-react'
+import { HeaderThemeToggle } from '@repo/ui/theme/theme-toggle'
+
+interface TokopediaProduct {
+  name: string
+  price: string
+  rating?: string
+  image_url: string
+  product_url: string
+  shop_location?: string
+}
+
+interface PriceAnalysisResult {
+  query: string
+  products: TokopediaProduct[]
+  statistics: {
+    min: number
+    max: number
+    average: number
+    median: number
+    totalProducts: number
+  }
+  analysis: {
+    recommendation: string
+    insights: string[]
+    suggestedPrice?: number
+  }
+}
+
+interface WebSocketMessage {
+  type: 'connected' | 'progress' | 'complete' | 'error'
+  message?: string
+  progress?: number
+  data?: PriceAnalysisResult
+}
+
+export default function SupportPage(): React.JSX.Element {
+  const [query, setQuery] = useState('')
+  const [limit, setLimit] = useState(10)
+  const [userPrice, setUserPrice] = useState<number | undefined>(undefined)
+  const [loading, setLoading] = useState(false)
+  const [result, setResult] = useState<PriceAnalysisResult | null>(null)
+  const [error, setError] = useState<string | null>(null)
+  const [loadingProgress, setLoadingProgress] = useState(0)
+  const [currentAnalysisStep, setCurrentAnalysisStep] = useState(0)
+  const [streamingMessage, setStreamingMessage] = useState('')
+  const [ws, setWs] = useState<WebSocket | null>(null)
+
+  const analysisSteps = [
+    '🔍 Initializing price analysis...',
+    '📊 Scanning Tokopedia marketplace...',
+    '📈 Calculating market statistics...',
+    '🤖 Running AI price analysis...',
+    '💡 Generating market insights...',
+    '✨ Finalizing recommendations...',
+  ]
+
+  useEffect(() => {
+    return () => {
+      if (ws !== null) {
+        ws.close()
+      }
+    }
+  }, [ws])
+
+  const formatRupiah = (num: number): string => {
+    return `Rp${num.toLocaleString('id-ID')}`
+  }
+
+  const handleSubmit = (e: React.FormEvent): void => {
+    e.preventDefault()
+    setLoading(true)
+    setError(null)
+    setResult(null)
+    setLoadingProgress(0)
+    setCurrentAnalysisStep(0)
+    setStreamingMessage('')
+
+    try {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4101'
+      const wsUrl = apiUrl.replace('http', 'ws')
+
+      const websocket = new WebSocket(`${wsUrl}/api/price-analysis/stream`)
+      setWs(websocket)
+
+      websocket.onopen = (): void => {
+        // Send analysis request
+        websocket.send(
+          JSON.stringify({
+            type: 'start-analysis',
+            query,
+            limit,
+            userPrice: typeof userPrice === 'number' && userPrice > 0 ? userPrice : undefined,
+          })
+        )
+      }
+
+      websocket.onmessage = (event): void => {
+        try {
+          const update = JSON.parse(event.data as string) as WebSocketMessage
+
+          switch (update.type) {
+            case 'connected': {
+              // WebSocket connection established - no action needed
+              break
+            }
+
+            case 'progress': {
+              setLoadingProgress(update.progress ?? 0)
+              setStreamingMessage(update.message ?? '')
+
+              // Map progress to step index
+              const progress = update.progress ?? 0
+              if (progress <= 10) setCurrentAnalysisStep(0)
+              else if (progress <= 25) setCurrentAnalysisStep(1)
+              else if (progress <= 55) setCurrentAnalysisStep(2)
+              else if (progress <= 75) setCurrentAnalysisStep(3)
+              else if (progress <= 90) setCurrentAnalysisStep(4)
+              else setCurrentAnalysisStep(5)
+              break
+            }
+
+            case 'complete': {
+              setLoadingProgress(100)
+              if (update.data !== undefined) {
+                setResult(update.data)
+              }
+              setLoading(false)
+              websocket.close()
+              break
+            }
+
+            case 'error': {
+              setError(update.message ?? 'Analysis failed')
+              setLoading(false)
+              websocket.close()
+              break
+            }
+          }
+        } catch (err) {
+          console.error('Error parsing WebSocket message:', err)
+          setError('Communication error occurred')
+          setLoading(false)
+        }
+      }
+
+      websocket.onerror = error => {
+        console.error('WebSocket error:', error)
+        setError('Connection error occurred')
+        setLoading(false)
+      }
+
+      websocket.onclose = (): void => {
+        setWs(null)
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Unknown error occurred')
+      setLoading(false)
+    }
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950">
+      {/* Header */}
+      <header className="border-b border-border/40 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="container flex h-16 items-center justify-between px-6">
+          <div className="flex items-center gap-2">
+            <BarChart3 className="h-8 w-8 text-primary" />
+            <span className="text-2xl font-bold text-foreground">PriceScope AI</span>
+          </div>
+          <HeaderThemeToggle />
+        </div>
+        <div className="container px-6 pb-8 pt-4">
+          <h1 className="text-4xl font-bold tracking-tight text-foreground mb-2">
+            Intelligent Price Analysis
+          </h1>
+          <p className="text-xl text-muted-foreground">
+            Discover market insights with AI-powered Tokopedia price analysis
+          </p>
+        </div>
+      </header>
+
+      <main className="container px-6 py-8">
+        {/* Form */}
+        <form
+          onSubmit={handleSubmit}
+          className="bg-card/50 backdrop-blur-sm border border-border rounded-xl p-6 mb-8 shadow-lg"
+        >
+          <div className="space-y-6">
+            <div className="space-y-2">
+              <label
+                htmlFor="query"
+                className="text-sm font-medium text-foreground flex items-center gap-2"
+              >
+                <Search size={16} />
+                Product Query
+              </label>
+              <input
+                id="query"
+                type="text"
+                value={query}
+                onChange={e => setQuery(e.target.value)}
+                placeholder="Search for products, e.g., iPhone 15 Pro"
+                required
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+              />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <label
+                  htmlFor="limit"
+                  className="text-sm font-medium text-foreground flex items-center gap-2"
+                >
+                  <TrendingUp size={16} />
+                  Products Limit
+                </label>
+                <input
+                  id="limit"
+                  type="number"
+                  value={limit}
+                  onChange={e => setLimit(parseInt(e.target.value))}
+                  min="1"
+                  max="50"
+                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label
+                  htmlFor="userPrice"
+                  className="text-sm font-medium text-foreground flex items-center gap-2"
+                >
+                  <ShoppingBag size={16} />
+                  Your Budget (Optional)
+                </label>
+                <input
+                  id="userPrice"
+                  type="number"
+                  value={userPrice ?? ''}
+                  onChange={e =>
+                    setUserPrice(e.target.value.length > 0 ? parseInt(e.target.value) : undefined)
+                  }
+                  placeholder="Enter your budget in Rupiah"
+                  min="0"
+                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                />
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-12 px-6 gap-2"
+            >
+              {loading ? (
+                <>
+                  <div className="animate-spin h-4 w-4 border-2 border-current border-t-transparent rounded-full" />
+                  Processing...
+                </>
+              ) : (
+                <>
+                  <Search size={20} />
+                  Analyze Market Prices
+                </>
+              )}
+            </button>
+          </div>
+        </form>
+
+        {/* Loading State */}
+        {loading ? (
+          <div className="bg-card/50 backdrop-blur-sm border border-border rounded-xl p-8 mb-8 shadow-lg">
+            <div className="text-center space-y-6">
+              <div className="relative inline-flex items-center justify-center">
+                <div className="absolute inset-0 rounded-full animate-ping bg-primary/20" />
+                <div className="absolute inset-2 rounded-full animate-ping bg-primary/40 animation-delay-200" />
+                <div className="relative">
+                  <BarChart3 size={48} className="text-primary" />
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-2xl font-semibold text-foreground mb-2">
+                  Analyzing Market Data
+                </h3>
+                <p className="text-muted-foreground">This may take up to 30 seconds...</p>
+              </div>
+
+              <div className="space-y-3">
+                <div className="w-full bg-secondary rounded-full h-3 overflow-hidden">
+                  <div
+                    className="h-full bg-primary transition-all duration-500 ease-out"
+                    style={{ width: `${loadingProgress}%` }}
+                  />
+                </div>
+                <div className="text-sm font-medium text-foreground">
+                  {Math.round(loadingProgress)}% Complete
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <div className="text-lg text-foreground">
+                  {streamingMessage.length > 0
+                    ? streamingMessage
+                    : analysisSteps[currentAnalysisStep]}
+                </div>
+                <div className="flex justify-center gap-2">
+                  {analysisSteps.map((step, index) => (
+                    <div
+                      key={step}
+                      className={`w-2 h-2 rounded-full transition-colors duration-300 ${
+                        index <= currentAnalysisStep ? 'bg-primary' : 'bg-muted'
+                      }`}
+                    />
+                  ))}
+                </div>
+              </div>
+
+              <div className="bg-muted/50 rounded-lg p-4 max-w-md mx-auto">
+                <div className="flex items-start gap-3">
+                  <div className="text-2xl">💡</div>
+                  <div className="text-sm text-left">
+                    <strong className="text-foreground">Did you know?</strong>
+                    <span className="text-muted-foreground ml-1">
+                      Our AI analyzes pricing patterns, market trends, and competitor data to give
+                      you the most accurate price recommendations.
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : null}
+
+        {/* Error State */}
+        {error !== null && error.length > 0 ? (
+          <div className="bg-destructive/10 border border-destructive/20 text-destructive rounded-lg p-4 mb-8">
+            <strong>❌ Error:</strong> {error}
+          </div>
+        ) : null}
+
+        {/* Results */}
+        {result !== null ? (
+          <div className="space-y-8">
+            {/* Statistics */}
+            <section className="bg-card/50 backdrop-blur-sm border border-border rounded-xl p-6 shadow-lg">
+              <h2 className="text-2xl font-semibold text-foreground mb-6 flex items-center gap-2">
+                📊 Market Statistics
+              </h2>
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="bg-background/50 rounded-lg p-4 text-center">
+                  <div className="text-sm text-muted-foreground mb-1">Minimum</div>
+                  <div className="text-xl font-bold text-foreground">
+                    {formatRupiah(result.statistics.min)}
+                  </div>
+                </div>
+                <div className="bg-background/50 rounded-lg p-4 text-center">
+                  <div className="text-sm text-muted-foreground mb-1">Average</div>
+                  <div className="text-xl font-bold text-foreground">
+                    {formatRupiah(result.statistics.average)}
+                  </div>
+                </div>
+                <div className="bg-background/50 rounded-lg p-4 text-center">
+                  <div className="text-sm text-muted-foreground mb-1">Median</div>
+                  <div className="text-xl font-bold text-foreground">
+                    {formatRupiah(result.statistics.median)}
+                  </div>
+                </div>
+                <div className="bg-background/50 rounded-lg p-4 text-center">
+                  <div className="text-sm text-muted-foreground mb-1">Maximum</div>
+                  <div className="text-xl font-bold text-foreground">
+                    {formatRupiah(result.statistics.max)}
+                  </div>
+                </div>
+              </div>
+              <p className="text-center text-sm text-muted-foreground mt-4">
+                Analyzed {result.statistics.totalProducts} products
+              </p>
+            </section>
+
+            {/* AI Analysis */}
+            <section className="bg-card/50 backdrop-blur-sm border border-border rounded-xl p-6 shadow-lg">
+              <h2 className="text-2xl font-semibold text-foreground mb-6 flex items-center gap-2">
+                🤖 AI Analysis
+              </h2>
+              <div className="space-y-6">
+                <div className="bg-background/50 rounded-lg p-4">
+                  <h3 className="text-lg font-semibold text-foreground mb-2">Recommendation:</h3>
+                  <p className="text-foreground leading-relaxed">
+                    {result.analysis.recommendation}
+                  </p>
+                </div>
+
+                {typeof result.analysis.suggestedPrice === 'number' &&
+                result.analysis.suggestedPrice > 0 ? (
+                  <div className="bg-primary/10 border border-primary/20 rounded-lg p-4">
+                    <h3 className="text-lg font-semibold text-foreground mb-2">Suggested Price:</h3>
+                    <p className="text-2xl font-bold text-primary">
+                      {formatRupiah(result.analysis.suggestedPrice)}
+                    </p>
+                  </div>
+                ) : null}
+
+                <div className="bg-background/50 rounded-lg p-4">
+                  <h3 className="text-lg font-semibold text-foreground mb-3">Key Insights:</h3>
+                  <ul className="space-y-2">
+                    {result.analysis.insights.map(insight => (
+                      <li
+                        key={insight.slice(0, 50)}
+                        className="flex items-start gap-2 text-foreground"
+                      >
+                        <span className="text-primary mt-1 text-sm">•</span>
+                        {insight}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </section>
+
+            {/* Products */}
+            <section className="bg-card/50 backdrop-blur-sm border border-border rounded-xl p-6 shadow-lg">
+              <h2 className="text-2xl font-semibold text-foreground mb-6 flex items-center gap-2">
+                🛍️ Product List
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {result.products.map(product => (
+                  <div
+                    key={product.product_url}
+                    className="bg-background/50 rounded-lg overflow-hidden border border-border hover:shadow-lg transition-shadow duration-300"
+                  >
+                    <Image
+                      src={product.image_url}
+                      alt={product.name}
+                      width={300}
+                      height={200}
+                      className="w-full h-48 object-cover"
+                    />
+                    <div className="p-4 space-y-2">
+                      <h4 className="font-semibold text-foreground line-clamp-2 leading-tight">
+                        {product.name}
+                      </h4>
+                      <p className="text-lg font-bold text-primary">{product.price}</p>
+                      {product.rating !== null &&
+                      product.rating !== undefined &&
+                      product.rating.length > 0 ? (
+                        <p className="text-sm text-muted-foreground flex items-center gap-1">
+                          ⭐ {product.rating}
+                        </p>
+                      ) : null}
+                      {product.shop_location !== null &&
+                      product.shop_location !== undefined &&
+                      product.shop_location.length > 0 ? (
+                        <p className="text-sm text-muted-foreground flex items-center gap-1">
+                          📍 {product.shop_location}
+                        </p>
+                      ) : null}
+                      <a
+                        href={product.product_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center text-sm text-primary hover:text-primary/80 transition-colors"
+                      >
+                        View on Tokopedia →
+                      </a>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+          </div>
+        ) : null}
+      </main>
+
+      {/* Footer */}
+      <footer className="border-t border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 mt-16">
+        <div className="container px-6 py-6 text-center">
+          <p className="text-sm text-muted-foreground">
+            🔧 Support Page | Powered by Tokopedia Scraper + AI Analysis
+          </p>
+        </div>
+      </footer>
+    </div>
+  )
+}

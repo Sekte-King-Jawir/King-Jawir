@@ -18,7 +18,10 @@
     "api:dev": "turbo run dev --filter=api",
     "api:build": "turbo run build --filter=api",
     "api:lint": "turbo run lint --filter=api",
-    "api:check-types": "turbo run check-types --filter=api"
+    "api:check-types": "turbo run check-types --filter=api",
+    "scraper:dev": "turbo run dev --filter=scraper",
+    "scraper:build": "turbo run build --filter=scraper",
+    "scraper:lint": "turbo run lint --filter=scraper"
   },
   "devDependencies": {
     "knip": "^5.71.0",

@@ -42,12 +42,15 @@ export async function generateCompletion(
   }
   messages.push({ role: 'user', content: prompt })
 
-  const completion = await openai.chat.completions.create({
+  const params: Record<string, unknown> = {
     model: options?.model || defaultModelName,
     messages,
     temperature: options?.temperature ?? 0.7,
-    max_tokens: options?.maxTokens ?? null,
-  })
+  }
+  if (options?.maxTokens !== undefined) {
+    params['max_tokens'] = options.maxTokens
+  }
+  const completion = await openai.chat.completions.create(params as any)
 
   return {
     text: completion.choices[0]?.message?.content || '',
@@ -79,13 +82,16 @@ export async function generateStreamingCompletion(
   }
   messages.push({ role: 'user', content: prompt })
 
-  const stream = await openai.chat.completions.create({
+  const params: Record<string, unknown> = {
     model: options?.model || defaultModelName,
     messages,
     temperature: options?.temperature ?? 0.7,
-    max_tokens: options?.maxTokens ?? null,
     stream: true,
-  })
+  }
+  if (options?.maxTokens !== undefined) {
+    params['max_tokens'] = options.maxTokens
+  }
+  const stream = await openai.chat.completions.create(params as any)
 
   return stream
 }
@@ -103,12 +109,15 @@ export async function generateChatCompletion(
     maxTokens?: number
   }
 ) {
-  const completion = await openai.chat.completions.create({
+  const params: Record<string, unknown> = {
     model: options?.model || defaultModelName,
     messages: messages as OpenAI.Chat.Completions.ChatCompletionMessageParam[],
     temperature: options?.temperature ?? 0.7,
-    max_tokens: options?.maxTokens ?? null,
-  })
+  }
+  if (options?.maxTokens !== undefined) {
+    params['max_tokens'] = options.maxTokens
+  }
+  const completion = await openai.chat.completions.create(params as any)
 
   return {
     text: completion.choices[0]?.message?.content || '',
@@ -131,13 +140,16 @@ export async function generateStreamingChatCompletion(
     onFinish?: (result: { text: string; usage: any; finishReason: string }) => void
   }
 ) {
-  const stream = await openai.chat.completions.create({
+  const params: Record<string, unknown> = {
     model: options?.model || defaultModelName,
     messages: messages as OpenAI.Chat.Completions.ChatCompletionMessageParam[],
     temperature: options?.temperature ?? 0.7,
-    max_tokens: options?.maxTokens ?? null,
     stream: true,
-  })
+  }
+  if (options?.maxTokens !== undefined) {
+    params['max_tokens'] = options.maxTokens
+  }
+  const stream = await openai.chat.completions.create(params as any)
 
   return stream
 }

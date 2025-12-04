@@ -17,12 +17,21 @@ if (process.env['NODE_ENV'] === 'test') {
     user: decodeURIComponent(url.username),
     password: decodeURIComponent(url.password),
     database: url.pathname.slice(1), // Remove leading slash
-    connectionLimit: 10,
-    connectTimeout: 30000,
-    acquireTimeout: 30000,
+    connectionLimit: 5,
+    connectTimeout: 10000,
+    acquireTimeout: 10000,
+    idleTimeout: 10000,
   })
 
-  prisma = new PrismaClient({ adapter })
+  prisma = new PrismaClient({
+    adapter,
+    log: ['error', 'warn'],
+  })
+
+  // Cleanup on exit
+  process.on('beforeExit', async () => {
+    await prisma.$disconnect()
+  })
 }
 
 export { prisma }
