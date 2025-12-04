@@ -3,7 +3,7 @@ import { cartController } from './cart_controller'
 import { jwtPlugin, authDerive } from '../lib/auth-helper'
 import { v } from '../lib/validators'
 
-export const cartRoutes = new Elysia({ prefix: '/cart' })
+export const cartRoutes = new Elysia({ prefix: '/api/cart' })
   .use(jwtPlugin)
   .derive(authDerive)
   // GET /cart - Get user's cart
