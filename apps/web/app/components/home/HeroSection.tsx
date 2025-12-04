@@ -1,97 +1,149 @@
 'use client'
 
 import Link from 'next/link'
+import { useState, useEffect } from 'react'
 
 export default function HeroSection(): React.JSX.Element {
+  const [currentSlide, setCurrentSlide] = useState(0)
+
+  const slides = [
+    {
+      tag: 'Promo Spesial',
+      title: 'Diskon',
+      titleBold: '50%',
+      description: 'Temukan produk berkualitas dengan harga terbaik. Promo terbatas untuk member!',
+      bgColor: 'bg-gradient-to-br from-violet-600 to-indigo-700',
+    },
+    {
+      tag: 'Gratis Ongkir',
+      title: 'Seluruh',
+      titleBold: 'Indonesia',
+      description: 'Nikmati gratis ongkir untuk semua pesanan tanpa minimum belanja.',
+      bgColor: 'bg-gradient-to-br from-emerald-500 to-teal-600',
+    },
+    {
+      tag: 'Flash Sale',
+      title: 'Hanya',
+      titleBold: 'Hari Ini',
+      description: 'Jangan lewatkan penawaran spesial dengan diskon gila-gilaan!',
+      bgColor: 'bg-gradient-to-br from-orange-500 to-rose-600',
+    },
+  ] as const
+
+  const currentSlideData = slides[currentSlide] ?? slides[0]
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length)
+    }, 5000)
+    return () => clearInterval(timer)
+  }, [slides.length])
+
   return (
-    <section className="bg-black text-white">
-      {/* Main Hero - iPhone */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-8 py-16 lg:py-20 items-center">
-          {/* Left Content */}
-          <div className="space-y-5">
-            <p className="text-gray-500 text-xs tracking-widest uppercase">Pro.Beyond.</p>
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extralight tracking-tight">
-              IPhone 14 <span className="font-semibold">Pro</span>
-            </h1>
-            <p className="text-gray-400 text-sm max-w-md leading-relaxed">
-              Created to change everything for the better. For everyone.
-            </p>
-            <Link
-              href="/product"
-              className="inline-block px-8 py-3 border border-white/70 rounded text-sm font-medium hover:bg-white hover:text-black transition-all"
-            >
-              Shop Now
-            </Link>
+    <section className="w-full">
+      {/* Hero Banner */}
+      <div className={`relative min-h-[480px] ${currentSlideData.bgColor} transition-all duration-500`}>
+        {/* Decorative Elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-10 right-10 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-10 left-10 w-80 h-80 bg-white/5 rounded-full blur-3xl"></div>
+        </div>
+
+        {/* Content */}
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Text */}
+            <div className="text-center lg:text-left">
+              <span className="inline-block px-4 py-1.5 bg-white/20 backdrop-blur-sm rounded-full text-white text-sm font-medium mb-6">
+                ✨ {currentSlideData.tag}
+              </span>
+              
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight">
+                {currentSlideData.title}{' '}
+                <span className="block">{currentSlideData.titleBold}</span>
+              </h1>
+              
+              <p className="text-white/90 text-lg max-w-md mx-auto lg:mx-0 mb-8">
+                {currentSlideData.description}
+              </p>
+              
+              <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
+                <Link
+                  href="/products"
+                  className="px-8 py-3.5 bg-white text-gray-900 rounded-xl font-semibold hover:bg-gray-100 transition-colors shadow-lg"
+                >
+                  Belanja Sekarang
+                </Link>
+                <Link
+                  href="/categories"
+                  className="px-8 py-3.5 border-2 border-white/40 text-white rounded-xl font-semibold hover:bg-white/10 transition-colors"
+                >
+                  Lihat Kategori
+                </Link>
+              </div>
+            </div>
+
+            {/* Stats */}
+            <div className="grid grid-cols-2 gap-4 max-w-md mx-auto lg:mx-0 lg:ml-auto">
+              <div className="bg-white/15 backdrop-blur-sm rounded-2xl p-5 text-center border border-white/20">
+                <div className="text-3xl font-bold text-white mb-1">10K+</div>
+                <div className="text-white/80 text-sm">Produk</div>
+              </div>
+              <div className="bg-white/15 backdrop-blur-sm rounded-2xl p-5 text-center border border-white/20">
+                <div className="text-3xl font-bold text-white mb-1">50K+</div>
+                <div className="text-white/80 text-sm">Pelanggan</div>
+              </div>
+              <div className="bg-white/15 backdrop-blur-sm rounded-2xl p-5 text-center border border-white/20">
+                <div className="text-3xl font-bold text-white mb-1">99%</div>
+                <div className="text-white/80 text-sm">Rating</div>
+              </div>
+              <div className="bg-white/15 backdrop-blur-sm rounded-2xl p-5 text-center border border-white/20">
+                <div className="text-3xl font-bold text-white mb-1">24/7</div>
+                <div className="text-white/80 text-sm">Support</div>
+              </div>
+            </div>
           </div>
 
-          {/* Right - Phone Image */}
-          <div className="flex justify-center lg:justify-end">
-            <div className="text-9xl">📱</div>
+          {/* Slide Indicators */}
+          <div className="flex gap-2 justify-center mt-12">
+            {slides.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentSlide(index)}
+                className={`h-2 rounded-full transition-all duration-300 ${
+                  currentSlide === index ? 'w-8 bg-white' : 'w-2 bg-white/40 hover:bg-white/60'
+                }`}
+                aria-label={`Slide ${index + 1}`}
+              />
+            ))}
           </div>
         </div>
       </div>
 
-      {/* Secondary Hero Grid */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
-        <div className="grid md:grid-cols-2 gap-6">
-          {/* Left - PlayStation */}
-          <div className="bg-gray-500 rounded-lg p-8 flex min-h-[280px]">
-            <div className="flex-1">
-              <h3 className="text-white text-3xl font-medium mb-3">Playstation 5</h3>
-              <p className="text-white/70 text-sm max-w-[240px] leading-relaxed">
-                Incredibly powerful CPUs, GPUs, and an SSD with integrated I/O will redefine your
-                PlayStation experience.
-              </p>
-            </div>
-            <div className="flex items-end">
-              <span className="text-7xl">🎮</span>
-            </div>
-          </div>
-
-          {/* Right - 2x2 Grid */}
-          <div className="grid grid-cols-2 gap-6">
-            {/* AirPods Max */}
-            <div className="bg-gray-100 rounded-lg p-5 flex flex-col justify-between min-h-[130px]">
-              <div>
-                <p className="text-gray-400 text-xs uppercase tracking-wider">Apple</p>
-                <h4 className="text-gray-900 font-semibold text-base mt-1">AirPods Max</h4>
-                <p className="text-gray-400 text-xs mt-0.5">Computational audio</p>
-              </div>
-              <div className="flex justify-end">
-                <span className="text-4xl">🎧</span>
-              </div>
-            </div>
-
-            {/* Vision Pro */}
-            <div className="bg-gray-800 rounded-lg p-5 flex flex-col justify-between min-h-[130px]">
-              <div>
-                <p className="text-gray-500 text-xs uppercase tracking-wider">Apple</p>
-                <h4 className="text-white font-semibold text-base mt-1">Vision Pro</h4>
-                <p className="text-gray-500 text-xs mt-0.5">An immersive experience</p>
-              </div>
-              <div className="flex justify-end">
-                <span className="text-4xl">🥽</span>
-              </div>
-            </div>
-
-            {/* MacBook Air - spans 2 cols */}
-            <div className="bg-white rounded-lg col-span-2 p-5 flex justify-between items-center min-h-[130px]">
-              <div>
-                <h4 className="text-gray-900 text-xl font-light leading-none">Macbook</h4>
-                <h3 className="text-gray-900 text-2xl font-semibold leading-tight">Air</h3>
-                <p className="text-gray-400 text-xs mt-2 max-w-[200px]">
-                  The new 15-inch MacBook Air makes room for more of what you love.
-                </p>
-                <Link
-                  href="/product"
-                  className="inline-block mt-4 px-6 py-2 bg-gray-900 text-white text-xs font-medium rounded hover:bg-gray-800 transition-colors"
-                >
-                  Shop Now
-                </Link>
-              </div>
-              <span className="text-5xl">💻</span>
-            </div>
+      {/* Quick Categories */}
+      <div className="bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[
+              { name: 'Elektronik', icon: '📱', count: 234 },
+              { name: 'Fashion', icon: '👕', count: 567 },
+              { name: 'Rumah Tangga', icon: '🏠', count: 189 },
+              { name: 'Olahraga', icon: '⚽', count: 145 },
+            ].map((cat) => (
+              <Link
+                key={cat.name}
+                href={`/category/${cat.name.toLowerCase().replace(' ', '-')}`}
+                className="flex items-center gap-3 p-4 rounded-xl bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors group"
+              >
+                <span className="text-2xl">{cat.icon}</span>
+                <div>
+                  <div className="font-semibold text-gray-900 dark:text-white group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors">
+                    {cat.name}
+                  </div>
+                  <div className="text-sm text-gray-500 dark:text-gray-400">{cat.count} Produk</div>
+                </div>
+              </Link>
+            ))}
           </div>
         </div>
       </div>
