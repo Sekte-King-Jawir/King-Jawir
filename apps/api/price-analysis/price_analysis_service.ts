@@ -121,7 +121,7 @@ KEMBALIKAN HANYA query yang sudah dioptimasi, TANPA penjelasan, TANPA tanda kuti
         progress: 15,
       })
 
-      let products: any[] = []
+      let products: TokopediaProduct[] = []
       try {
         products = await priceAnalysisRepository.fetchTokopediaPrices(optimizedQuery, limit)
       } catch (fetchError) {
@@ -156,7 +156,7 @@ KEMBALIKAN HANYA query yang sudah dioptimasi, TANPA penjelasan, TANPA tanda kuti
       })
 
       let prices: number[] = []
-      let stats: any = {}
+      let stats: ReturnType<typeof priceAnalysisRepository.calculateStats> = {} as any
       try {
         prices = products.map(p => priceAnalysisRepository.parsePrice(p.price))
         stats = priceAnalysisRepository.calculateStats(prices)
@@ -200,7 +200,7 @@ KEMBALIKAN HANYA query yang sudah dioptimasi, TANPA penjelasan, TANPA tanda kuti
         progress: 80,
       })
 
-      let aiResponse: any
+      let aiResponse: Awaited<ReturnType<typeof generateChatCompletion>>
       try {
         aiResponse = await generateChatCompletion(
           [
@@ -253,7 +253,7 @@ KEMBALIKAN HANYA query yang sudah dioptimasi, TANPA penjelasan, TANPA tanda kuti
         progress: 95,
       })
 
-      let analysis: any
+      let analysis: PriceAnalysisResult['analysis'] = {} as any
       try {
         analysis = this.parseAIResponse(aiResponse.text, stats)
       } catch (parseError) {

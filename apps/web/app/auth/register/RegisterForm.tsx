@@ -1,160 +1,93 @@
 'use client'
 
-import { useActionState, useEffect } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import Link from 'next/link'
-import { registerAction } from './action'
-import { initialState } from '../_shared/types'
-
-const API_URL = (process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4101') + '/api'
-
-function GoogleIcon(): React.JSX.Element {
-  return (
-    <svg className="w-5 h-5" viewBox="0 0 24 24">
-      <path
-        fill="#4285F4"
-        d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-      />
-      <path
-        fill="#34A853"
-        d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-      />
-      <path
-        fill="#FBBC05"
-        d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
-      />
-      <path
-        fill="#EA4335"
-        d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
-      />
-    </svg>
-  )
-}
+import { register } from '@/lib/api/services'
+import { useAuth } from '@/hooks'
+import styles from './RegisterForm.module.css'
 
 export function RegisterForm(): React.JSX.Element {
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const { login: authLogin } = useAuth()
   const router = useRouter()
-  const [state, formAction, isPending] = useActionState(registerAction, initialState)
 
-  useEffect(() => {
-    if (state.success && state.redirectTo !== undefined && state.redirectTo !== '') {
-      const redirectPath = state.redirectTo
-      const timer = setTimeout(() => {
-        router.push(redirectPath)
-      }, 3000)
-      return () => {
-        clearTimeout(timer)
+  const handleSubmit = async (e: React.FormEvent): Promise<void> => {
+    e.preventDefault()
+    setError('')
+    setIsSubmitting(true)
+
+    try {
+      const response = await register(name, email, password)
+      if (response.success) {
+        await authLogin(response.data.token)
+        router.push('/')
+      } else {
+        setError(response.message || 'Registrasi failed')
       }
+    } catch (err) {
+      setError('Terjadi kesalahan. Silakan coba lagi.')
+      console.error('Registration error:', err)
+    } finally {
+      setIsSubmitting(false)
     }
-    return undefined
-  }, [state, router])
+  }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-background">
-      <div className="w-full max-w-md p-8 rounded-xl bg-background border border-gray-200 dark:border-gray-700 shadow-md dark:shadow-lg">
-        <h1 className="text-2xl font-bold text-center mb-2 text-foreground">Daftar</h1>
-        <p className="text-center text-gray-500 mb-6 text-sm">Buat akun baru</p>
+    <form onSubmit={handleSubmit} className={styles.form}>
+      <h2 className={styles.title}>Buat Akun Baru</h2>
+      
+      {error && <div className={styles.error}>{error}</div>}
 
-        {state.message !== '' && !state.success && (
-          <div className="bg-red-50 dark:bg-red-950 text-red-600 dark:text-red-400 px-4 py-3 rounded-lg mb-4 text-sm border border-red-200 dark:border-red-800">
-            {state.message}
-          </div>
-        )}
-        {state.message !== '' && state.success ? (
-          <div className="bg-green-50 dark:bg-green-950 text-green-600 dark:text-green-400 px-4 py-3 rounded-lg mb-4 text-sm border border-green-200 dark:border-green-800">
-            {state.message}
-          </div>
-        ) : null}
-
-        <form action={formAction} className="flex flex-col gap-4">
-          <div className="flex flex-col gap-2">
-            <label htmlFor="name" className="text-sm font-medium text-foreground">
-              Nama Lengkap
-            </label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              className="px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg text-base bg-background text-foreground transition-colors focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 dark:focus:ring-blue-400/20 placeholder:text-gray-400"
-              placeholder="Masukkan nama lengkap"
-              required
-              minLength={2}
-            />
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <label htmlFor="email" className="text-sm font-medium text-foreground">
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              className="px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg text-base bg-background text-foreground transition-colors focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 dark:focus:ring-blue-400/20 placeholder:text-gray-400"
-              placeholder="nama@email.com"
-              required
-            />
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <label htmlFor="password" className="text-sm font-medium text-foreground">
-              Password
-            </label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              className="px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg text-base bg-background text-foreground transition-colors focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 dark:focus:ring-blue-400/20 placeholder:text-gray-400"
-              placeholder="Minimal 6 karakter"
-              required
-              minLength={6}
-            />
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <label htmlFor="confirmPassword" className="text-sm font-medium text-foreground">
-              Konfirmasi Password
-            </label>
-            <input
-              type="password"
-              id="confirmPassword"
-              name="confirmPassword"
-              className="px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg text-base bg-background text-foreground transition-colors focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 dark:focus:ring-blue-400/20 placeholder:text-gray-400"
-              placeholder="Ulangi password"
-              required
-              minLength={6}
-            />
-          </div>
-
-          <button
-            type="submit"
-            className="mt-2 px-6 py-3 bg-blue-500 hover:bg-blue-600 disabled:bg-blue-300 text-white rounded-lg text-base font-semibold transition-colors disabled:cursor-not-allowed"
-            disabled={isPending}
-          >
-            {isPending ? 'Memproses...' : 'Daftar'}
-          </button>
-        </form>
-
-        <div className="flex items-center my-6 gap-4">
-          <div className="flex-1 h-px bg-gray-300 dark:bg-gray-600" />
-          <span className="text-sm text-gray-500">atau</span>
-          <div className="flex-1 h-px bg-gray-300 dark:bg-gray-600" />
-        </div>
-
-        <a
-          href={`${API_URL}/auth/google`}
-          className="flex items-center justify-center gap-3 w-full px-6 py-3 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-100 border border-gray-300 dark:border-gray-600 rounded-lg text-base font-medium transition-colors hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-400 dark:hover:border-gray-500 no-underline"
-        >
-          <GoogleIcon />
-          Daftar dengan Google
-        </a>
-
-        <p className="text-center mt-6 text-sm text-gray-500">
-          Sudah punya akun?{' '}
-          <Link href="/auth/login" className="text-blue-500 font-medium hover:underline">
-            Login sekarang
-          </Link>
-        </p>
+      <div className={styles.inputGroup}>
+        <label htmlFor="name">Nama Lengkap</label>
+        <input
+          type="text"
+          id="name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="masukkan nama Anda"
+          required
+          className={styles.input}
+        />
       </div>
-    </div>
+
+      <div className={styles.inputGroup}>
+        <label htmlFor="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="masukkan email Anda"
+          required
+          className={styles.input}
+        />
+      </div>
+
+      <div className={styles.inputGroup}>
+        <label htmlFor="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="masukkan password Anda"
+          required
+          className={styles.input}
+        />
+      </div>
+
+      <button
+        type="submit"
+        className={styles.submitButton}
+        disabled={isSubmitting || !name || !email || !password}
+      >
+        {isSubmitting ? 'Mendaftar...' : 'Daftar'}
+      </button>
+    </form>
   )
 }

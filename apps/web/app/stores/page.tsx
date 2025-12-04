@@ -125,7 +125,7 @@ interface StoreCardProps {
 }
 
 function StoreCard({ store }: StoreCardProps): React.JSX.Element {
-  const productCount = (store.productCount ?? 0) as number
+  const productCount = (store.productCount ?? 0)
 
   return (
     <Link href={`/stores/${store.slug}`}>

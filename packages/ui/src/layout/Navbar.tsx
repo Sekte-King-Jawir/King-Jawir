@@ -89,14 +89,14 @@ export default function Navbar({ user, onLogout }: NavbarProps): React.ReactElem
             <div className="hidden sm:block w-px h-8 bg-gray-200 mx-2" />
 
             {/* Profile / Login */}
-            {user ? (
+            {user !== null && user !== undefined ? (
               <div className="relative hidden sm:block">
                 <button
                   onClick={() => setShowUserMenu(!showUserMenu)}
                   className="flex items-center gap-2 px-3 py-2 hover:bg-violet-50 rounded-xl transition-all"
                 >
                   <div className="w-8 h-8 rounded-full bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center text-white font-semibold text-sm">
-                    {user.avatar ? (
+                    {user.avatar !== null && user.avatar !== undefined ? (
                       <img
                         src={user.avatar}
                         alt={user.name}
@@ -294,7 +294,7 @@ export default function Navbar({ user, onLogout }: NavbarProps): React.ReactElem
             </div>
 
             {/* Mobile Auth Buttons */}
-            {user ? (
+            {user !== null && user !== undefined ? (
               <div className="bg-white rounded-xl p-4">
                 <div className="flex items-center gap-3 mb-3">
                   <div className="w-12 h-12 rounded-full bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center text-white font-semibold">
