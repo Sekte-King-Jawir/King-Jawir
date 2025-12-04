@@ -1,7 +1,31 @@
 import 'dotenv/config'
-import { prisma } from '../lib/db'
+import { PrismaClient } from '../generated/prisma/client'
+import { PrismaMariaDb } from '@prisma/adapter-mariadb'
 import { hashPassword } from '../lib/hash'
 import { logger } from '../lib/logger'
+
+// Create a dedicated Prisma client for seeding (no cleanup handlers)
+const dbUrl = process.env['DATABASE_URL'] || ''
+const url = new URL(dbUrl)
+
+const adapter = new PrismaMariaDb({
+  host: url.hostname,
+  port: parseInt(url.port) || 3306,
+  user: decodeURIComponent(url.username),
+  password: decodeURIComponent(url.password),
+  database: url.pathname.slice(1),
+  connectionLimit: 10,
+  connectTimeout: 30000,
+  acquireTimeout: 30000,
+  idleTimeout: 60000,
+  minimumIdle: 2,
+  allowPublicKeyRetrieval: true,
+})
+
+const prisma = new PrismaClient({
+  adapter,
+  log: ['error', 'warn'],
+})
 
 async function main() {
   logger.info('🌱 Starting database seed...')
@@ -301,7 +325,7 @@ async function main() {
       description: 'Madu murni dari hutan tanpa campuran',
       price: 150000,
       stock: 100,
-      image: 'https://images.unsplash.com/photo-1587049352846-4a222e784990?w=500',
+      image: 'https://statik.tempo.co/data/2016/06/08/id_513473/513473_650.jpg',
     },
   })
 
