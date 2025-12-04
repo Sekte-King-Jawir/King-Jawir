@@ -141,7 +141,7 @@ export function ReviewSection({
       const res = await fetch(
         `${apiBaseUrl}/api/products/${productSlug}/reviews?page=${page}&limit=5`
       )
-      
+
       // Check if response is ok before parsing JSON
       if (!res.ok) {
         const text = await res.text()

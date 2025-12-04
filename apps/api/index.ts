@@ -66,9 +66,9 @@ const app = new Elysia()
       max: 200, // Increased for development
       errorResponse: new Response(
         JSON.stringify({ success: false, message: 'Rate limit exceeded. Please wait a moment.' }),
-        { 
-          status: 429, 
-          headers: { 'Content-Type': 'application/json' }
+        {
+          status: 429,
+          headers: { 'Content-Type': 'application/json' },
         }
       ),
     })
