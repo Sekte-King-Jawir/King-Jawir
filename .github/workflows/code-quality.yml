@@ -43,11 +43,6 @@ jobs:
       - name: Install Dependencies
         run: bun install
 
-      - name: Setup Lefthook
-        run: |
-          echo "🪝 Setting up Lefthook..."
-          bunx lefthook install || echo "Lefthook installed"
-
       # ===== 1. FORMAT WITH PRETTIER =====
       - name: Run Prettier
         id: format
