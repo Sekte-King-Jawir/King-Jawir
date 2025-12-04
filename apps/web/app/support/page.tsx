@@ -166,7 +166,7 @@ export default function SupportPage(): React.JSX.Element {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 flex flex-col items-center justify-center px-4 py-12">
       <ThemeToggle />
-      
+
       <main className="w-full max-w-4xl mx-auto">
         {/* Hero Section */}
         <div className="text-center mb-10">
@@ -474,9 +474,7 @@ export default function SupportPage(): React.JSX.Element {
 
       {/* Footer */}
       <footer className="mt-12 text-center">
-        <p className="text-sm text-muted-foreground">
-          Powered by Tokopedia Scraper + AI Analysis
-        </p>
+        <p className="text-sm text-muted-foreground">Powered by Tokopedia Scraper + AI Analysis</p>
       </footer>
     </div>
   )
