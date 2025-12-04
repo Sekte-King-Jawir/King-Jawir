@@ -19,7 +19,9 @@ interface UsePriceAnalysisReturn {
   result: PriceAnalysisResult | null
   streamProgress: number
   streamMessage: string
-  analyze: (data: PriceAnalysisRequest) => Promise<{ success: boolean; message?: string; data?: PriceAnalysisResult }>
+  analyze: (
+    data: PriceAnalysisRequest
+  ) => Promise<{ success: boolean; message?: string; data?: PriceAnalysisResult }>
   analyzeWithStream: (data: PriceAnalysisRequest) => void
   cancelStream: () => void
 }

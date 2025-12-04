@@ -74,7 +74,10 @@ export interface ProductResponse {
 
 export const productService = {
   getAll(params?: GetProductsParams): Promise<ApiResponse<PaginatedResponse<Product>>> {
-    const query = params !== undefined ? buildQueryString(params as Record<string, string | number | boolean | undefined>) : ''
+    const query =
+      params !== undefined
+        ? buildQueryString(params as Record<string, string | number | boolean | undefined>)
+        : ''
     return apiClient.get<PaginatedResponse<Product>>(`${API_ENDPOINTS.PRODUCTS.LIST}${query}`)
   },
 
@@ -86,7 +89,10 @@ export const productService = {
     page?: number
     limit?: number
   }): Promise<ApiResponse<PaginatedResponse<Product>>> {
-    const query = params !== undefined ? buildQueryString(params as Record<string, string | number | boolean | undefined>) : ''
+    const query =
+      params !== undefined
+        ? buildQueryString(params as Record<string, string | number | boolean | undefined>)
+        : ''
     return apiClient.get<PaginatedResponse<Product>>(
       `${API_ENDPOINTS.PRODUCTS.MY_PRODUCTS}${query}`
     )
@@ -140,7 +146,10 @@ export const storeService = {
     slug: string,
     params?: { page?: number; limit?: number }
   ): Promise<ApiResponse<PaginatedResponse<Product>>> {
-    const query = params !== undefined ? buildQueryString(params as Record<string, string | number | boolean | undefined>) : ''
+    const query =
+      params !== undefined
+        ? buildQueryString(params as Record<string, string | number | boolean | undefined>)
+        : ''
     return apiClient.get<PaginatedResponse<Product>>(
       `${API_ENDPOINTS.STORES.PRODUCTS(slug)}${query}`
     )
@@ -201,7 +210,10 @@ export const orderService = {
     page?: number
     limit?: number
   }): Promise<ApiResponse<PaginatedResponse<Order>>> {
-    const query = params !== undefined ? buildQueryString(params as Record<string, string | number | boolean | undefined>) : ''
+    const query =
+      params !== undefined
+        ? buildQueryString(params as Record<string, string | number | boolean | undefined>)
+        : ''
     return apiClient.get<PaginatedResponse<Order>>(`${API_ENDPOINTS.ORDERS.LIST}${query}`)
   },
 
@@ -218,7 +230,10 @@ export const orderService = {
     page?: number
     limit?: number
   }): Promise<ApiResponse<PaginatedResponse<Order>>> {
-    const query = params !== undefined ? buildQueryString(params as Record<string, string | number | boolean | undefined>) : ''
+    const query =
+      params !== undefined
+        ? buildQueryString(params as Record<string, string | number | boolean | undefined>)
+        : ''
     return apiClient.get<PaginatedResponse<Order>>(`${API_ENDPOINTS.ORDERS.SELLER_ORDERS}${query}`)
   },
 }
