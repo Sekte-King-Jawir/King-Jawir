@@ -3,10 +3,9 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
-import type { Store, StoreProduct, StoreApiResponse, StoreProductsApiResponse } from '../types'
+import { storeService } from '@/lib/api'
+import type { Store, StoreProduct } from '../types'
 import { Navbar, StoreHeader, StoreProducts } from './components'
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4101'
 
 export default function StoreDetailPage(): React.JSX.Element {
   const params = useParams()
@@ -26,21 +25,19 @@ export default function StoreDetailPage(): React.JSX.Element {
 
       try {
         // Fetch store info
-        const storeRes = await fetch(`${API_URL}/stores/${slug}`)
-        const storeData = (await storeRes.json()) as StoreApiResponse
+        const storeResponse = await storeService.getBySlug(slug)
 
-        if (storeData.success && storeData.data !== undefined) {
-          setStore(storeData.data.store)
+        if (storeResponse.success && storeResponse.data) {
+          setStore(storeResponse.data.store)
 
-          // Fetch store products - gunakan endpoint yang benar
-          const productsRes = await fetch(`${API_URL}/stores/${slug}/products?limit=20`)
-          const productsData = (await productsRes.json()) as StoreProductsApiResponse
+          // Fetch store products
+          const productsResponse = await storeService.getStoreProducts(slug, { limit: 20 })
 
-          if (productsData.success && productsData.data !== undefined) {
-            setProducts(productsData.data.products)
+          if (productsResponse.success && productsResponse.data) {
+            setProducts(productsResponse.data.data)
           }
         } else {
-          setError(storeData.message ?? 'Toko tidak ditemukan')
+          setError(storeResponse.message ?? 'Toko tidak ditemukan')
         }
       } catch {
         setError('Gagal memuat data toko')

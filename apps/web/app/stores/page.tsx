@@ -3,15 +3,8 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { storeService } from '@/lib/api'
 import type { Store } from './types'
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4101'
-
-interface StoresApiResponse {
-  success: boolean
-  message: string
-  data?: Store[]
-}
 
 export default function StoresPage(): React.JSX.Element {
   const [stores, setStores] = useState<Store[]>([])
@@ -22,15 +15,12 @@ export default function StoresPage(): React.JSX.Element {
   useEffect(() => {
     const fetchStores = async (): Promise<void> => {
       try {
-        const res = await fetch(`${API_URL}/stores`, {
-          credentials: 'include',
-        })
-        const result = (await res.json()) as StoresApiResponse
-
-        if (result.success && result.data !== undefined) {
-          setStores(result.data)
+        const response = await storeService.getAll()
+        
+        if (response.success && response.data) {
+          setStores(response.data.stores)
         } else {
-          setError(result.message ?? 'Gagal memuat daftar toko')
+          setError(response.message ?? 'Gagal memuat daftar toko')
         }
       } catch {
         setError('Gagal memuat daftar toko')
