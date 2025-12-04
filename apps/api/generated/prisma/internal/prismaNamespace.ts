@@ -1159,6 +1159,8 @@ export const StoreScalarFieldEnum = {
   userId: 'userId',
   name: 'name',
   slug: 'slug',
+  description: 'description',
+  logo: 'logo',
   createdAt: 'createdAt'
 } as const
 
@@ -1180,6 +1182,7 @@ export const ProductScalarFieldEnum = {
   categoryId: 'categoryId',
   name: 'name',
   slug: 'slug',
+  description: 'description',
   price: 'price',
   stock: 'stock',
   image: 'image',
@@ -1287,7 +1290,9 @@ export const StoreOrderByRelevanceFieldEnum = {
   id: 'id',
   userId: 'userId',
   name: 'name',
-  slug: 'slug'
+  slug: 'slug',
+  description: 'description',
+  logo: 'logo'
 } as const
 
 export type StoreOrderByRelevanceFieldEnum = (typeof StoreOrderByRelevanceFieldEnum)[keyof typeof StoreOrderByRelevanceFieldEnum]
@@ -1308,6 +1313,7 @@ export const ProductOrderByRelevanceFieldEnum = {
   categoryId: 'categoryId',
   name: 'name',
   slug: 'slug',
+  description: 'description',
   image: 'image'
 } as const
 

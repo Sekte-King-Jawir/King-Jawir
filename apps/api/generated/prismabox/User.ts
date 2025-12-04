@@ -62,6 +62,8 @@ export const UserRelations = t.Object(
           userId: t.String(),
           name: t.String(),
           slug: t.String(),
+          description: __nullable__(t.String()),
+          logo: __nullable__(t.String()),
           createdAt: t.Date(),
         },
         { additionalProperties: false },

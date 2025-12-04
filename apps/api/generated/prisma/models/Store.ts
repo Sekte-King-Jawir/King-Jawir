@@ -29,6 +29,8 @@ export type StoreMinAggregateOutputType = {
   userId: string | null
   name: string | null
   slug: string | null
+  description: string | null
+  logo: string | null
   createdAt: Date | null
 }
 
@@ -37,6 +39,8 @@ export type StoreMaxAggregateOutputType = {
   userId: string | null
   name: string | null
   slug: string | null
+  description: string | null
+  logo: string | null
   createdAt: Date | null
 }
 
@@ -45,6 +49,8 @@ export type StoreCountAggregateOutputType = {
   userId: number
   name: number
   slug: number
+  description: number
+  logo: number
   createdAt: number
   _all: number
 }
@@ -55,6 +61,8 @@ export type StoreMinAggregateInputType = {
   userId?: true
   name?: true
   slug?: true
+  description?: true
+  logo?: true
   createdAt?: true
 }
 
@@ -63,6 +71,8 @@ export type StoreMaxAggregateInputType = {
   userId?: true
   name?: true
   slug?: true
+  description?: true
+  logo?: true
   createdAt?: true
 }
 
@@ -71,6 +81,8 @@ export type StoreCountAggregateInputType = {
   userId?: true
   name?: true
   slug?: true
+  description?: true
+  logo?: true
   createdAt?: true
   _all?: true
 }
@@ -152,6 +164,8 @@ export type StoreGroupByOutputType = {
   userId: string
   name: string
   slug: string
+  description: string | null
+  logo: string | null
   createdAt: Date
   _count: StoreCountAggregateOutputType | null
   _min: StoreMinAggregateOutputType | null
@@ -181,6 +195,8 @@ export type StoreWhereInput = {
   userId?: Prisma.StringFilter<"Store"> | string
   name?: Prisma.StringFilter<"Store"> | string
   slug?: Prisma.StringFilter<"Store"> | string
+  description?: Prisma.StringNullableFilter<"Store"> | string | null
+  logo?: Prisma.StringNullableFilter<"Store"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Store"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   products?: Prisma.ProductListRelationFilter
@@ -191,6 +207,8 @@ export type StoreOrderByWithRelationInput = {
   userId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
+  description?: Prisma.SortOrderInput | Prisma.SortOrder
+  logo?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
   products?: Prisma.ProductOrderByRelationAggregateInput
@@ -205,6 +223,8 @@ export type StoreWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.StoreWhereInput[]
   NOT?: Prisma.StoreWhereInput | Prisma.StoreWhereInput[]
   name?: Prisma.StringFilter<"Store"> | string
+  description?: Prisma.StringNullableFilter<"Store"> | string | null
+  logo?: Prisma.StringNullableFilter<"Store"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Store"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   products?: Prisma.ProductListRelationFilter
@@ -215,6 +235,8 @@ export type StoreOrderByWithAggregationInput = {
   userId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
+  description?: Prisma.SortOrderInput | Prisma.SortOrder
+  logo?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.StoreCountOrderByAggregateInput
   _max?: Prisma.StoreMaxOrderByAggregateInput
@@ -229,6 +251,8 @@ export type StoreScalarWhereWithAggregatesInput = {
   userId?: Prisma.StringWithAggregatesFilter<"Store"> | string
   name?: Prisma.StringWithAggregatesFilter<"Store"> | string
   slug?: Prisma.StringWithAggregatesFilter<"Store"> | string
+  description?: Prisma.StringNullableWithAggregatesFilter<"Store"> | string | null
+  logo?: Prisma.StringNullableWithAggregatesFilter<"Store"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Store"> | Date | string
 }
 
@@ -236,6 +260,8 @@ export type StoreCreateInput = {
   id?: string
   name: string
   slug: string
+  description?: string | null
+  logo?: string | null
   createdAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutStoreInput
   products?: Prisma.ProductCreateNestedManyWithoutStoreInput
@@ -246,6 +272,8 @@ export type StoreUncheckedCreateInput = {
   userId: string
   name: string
   slug: string
+  description?: string | null
+  logo?: string | null
   createdAt?: Date | string
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutStoreInput
 }
@@ -254,6 +282,8 @@ export type StoreUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutStoreNestedInput
   products?: Prisma.ProductUpdateManyWithoutStoreNestedInput
@@ -264,6 +294,8 @@ export type StoreUncheckedUpdateInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   products?: Prisma.ProductUncheckedUpdateManyWithoutStoreNestedInput
 }
@@ -273,6 +305,8 @@ export type StoreCreateManyInput = {
   userId: string
   name: string
   slug: string
+  description?: string | null
+  logo?: string | null
   createdAt?: Date | string
 }
 
@@ -280,6 +314,8 @@ export type StoreUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -288,6 +324,8 @@ export type StoreUncheckedUpdateManyInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -307,6 +345,8 @@ export type StoreCountOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
+  description?: Prisma.SortOrder
+  logo?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -315,6 +355,8 @@ export type StoreMaxOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
+  description?: Prisma.SortOrder
+  logo?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -323,6 +365,8 @@ export type StoreMinOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
+  description?: Prisma.SortOrder
+  logo?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -381,6 +425,8 @@ export type StoreCreateWithoutUserInput = {
   id?: string
   name: string
   slug: string
+  description?: string | null
+  logo?: string | null
   createdAt?: Date | string
   products?: Prisma.ProductCreateNestedManyWithoutStoreInput
 }
@@ -389,6 +435,8 @@ export type StoreUncheckedCreateWithoutUserInput = {
   id?: string
   name: string
   slug: string
+  description?: string | null
+  logo?: string | null
   createdAt?: Date | string
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutStoreInput
 }
@@ -413,6 +461,8 @@ export type StoreUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   products?: Prisma.ProductUpdateManyWithoutStoreNestedInput
 }
@@ -421,6 +471,8 @@ export type StoreUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   products?: Prisma.ProductUncheckedUpdateManyWithoutStoreNestedInput
 }
@@ -429,6 +481,8 @@ export type StoreCreateWithoutProductsInput = {
   id?: string
   name: string
   slug: string
+  description?: string | null
+  logo?: string | null
   createdAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutStoreInput
 }
@@ -438,6 +492,8 @@ export type StoreUncheckedCreateWithoutProductsInput = {
   userId: string
   name: string
   slug: string
+  description?: string | null
+  logo?: string | null
   createdAt?: Date | string
 }
 
@@ -461,6 +517,8 @@ export type StoreUpdateWithoutProductsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutStoreNestedInput
 }
@@ -470,6 +528,8 @@ export type StoreUncheckedUpdateWithoutProductsInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -509,6 +569,8 @@ export type StoreSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   userId?: boolean
   name?: boolean
   slug?: boolean
+  description?: boolean
+  logo?: boolean
   createdAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   products?: boolean | Prisma.Store$productsArgs<ExtArgs>
@@ -522,10 +584,12 @@ export type StoreSelectScalar = {
   userId?: boolean
   name?: boolean
   slug?: boolean
+  description?: boolean
+  logo?: boolean
   createdAt?: boolean
 }
 
-export type StoreOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "name" | "slug" | "createdAt", ExtArgs["result"]["store"]>
+export type StoreOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "name" | "slug" | "description" | "logo" | "createdAt", ExtArgs["result"]["store"]>
 export type StoreInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   products?: boolean | Prisma.Store$productsArgs<ExtArgs>
@@ -543,6 +607,8 @@ export type $StorePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     userId: string
     name: string
     slug: string
+    description: string | null
+    logo: string | null
     createdAt: Date
   }, ExtArgs["result"]["store"]>
   composites: {}
@@ -919,6 +985,8 @@ export interface StoreFieldRefs {
   readonly userId: Prisma.FieldRef<"Store", 'String'>
   readonly name: Prisma.FieldRef<"Store", 'String'>
   readonly slug: Prisma.FieldRef<"Store", 'String'>
+  readonly description: Prisma.FieldRef<"Store", 'String'>
+  readonly logo: Prisma.FieldRef<"Store", 'String'>
   readonly createdAt: Prisma.FieldRef<"Store", 'DateTime'>
 }
     

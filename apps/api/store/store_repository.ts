@@ -1,6 +1,15 @@
 import { prisma } from '../lib/db'
 
 export const storeRepository = {
+  async findAll() {
+    return prisma.store.findMany({
+      orderBy: { createdAt: 'desc' },
+      include: {
+        _count: { select: { products: true } },
+      },
+    })
+  },
+
   async findByUserId(userId: string) {
     return prisma.store.findUnique({
       where: { userId },
@@ -30,17 +39,19 @@ export const storeRepository = {
     })
   },
 
-  async create(data: { userId: string; name: string; slug: string }) {
+  async create(data: { userId: string; name: string; slug: string; description?: string; logo?: string }) {
     return prisma.store.create({
       data: {
         userId: data.userId,
         name: data.name,
         slug: data.slug,
+        description: data.description ?? null,
+        logo: data.logo ?? null,
       },
     })
   },
 
-  async update(id: string, data: { name?: string; slug?: string }) {
+  async update(id: string, data: { name?: string; slug?: string; description?: string; logo?: string }) {
     return prisma.store.update({
       where: { id },
       data,

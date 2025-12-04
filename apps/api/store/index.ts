@@ -17,7 +17,12 @@ export const storeRoutes = new Elysia({ prefix: '/store' })
         return errorResponse('Unauthorized - Please login', ErrorCode.UNAUTHORIZED)
       }
 
-      const result = await storeController.create(user.id, body.name, body.slug)
+      const result = await storeController.create(user.id, {
+        name: body.name,
+        ...(body.slug && { slug: body.slug }),
+        ...(body.description && { description: body.description }),
+        ...(body.logo && { logo: body.logo }),
+      })
 
       if (!result.success) {
         set.status = 400
@@ -29,6 +34,8 @@ export const storeRoutes = new Elysia({ prefix: '/store' })
       body: t.Object({
         name: v.name(),
         slug: t.Optional(v.slug()),
+        description: t.Optional(t.String({ maxLength: 2000 })),
+        logo: t.Optional(v.url()),
       }),
       detail: {
         tags: ['Store'],
@@ -93,11 +100,13 @@ export const storeRoutes = new Elysia({ prefix: '/store' })
       body: t.Object({
         name: t.Optional(v.name()),
         slug: t.Optional(v.slug()),
+        description: t.Optional(t.String({ maxLength: 2000 })),
+        logo: t.Optional(v.url()),
       }),
       detail: {
         tags: ['Store'],
         summary: 'Update my store',
-        description: 'Update store name or slug.',
+        description: 'Update store name, slug, description, or logo.',
       },
     }
   )
@@ -135,6 +144,22 @@ export const storeRoutes = new Elysia({ prefix: '/store' })
 
 // Public routes untuk melihat store
 export const publicStoreRoutes = new Elysia({ prefix: '/stores' })
+
+  // GET /stores - List all stores (public)
+  .get(
+    '/',
+    async () => {
+      const result = await storeController.getAll()
+      return result
+    },
+    {
+      detail: {
+        tags: ['Store'],
+        summary: 'List all stores',
+        description: 'Get list of all public stores.',
+      },
+    }
+  )
 
   // GET /stores/:slug - Get store by slug (public)
   .get(

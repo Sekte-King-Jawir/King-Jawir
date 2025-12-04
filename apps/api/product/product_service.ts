@@ -26,6 +26,7 @@ export const productService = {
         id: p.id,
         name: p.name,
         slug: p.slug,
+        description: p.description,
         price: Number(p.price),
         stock: p.stock,
         image: p.image,
@@ -56,6 +57,7 @@ export const productService = {
         id: product.id,
         name: product.name,
         slug: product.slug,
+        description: product.description,
         price: Number(product.price),
         stock: product.stock,
         image: product.image,
@@ -82,6 +84,7 @@ export const productService = {
         id: p.id,
         name: p.name,
         slug: p.slug,
+        description: p.description,
         price: Number(p.price),
         stock: p.stock,
         image: p.image,
@@ -105,6 +108,7 @@ export const productService = {
       categoryId: string
       name: string
       slug?: string
+      description?: string
       price: number
       stock: number
       image?: string
@@ -147,7 +151,8 @@ export const productService = {
       slug: productSlug,
       price: data.price,
       stock: data.stock,
-      ...(data.image !== undefined && { image: data.image }),
+      ...(data.description && { description: data.description }),
+      ...(data.image && { image: data.image }),
     })
 
     return successResponse('Product berhasil dibuat', {
@@ -155,6 +160,7 @@ export const productService = {
         id: product.id,
         name: product.name,
         slug: product.slug,
+        description: product.description,
         price: Number(product.price),
         stock: product.stock,
         image: product.image,
@@ -172,6 +178,7 @@ export const productService = {
       categoryId?: string
       name?: string
       slug?: string
+      description?: string
       price?: number
       stock?: number
       image?: string
@@ -218,6 +225,7 @@ export const productService = {
         id: updated.id,
         name: updated.name,
         slug: updated.slug,
+        description: updated.description,
         price: Number(updated.price),
         stock: updated.stock,
         image: updated.image,
@@ -265,6 +273,7 @@ export const productService = {
         id: p.id,
         name: p.name,
         slug: p.slug,
+        description: p.description,
         price: Number(p.price),
         stock: p.stock,
         image: p.image,

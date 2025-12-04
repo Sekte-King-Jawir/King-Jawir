@@ -13,6 +13,7 @@ export interface CreateProductData {
   categoryId: string
   name: string
   slug: string
+  description?: string
   price: number
   stock: number
   image?: string
@@ -112,6 +113,7 @@ export const productRepository = {
         categoryId: data.categoryId,
         name: data.name,
         slug: data.slug,
+        description: data.description ?? null,
         price: data.price,
         stock: data.stock,
         image: data.image ?? null,

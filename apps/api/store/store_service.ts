@@ -11,8 +11,23 @@ function generateSlug(name: string): string {
 }
 
 export const storeService = {
+  // Get all stores (public)
+  async getAll() {
+    const stores = await storeRepository.findAll()
+
+    return successResponse('Daftar toko', stores.map(store => ({
+      id: store.id,
+      name: store.name,
+      slug: store.slug,
+      description: store.description,
+      logo: store.logo,
+      _count: store._count,
+      createdAt: store.createdAt,
+    })))
+  },
+
   // Create store (CUSTOMER -> SELLER upgrade)
-  async create(userId: string, data: { name: string; slug?: string }) {
+  async create(userId: string, data: { name: string; slug?: string; description?: string; logo?: string }) {
     // Check apakah user sudah punya store
     const existingStore = await storeRepository.findByUserId(userId)
     if (existingStore) {
@@ -40,6 +55,8 @@ export const storeService = {
           userId,
           name: data.name,
           slug: storeSlug,
+          ...(data.description && { description: data.description }),
+          ...(data.logo && { logo: data.logo }),
         },
       })
 
@@ -57,6 +74,8 @@ export const storeService = {
         id: store.id,
         name: store.name,
         slug: store.slug,
+        description: store.description,
+        logo: store.logo,
         createdAt: store.createdAt,
       },
     })
@@ -75,6 +94,8 @@ export const storeService = {
         id: store.id,
         name: store.name,
         slug: store.slug,
+        description: store.description,
+        logo: store.logo,
         productCount: store._count?.products || 0,
         createdAt: store.createdAt,
       },
@@ -82,7 +103,7 @@ export const storeService = {
   },
 
   // Update my store
-  async update(userId: string, data: { name?: string; slug?: string }) {
+  async update(userId: string, data: { name?: string; slug?: string; description?: string; logo?: string }) {
     const store = await storeRepository.findByUserId(userId)
 
     if (!store) {
@@ -101,6 +122,8 @@ export const storeService = {
         id: updated.id,
         name: updated.name,
         slug: updated.slug,
+        description: updated.description,
+        logo: updated.logo,
         createdAt: updated.createdAt,
       },
     })
@@ -119,6 +142,8 @@ export const storeService = {
         id: store.id,
         name: store.name,
         slug: store.slug,
+        description: store.description,
+        logo: store.logo,
         productCount: store._count?.products || 0,
         owner: store.user,
         createdAt: store.createdAt,
