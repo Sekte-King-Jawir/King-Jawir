@@ -88,11 +88,11 @@ export default function CheckoutPage(): React.JSX.Element {
     try {
       const res = await fetch(`${API_URL}/orders`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('accessToken') || ''}`,
+        },
         credentials: 'include',
-        body: JSON.stringify({
-          shippingAddress: shippingAddress.trim(),
-        }),
       })
 
       const data = (await res.json()) as {
@@ -101,13 +101,20 @@ export default function CheckoutPage(): React.JSX.Element {
         data?: { order: { id: string } }
       }
 
-      if (data.success) {
-        router.push(`/orders?success=true`)
+      if (res.ok && data.success) {
+        // Clear cart locally
+        setCartItems([])
+        // Redirect to orders page with success message
+        router.push('/orders?success=true')
+      } else if (res.status === 401) {
+        setError('Sesi login habis. Silakan login kembali.')
+        setTimeout(() => router.push('/auth/login'), 2000)
       } else {
-        setError(data.message ?? 'Gagal membuat pesanan')
+        setError(data.message || 'Gagal membuat pesanan. Silakan coba lagi.')
       }
-    } catch {
-      setError('Gagal membuat pesanan')
+    } catch (err) {
+      console.error('Checkout error:', err)
+      setError('Terjadi kesalahan. Pastikan koneksi internet Anda stabil.')
     } finally {
       setIsSubmitting(false)
     }

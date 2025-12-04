@@ -15,7 +15,9 @@ export default function HomePage(): React.JSX.Element {
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-2">
               <span className="text-2xl">🤖</span>
-              <span className="font-bold text-xl text-slate-900 dark:text-white">King Jawir AI</span>
+              <span className="font-bold text-xl text-slate-900 dark:text-white">
+                King Jawir AI
+              </span>
             </div>
             <div className="flex items-center gap-4">
               <Link
@@ -53,11 +55,13 @@ export default function HomePage(): React.JSX.Element {
           </h1>
 
           <p className="text-lg sm:text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto mb-4">
-            Platform analisis harga berbasis Artificial Intelligence yang membantu UMKM Indonesia menentukan strategi pricing yang kompetitif dan menguntungkan.
+            Platform analisis harga berbasis Artificial Intelligence yang membantu UMKM Indonesia
+            menentukan strategi pricing yang kompetitif dan menguntungkan.
           </p>
 
           <p className="text-base sm:text-lg text-slate-500 dark:text-slate-400 max-w-2xl mx-auto mb-10">
-            Scraping data real-time dari Tokopedia, analisis statistik mendalam, dan rekomendasi harga cerdas dari AI—semuanya dalam satu platform.
+            Scraping data real-time dari Tokopedia, analisis statistik mendalam, dan rekomendasi
+            harga cerdas dari AI—semuanya dalam satu platform.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -84,7 +88,8 @@ export default function HomePage(): React.JSX.Element {
             Teknologi AI yang Kami Gunakan
           </h2>
           <p className="text-center text-slate-600 dark:text-slate-400 mb-12 max-w-2xl mx-auto">
-            Platform ini mengintegrasikan teknologi AI modern untuk memberikan analisis harga yang akurat dan actionable
+            Platform ini mengintegrasikan teknologi AI modern untuk memberikan analisis harga yang
+            akurat dan actionable
           </p>
 
           <div className="grid md:grid-cols-3 gap-8">
@@ -97,7 +102,8 @@ export default function HomePage(): React.JSX.Element {
                 Web Scraping Engine
               </h3>
               <p className="text-slate-600 dark:text-slate-400">
-                Rust-powered headless browser untuk scraping data real-time dari Tokopedia dengan akurasi tinggi dan performa optimal.
+                Rust-powered headless browser untuk scraping data real-time dari Tokopedia dengan
+                akurasi tinggi dan performa optimal.
               </p>
             </div>
 
@@ -110,7 +116,8 @@ export default function HomePage(): React.JSX.Element {
                 Large Language Model
               </h3>
               <p className="text-slate-600 dark:text-slate-400">
-                OpenAI-compatible AI model yang menganalisis data pasar, tren harga, dan memberikan rekomendasi strategis berbasis context.
+                OpenAI-compatible AI model yang menganalisis data pasar, tren harga, dan memberikan
+                rekomendasi strategis berbasis context.
               </p>
             </div>
 
@@ -123,7 +130,8 @@ export default function HomePage(): React.JSX.Element {
                 Statistical Analysis
               </h3>
               <p className="text-slate-600 dark:text-slate-400">
-                Algoritma statistik untuk menghitung mean, median, quartile, dan confidence interval dari data kompetitor.
+                Algoritma statistik untuk menghitung mean, median, quartile, dan confidence interval
+                dari data kompetitor.
               </p>
             </div>
           </div>
@@ -202,12 +210,16 @@ export default function HomePage(): React.JSX.Element {
             <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
               <div className="text-4xl mb-3">⚡</div>
               <div className="text-2xl font-bold mb-2">Real-time</div>
-              <div className="text-blue-100">Data diambil langsung dari marketplace tanpa cache</div>
+              <div className="text-blue-100">
+                Data diambil langsung dari marketplace tanpa cache
+              </div>
             </div>
             <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
               <div className="text-4xl mb-3">🎯</div>
               <div className="text-2xl font-bold mb-2">Akurat</div>
-              <div className="text-blue-100">Algoritma statistik untuk analisis data yang presisi</div>
+              <div className="text-blue-100">
+                Algoritma statistik untuk analisis data yang presisi
+              </div>
             </div>
             <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
               <div className="text-4xl mb-3">🤖</div>
@@ -230,7 +242,8 @@ export default function HomePage(): React.JSX.Element {
             Mulai Tentukan Harga Optimal dengan AI
           </h2>
           <p className="text-lg text-slate-600 dark:text-slate-400 mb-8">
-            Tidak perlu riset manual lagi. Biarkan AI yang bekerja untuk Anda—analisis komprehensif dalam hitungan detik.
+            Tidak perlu riset manual lagi. Biarkan AI yang bekerja untuk Anda—analisis komprehensif
+            dalam hitungan detik.
           </p>
           <Link
             href="/price-analysis"

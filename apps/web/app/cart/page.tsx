@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useCallback, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import styles from './page.module.css'
 import { CartItem, CartSummary } from './components'
 
@@ -26,6 +27,7 @@ interface CartItemData {
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4101'
 
 export default function CartPage() {
+  const router = useRouter()
   const [cartItems, setCartItems] = useState<CartItemData[]>([])
   const [loading, setLoading] = useState(true)
   const [updating, setUpdating] = useState(false)
@@ -88,10 +90,12 @@ export default function CartPage() {
   }, [])
 
   const handleCheckout = useCallback(() => {
-    // TODO: Implement checkout
-    console.log('Checkout clicked')
-    alert('Checkout functionality coming soon!')
-  }, [])
+    if (cartItems.length === 0) {
+      alert('Keranjang masih kosong!')
+      return
+    }
+    router.push('/checkout')
+  }, [cartItems.length, router])
 
   const subtotal = cartItems.reduce(
     (sum, item) => sum + Number(item.product.price) * item.quantity,
