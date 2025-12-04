@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import Navbar from './components/Navbar'
 import {
+  Navbar,
   HeroSection,
   CategorySection,
   FeaturedProducts,
@@ -12,7 +12,7 @@ import {
   PopularProducts,
   Newsletter,
   Footer,
-} from './components/home'
+} from '@repo/ui'
 
 // ============================================================================
 // DATA
