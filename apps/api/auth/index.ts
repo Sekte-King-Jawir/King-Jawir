@@ -10,7 +10,7 @@ import { forgotPasswordRoute } from './forgot-password'
 import { changePasswordRoute } from './change-password'
 import { googleRoute } from './google'
 
-export const authRoutes = new Elysia({ prefix: '/auth' })
+export const authRoutes = new Elysia({ prefix: '/api/auth' })
   .use(registerRoute)
   .use(loginRoute)
   .use(logoutRoute)

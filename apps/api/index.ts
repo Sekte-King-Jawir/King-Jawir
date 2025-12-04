@@ -119,7 +119,7 @@ const app = new Elysia()
   .use(adminRoutes)
   .use(priceAnalysisRoutes)
   .use(priceAnalysisWebSocket)
-  .get('/', () => ({ message: 'Marketplace API' }), {
+  .get('/api', () => ({ message: 'Marketplace API' }), {
     detail: {
       tags: ['General'],
       summary: 'Health check',

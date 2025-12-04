@@ -4,7 +4,7 @@ import { jwtPlugin, authDerive, isSeller } from '../lib/auth-helper'
 import { errorResponse, ErrorCode } from '../lib/response'
 import { v } from '../lib/validators'
 
-export const productRoutes = new Elysia({ prefix: '/products' })
+export const productRoutes = new Elysia({ prefix: '/api/products' })
   .use(jwtPlugin)
   .derive(authDerive)
 
@@ -193,9 +193,9 @@ export const myProductsRoute = new Elysia()
   .use(jwtPlugin)
   .derive(authDerive)
 
-  // GET /my-products - Get my products (SELLER)
+  // GET /api/my-products - Get my products (SELLER)
   .get(
-    '/my-products',
+    '/api/my-products',
     async ({ user, query, set }) => {
       if (!user) {
         set.status = 401
@@ -234,9 +234,9 @@ export const myProductsRoute = new Elysia()
 // Store products (add to public store routes)
 export const storeProductsRoute = new Elysia()
 
-  // GET /stores/:slug/products - Get products by store (public)
+  // GET /api/stores/:slug/products - Get products by store (public)
   .get(
-    '/stores/:slug/products',
+    '/api/stores/:slug/products',
     async ({ params, query, set }) => {
       const result = await productController.getByStoreSlug(
         params.slug,

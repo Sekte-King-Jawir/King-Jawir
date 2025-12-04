@@ -7,9 +7,9 @@ import { v } from '../lib/validators'
 export const reviewRoutes = new Elysia()
   .use(jwtPlugin)
   .derive(authDerive)
-  // POST /reviews - Create review
+  // POST /api/reviews - Create review
   .post(
-    '/reviews',
+    '/api/reviews',
     async ({ user, body, set }) => {
       if (!user) {
         set.status = 401
@@ -35,9 +35,9 @@ export const reviewRoutes = new Elysia()
       },
     }
   )
-  // PUT /reviews/:id - Update review
+  // PUT /api/reviews/:id - Update review
   .put(
-    '/reviews/:id',
+    '/api/reviews/:id',
     async ({ user, params, body, set }) => {
       if (!user) {
         set.status = 401
@@ -65,9 +65,9 @@ export const reviewRoutes = new Elysia()
       },
     }
   )
-  // DELETE /reviews/:id - Delete review
+  // DELETE /api/reviews/:id - Delete review
   .delete(
-    '/reviews/:id',
+    '/api/reviews/:id',
     async ({ user, params, set }) => {
       if (!user) {
         set.status = 401
@@ -95,7 +95,7 @@ export const reviewRoutes = new Elysia()
 
 // Public product reviews route (uses :slug to match product routes)
 export const productReviewsRoute = new Elysia().get(
-  '/products/:slug/reviews',
+  '/api/products/:slug/reviews',
   async ({ params, query, set }) => {
     return reviewController.getProductReviews(params.slug, query, set)
   },

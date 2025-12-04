@@ -9,75 +9,75 @@ export const API_CONFIG = {
 export const API_ENDPOINTS = {
   // Auth
   AUTH: {
-    ME: '/auth/me',
-    LOGIN: '/auth/login',
-    REGISTER: '/auth/register',
-    LOGOUT: '/auth/logout',
-    REFRESH: '/auth/refresh',
-    VERIFY_EMAIL: '/auth/verify-email',
-    RESEND_VERIFICATION: '/auth/resend-verification',
-    FORGOT_PASSWORD: '/auth/forgot-password',
-    CHANGE_PASSWORD: '/auth/change-password',
-    GOOGLE_LOGIN: '/auth/google',
-    GOOGLE_CALLBACK: '/auth/google/callback',
+    ME: '/api/auth/me',
+    LOGIN: '/api/auth/login',
+    REGISTER: '/api/auth/register',
+    LOGOUT: '/api/auth/logout',
+    REFRESH: '/api/auth/refresh',
+    VERIFY_EMAIL: '/api/auth/verify-email',
+    RESEND_VERIFICATION: '/api/auth/resend-verification',
+    FORGOT_PASSWORD: '/api/auth/forgot-password',
+    CHANGE_PASSWORD: '/api/auth/change-password',
+    GOOGLE_LOGIN: '/api/auth/google',
+    GOOGLE_CALLBACK: '/api/auth/google/callback',
   },
   // Products
   PRODUCTS: {
-    LIST: '/products',
-    BY_SLUG: (slug: string) => `/products/${slug}`,
-    MY_PRODUCTS: '/products/me',
-    STORE_PRODUCTS: (storeSlug: string) => `/products/store/${storeSlug}`,
+    LIST: '/api/products',
+    BY_SLUG: (slug: string) => `/api/products/${slug}`,
+    MY_PRODUCTS: '/api/products/me',
+    STORE_PRODUCTS: (storeSlug: string) => `/api/products/store/${storeSlug}`,
   },
   // Categories
   CATEGORIES: {
-    LIST: '/categories',
-    BY_SLUG: (slug: string) => `/categories/${slug}`,
+    LIST: '/api/categories',
+    BY_SLUG: (slug: string) => `/api/categories/${slug}`,
   },
   // Store
   STORES: {
-    LIST: '/stores',
-    BY_SLUG: (slug: string) => `/stores/${slug}`,
-    PRODUCTS: (slug: string) => `/stores/${slug}/products`,
-    MY_STORE: '/stores/me',
-    CREATE: '/stores',
-    UPDATE: '/stores',
+    LIST: '/api/stores',
+    BY_SLUG: (slug: string) => `/api/stores/${slug}`,
+    PRODUCTS: (slug: string) => `/api/stores/${slug}/products`,
+    MY_STORE: '/api/stores/me',
+    CREATE: '/api/stores',
+    UPDATE: '/api/stores',
   },
   // Cart
   CART: {
-    GET: '/cart',
-    ADD: '/cart',
-    UPDATE: (id: string) => `/cart/${id}`,
-    REMOVE: (id: string) => `/cart/${id}`,
-    CLEAR: '/cart/clear',
+    GET: '/api/cart',
+    ADD: '/api/cart',
+    UPDATE: (id: string) => `/api/cart/${id}`,
+    REMOVE: (id: string) => `/api/cart/${id}`,
+    CLEAR: '/api/cart/clear',
   },
   // Orders
   ORDERS: {
-    LIST: '/orders',
-    CREATE: '/orders',
-    BY_ID: (id: string) => `/orders/${id}`,
-    SELLER_ORDERS: '/orders/seller',
+    LIST: '/api/orders',
+    CREATE: '/api/orders',
+    BY_ID: (id: string) => `/api/orders/${id}`,
+    SELLER_ORDERS: '/api/orders/seller',
   },
   // Reviews
   REVIEWS: {
-    PRODUCT: (slug: string) => `/products/${slug}/reviews`,
-    CREATE: '/reviews',
+    PRODUCT: (slug: string) => `/api/products/${slug}/reviews`,
+    CREATE: '/api/reviews',
   },
   // Profile
   PROFILE: {
-    GET: '/profile',
-    UPDATE: '/profile',
+    GET: '/api/profile',
+    UPDATE: '/api/profile',
   },
   // Price Analysis
   PRICE_ANALYSIS: {
-    ANALYZE: '/price-analysis/analyze',
-    STREAM: '/price-analysis/stream',
+    ANALYZE: '/api/price-analysis',
+    STREAM: '/api/price-analysis/stream',
   },
   // Admin
   ADMIN: {
-    DASHBOARD: '/admin/dashboard',
-    USERS: '/admin/users',
-    PRODUCTS: '/admin/products',
-    ORDERS: '/admin/orders',
-    STORES: '/admin/stores',
+    DASHBOARD: '/api/admin/dashboard',
+    USERS: '/api/admin/users',
+    PRODUCTS: '/api/admin/products',
+    ORDERS: '/api/admin/orders',
+    STORES: '/api/admin/stores',
   },
 } as const

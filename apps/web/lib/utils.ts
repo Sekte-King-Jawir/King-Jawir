@@ -113,11 +113,14 @@ export function shuffleArray<T>(array: T[]): T[] {
  */
 export function formatDate(date: string | Date, options?: Intl.DateTimeFormatOptions): string {
   const dateObj = typeof date === 'string' ? new Date(date) : date
-  return new Intl.DateTimeFormat('id-ID', options || {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  }).format(dateObj)
+  return new Intl.DateTimeFormat(
+    'id-ID',
+    options || {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    }
+  ).format(dateObj)
 }
 
 /**

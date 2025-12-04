@@ -4,7 +4,7 @@ import { jwtPlugin, authDerive, isAdmin } from '../lib/auth-helper'
 import { errorResponse, ErrorCode } from '../lib/response'
 import { v } from '../lib/validators'
 
-export const categoryRoutes = new Elysia({ prefix: '/categories' })
+export const categoryRoutes = new Elysia({ prefix: '/api/categories' })
   .use(jwtPlugin)
   .derive(authDerive)
 

@@ -160,15 +160,6 @@ export function ProductsContent(): React.JSX.Element {
   return (
     <div className="min-h-screen bg-linear-to-br from-slate-50 via-white to-slate-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
       <div className="container mx-auto px-4 py-8 max-w-7xl">
-        {/* Breadcrumb */}
-        <nav className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400 mb-6">
-          <Link href="/" className="hover:text-slate-900 dark:hover:text-white transition-colors">
-            Home
-          </Link>
-          <span>/</span>
-          <span className="text-slate-900 dark:text-white font-medium">Produk</span>
-        </nav>
-
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-4xl font-bold bg-linear-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300 bg-clip-text text-transparent mb-2">

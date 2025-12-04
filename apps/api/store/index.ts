@@ -4,7 +4,7 @@ import { jwtPlugin, authDerive, isSeller } from '../lib/auth-helper'
 import { errorResponse, ErrorCode } from '../lib/response'
 import { v } from '../lib/validators'
 
-export const storeRoutes = new Elysia({ prefix: '/store' })
+export const storeRoutes = new Elysia({ prefix: '/api/store' })
   .use(jwtPlugin)
   .derive(authDerive)
 
@@ -143,7 +143,7 @@ export const storeRoutes = new Elysia({ prefix: '/store' })
   )
 
 // Public routes untuk melihat store
-export const publicStoreRoutes = new Elysia({ prefix: '/stores' })
+export const publicStoreRoutes = new Elysia({ prefix: '/api/stores' })
 
   // GET /stores - List all stores (public)
   .get(

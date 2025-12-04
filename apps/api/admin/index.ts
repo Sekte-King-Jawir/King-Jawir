@@ -3,7 +3,7 @@ import { adminController } from './admin_controller'
 import { jwtPlugin, authDerive } from '../lib/auth-helper'
 
 // Admin routes - all require ADMIN role
-export const adminRoutes = new Elysia({ prefix: '/admin' })
+export const adminRoutes = new Elysia({ prefix: '/api/admin' })
   .use(jwtPlugin)
   .derive(authDerive)
   // GET /admin/users - List all users
