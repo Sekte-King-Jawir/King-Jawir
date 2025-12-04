@@ -20,35 +20,19 @@ export function NavbarWrapper() {
   useEffect(() => {
     const checkAuth = async (): Promise<void> => {
       try {
-        // First, check if user data exists in localStorage
-        const storedUser = localStorage.getItem('user')
-        if (storedUser) {
-          try {
-            const parsedUser = JSON.parse(storedUser) as User
-            setUser(parsedUser)
-            setLoading(false) // Show navbar immediately with cached user
-          } catch (e) {
-            console.error('Failed to parse stored user:', e)
-          }
-        }
-
-        // Then verify with API
+        // Check auth status with API
         const response = await authService.me()
         if (response.success && response.data) {
           const apiUser = response.data.user
           setUser(apiUser)
-          // Update localStorage with fresh data
-          localStorage.setItem('user', JSON.stringify(apiUser))
         } else {
-          // API says not logged in, clear cached user
+          // API says not logged in
           setUser(null)
-          localStorage.removeItem('user')
         }
       } catch (error) {
         // API call failed, clear user
         console.error('Auth check failed:', error)
         setUser(null)
-        localStorage.removeItem('user')
       } finally {
         setLoading(false)
       }
@@ -72,14 +56,12 @@ export function NavbarWrapper() {
   const handleLogout = (): void => {
     authService
       .logout()
-      .catch((error) => {
+      .catch(error => {
         console.error('Logout failed:', error)
       })
       .finally(() => {
-        // Clear user state and localStorage regardless of API call result
+        // Clear user state - cookies will be cleared by API
         setUser(null)
-        localStorage.removeItem('user')
-        localStorage.removeItem('token')
         router.push('/')
         router.refresh()
       })

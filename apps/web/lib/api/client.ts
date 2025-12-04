@@ -42,8 +42,8 @@ export class ApiClient {
   private timeout: number
 
   constructor(baseUrl?: string, timeout?: number) {
-    this.baseUrl = baseUrl || API_CONFIG.BASE_URL
-    this.timeout = timeout || API_CONFIG.TIMEOUT
+    this.baseUrl = baseUrl ?? API_CONFIG.BASE_URL
+    this.timeout = timeout ?? API_CONFIG.TIMEOUT
   }
 
   private async request<T>(endpoint: string, options: RequestInit = {}): Promise<ApiResponse<T>> {
@@ -63,7 +63,7 @@ export class ApiClient {
 
       clearTimeout(timeoutId)
 
-      const data = await response.json()
+      const data = (await response.json()) as Record<string, unknown>
 
       if (!response.ok) {
         // If unauthorized (401) or token invalid, try to refresh token
@@ -86,22 +86,19 @@ export class ApiClient {
           }
 
           if (typeof window !== 'undefined') {
-            localStorage.removeItem('user')
-            localStorage.removeItem('token')
-            // Trigger a storage event to notify other components
+            // Dispatch event to notify components to clear auth state
             window.dispatchEvent(new Event('auth-cleared'))
           }
         }
 
-        throw new ApiClientError(
-          data.message || 'Request failed',
-          data.error?.code || 'UNKNOWN_ERROR',
-          response.status,
-          data.error?.details
-        )
+        const message = typeof data.message === 'string' ? data.message : 'Request failed'
+        const errorCode = typeof errorObj?.code === 'string' ? errorObj.code : 'UNKNOWN_ERROR'
+        const errorDetails = errorObj?.details
+
+        throw new ApiClientError(message, errorCode, response.status, errorDetails)
       }
 
-      return data
+      return data as unknown as ApiResponse<T>
     } catch (error) {
       clearTimeout(timeoutId)
 
@@ -120,35 +117,35 @@ export class ApiClient {
     }
   }
 
-  async get<T>(endpoint: string, options?: RequestInit): Promise<ApiResponse<T>> {
+  get<T>(endpoint: string, options?: RequestInit): Promise<ApiResponse<T>> {
     return this.request<T>(endpoint, { ...options, method: 'GET' })
   }
 
-  async post<T>(endpoint: string, body?: unknown, options?: RequestInit): Promise<ApiResponse<T>> {
+  post<T>(endpoint: string, body?: unknown, options?: RequestInit): Promise<ApiResponse<T>> {
     return this.request<T>(endpoint, {
       ...options,
       method: 'POST',
-      body: body ? JSON.stringify(body) : undefined,
+      body: body !== undefined ? JSON.stringify(body) : null,
     })
   }
 
-  async put<T>(endpoint: string, body?: unknown, options?: RequestInit): Promise<ApiResponse<T>> {
+  put<T>(endpoint: string, body?: unknown, options?: RequestInit): Promise<ApiResponse<T>> {
     return this.request<T>(endpoint, {
       ...options,
       method: 'PUT',
-      body: body ? JSON.stringify(body) : undefined,
+      body: body !== undefined ? JSON.stringify(body) : null,
     })
   }
 
-  async patch<T>(endpoint: string, body?: unknown, options?: RequestInit): Promise<ApiResponse<T>> {
+  patch<T>(endpoint: string, body?: unknown, options?: RequestInit): Promise<ApiResponse<T>> {
     return this.request<T>(endpoint, {
       ...options,
       method: 'PATCH',
-      body: body ? JSON.stringify(body) : undefined,
+      body: body !== undefined ? JSON.stringify(body) : null,
     })
   }
 
-  async delete<T>(endpoint: string, options?: RequestInit): Promise<ApiResponse<T>> {
+  delete<T>(endpoint: string, options?: RequestInit): Promise<ApiResponse<T>> {
     return this.request<T>(endpoint, { ...options, method: 'DELETE' })
   }
 }
@@ -175,7 +172,7 @@ export function buildQueryString(
   })
 
   const query = searchParams.toString()
-  return query ? `?${query}` : ''
+  return query.length > 0 ? `?${query}` : ''
 }
 
 export function isApiError(error: unknown): error is ApiClientError {
