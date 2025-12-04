@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { storeService } from '@/lib/api'
-import type { Store } from './types'
+import type { Store } from '@/types'
 
 export default function StoresPage(): React.JSX.Element {
   const [stores, setStores] = useState<Store[]>([])
@@ -17,7 +17,7 @@ export default function StoresPage(): React.JSX.Element {
       try {
         const response = await storeService.getAll()
         
-        if (response.success && response.data) {
+        if (response.success && response.data !== null && response.data !== undefined) {
           setStores(response.data.stores)
         } else {
           setError(response.message ?? 'Gagal memuat daftar toko')
@@ -152,7 +152,7 @@ interface StoreCardProps {
 }
 
 function StoreCard({ store }: StoreCardProps): React.JSX.Element {
-  const productCount = store._count?.products ?? store.productCount ?? 0
+  const productCount = (store.productCount ?? 0) as number
 
   return (
     <Link href={`/stores/${store.slug}`}>

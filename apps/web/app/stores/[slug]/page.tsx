@@ -4,7 +4,8 @@ import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { storeService } from '@/lib/api'
-import type { Store, StoreProduct } from '../types'
+import type { Store } from '@/types'
+import type { StoreProduct } from '../types'
 import { Navbar, StoreHeader, StoreProducts } from './components'
 
 export default function StoreDetailPage(): React.JSX.Element {
@@ -34,7 +35,9 @@ export default function StoreDetailPage(): React.JSX.Element {
           const productsResponse = await storeService.getStoreProducts(slug, { limit: 20 })
 
           if (productsResponse.success && productsResponse.data) {
-            setProducts(productsResponse.data.data)
+            // Map Product to StoreProduct format
+            const prods = productsResponse.data.products || productsResponse.data.items || []
+            setProducts(prods as any)
           }
         } else {
           setError(storeResponse.message ?? 'Toko tidak ditemukan')
@@ -91,7 +94,7 @@ export default function StoreDetailPage(): React.JSX.Element {
           <span className="text-slate-900 dark:text-white">{store.name}</span>
         </nav>
 
-        <StoreHeader store={store} />
+        <StoreHeader store={store as any} />
         <StoreProducts products={products} storeName={store.name} />
       </main>
     </div>

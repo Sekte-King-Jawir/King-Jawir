@@ -40,6 +40,7 @@ export interface Store {
   logo?: string | null
   userId: string
   createdAt: string
+  productCount?: number
 }
 
 export interface Product {

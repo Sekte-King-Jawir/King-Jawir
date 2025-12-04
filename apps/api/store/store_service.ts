@@ -23,7 +23,7 @@ export const storeService = {
         slug: store.slug,
         description: store.description,
         logo: store.logo,
-        _count: store._count,
+        productCount: store._count?.products ?? 0,
         createdAt: store.createdAt,
       }))
     )
