@@ -65,7 +65,9 @@ function formatDate(dateString: string): string {
 
 function StarIcon({ filled, className }: { filled: boolean; className?: string }): JSX.Element {
   return (
-    <span className={`${filled ? 'text-yellow-400' : 'text-slate-300 dark:text-slate-600'} ${className ?? ''}`}>
+    <span
+      className={`${filled ? 'text-yellow-400' : 'text-slate-300 dark:text-slate-600'} ${className ?? ''}`}
+    >
       ★
     </span>
   )
@@ -115,7 +117,11 @@ function ReviewsSkeleton(): JSX.Element {
 // MAIN COMPONENT
 // ============================================================================
 
-export function ReviewSection({ productSlug, productId, apiBaseUrl }: ReviewSectionProps): JSX.Element {
+export function ReviewSection({
+  productSlug,
+  productId,
+  apiBaseUrl,
+}: ReviewSectionProps): JSX.Element {
   const [reviews, setReviews] = useState<Review[]>([])
   const [stats, setStats] = useState<ReviewStats | null>(null)
   const [isLoading, setIsLoading] = useState(true)
@@ -251,7 +257,8 @@ export function ReviewSection({ productSlug, productId, apiBaseUrl }: ReviewSect
                 <div className="flex-1 space-y-2">
                   {[5, 4, 3, 2, 1].map(star => {
                     const count = stats.distribution[String(star)] ?? 0
-                    const percentage = stats.totalReviews > 0 ? (count / stats.totalReviews) * 100 : 0
+                    const percentage =
+                      stats.totalReviews > 0 ? (count / stats.totalReviews) * 100 : 0
                     return (
                       <div key={star} className="flex items-center gap-2">
                         <span className="w-8 text-sm text-slate-600 dark:text-slate-400">
@@ -405,7 +412,9 @@ export function ReviewSection({ productSlug, productId, apiBaseUrl }: ReviewSect
 
                         {/* Comment */}
                         {review.comment !== null && review.comment !== '' ? (
-                          <p className="text-slate-600 dark:text-slate-400 mt-2">{review.comment}</p>
+                          <p className="text-slate-600 dark:text-slate-400 mt-2">
+                            {review.comment}
+                          </p>
                         ) : null}
                       </div>
                     </div>
