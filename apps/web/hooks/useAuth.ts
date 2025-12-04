@@ -18,6 +18,10 @@ export function useAuth() {
 
       if (response.success && response.data) {
         setUser(response.data.user)
+        // Notify other components about auth change
+        if (typeof window !== 'undefined') {
+          window.dispatchEvent(new Event('auth-state-change'))
+        }
         return { success: true, user: response.data.user }
       }
 
@@ -41,6 +45,10 @@ export function useAuth() {
 
       if (response.success && response.data) {
         setUser(response.data.user)
+        // Notify other components about auth change
+        if (typeof window !== 'undefined') {
+          window.dispatchEvent(new Event('auth-state-change'))
+        }
         return { success: true, user: response.data.user }
       }
 

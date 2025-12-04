@@ -44,12 +44,19 @@ export function NavbarWrapper() {
       router.push('/auth/login')
     }
 
+    // Listen for auth-state-change event (login/logout from other components)
+    const handleAuthChange = (): void => {
+      void checkAuth()
+    }
+
     window.addEventListener('auth-cleared', handleAuthCleared)
+    window.addEventListener('auth-state-change', handleAuthChange)
 
     void checkAuth()
 
     return (): void => {
       window.removeEventListener('auth-cleared', handleAuthCleared)
+      window.removeEventListener('auth-state-change', handleAuthChange)
     }
   }, [router])
 
