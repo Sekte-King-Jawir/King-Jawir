@@ -59,7 +59,7 @@ export default function Newsletter(): React.JSX.Element {
 
           {/* Features */}
           <div className="flex flex-wrap justify-center gap-4 md:gap-6 mb-10">
-            {features.map((feature) => (
+            {features.map(feature => (
               <div
                 key={feature.text}
                 className="flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/10"
