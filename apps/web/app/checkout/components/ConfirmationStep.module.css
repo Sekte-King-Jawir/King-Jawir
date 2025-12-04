@@ -1,0 +1,252 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #000;
+  margin: 0;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: #666;
+  margin: -16px 0 0 0;
+}
+
+.section {
+  padding: 20px;
+  border: 1px solid #f0f0f0;
+  border-radius: 12px;
+  background: #fafafa;
+}
+
+.sectionTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: #000;
+  margin: 0 0 16px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.addressCard {
+  padding: 16px;
+  background: #fff;
+  border-radius: 8px;
+}
+
+.addressHeader {
+  margin-bottom: 8px;
+}
+
+.addressLabel {
+  font-size: 12px;
+  font-weight: 600;
+  color: #000;
+  background: #f0f0f0;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.recipientName {
+  font-size: 15px;
+  font-weight: 600;
+  color: #000;
+  margin: 8px 0 4px 0;
+}
+
+.addressText {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.phone {
+  font-size: 14px;
+  color: #666;
+  margin: 8px 0 0 0;
+}
+
+.noData {
+  font-size: 14px;
+  color: #999;
+  margin: 0;
+}
+
+.paymentCard {
+  padding: 16px;
+  background: #fff;
+  border-radius: 8px;
+}
+
+.paymentMethod {
+  font-size: 15px;
+  font-weight: 500;
+  color: #000;
+}
+
+.itemsList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.orderItem {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background: #fff;
+  border-radius: 8px;
+}
+
+.itemImage {
+  width: 64px;
+  height: 64px;
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.imagePlaceholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f5f5f5;
+}
+
+.itemDetails {
+  flex: 1;
+  min-width: 0;
+}
+
+.itemName {
+  font-size: 14px;
+  font-weight: 600;
+  color: #000;
+  margin: 0 0 4px 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.itemStore {
+  font-size: 13px;
+  color: #666;
+  margin: 0 0 4px 0;
+}
+
+.itemQuantity {
+  font-size: 13px;
+  color: #999;
+  margin: 0;
+}
+
+.itemPrice {
+  font-size: 15px;
+  font-weight: 600;
+  color: #000;
+  white-space: nowrap;
+}
+
+.totalCard {
+  padding: 16px;
+  background: #fff;
+  border-radius: 8px;
+}
+
+.totalRow {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.totalDivider {
+  height: 1px;
+  background: #f0f0f0;
+  margin: 12px 0;
+}
+
+.grandTotal {
+  display: flex;
+  justify-content: space-between;
+  font-size: 18px;
+  font-weight: 600;
+  color: #000;
+}
+
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.backButton {
+  padding: 14px 32px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+  color: #333;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.backButton:hover {
+  background: #f5f5f5;
+}
+
+.placeOrderButton {
+  padding: 14px 32px;
+  border: none;
+  border-radius: 8px;
+  background: #22c55e;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.placeOrderButton:hover {
+  background: #16a34a;
+}
+
+@media (max-width: 640px) {
+  .navigation {
+    flex-direction: column-reverse;
+  }
+
+  .backButton,
+  .placeOrderButton {
+    width: 100%;
+  }
+
+  .orderItem {
+    flex-wrap: wrap;
+  }
+
+  .itemPrice {
+    width: 100%;
+    text-align: right;
+    margin-top: 8px;
+  }
+}
