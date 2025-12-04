@@ -2,6 +2,7 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
+import { useProductRating } from '@/hooks'
 import styles from './ProductCard.module.css'
 
 interface ProductCardProps {
@@ -15,6 +16,26 @@ interface ProductCardProps {
   isWishlisted?: boolean
 }
 
+function StarRating({ rating, size = 14 }: { rating: number; size?: number }) {
+  return (
+    <div className={styles.stars}>
+      {[1, 2, 3, 4, 5].map(star => (
+        <svg
+          key={star}
+          width={size}
+          height={size}
+          viewBox="0 0 24 24"
+          fill={star <= Math.round(rating) ? '#fbbf24' : 'none'}
+          stroke={star <= Math.round(rating) ? '#fbbf24' : '#d1d5db'}
+          strokeWidth="2"
+        >
+          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+        </svg>
+      ))}
+    </div>
+  )
+}
+
 export function ProductCard({
   name,
   slug,
@@ -24,6 +45,8 @@ export function ProductCard({
   onToggleWishlist,
   isWishlisted = false,
 }: ProductCardProps) {
+  const { rating, totalReviews, isLoading } = useProductRating(slug)
+
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -82,6 +105,19 @@ export function ProductCard({
         <Link href={`/products/${slug}`} className={styles.nameLink}>
           <h3 className={styles.name}>{name}</h3>
         </Link>
+
+        {/* Rating Section */}
+        <div className={styles.ratingSection}>
+          {isLoading ? (
+            <span className={styles.ratingLoading}>Loading...</span>
+          ) : (
+            <>
+              <StarRating rating={rating} />
+              <span className={styles.ratingValue}>{rating.toFixed(1)}</span>
+              <span className={styles.reviewCount}>({totalReviews})</span>
+            </>
+          )}
+        </div>
 
         <p className={styles.price}>{formatPrice(price)}</p>
 
