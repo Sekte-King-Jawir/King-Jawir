@@ -10,7 +10,7 @@ export default function ProductsPage(): React.ReactElement {
   const [categories, setCategories] = useState<Category[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  
+
   // Filters
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('')
@@ -47,9 +47,12 @@ export default function ProductsPage(): React.ReactElement {
   }, [loadProducts])
 
   useEffect(() => {
-    void adminApi.getCategories().then(setCategories).catch((err) => {
-      console.error('Failed to load categories:', err)
-    })
+    void adminApi
+      .getCategories()
+      .then(setCategories)
+      .catch(err => {
+        console.error('Failed to load categories:', err)
+      })
   }, [])
 
   const handleSearch = (e: React.FormEvent): void => {
@@ -79,9 +82,7 @@ export default function ProductsPage(): React.ReactElement {
         <h1 className="text-3xl font-bold">Products</h1>
       </div>
 
-      {error !== null && (
-        <Alert type="error" title="Error" message={error} />
-      )}
+      {error !== null && <Alert type="error" title="Error" message={error} />}
 
       <Card>
         <div className="p-4 border-b space-y-4">
@@ -90,19 +91,19 @@ export default function ProductsPage(): React.ReactElement {
               type="text"
               placeholder="Search products..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={e => setSearchTerm(e.target.value)}
               className="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <select
               value={selectedCategory}
-              onChange={(e) => {
+              onChange={e => {
                 setSelectedCategory(e.target.value)
                 setPage(1)
               }}
               className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="">All Categories</option>
-              {categories.map((cat) => (
+              {categories.map(cat => (
                 <option key={cat.id} value={cat.id}>
                   {cat.name}
                 </option>
@@ -146,7 +147,7 @@ export default function ProductsPage(): React.ReactElement {
                   </td>
                 </tr>
               ) : (
-                products.map((product) => (
+                products.map(product => (
                   <tr key={product.id} className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
@@ -173,9 +174,7 @@ export default function ProductsPage(): React.ReactElement {
                         <div className="text-sm font-medium text-gray-900">
                           {product.store.name}
                         </div>
-                        <div className="text-sm text-gray-500">
-                          {product.store.user.name}
-                        </div>
+                        <div className="text-sm text-gray-500">{product.store.user.name}</div>
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -200,7 +199,7 @@ export default function ProductsPage(): React.ReactElement {
           </p>
           <div className="flex gap-2">
             <button
-              onClick={() => setPage((p) => Math.max(1, p - 1))}
+              onClick={() => setPage(p => Math.max(1, p - 1))}
               disabled={page === 1}
               className="px-4 py-2 border rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100"
             >
@@ -210,7 +209,7 @@ export default function ProductsPage(): React.ReactElement {
               Page {page} of {totalPages}
             </span>
             <button
-              onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+              onClick={() => setPage(p => Math.min(totalPages, p + 1))}
               disabled={page === totalPages}
               className="px-4 py-2 border rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100"
             >

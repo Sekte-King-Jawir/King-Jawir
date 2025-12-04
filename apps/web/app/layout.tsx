@@ -1,4 +1,4 @@
- import type { Metadata } from 'next'
+import type { Metadata } from 'next'
 import localFont from 'next/font/local'
 import { ThemeProvider, ThemeToggle } from '@repo/ui'
 import './globals.css'

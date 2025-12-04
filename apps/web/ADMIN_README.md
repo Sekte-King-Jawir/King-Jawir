@@ -25,6 +25,7 @@ apps/web/
 ## 🎯 Fitur yang Tersedia
 
 ### 1. Dashboard Admin (`/admin`)
+
 - **Overview Statistics**:
   - Total Users
   - Total Sellers
@@ -37,6 +38,7 @@ apps/web/
 - **Quick Actions**: Navigasi cepat ke management pages
 
 ### 2. User Management (`/admin/users`)
+
 - **List Users** dengan:
   - Pagination (10 users per page)
   - Search by name or email
@@ -50,6 +52,7 @@ apps/web/
   - Join date
 
 ### 3. User Detail (`/admin/users/[id]`)
+
 - **Detail User**:
   - Profile lengkap (avatar, name, email, phone, address, bio)
   - Store information (jika seller)
@@ -73,6 +76,7 @@ Backend API sudah menyediakan endpoint berikut:
 ### 1. Setup Environment Variable
 
 Tambahkan di `.env`:
+
 ```env
 NEXT_PUBLIC_API_URL=http://localhost:4101
 ```
@@ -86,6 +90,7 @@ NEXT_PUBLIC_API_URL=http://localhost:4101
 ## 🎨 Komponen UI Reusable
 
 File `components/ui/index.tsx` menyediakan:
+
 - `Modal` - Modal wrapper generik
 - `ConfirmModal` - Modal konfirmasi dengan action
 - `LoadingSpinner` - Loading indicator
@@ -98,6 +103,7 @@ File `components/ui/index.tsx` menyediakan:
 ## 🔐 Authorization
 
 Semua endpoint admin memerlukan:
+
 - **Authentication**: Bearer token di header
 - **Authorization**: User role harus `ADMIN`
 
@@ -106,6 +112,7 @@ Frontend menggunakan token dari `localStorage.getItem('accessToken')`.
 ## 📝 Next Steps
 
 Untuk pengembangan lebih lanjut, bisa ditambahkan:
+
 1. Product Management
 2. Order Management
 3. Store Management

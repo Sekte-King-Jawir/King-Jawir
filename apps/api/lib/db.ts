@@ -23,7 +23,7 @@ if (process.env['NODE_ENV'] === 'test') {
     idleTimeout: 10000,
   })
 
-  prisma = new PrismaClient({ 
+  prisma = new PrismaClient({
     adapter,
     log: ['error', 'warn'],
   })

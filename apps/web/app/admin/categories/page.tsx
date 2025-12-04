@@ -27,7 +27,7 @@ export default function CategoriesPage(): React.ReactElement {
     }
   }
 
-  const filteredCategories = categories.filter((category) =>
+  const filteredCategories = categories.filter(category =>
     category.name.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
@@ -45,9 +45,7 @@ export default function CategoriesPage(): React.ReactElement {
         <h1 className="text-3xl font-bold">Categories</h1>
       </div>
 
-      {error !== null && (
-        <Alert type="error" title="Error" message={error} />
-      )}
+      {error !== null && <Alert type="error" title="Error" message={error} />}
 
       <Card>
         <div className="p-4 border-b">
@@ -55,7 +53,7 @@ export default function CategoriesPage(): React.ReactElement {
             type="text"
             placeholder="Search categories..."
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={e => setSearchTerm(e.target.value)}
             className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
@@ -80,7 +78,7 @@ export default function CategoriesPage(): React.ReactElement {
                   </td>
                 </tr>
               ) : (
-                filteredCategories.map((category) => (
+                filteredCategories.map(category => (
                   <tr key={category.id} className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="font-medium text-gray-900">{category.name}</div>
@@ -97,7 +95,8 @@ export default function CategoriesPage(): React.ReactElement {
 
         <div className="px-6 py-4 border-t bg-gray-50">
           <p className="text-sm text-gray-600">
-            Total: {filteredCategories.length} {filteredCategories.length === 1 ? 'category' : 'categories'}
+            Total: {filteredCategories.length}{' '}
+            {filteredCategories.length === 1 ? 'category' : 'categories'}
           </p>
         </div>
       </Card>

@@ -30,10 +30,7 @@ export function Modal({
       <div className={`bg-white rounded-lg p-8 ${widthClasses[maxWidth]} w-full mx-4`}>
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-xl font-bold text-gray-900">{title}</h3>
-          <button
-            onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 text-2xl"
-          >
+          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 text-2xl">
             ×
           </button>
         </div>
@@ -116,7 +113,9 @@ export function LoadingSpinner({ size = 'md', text }: LoadingSpinnerProps): Reac
       <div
         className={`animate-spin rounded-full border-b-2 border-blue-600 ${sizeClasses[size]}`}
       />
-      {text !== null && text !== undefined && text.length > 0 ? <p className="text-gray-600 mt-4">{text}</p> : null}
+      {text !== null && text !== undefined && text.length > 0 ? (
+        <p className="text-gray-600 mt-4">{text}</p>
+      ) : null}
     </div>
   )
 }
@@ -134,12 +133,19 @@ interface EmptyStateProps {
   }
 }
 
-export function EmptyState({ icon = '📭', title, description, action }: EmptyStateProps): React.ReactElement {
+export function EmptyState({
+  icon = '📭',
+  title,
+  description,
+  action,
+}: EmptyStateProps): React.ReactElement {
   return (
     <div className="flex flex-col items-center justify-center p-12 text-center">
       <div className="text-6xl mb-4">{icon}</div>
       <h3 className="text-xl font-semibold text-gray-900 mb-2">{title}</h3>
-      {description !== null && description !== undefined && description.length > 0 ? <p className="text-gray-600 mb-6">{description}</p> : null}
+      {description !== null && description !== undefined && description.length > 0 ? (
+        <p className="text-gray-600 mb-6">{description}</p>
+      ) : null}
       {action !== null && action !== undefined ? (
         <button
           onClick={action.onClick}
@@ -231,15 +237,14 @@ export function Alert({ type, title, message, onClose }: AlertProps): React.Reac
         <div className="flex items-start gap-3">
           <span className="text-xl">{style.icon}</span>
           <div>
-            {title !== null && title !== undefined && title.length > 0 ? <h4 className="font-semibold mb-1">{title}</h4> : null}
+            {title !== null && title !== undefined && title.length > 0 ? (
+              <h4 className="font-semibold mb-1">{title}</h4>
+            ) : null}
             <p>{message}</p>
           </div>
         </div>
         {onClose !== null && onClose !== undefined ? (
-          <button
-            onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 ml-4"
-          >
+          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 ml-4">
             ×
           </button>
         ) : null}

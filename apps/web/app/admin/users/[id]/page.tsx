@@ -90,7 +90,9 @@ export default function UserDetailPage({ params }: UserDetailPageProps): React.R
             ← Back to Users
           </Link>
           <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-            <p className="text-red-800">{(error !== null && error.length > 0) ? error : 'User not found'}</p>
+            <p className="text-red-800">
+              {error !== null && error.length > 0 ? error : 'User not found'}
+            </p>
           </div>
         </div>
       </div>
@@ -118,11 +120,7 @@ export default function UserDetailPage({ params }: UserDetailPageProps): React.R
               <div className="h-24 w-24 flex-shrink-0">
                 {user.avatar !== null && user.avatar.length > 0 ? (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    className="h-24 w-24 rounded-full"
-                    src={user.avatar}
-                    alt={user.name}
-                  />
+                  <img className="h-24 w-24 rounded-full" src={user.avatar} alt={user.name} />
                 ) : (
                   <div className="h-24 w-24 rounded-full bg-gray-300 flex items-center justify-center text-gray-600 text-3xl font-medium">
                     {user.name.charAt(0).toUpperCase()}
@@ -150,15 +148,11 @@ export default function UserDetailPage({ params }: UserDetailPageProps): React.R
             {/* Details Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
               <div>
-                <label className="block text-sm font-medium text-gray-500 mb-1">
-                  Phone
-                </label>
+                <label className="block text-sm font-medium text-gray-500 mb-1">Phone</label>
                 <p className="text-gray-900">{user.phone ?? '-'}</p>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-500 mb-1">
-                  Joined
-                </label>
+                <label className="block text-sm font-medium text-gray-500 mb-1">Joined</label>
                 <p className="text-gray-900">
                   {new Date(user.createdAt).toLocaleDateString('id-ID', {
                     year: 'numeric',
@@ -168,16 +162,12 @@ export default function UserDetailPage({ params }: UserDetailPageProps): React.R
                 </p>
               </div>
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-500 mb-1">
-                  Address
-                </label>
+                <label className="block text-sm font-medium text-gray-500 mb-1">Address</label>
                 <p className="text-gray-900">{user.address ?? '-'}</p>
               </div>
               {user.bio !== null && user.bio.length > 0 ? (
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-500 mb-1">
-                    Bio
-                  </label>
+                  <label className="block text-sm font-medium text-gray-500 mb-1">Bio</label>
                   <p className="text-gray-900">{user.bio}</p>
                 </div>
               ) : null}
@@ -218,21 +208,15 @@ export default function UserDetailPage({ params }: UserDetailPageProps): React.R
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="bg-blue-50 rounded-lg p-4">
                   <p className="text-sm text-blue-600 font-medium mb-1">Total Orders</p>
-                  <p className="text-2xl font-bold text-blue-900">
-                    {user._count?.orders ?? 0}
-                  </p>
+                  <p className="text-2xl font-bold text-blue-900">{user._count?.orders ?? 0}</p>
                 </div>
                 <div className="bg-purple-50 rounded-lg p-4">
                   <p className="text-sm text-purple-600 font-medium mb-1">Reviews</p>
-                  <p className="text-2xl font-bold text-purple-900">
-                    {user._count?.reviews ?? 0}
-                  </p>
+                  <p className="text-2xl font-bold text-purple-900">{user._count?.reviews ?? 0}</p>
                 </div>
                 <div className="bg-green-50 rounded-lg p-4">
                   <p className="text-sm text-green-600 font-medium mb-1">Cart Items</p>
-                  <p className="text-2xl font-bold text-green-900">
-                    {user._count?.cart ?? 0}
-                  </p>
+                  <p className="text-2xl font-bold text-green-900">{user._count?.cart ?? 0}</p>
                 </div>
               </div>
             </div>
@@ -274,7 +258,9 @@ export default function UserDetailPage({ params }: UserDetailPageProps): React.R
                 Cancel
               </button>
               <button
-                onClick={() => { void handleDeleteUser() }}
+                onClick={() => {
+                  void handleDeleteUser()
+                }}
                 disabled={actionLoading}
                 className="px-6 py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg disabled:opacity-50"
               >
@@ -299,7 +285,7 @@ export default function UserDetailPage({ params }: UserDetailPageProps): React.R
               </label>
               <select
                 value={selectedRole}
-                onChange={(e) => setSelectedRole(e.target.value as 'CUSTOMER' | 'SELLER' | 'ADMIN')}
+                onChange={e => setSelectedRole(e.target.value as 'CUSTOMER' | 'SELLER' | 'ADMIN')}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
                 <option value="CUSTOMER">Customer</option>
@@ -316,7 +302,9 @@ export default function UserDetailPage({ params }: UserDetailPageProps): React.R
                 Cancel
               </button>
               <button
-                onClick={() => { void handleUpdateRole() }}
+                onClick={() => {
+                  void handleUpdateRole()
+                }}
                 disabled={actionLoading}
                 className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg disabled:opacity-50"
               >

@@ -42,7 +42,11 @@ export default function AdminDashboard(): React.ReactElement {
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to load stats'
       // Check if it's an authentication error
-      if (message.includes('Failed to fetch') || message.includes('NetworkError') || message.includes('Unauthorized')) {
+      if (
+        message.includes('Failed to fetch') ||
+        message.includes('NetworkError') ||
+        message.includes('Unauthorized')
+      ) {
         setError('authentication_required')
       } else {
         setError(message)
@@ -59,7 +63,7 @@ export default function AdminDashboard(): React.ReactElement {
           <div className="animate-pulse">
             <div className="h-8 bg-gray-200 rounded w-48 mb-8" />
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-              {[1, 2, 3, 4].map((i) => (
+              {[1, 2, 3, 4].map(i => (
                 <div key={i} className="bg-white p-6 rounded-lg shadow h-32" />
               ))}
             </div>
@@ -77,30 +81,30 @@ export default function AdminDashboard(): React.ReactElement {
             <div className="bg-white rounded-lg shadow-lg p-8">
               <div className="text-center mb-6">
                 <div className="text-6xl mb-4">🔐</div>
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">
-                  Authentication Required
-                </h2>
-                <p className="text-gray-600">
-                  You need to login as admin to access this dashboard
-                </p>
+                <h2 className="text-2xl font-bold text-gray-900 mb-2">Authentication Required</h2>
+                <p className="text-gray-600">You need to login as admin to access this dashboard</p>
               </div>
-              
+
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
                 <h3 className="font-semibold text-blue-900 mb-2">📋 Default Admin Account:</h3>
                 <div className="space-y-1 text-sm text-blue-800">
-                  <p><strong>Email:</strong> admin@marketplace.com</p>
-                  <p><strong>Password:</strong> admin123</p>
+                  <p>
+                    <strong>Email:</strong> admin@marketplace.com
+                  </p>
+                  <p>
+                    <strong>Password:</strong> admin123
+                  </p>
                 </div>
               </div>
 
               <div className="space-y-3">
-                <Link 
+                <Link
                   href="/admin/login"
                   className="block w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white text-center font-medium rounded-lg transition-colors"
                 >
                   Go to Login Page →
                 </Link>
-                <Link 
+                <Link
                   href="/"
                   className="block w-full py-3 px-4 border border-gray-300 hover:bg-gray-50 text-gray-700 text-center font-medium rounded-lg transition-colors"
                 >
@@ -110,7 +114,8 @@ export default function AdminDashboard(): React.ReactElement {
 
               <div className="mt-6 p-4 bg-gray-50 rounded-lg">
                 <p className="text-xs text-gray-600">
-                  <strong>Note:</strong> If you don&apos;t have an admin account, please run database seed first:
+                  <strong>Note:</strong> If you don&apos;t have an admin account, please run
+                  database seed first:
                   <code className="block mt-1 text-xs bg-white px-2 py-1 rounded">
                     cd apps/api && bun prisma/seed.ts
                   </code>
@@ -121,7 +126,7 @@ export default function AdminDashboard(): React.ReactElement {
         </div>
       )
     }
-    
+
     return (
       <div className="min-h-screen bg-gray-50 p-8">
         <div className="max-w-7xl mx-auto">
@@ -152,12 +157,7 @@ export default function AdminDashboard(): React.ReactElement {
 
         {/* Overview Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <StatCard
-            title="Total Users"
-            value={stats.overview.totalUsers}
-            icon="👥"
-            color="blue"
-          />
+          <StatCard title="Total Users" value={stats.overview.totalUsers} icon="👥" color="blue" />
           <StatCard
             title="Total Sellers"
             value={stats.overview.totalSellers}
@@ -260,13 +260,13 @@ export default function AdminDashboard(): React.ReactElement {
                       {order.id.slice(0, 8)}...
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-gray-900">
-                        {order.user.name}
-                      </div>
+                      <div className="text-sm font-medium text-gray-900">{order.user.name}</div>
                       <div className="text-sm text-gray-500">{order.user.email}</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(order.status)}`}>
+                      <span
+                        className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(order.status)}`}
+                      >
                         {order.status}
                       </span>
                     </td>

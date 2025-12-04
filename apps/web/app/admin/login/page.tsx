@@ -19,7 +19,7 @@ export default function AdminLoginPage(): React.ReactElement {
 
     try {
       console.warn('🔐 Attempting login to:', `${API_BASE_URL}/auth/login`)
-      
+
       const response = await fetch(`${API_BASE_URL}/auth/login`, {
         method: 'POST',
         headers: {
@@ -36,7 +36,7 @@ export default function AdminLoginPage(): React.ReactElement {
         throw new Error(`Login failed: ${response.status} ${response.statusText}`)
       }
 
-      const data = await response.json() as {
+      const data = (await response.json()) as {
         success: boolean
         message?: string
         data?: {
@@ -74,9 +74,11 @@ export default function AdminLoginPage(): React.ReactElement {
     } catch (err) {
       console.error('💥 Login error:', err)
       const message = err instanceof Error ? err.message : 'Login failed'
-      setError(message.includes('Failed to fetch') 
-        ? 'Cannot connect to server. Please make sure backend is running on port 4101.' 
-        : message)
+      setError(
+        message.includes('Failed to fetch')
+          ? 'Cannot connect to server. Please make sure backend is running on port 4101.'
+          : message
+      )
     } finally {
       setLoading(false)
     }
@@ -97,7 +99,7 @@ export default function AdminLoginPage(): React.ReactElement {
             </div>
           )}
 
-          <form onSubmit={(e) => void handleLogin(e)} className="space-y-6">
+          <form onSubmit={e => void handleLogin(e)} className="space-y-6">
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
                 Email
@@ -106,7 +108,7 @@ export default function AdminLoginPage(): React.ReactElement {
                 id="email"
                 type="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={e => setEmail(e.target.value)}
                 required
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="admin@example.com"
@@ -121,7 +123,7 @@ export default function AdminLoginPage(): React.ReactElement {
                 id="password"
                 type="password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={e => setPassword(e.target.value)}
                 required
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="••••••••"
@@ -139,8 +141,11 @@ export default function AdminLoginPage(): React.ReactElement {
 
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-600">
-              Default admin credentials:<br />
-              <code className="text-xs bg-gray-100 px-2 py-1 rounded">Check your database seed</code>
+              Default admin credentials:
+              <br />
+              <code className="text-xs bg-gray-100 px-2 py-1 rounded">
+                Check your database seed
+              </code>
             </p>
           </div>
         </div>

@@ -44,7 +44,9 @@ export default function OrdersPage(): React.ReactElement {
     })
   }
 
-  const getStatusColor = (status: string): 'blue' | 'green' | 'red' | 'yellow' | 'purple' | 'gray' => {
+  const getStatusColor = (
+    status: string
+  ): 'blue' | 'green' | 'red' | 'yellow' | 'purple' | 'gray' => {
     switch (status) {
       case 'DONE':
         return 'green'
@@ -61,10 +63,11 @@ export default function OrdersPage(): React.ReactElement {
     }
   }
 
-  const filteredOrders = stats?.recentOrders.filter((order) => {
-    if (statusFilter === 'all') return true
-    return order.status === statusFilter
-  }) ?? []
+  const filteredOrders =
+    stats?.recentOrders.filter(order => {
+      if (statusFilter === 'all') return true
+      return order.status === statusFilter
+    }) ?? []
 
   if (loading) {
     return (
@@ -80,9 +83,7 @@ export default function OrdersPage(): React.ReactElement {
         <h1 className="text-3xl font-bold">Orders</h1>
       </div>
 
-      {error !== null && (
-        <Alert type="error" title="Error" message={error} />
-      )}
+      {error !== null && <Alert type="error" title="Error" message={error} />}
 
       {/* Order Statistics */}
       {stats !== null && (
@@ -110,7 +111,7 @@ export default function OrdersPage(): React.ReactElement {
         <div className="p-4 border-b">
           <select
             value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
+            onChange={e => setStatusFilter(e.target.value)}
             className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="all">All Status</option>
@@ -151,7 +152,7 @@ export default function OrdersPage(): React.ReactElement {
                   </td>
                 </tr>
               ) : (
-                filteredOrders.map((order) => (
+                filteredOrders.map(order => (
                   <tr key={order.id} className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm font-mono text-gray-900">
@@ -160,9 +161,7 @@ export default function OrdersPage(): React.ReactElement {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div>
-                        <div className="text-sm font-medium text-gray-900">
-                          {order.user.name}
-                        </div>
+                        <div className="text-sm font-medium text-gray-900">{order.user.name}</div>
                         <div className="text-sm text-gray-500">{order.user.email}</div>
                       </div>
                     </td>

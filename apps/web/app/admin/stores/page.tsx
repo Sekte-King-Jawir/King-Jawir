@@ -28,7 +28,7 @@ export default function StoresPage(): React.ReactElement {
   }
 
   const filteredStores = stores.filter(
-    (store) =>
+    store =>
       store.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       store.user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       store.user.email.toLowerCase().includes(searchTerm.toLowerCase())
@@ -56,9 +56,7 @@ export default function StoresPage(): React.ReactElement {
         <h1 className="text-3xl font-bold">Stores</h1>
       </div>
 
-      {error !== null && (
-        <Alert type="error" title="Error" message={error} />
-      )}
+      {error !== null && <Alert type="error" title="Error" message={error} />}
 
       <Card>
         <div className="p-4 border-b">
@@ -66,7 +64,7 @@ export default function StoresPage(): React.ReactElement {
             type="text"
             placeholder="Search stores..."
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={e => setSearchTerm(e.target.value)}
             className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
@@ -97,7 +95,7 @@ export default function StoresPage(): React.ReactElement {
                   </td>
                 </tr>
               ) : (
-                filteredStores.map((store) => (
+                filteredStores.map(store => (
                   <tr key={store.id} className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div>
@@ -107,16 +105,12 @@ export default function StoresPage(): React.ReactElement {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div>
-                        <div className="text-sm font-medium text-gray-900">
-                          {store.user.name}
-                        </div>
+                        <div className="text-sm font-medium text-gray-900">{store.user.name}</div>
                         <div className="text-sm text-gray-500">{store.user.email}</div>
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900">
-                        {store._count.products} products
-                      </div>
+                      <div className="text-sm text-gray-900">{store._count.products} products</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm text-gray-500">{formatDate(store.createdAt)}</div>

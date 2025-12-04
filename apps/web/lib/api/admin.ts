@@ -167,26 +167,27 @@ export const adminApi = {
     role?: string
   }): Promise<UsersResponse> {
     const queryParams = new URLSearchParams()
-    if (params?.page !== null && params?.page !== undefined) queryParams.append('page', params.page.toString())
-    if (params?.limit !== null && params?.limit !== undefined) queryParams.append('limit', params.limit.toString())
-    if (params?.search !== null && params?.search !== undefined && params.search.length > 0) queryParams.append('search', params.search)
-    if (params?.role !== null && params?.role !== undefined && params.role.length > 0) queryParams.append('role', params.role)
+    if (params?.page !== null && params?.page !== undefined)
+      queryParams.append('page', params.page.toString())
+    if (params?.limit !== null && params?.limit !== undefined)
+      queryParams.append('limit', params.limit.toString())
+    if (params?.search !== null && params?.search !== undefined && params.search.length > 0)
+      queryParams.append('search', params.search)
+    if (params?.role !== null && params?.role !== undefined && params.role.length > 0)
+      queryParams.append('role', params.role)
 
     const token = getAuthToken()
-    const response = await fetch(
-      `${API_BASE_URL}/admin/users?${queryParams.toString()}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    )
+    const response = await fetch(`${API_BASE_URL}/admin/users?${queryParams.toString()}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
 
     if (!response.ok) {
       throw new Error('Failed to fetch users')
     }
 
-    const result = await response.json() as { data: UsersResponse }
+    const result = (await response.json()) as { data: UsersResponse }
     return result.data
   },
 
@@ -205,17 +206,14 @@ export const adminApi = {
       throw new Error('Failed to fetch user')
     }
 
-    const result = await response.json() as { data: User }
+    const result = (await response.json()) as { data: User }
     return result.data
   },
 
   /**
    * Update user role
    */
-  async updateUserRole(
-    userId: string,
-    role: 'CUSTOMER' | 'SELLER' | 'ADMIN'
-  ): Promise<User> {
+  async updateUserRole(userId: string, role: 'CUSTOMER' | 'SELLER' | 'ADMIN'): Promise<User> {
     const token = getAuthToken()
     const response = await fetch(`${API_BASE_URL}/admin/users/${userId}/role`, {
       method: 'PUT',
@@ -227,11 +225,11 @@ export const adminApi = {
     })
 
     if (!response.ok) {
-      const error = await response.json() as { message?: string }
+      const error = (await response.json()) as { message?: string }
       throw new Error(error.message ?? 'Failed to update user role')
     }
 
-    const result = await response.json() as { data: User }
+    const result = (await response.json()) as { data: User }
     return result.data
   },
 
@@ -248,7 +246,7 @@ export const adminApi = {
     })
 
     if (!response.ok) {
-      const error = await response.json() as { message?: string }
+      const error = (await response.json()) as { message?: string }
       throw new Error(error.message ?? 'Failed to delete user')
     }
   },
@@ -268,7 +266,7 @@ export const adminApi = {
       throw new Error('Failed to fetch stats')
     }
 
-    const result = await response.json() as { data: Stats }
+    const result = (await response.json()) as { data: Stats }
     return result.data
   },
 
@@ -282,7 +280,7 @@ export const adminApi = {
       throw new Error('Failed to fetch categories')
     }
 
-    const result = await response.json() as { data: { categories: Category[] } }
+    const result = (await response.json()) as { data: { categories: Category[] } }
     return result.data.categories
   },
 
@@ -296,20 +294,26 @@ export const adminApi = {
     categoryId?: string
   }): Promise<ProductsResponse> {
     const queryParams = new URLSearchParams()
-    if (params?.page !== null && params?.page !== undefined) queryParams.append('page', params.page.toString())
-    if (params?.limit !== null && params?.limit !== undefined) queryParams.append('limit', params.limit.toString())
-    if (params?.search !== null && params?.search !== undefined && params.search.length > 0) queryParams.append('search', params.search)
-    if (params?.categoryId !== null && params?.categoryId !== undefined && params.categoryId.length > 0) queryParams.append('categoryId', params.categoryId)
-
-    const response = await fetch(
-      `${API_BASE_URL}/products?${queryParams.toString()}`
+    if (params?.page !== null && params?.page !== undefined)
+      queryParams.append('page', params.page.toString())
+    if (params?.limit !== null && params?.limit !== undefined)
+      queryParams.append('limit', params.limit.toString())
+    if (params?.search !== null && params?.search !== undefined && params.search.length > 0)
+      queryParams.append('search', params.search)
+    if (
+      params?.categoryId !== null &&
+      params?.categoryId !== undefined &&
+      params.categoryId.length > 0
     )
+      queryParams.append('categoryId', params.categoryId)
+
+    const response = await fetch(`${API_BASE_URL}/products?${queryParams.toString()}`)
 
     if (!response.ok) {
       throw new Error('Failed to fetch products')
     }
 
-    const result = await response.json() as { data: ProductsResponse }
+    const result = (await response.json()) as { data: ProductsResponse }
     return result.data
   },
 
@@ -323,7 +327,7 @@ export const adminApi = {
       throw new Error('Failed to fetch stores')
     }
 
-    const result = await response.json() as { data: { stores: Store[] } }
+    const result = (await response.json()) as { data: { stores: Store[] } }
     return result.data.stores
   },
 }

@@ -33,6 +33,7 @@ apps/web/
 ## 🎯 Fitur yang Tersedia
 
 ### 1. Dashboard Admin (`/admin`)
+
 - **Overview Statistics**:
   - Total Users
   - Total Sellers
@@ -45,6 +46,7 @@ apps/web/
 - **Quick Actions**: Navigasi cepat ke management pages
 
 ### 2. User Management (`/admin/users`)
+
 - **List Users** dengan:
   - Pagination (10 users per page)
   - Search by name or email
@@ -58,6 +60,7 @@ apps/web/
   - Join date
 
 ### 3. User Detail (`/admin/users/[id]`)
+
 - **Detail User**:
   - Profile lengkap (avatar, name, email, phone, address, bio)
   - Store information (jika seller)
@@ -67,6 +70,7 @@ apps/web/
   - **Delete User**: Hapus user dan semua data terkait
 
 ### 4. Categories Management (`/admin/categories`) ✨ NEW
+
 - **View All Categories**
 - **Search** by category name
 - **Display Info**:
@@ -75,6 +79,7 @@ apps/web/
 - **Data Source**: Public endpoint `GET /categories`
 
 ### 5. Products Management (`/admin/products`) ✨ NEW
+
 - **Browse Products** dengan:
   - Pagination (20 products per page)
   - Search by product name
@@ -89,6 +94,7 @@ apps/web/
 - **Data Source**: Public endpoint `GET /products`
 
 ### 6. Orders Management (`/admin/orders`) ✨ NEW
+
 - **Order Statistics** by status (PENDING, PAID, SHIPPED, DONE, CANCELLED)
 - **Recent Orders List**
 - **Filter by Status**
@@ -101,6 +107,7 @@ apps/web/
 - **Data Source**: Stats endpoint `GET /admin/stats` (recent orders)
 
 ### 7. Stores Management (`/admin/stores`) ✨ NEW
+
 - **View All Stores**
 - **Search** by store name, owner name, or owner email
 - **Store Information**:
@@ -113,6 +120,7 @@ apps/web/
 ## 🔗 Backend Endpoints
 
 ### Admin Endpoints (Require JWT + ADMIN Role)
+
 1. `GET /admin/users` - List users dengan filter
 2. `GET /admin/users/:id` - Detail user
 3. `PUT /admin/users/:id/role` - Update role user
@@ -120,6 +128,7 @@ apps/web/
 5. `GET /admin/stats` - Dashboard statistics
 
 ### Public Endpoints (Used by Admin Dashboard)
+
 6. `GET /categories` - List all categories
 7. `GET /products` - List products dengan pagination & filter
 8. `GET /stores` - List all stores
@@ -129,6 +138,7 @@ apps/web/
 ### 1. Setup Environment Variable
 
 Tambahkan di `apps/web/.env`:
+
 ```env
 NEXT_PUBLIC_API_URL=http://localhost:4101
 ```
@@ -160,11 +170,13 @@ bun run dev  # Port 4102
 File `components/ui/index.tsx` menyediakan:
 
 ### Layout Components
+
 - `Card` - Card container untuk content
 - `Modal` - Modal wrapper generik
 - `ConfirmModal` - Modal konfirmasi dengan action
 
 ### Display Components
+
 - `Badge` - Badge dengan berbagai warna:
   - `blue` - Info/Shipped
   - `green` - Success/Done
@@ -177,19 +189,24 @@ File `components/ui/index.tsx` menyediakan:
 - `EmptyState` - Empty state placeholder
 
 ### Interactive Components
+
 - `Button` - Button dengan variants
 
 ## 🔐 Authorization
 
 ### Admin Endpoints
+
 Semua endpoint `/admin/*` memerlukan:
+
 - **Authentication**: Bearer token di header `Authorization: Bearer <token>`
 - **Authorization**: User role harus `ADMIN`
 
 ### Public Endpoints
+
 Endpoints `/categories`, `/products`, `/stores` tidak perlu auth (accessible oleh semua)
 
 Frontend menggunakan:
+
 ```typescript
 const token = localStorage.getItem('accessToken')
 ```
@@ -209,12 +226,14 @@ Database (MySQL via Prisma)
 ## 🎯 Implementation Approach
 
 **Opsi 1: Minimal (Currently Implemented)** ✅
+
 - Menggunakan public endpoints yang sudah ada
 - Tidak perlu ubah backend sama sekali
 - Categories, Products, Orders (recent), Stores tampil dari API public
 - Cocok untuk view-only admin dashboard
 
 **Opsi 2: Full Control (Future)**
+
 - Tambah endpoint admin khusus: `/admin/categories`, `/admin/products`, `/admin/orders`
 - Dengan pagination, search, filter lengkap
 - Admin bisa delete products, orders, stores
@@ -223,6 +242,7 @@ Database (MySQL via Prisma)
 ## 📝 Next Steps
 
 ### High Priority
+
 1. **Authentication UI**:
    - Create `/admin/login` page
    - Implement login with backend `/auth/login`
@@ -235,6 +255,7 @@ Database (MySQL via Prisma)
    - Show error message for forbidden access
 
 ### Medium Priority
+
 3. **Enhanced Features**:
    - Logout button in admin layout
    - Current admin user display in header
@@ -248,6 +269,7 @@ Database (MySQL via Prisma)
    - Store management (suspend/delete)
 
 ### Low Priority
+
 5. **Advanced Features**:
    - Bulk actions
    - Advanced filtering
@@ -287,6 +309,7 @@ Database (MySQL via Prisma)
 ## 📚 Documentation
 
 Untuk detail API endpoints, lihat:
+
 - Backend: `apps/api/admin/index.ts`
 - Frontend Types: `apps/web/lib/api/admin.ts`
 - UI Components: `apps/web/components/ui/index.tsx`
