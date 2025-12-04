@@ -1,8 +1,18 @@
 'use client'
 
 import { useState } from 'react'
-import type { Address } from '../page'
 import styles from './AddressStep.module.css'
+
+interface Address {
+  id: string
+  label: string
+  recipientName: string
+  phone: string
+  address: string
+  city: string
+  postalCode: string
+  isDefault: boolean
+}
 
 interface AddressStepProps {
   addresses: Address[]
@@ -20,7 +30,7 @@ export function AddressStep({
   onAddAddress,
   onBack,
   onNext,
-}: AddressStepProps) {
+}: AddressStepProps): React.JSX.Element {
   const [showAddForm, setShowAddForm] = useState(false)
   const [newAddress, setNewAddress] = useState({
     label: '',
@@ -32,7 +42,7 @@ export function AddressStep({
     isDefault: false,
   })
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const { name, value, type, checked } = e.target
     setNewAddress(prev => ({
       ...prev,
@@ -40,9 +50,9 @@ export function AddressStep({
     }))
   }
 
-  const handleSubmitAddress = (e: React.FormEvent) => {
+  const handleSubmitAddress = (e: React.FormEvent): void => {
     e.preventDefault()
-    if (newAddress.label && newAddress.recipientName && newAddress.address) {
+    if (newAddress.label !== '' && newAddress.recipientName !== '' && newAddress.address !== '') {
       onAddAddress(newAddress)
       setNewAddress({
         label: '',
@@ -78,7 +88,7 @@ export function AddressStep({
             <div className={styles.addressContent}>
               <div className={styles.addressHeader}>
                 <span className={styles.addressLabel}>{address.label}</span>
-                {address.isDefault && <span className={styles.defaultBadge}>Default</span>}
+                {address.isDefault === true && <span className={styles.defaultBadge}>Default</span>}
               </div>
               <p className={styles.recipientName}>{address.recipientName}</p>
               <p className={styles.addressText}>{address.address}</p>
