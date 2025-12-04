@@ -60,12 +60,12 @@ export const authService = {
 // ============================================================================
 
 export interface GetProductsParams {
-  page?: number
-  limit?: number
-  categoryId?: string
-  search?: string
-  minPrice?: number
-  maxPrice?: number
+  page?: number | undefined
+  limit?: number | undefined
+  categoryId?: string | undefined
+  search?: string | undefined
+  minPrice?: number | undefined
+  maxPrice?: number | undefined
 }
 
 export interface ProductResponse {
