@@ -39,7 +39,13 @@ export const storeRepository = {
     })
   },
 
-  async create(data: { userId: string; name: string; slug: string; description?: string; logo?: string }) {
+  async create(data: {
+    userId: string
+    name: string
+    slug: string
+    description?: string
+    logo?: string
+  }) {
     return prisma.store.create({
       data: {
         userId: data.userId,
@@ -51,7 +57,10 @@ export const storeRepository = {
     })
   },
 
-  async update(id: string, data: { name?: string; slug?: string; description?: string; logo?: string }) {
+  async update(
+    id: string,
+    data: { name?: string; slug?: string; description?: string; logo?: string }
+  ) {
     return prisma.store.update({
       where: { id },
       data,

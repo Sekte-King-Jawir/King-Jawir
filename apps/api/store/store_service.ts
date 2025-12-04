@@ -15,19 +15,25 @@ export const storeService = {
   async getAll() {
     const stores = await storeRepository.findAll()
 
-    return successResponse('Daftar toko', stores.map(store => ({
-      id: store.id,
-      name: store.name,
-      slug: store.slug,
-      description: store.description,
-      logo: store.logo,
-      _count: store._count,
-      createdAt: store.createdAt,
-    })))
+    return successResponse(
+      'Daftar toko',
+      stores.map(store => ({
+        id: store.id,
+        name: store.name,
+        slug: store.slug,
+        description: store.description,
+        logo: store.logo,
+        _count: store._count,
+        createdAt: store.createdAt,
+      }))
+    )
   },
 
   // Create store (CUSTOMER -> SELLER upgrade)
-  async create(userId: string, data: { name: string; slug?: string; description?: string; logo?: string }) {
+  async create(
+    userId: string,
+    data: { name: string; slug?: string; description?: string; logo?: string }
+  ) {
     // Check apakah user sudah punya store
     const existingStore = await storeRepository.findByUserId(userId)
     if (existingStore) {
@@ -103,7 +109,10 @@ export const storeService = {
   },
 
   // Update my store
-  async update(userId: string, data: { name?: string; slug?: string; description?: string; logo?: string }) {
+  async update(
+    userId: string,
+    data: { name?: string; slug?: string; description?: string; logo?: string }
+  ) {
     const store = await storeRepository.findByUserId(userId)
 
     if (!store) {

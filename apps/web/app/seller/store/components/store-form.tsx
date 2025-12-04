@@ -68,7 +68,7 @@ export function StoreForm({
         </p>
       </div>
 
-      <form onSubmit={(e) => void handleSubmit(e)} className="p-6 space-y-6">
+      <form onSubmit={e => void handleSubmit(e)} className="p-6 space-y-6">
         {error !== '' ? (
           <div className="p-4 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-xl text-red-600 dark:text-red-400 text-sm">
             {error}
@@ -83,7 +83,7 @@ export function StoreForm({
           <input
             type="text"
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={e => setName(e.target.value)}
             placeholder="Contoh: Toko Elektronik Jaya"
             className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
@@ -102,7 +102,7 @@ export function StoreForm({
               <input
                 type="text"
                 value={slug}
-                onChange={(e) => setSlug(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ''))}
+                onChange={e => setSlug(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ''))}
                 placeholder="toko-elektronik-jaya"
                 className="flex-1 px-4 py-3 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-r-xl text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
@@ -127,7 +127,7 @@ export function StoreForm({
           </label>
           <textarea
             value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            onChange={e => setDescription(e.target.value)}
             placeholder="Ceritakan tentang toko Anda..."
             rows={4}
             maxLength={2000}
@@ -146,7 +146,7 @@ export function StoreForm({
           <input
             type="url"
             value={logo}
-            onChange={(e) => setLogo(e.target.value)}
+            onChange={e => setLogo(e.target.value)}
             placeholder="https://example.com/logo.png"
             className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />

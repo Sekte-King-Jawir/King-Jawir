@@ -39,7 +39,7 @@ export function StoreProducts({ products, storeName }: StoreProductsProps): Reac
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-6">
-        {products.map((product) => (
+        {products.map(product => (
           <ProductCard key={product.id} product={product} />
         ))}
       </div>
@@ -89,13 +89,9 @@ function ProductCard({ product }: ProductCardProps): React.JSX.Element {
         <h3 className="font-medium text-slate-900 dark:text-white text-sm line-clamp-2 mb-1 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
           {product.name}
         </h3>
-        <p className="text-blue-600 dark:text-blue-400 font-bold">
-          {formatPrice(product.price)}
-        </p>
+        <p className="text-blue-600 dark:text-blue-400 font-bold">{formatPrice(product.price)}</p>
         {product.category.name !== '' ? (
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-            {product.category.name}
-          </p>
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{product.category.name}</p>
         ) : null}
       </div>
     </Link>
