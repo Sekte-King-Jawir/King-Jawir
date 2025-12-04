@@ -243,7 +243,7 @@ export default function CategorySection({ categories }: CategorySectionProps): R
         <div className="flex justify-center gap-2 mt-6 sm:hidden">
           {displayCategories.slice(0, 5).map((cat, index) => (
             <div
-              key={`dot-${cat.id}`}
+              key={`dot-${cat.slug}-${index}`}
               className={`w-2 h-2 rounded-full ${index === 0 ? 'bg-gray-900' : 'bg-gray-300'}`}
             />
           ))}
