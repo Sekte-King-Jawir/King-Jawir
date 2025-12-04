@@ -88,9 +88,9 @@ export default function CheckoutPage(): React.JSX.Element {
     try {
       const res = await fetch(`${API_URL}/orders`, {
         method: 'POST',
-        headers: { 
+        headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('accessToken') || ''}`
+          Authorization: `Bearer ${localStorage.getItem('accessToken') || ''}`,
         },
         credentials: 'include',
       })
