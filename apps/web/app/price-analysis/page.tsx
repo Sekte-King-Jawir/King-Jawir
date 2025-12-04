@@ -20,15 +20,9 @@ const analysisSteps = [
 export default function SupportPage(): React.JSX.Element {
   const [query, setQuery] = useState('')
   const [userPrice, setUserPrice] = useState<number | undefined>(undefined)
-  
-  const { 
-    result, 
-    loading, 
-    error, 
-    streamProgress, 
-    streamMessage, 
-    analyzeWithStream
-  } = usePriceAnalysis()
+
+  const { result, loading, error, streamProgress, streamMessage, analyzeWithStream } =
+    usePriceAnalysis()
 
   const limit = 60
   const currentAnalysisStep = Math.floor((streamProgress / 100) * (analysisSteps.length - 1))
@@ -165,9 +159,7 @@ export default function SupportPage(): React.JSX.Element {
 
               <div className="space-y-4">
                 <div className="text-lg text-foreground">
-                  {streamMessage.length > 0
-                    ? streamMessage
-                    : analysisSteps[currentAnalysisStep]}
+                  {streamMessage.length > 0 ? streamMessage : analysisSteps[currentAnalysisStep]}
                 </div>
                 <div className="flex justify-center gap-2">
                   {analysisSteps.map((step, index) => (
@@ -293,7 +285,7 @@ export default function SupportPage(): React.JSX.Element {
                   const productUrl = product.product_url ?? product.url ?? ''
                   const imageUrl = product.image_url ?? product.url ?? '/placeholder.png'
                   const location = product.shop_location ?? product.location ?? ''
-                  
+
                   return (
                     <div
                       key={productUrl !== '' ? productUrl : `product-${idx}`}
@@ -313,7 +305,9 @@ export default function SupportPage(): React.JSX.Element {
                           {product.name}
                         </h4>
                         <p className="text-lg font-bold text-primary">{product.price}</p>
-                        {product.rating !== null && product.rating !== undefined && product.rating !== '' ? (
+                        {product.rating !== null &&
+                        product.rating !== undefined &&
+                        product.rating !== '' ? (
                           <p className="text-sm text-muted-foreground flex items-center gap-1">
                             ⭐ {product.rating}
                           </p>
