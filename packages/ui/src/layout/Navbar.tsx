@@ -8,7 +8,7 @@ export default function Navbar(): React.ReactElement {
   const [cartCount] = useState(3)
 
   useEffect(() => {
-    const handleScroll = () => {
+    const handleScroll = (): void => {
       setIsScrolled(window.scrollY > 20)
     }
     window.addEventListener('scroll', handleScroll)

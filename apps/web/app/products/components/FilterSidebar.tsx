@@ -67,10 +67,8 @@ export function FilterSidebar({
             <span className={styles.chevron}>{expandedGroups[group.key] ? '▲' : '▼'}</span>
           </button>
 
-          {expandedGroups[group.key] && (
-            <div className={styles.groupContent}>
-              {group.searchable && (
-                <div className={styles.searchWrapper}>
+          {expandedGroups[group.key] ? <div className={styles.groupContent}>
+              {group.searchable ? <div className={styles.searchWrapper}>
                   <input
                     type="text"
                     placeholder="Search"
@@ -78,8 +76,7 @@ export function FilterSidebar({
                     value={searchTerms[group.key] || ''}
                     onChange={e => handleSearchChange(group.key, e.target.value)}
                   />
-                </div>
-              )}
+                </div> : null}
 
               <div className={styles.optionsList}>
                 {getFilteredOptions(group).map(option => (
@@ -97,8 +94,7 @@ export function FilterSidebar({
                   </label>
                 ))}
               </div>
-            </div>
-          )}
+            </div> : null}
         </div>
       ))}
     </aside>

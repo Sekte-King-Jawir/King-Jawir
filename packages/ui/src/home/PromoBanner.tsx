@@ -142,6 +142,7 @@ export default function PromoBanner(): React.JSX.Element {
       </div>
 
       {/* Custom Animation */}
+      {/* eslint-disable-next-line react/no-unknown-property */}
       <style jsx>{`
         @keyframes float {
           0%,

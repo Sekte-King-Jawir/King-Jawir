@@ -90,8 +90,8 @@ export default function CategorySection({ categories }: CategorySectionProps): R
         }))
       : defaultCategories
 
-  const scroll = (direction: 'left' | 'right') => {
-    if (scrollRef.current) {
+  const scroll = (direction: 'left' | 'right'): void => {
+    if (scrollRef.current !== null) {
       const scrollAmount = 300
       scrollRef.current.scrollBy({
         left: direction === 'left' ? -scrollAmount : scrollAmount,
@@ -241,9 +241,9 @@ export default function CategorySection({ categories }: CategorySectionProps): R
 
         {/* Mobile Navigation Dots */}
         <div className="flex justify-center gap-2 mt-6 sm:hidden">
-          {displayCategories.slice(0, 5).map((_, index) => (
+          {displayCategories.slice(0, 5).map((cat, index) => (
             <div
-              key={index}
+              key={`dot-${cat.id}`}
               className={`w-2 h-2 rounded-full ${index === 0 ? 'bg-gray-900' : 'bg-gray-300'}`}
             />
           ))}

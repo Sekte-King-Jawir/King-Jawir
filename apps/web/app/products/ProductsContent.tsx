@@ -87,7 +87,7 @@ export function ProductsContent() {
       try {
         const params = new URLSearchParams()
 
-        const categoryIds = selectedFilters['brand'] || []
+        const categoryIds = selectedFilters.brand || []
         if (categoryIds.length > 0 && categoryIds[0]) {
           params.set('categoryId', categoryIds[0])
         }

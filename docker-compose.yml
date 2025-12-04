@@ -7,10 +7,10 @@ services:
       dockerfile: ./apps/web/Dockerfile
     container_name: king-jawir-web
     ports:
-      - '4101:4101'
+      - '4102:4102'
     environment:
       - NODE_ENV=production
-      - API_URL=http://api:4102
+      - API_URL=http://api:4101
     networks:
       - king-jawir-network
     depends_on:
@@ -23,7 +23,7 @@ services:
       dockerfile: ./apps/api/Dockerfile
     container_name: king-jawir-api
     ports:
-      - '4102:4102'
+      - '4101:4101'
     environment:
       - NODE_ENV=production
     networks:

@@ -89,7 +89,7 @@ export default function NewArrivals({ products }: NewArrivalsProps): React.JSX.E
                   className={`relative bg-gradient-to-br from-gray-50 to-gray-100 rounded-3xl overflow-hidden transition-all duration-500 ${isHovered ? 'shadow-2xl -translate-y-2' : 'shadow-md'}`}
                 >
                   {/* New Badge */}
-                  {isNew && (
+                  {isNew === true && (
                     <div className="absolute top-3 left-3 z-10 px-3 py-1 bg-gradient-to-r from-blue-500 to-cyan-500 text-white text-xs font-bold rounded-full shadow-lg">
                       BARU
                     </div>
@@ -97,7 +97,7 @@ export default function NewArrivals({ products }: NewArrivalsProps): React.JSX.E
 
                   {/* Product Image */}
                   <div className="aspect-square p-6 flex items-center justify-center relative">
-                    {product.image ? (
+                    {product.image !== null && product.image !== undefined && product.image !== '' ? (
                       <Image
                         src={product.image}
                         alt={product.name}
