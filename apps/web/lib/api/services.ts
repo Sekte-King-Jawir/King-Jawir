@@ -1,5 +1,5 @@
 import { apiClient, buildQueryString, type ApiResponse } from './client'
-import { API_ENDPOINTS } from '../config/api'
+import { API_CONFIG, API_ENDPOINTS } from '../config/api'
 import type {
   User,
   Product,
@@ -297,8 +297,11 @@ export interface TokopediaProduct {
   rating?: string
   sold?: string
   location?: string
+  shop_location?: string
   store?: string
   url?: string
+  product_url?: string
+  image_url?: string
 }
 
 export interface PriceStatistics {
@@ -307,13 +310,20 @@ export interface PriceStatistics {
   average: number
   median: number
   userPricePercentile?: number
+  totalProducts?: number
+}
+
+export interface AIAnalysis {
+  recommendation: string
+  suggestedPrice?: number
+  insights: string[]
 }
 
 export interface PriceAnalysisResult {
   products: TokopediaProduct[]
   statistics: PriceStatistics
-  analysis: string
-  recommendation: string
+  analysis: AIAnalysis
+  recommendation?: string
 }
 
 export const priceAnalysisService = {

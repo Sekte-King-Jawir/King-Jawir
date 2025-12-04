@@ -6,6 +6,7 @@ import { Search, ShoppingBag, BarChart3 } from 'lucide-react'
 import { ThemeToggle } from '@repo/ui'
 import { usePriceAnalysis } from '@/hooks'
 import { formatPrice } from '@/lib/utils'
+import type { PriceAnalysisRequest } from '@/lib/api'
 
 const analysisSteps = [
   '🔍 Initializing price analysis...',
@@ -26,8 +27,7 @@ export default function SupportPage(): React.JSX.Element {
     error, 
     streamProgress, 
     streamMessage, 
-    analyzeWithStream,
-    cancelStream 
+    analyzeWithStream
   } = usePriceAnalysis()
 
   const limit = 60
@@ -39,78 +39,14 @@ export default function SupportPage(): React.JSX.Element {
 
   const handleSubmit = (e: React.FormEvent): void => {
     e.preventDefault()
-    analyzeWithStream({
+    const params: PriceAnalysisRequest = {
       query,
       limit,
-      userPrice: typeof userPrice === 'number' && userPrice > 0 ? userPrice : undefined,
-    })
-  }
-
-  const handleCancel = (): void => {
-    cancelStream()
-
-      websocket.onmessage = (event): void => {
-        try {
-          const update = JSON.parse(event.data as string) as WebSocketMessage
-
-          switch (update.type) {
-            case 'connected': {
-              // WebSocket connection established - no action needed
-              break
-            }
-
-            case 'progress': {
-              setLoadingProgress(update.progress ?? 0)
-              setStreamingMessage(update.message ?? '')
-
-              // Map progress to step index
-              const progress = update.progress ?? 0
-              if (progress <= 10) setCurrentAnalysisStep(0)
-              else if (progress <= 25) setCurrentAnalysisStep(1)
-              else if (progress <= 55) setCurrentAnalysisStep(2)
-              else if (progress <= 75) setCurrentAnalysisStep(3)
-              else if (progress <= 90) setCurrentAnalysisStep(4)
-              else setCurrentAnalysisStep(5)
-              break
-            }
-
-            case 'complete': {
-              setLoadingProgress(100)
-              if (update.data !== undefined) {
-                setResult(update.data)
-              }
-              setLoading(false)
-              websocket.close()
-              break
-            }
-
-            case 'error': {
-              setError(update.message ?? 'Analysis failed')
-              setLoading(false)
-              websocket.close()
-              break
-            }
-          }
-        } catch (err) {
-          console.error('Error parsing WebSocket message:', err)
-          setError('Communication error occurred')
-          setLoading(false)
-        }
-      }
-
-      websocket.onerror = error => {
-        console.error('WebSocket error:', error)
-        setError('Connection error occurred')
-        setLoading(false)
-      }
-
-      websocket.onclose = (): void => {
-        setWs(null)
-      }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Unknown error occurred')
-      setLoading(false)
     }
+    if (typeof userPrice === 'number' && userPrice > 0) {
+      params.userPrice = userPrice
+    }
+    analyzeWithStream(params)
   }
 
   return (
@@ -219,18 +155,18 @@ export default function SupportPage(): React.JSX.Element {
                 <div className="w-full bg-secondary rounded-full h-3 overflow-hidden">
                   <div
                     className="h-full bg-primary transition-all duration-500 ease-out"
-                    style={{ width: `${loadingProgress}%` }}
+                    style={{ width: `${streamProgress}%` }}
                   />
                 </div>
                 <div className="text-sm font-medium text-foreground">
-                  {Math.round(loadingProgress)}% Complete
+                  {Math.round(streamProgress)}% Complete
                 </div>
               </div>
 
               <div className="space-y-4">
                 <div className="text-lg text-foreground">
-                  {streamingMessage.length > 0
-                    ? streamingMessage
+                  {streamMessage.length > 0
+                    ? streamMessage
                     : analysisSteps[currentAnalysisStep]}
                 </div>
                 <div className="flex justify-center gap-2">
@@ -353,48 +289,54 @@ export default function SupportPage(): React.JSX.Element {
                 🛍️ Product List
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {result.products.map(product => (
-                  <div
-                    key={product.product_url}
-                    className="bg-background/50 rounded-lg overflow-hidden border border-border hover:shadow-lg transition-shadow duration-300"
-                  >
-                    <Image
-                      src={product.image_url}
-                      alt={product.name}
-                      width={300}
-                      height={200}
-                      className="w-full h-48 object-cover"
-                    />
-                    <div className="p-4 space-y-2">
-                      <h4 className="font-semibold text-foreground line-clamp-2 leading-tight">
-                        {product.name}
-                      </h4>
-                      <p className="text-lg font-bold text-primary">{product.price}</p>
-                      {product.rating !== null &&
-                      product.rating !== undefined &&
-                      product.rating.length > 0 ? (
-                        <p className="text-sm text-muted-foreground flex items-center gap-1">
-                          ⭐ {product.rating}
-                        </p>
+                {result.products.map((product, idx) => {
+                  const productUrl = product.product_url ?? product.url ?? ''
+                  const imageUrl = product.image_url ?? product.url ?? '/placeholder.png'
+                  const location = product.shop_location ?? product.location ?? ''
+                  
+                  return (
+                    <div
+                      key={productUrl !== '' ? productUrl : `product-${idx}`}
+                      className="bg-background/50 rounded-lg overflow-hidden border border-border hover:shadow-lg transition-shadow duration-300"
+                    >
+                      {imageUrl !== '' ? (
+                        <Image
+                          src={imageUrl}
+                          alt={product.name}
+                          width={300}
+                          height={200}
+                          className="w-full h-48 object-cover"
+                        />
                       ) : null}
-                      {product.shop_location !== null &&
-                      product.shop_location !== undefined &&
-                      product.shop_location.length > 0 ? (
-                        <p className="text-sm text-muted-foreground flex items-center gap-1">
-                          📍 {product.shop_location}
-                        </p>
-                      ) : null}
-                      <a
-                        href={product.product_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center text-sm text-primary hover:text-primary/80 transition-colors"
-                      >
-                        View on Tokopedia →
-                      </a>
+                      <div className="p-4 space-y-2">
+                        <h4 className="font-semibold text-foreground line-clamp-2 leading-tight">
+                          {product.name}
+                        </h4>
+                        <p className="text-lg font-bold text-primary">{product.price}</p>
+                        {product.rating !== null && product.rating !== undefined && product.rating !== '' ? (
+                          <p className="text-sm text-muted-foreground flex items-center gap-1">
+                            ⭐ {product.rating}
+                          </p>
+                        ) : null}
+                        {location !== '' ? (
+                          <p className="text-sm text-muted-foreground flex items-center gap-1">
+                            📍 {location}
+                          </p>
+                        ) : null}
+                        {productUrl !== '' ? (
+                          <a
+                            href={productUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center text-sm text-primary hover:text-primary/80 transition-colors"
+                          >
+                            View on Tokopedia →
+                          </a>
+                        ) : null}
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  )
+                })}
               </div>
             </section>
           </div>
