@@ -36,12 +36,7 @@ export function logRequest(method: string, url: string, origin: string | null) {
 /**
  * Log HTTP response with status and duration
  */
-export function logResponse(
-  method: string,
-  url: string,
-  status: number,
-  durationMs: number
-) {
+export function logResponse(method: string, url: string, status: number, durationMs: number) {
   const level = status >= 500 ? 'error' : status >= 400 ? 'warn' : 'info'
   logger[level]({
     type: 'response',

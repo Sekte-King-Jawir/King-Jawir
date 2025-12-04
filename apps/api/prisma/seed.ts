@@ -113,7 +113,7 @@ async function main() {
     },
   })
 
-  void await prisma.user.create({
+  void (await prisma.user.create({
     data: {
       email: 'customer3@marketplace.com',
       name: 'Ahmad Hidayat',
@@ -121,7 +121,7 @@ async function main() {
       role: 'CUSTOMER',
       emailVerified: true,
     },
-  })
+  }))
 
   logger.info('✅ 3 Customers created')
 
@@ -210,7 +210,7 @@ async function main() {
     },
   })
 
-  void await prisma.product.create({
+  void (await prisma.product.create({
     data: {
       storeId: store1.id,
       categoryId: elektronik.id,
@@ -221,9 +221,9 @@ async function main() {
       stock: 25,
       image: 'https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=500',
     },
-  })
+  }))
 
-  void await prisma.product.create({
+  void (await prisma.product.create({
     data: {
       storeId: store1.id,
       categoryId: elektronik.id,
@@ -234,9 +234,9 @@ async function main() {
       stock: 15,
       image: 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=500',
     },
-  })
+  }))
 
-  void await prisma.product.create({
+  void (await prisma.product.create({
     data: {
       storeId: store1.id,
       categoryId: elektronik.id,
@@ -247,7 +247,7 @@ async function main() {
       stock: 30,
       image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500',
     },
-  })
+  }))
 
   // Store 2 - Fashion
   const p6 = await prisma.product.create({
@@ -276,7 +276,7 @@ async function main() {
     },
   })
 
-  void await prisma.product.create({
+  void (await prisma.product.create({
     data: {
       storeId: store2.id,
       categoryId: fashion.id,
@@ -287,7 +287,7 @@ async function main() {
       stock: 80,
       image: 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=500',
     },
-  })
+  }))
 
   const p9 = await prisma.product.create({
     data: {
@@ -303,7 +303,7 @@ async function main() {
   })
 
   // Store 3 - Makanan
-  void await prisma.product.create({
+  void (await prisma.product.create({
     data: {
       storeId: store3.id,
       categoryId: makanan.id,
@@ -314,9 +314,9 @@ async function main() {
       stock: 150,
       image: 'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=500',
     },
-  })
+  }))
 
-  void await prisma.product.create({
+  void (await prisma.product.create({
     data: {
       storeId: store3.id,
       categoryId: makanan.id,
@@ -327,9 +327,9 @@ async function main() {
       stock: 100,
       image: 'https://statik.tempo.co/data/2016/06/08/id_513473/513473_650.jpg',
     },
-  })
+  }))
 
-  void await prisma.product.create({
+  void (await prisma.product.create({
     data: {
       storeId: store3.id,
       categoryId: makanan.id,
@@ -340,7 +340,7 @@ async function main() {
       stock: 300,
       image: 'https://images.unsplash.com/photo-1621939514649-280e2ee25f60?w=500',
     },
-  })
+  }))
 
   logger.info('✅ 12 Products created')
 

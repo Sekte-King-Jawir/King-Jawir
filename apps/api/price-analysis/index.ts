@@ -14,7 +14,10 @@ export const priceAnalysisRoutes = new Elysia({ prefix: '/api/price-analysis' })
       )
       return successResponse('Price analysis completed successfully', result)
     } catch (error) {
-      logger.error({ msg: 'Price analysis error', error: error instanceof Error ? error.message : 'Unknown' })
+      logger.error({
+        msg: 'Price analysis error',
+        error: error instanceof Error ? error.message : 'Unknown',
+      })
       return errorResponse(
         error instanceof Error ? error.message : 'Failed to analyze prices',
         ErrorCode.INTERNAL_ERROR

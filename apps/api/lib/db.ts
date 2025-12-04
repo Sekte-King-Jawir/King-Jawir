@@ -10,15 +10,15 @@ if (process.env['NODE_ENV'] === 'test') {
   prisma = { $transaction: async (cb: any) => cb({}) } as any
 } else {
   logger.info('🔌 Initializing database connection...')
-  
+
   // Parse DATABASE_URL for mariadb adapter
   const dbUrl = process.env['DATABASE_URL'] || ''
-  
+
   if (!dbUrl) {
     logger.error('❌ DATABASE_URL is not defined')
     throw new Error('DATABASE_URL is not defined')
   }
-  
+
   const url = new URL(dbUrl)
   logger.debug({
     msg: '📊 Database config',
@@ -45,11 +45,12 @@ if (process.env['NODE_ENV'] === 'test') {
     adapter,
     log: process.env['NODE_ENV'] === 'development' ? ['error', 'warn'] : ['error'],
   })
-  
+
   logger.info('✅ Database connection established')
 
   // Test connection
-  prisma.$connect()
+  prisma
+    .$connect()
     .then(() => logger.info('✅ Database connection verified'))
     .catch(err => logger.error({ msg: '❌ Database connection failed', error: err.message }))
 

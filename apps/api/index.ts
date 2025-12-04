@@ -24,12 +24,13 @@ const app = new Elysia()
     const duration = Date.now() - startTime
     const status = typeof set.status === 'number' ? set.status : 200
     const url = new URL(request.url)
-    
-    const origin = request.headers.get('origin') 
-      || request.headers.get('referer')
-      || request.headers.get('host')
-      || 'direct'
-    
+
+    const origin =
+      request.headers.get('origin') ||
+      request.headers.get('referer') ||
+      request.headers.get('host') ||
+      'direct'
+
     const logData = {
       msg: `${request.method} ${url.pathname} ${status} ${duration}ms`,
       method: request.method,
@@ -38,7 +39,7 @@ const app = new Elysia()
       duration: `${duration}ms`,
       origin,
     }
-    
+
     if (status >= 500) {
       logger.error(logData)
     } else if (status >= 400) {

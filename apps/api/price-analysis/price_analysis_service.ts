@@ -73,7 +73,10 @@ KEMBALIKAN HANYA query yang sudah dioptimasi, TANPA penjelasan, TANPA tanda kuti
       logger.info({ msg: `🔍 Query optimization`, original: query, optimized })
       return optimized || query
     } catch (error) {
-      logger.error({ msg: 'Error optimizing query', error: error instanceof Error ? error.message : 'Unknown' })
+      logger.error({
+        msg: 'Error optimizing query',
+        error: error instanceof Error ? error.message : 'Unknown',
+      })
       return query // Fallback to original query
     }
   },
@@ -122,7 +125,10 @@ KEMBALIKAN HANYA query yang sudah dioptimasi, TANPA penjelasan, TANPA tanda kuti
       try {
         products = await priceAnalysisRepository.fetchTokopediaPrices(optimizedQuery, limit)
       } catch (fetchError) {
-        logger.error({ msg: 'Error fetching products', error: fetchError instanceof Error ? fetchError.message : 'Unknown' })
+        logger.error({
+          msg: 'Error fetching products',
+          error: fetchError instanceof Error ? fetchError.message : 'Unknown',
+        })
         throw new Error(
           `Failed to fetch products: ${fetchError instanceof Error ? fetchError.message : 'Unknown error'}`
         )
@@ -155,7 +161,10 @@ KEMBALIKAN HANYA query yang sudah dioptimasi, TANPA penjelasan, TANPA tanda kuti
         prices = products.map(p => priceAnalysisRepository.parsePrice(p.price))
         stats = priceAnalysisRepository.calculateStats(prices)
       } catch (statsError) {
-        logger.error({ msg: 'Error calculating statistics', error: statsError instanceof Error ? statsError.message : 'Unknown' })
+        logger.error({
+          msg: 'Error calculating statistics',
+          error: statsError instanceof Error ? statsError.message : 'Unknown',
+        })
         throw new Error(
           `Failed to calculate statistics: ${statsError instanceof Error ? statsError.message : 'Unknown error'}`
         )
@@ -211,7 +220,10 @@ KEMBALIKAN HANYA query yang sudah dioptimasi, TANPA penjelasan, TANPA tanda kuti
           }
         )
       } catch (aiError) {
-        logger.error({ msg: 'Error generating AI response', error: aiError instanceof Error ? aiError.message : 'Unknown' })
+        logger.error({
+          msg: 'Error generating AI response',
+          error: aiError instanceof Error ? aiError.message : 'Unknown',
+        })
         // Fallback analysis without AI
         const analysis = this.getFallbackAnalysis(stats)
 
@@ -245,7 +257,10 @@ KEMBALIKAN HANYA query yang sudah dioptimasi, TANPA penjelasan, TANPA tanda kuti
       try {
         analysis = this.parseAIResponse(aiResponse.text, stats)
       } catch (parseError) {
-        logger.error({ msg: 'Error parsing AI response', error: parseError instanceof Error ? parseError.message : 'Unknown' })
+        logger.error({
+          msg: 'Error parsing AI response',
+          error: parseError instanceof Error ? parseError.message : 'Unknown',
+        })
         analysis = this.getFallbackAnalysis(stats)
       }
 

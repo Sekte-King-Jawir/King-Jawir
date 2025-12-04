@@ -116,9 +116,9 @@ export function ProductsContent() {
         if (res.ok) {
           const data = await res.json()
           const productsData: ProductsData = data.data
-          
+
           let filteredProducts = productsData.products || []
-          
+
           // Filter by price range
           if (selectedPriceRange && selectedPriceRange !== 'all') {
             const range = priceRanges.find(r => r.id === selectedPriceRange)
@@ -218,7 +218,7 @@ export function ProductsContent() {
               type="text"
               placeholder="Cari produk..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={e => setSearchQuery(e.target.value)}
               className="w-full pl-12 pr-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-all"
             />
           </div>
@@ -259,7 +259,8 @@ export function ProductsContent() {
 
         <div className="flex flex-col lg:flex-row gap-6">
           {/* Sidebar Filters */}
-          {showFilters ? <aside className="lg:w-64 space-y-6">
+          {showFilters ? (
+            <aside className="lg:w-64 space-y-6">
               {/* Categories */}
               <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm">
                 <h3 className="font-semibold text-lg mb-4 text-slate-900 dark:text-white">
@@ -287,9 +288,9 @@ export function ProductsContent() {
                       }`}
                     >
                       <span>{cat.name}</span>
-                      {cat._count?.products ? <span className="text-xs text-slate-400">
-                          {cat._count.products}
-                        </span> : null}
+                      {cat._count?.products ? (
+                        <span className="text-xs text-slate-400">{cat._count.products}</span>
+                      ) : null}
                     </button>
                   ))}
                 </div>
@@ -338,13 +339,18 @@ export function ProductsContent() {
                   ))}
                 </div>
               </div>
-            </aside> : null}
+            </aside>
+          ) : null}
 
           {/* Products Grid */}
           <main className="flex-1">
             <div className="mb-4 flex items-center justify-between">
               <p className="text-slate-600 dark:text-slate-400">
-                Menampilkan <span className="font-semibold text-slate-900 dark:text-white">{totalProducts}</span> produk
+                Menampilkan{' '}
+                <span className="font-semibold text-slate-900 dark:text-white">
+                  {totalProducts}
+                </span>{' '}
+                produk
               </p>
             </div>
 

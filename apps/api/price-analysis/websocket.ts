@@ -33,7 +33,10 @@ export const priceAnalysisWebSocket = new Elysia().ws('/api/price-analysis/strea
             data.userPrice
           )
           .catch(error => {
-            logger.error({ msg: 'Stream analysis error', error: error instanceof Error ? error.message : 'Unknown' })
+            logger.error({
+              msg: 'Stream analysis error',
+              error: error instanceof Error ? error.message : 'Unknown',
+            })
             ws.send(
               JSON.stringify({
                 type: 'error',
@@ -50,7 +53,10 @@ export const priceAnalysisWebSocket = new Elysia().ws('/api/price-analysis/strea
         )
       }
     } catch (error) {
-      logger.error({ msg: 'WebSocket parsing error', error: error instanceof Error ? error.message : 'Unknown' })
+      logger.error({
+        msg: 'WebSocket parsing error',
+        error: error instanceof Error ? error.message : 'Unknown',
+      })
       ws.send(
         JSON.stringify({
           type: 'error',
