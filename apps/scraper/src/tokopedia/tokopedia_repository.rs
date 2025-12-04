@@ -7,6 +7,15 @@ use crate::browser::BrowserClient;
 use crate::config::*;
 use crate::tokopedia::tokopedia_model::Product;
 
+/// Safely truncate a string to a maximum number of characters (not bytes)
+/// This respects Unicode character boundaries to avoid panics
+fn truncate_str(s: &str, max_chars: usize) -> &str {
+    match s.char_indices().nth(max_chars) {
+        None => s,
+        Some((idx, _)) => &s[..idx],
+    }
+}
+
 pub struct TokopediaRepository {
     browser: BrowserClient,
 }
@@ -175,9 +184,9 @@ impl TokopediaRepository {
             // Debug output
             if !name.is_empty() || !price.is_empty() {
                 println!("  🔍 Debug: name='{}', price='{}', url='{}'", 
-                    if name.is_empty() { "EMPTY" } else { &name[..name.len().min(30)] },
+                    if name.is_empty() { "EMPTY" } else { truncate_str(&name, 30) },
                     if price.is_empty() { "EMPTY" } else { &price },
-                    &full_url[..full_url.len().min(50)]
+                    truncate_str(&full_url, 50)
                 );
             }
 

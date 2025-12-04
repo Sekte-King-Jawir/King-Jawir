@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
-import { Search, TrendingUp, ShoppingBag, BarChart3 } from 'lucide-react'
+import { Search, ShoppingBag, BarChart3 } from 'lucide-react'
 import { ThemeToggle } from '@repo/ui'
 
 interface TokopediaProduct {
@@ -40,7 +40,7 @@ interface WebSocketMessage {
 
 export default function SupportPage(): React.JSX.Element {
   const [query, setQuery] = useState('')
-  const [limit, setLimit] = useState(10)
+  const limit = 60 // Fixed limit
   const [userPrice, setUserPrice] = useState<number | undefined>(undefined)
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState<PriceAnalysisResult | null>(null)
@@ -164,7 +164,7 @@ export default function SupportPage(): React.JSX.Element {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 flex flex-col items-center justify-center px-4 py-12">
+    <div className="min-h-screen bg-linear-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 flex flex-col items-center justify-center px-4 py-12">
       <ThemeToggle />
 
       <main className="w-full max-w-4xl mx-auto">
@@ -205,46 +205,25 @@ export default function SupportPage(): React.JSX.Element {
               />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <label
-                  htmlFor="limit"
-                  className="text-sm font-medium text-foreground flex items-center gap-2"
-                >
-                  <TrendingUp size={16} />
-                  Products Limit
-                </label>
-                <input
-                  id="limit"
-                  type="number"
-                  value={limit}
-                  onChange={e => setLimit(parseInt(e.target.value))}
-                  min="1"
-                  max="50"
-                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label
-                  htmlFor="userPrice"
-                  className="text-sm font-medium text-foreground flex items-center gap-2"
-                >
-                  <ShoppingBag size={16} />
-                  Your Budget (Optional)
-                </label>
-                <input
-                  id="userPrice"
-                  type="number"
-                  value={userPrice ?? ''}
-                  onChange={e =>
-                    setUserPrice(e.target.value.length > 0 ? parseInt(e.target.value) : undefined)
-                  }
-                  placeholder="Enter your budget in Rupiah"
-                  min="0"
-                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                />
-              </div>
+            <div className="space-y-2">
+              <label
+                htmlFor="userPrice"
+                className="text-sm font-medium text-foreground flex items-center gap-2"
+              >
+                <ShoppingBag size={16} />
+                Your Budget (Optional)
+              </label>
+              <input
+                id="userPrice"
+                type="number"
+                value={userPrice ?? ''}
+                onChange={e =>
+                  setUserPrice(e.target.value.length > 0 ? parseInt(e.target.value) : undefined)
+                }
+                placeholder="Enter your budget in Rupiah"
+                min="0"
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+              />
             </div>
 
             <button
