@@ -91,6 +91,7 @@ export class ApiClient {
           }
         }
 
+        const errorObj = data.error as { code?: string; details?: unknown } | undefined
         const message = typeof data.message === 'string' ? data.message : 'Request failed'
         const errorCode = typeof errorObj?.code === 'string' ? errorObj.code : 'UNKNOWN_ERROR'
         const errorDetails = errorObj?.details

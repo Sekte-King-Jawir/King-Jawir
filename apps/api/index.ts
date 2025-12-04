@@ -1,6 +1,7 @@
 import { Elysia } from 'elysia'
 import { cors } from '@elysiajs/cors'
 import { swagger } from '@elysiajs/swagger'
+import { rateLimit } from 'elysia-rate-limit'
 import { authRoutes } from './auth'
 import { storeRoutes, publicStoreRoutes } from './store'
 import { categoryRoutes } from './category'
@@ -59,6 +60,13 @@ const app = new Elysia()
       stack: error instanceof Error ? error.stack : undefined,
     })
   })
+  .use(
+    rateLimit({
+      duration: 60000,
+      max: 100,
+      errorResponse: new Response('Rate limit exceeded', { status: 429 }),
+    })
+  )
   .use(
     cors({
       origin: () => true,

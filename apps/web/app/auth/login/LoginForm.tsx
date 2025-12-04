@@ -3,6 +3,7 @@
 import { useActionState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { useAuth } from '@/hooks/useAuth'
 import { loginAction } from './action'
 import { initialState } from '../_shared/types'
 
@@ -33,14 +34,16 @@ function GoogleIcon(): React.JSX.Element {
 
 export function LoginForm(): React.JSX.Element {
   const router = useRouter()
+  const { checkAuth } = useAuth()
   const [state, formAction, isPending] = useActionState(loginAction, initialState)
 
   useEffect(() => {
     if (state.success && state.redirectTo !== undefined && state.redirectTo !== '') {
+      void checkAuth()
       router.push(state.redirectTo)
       router.refresh()
     }
-  }, [state, router])
+  }, [state, router, checkAuth])
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-background">
