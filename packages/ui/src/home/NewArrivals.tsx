@@ -97,7 +97,9 @@ export default function NewArrivals({ products }: NewArrivalsProps): React.JSX.E
 
                   {/* Product Image */}
                   <div className="aspect-square p-6 flex items-center justify-center relative">
-                    {product.image !== null && product.image !== undefined && product.image !== '' ? (
+                    {product.image !== null &&
+                    product.image !== undefined &&
+                    product.image !== '' ? (
                       <Image
                         src={product.image}
                         alt={product.name}
