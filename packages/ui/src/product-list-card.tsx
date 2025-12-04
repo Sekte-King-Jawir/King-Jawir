@@ -28,18 +28,22 @@ export interface ProductListCardProps {
   ratingData?: ProductListCardRatingData | undefined
   onAddToCart?: (() => void) | undefined
   /** Custom link component (e.g., Next.js Link) */
-  linkComponent?: React.ComponentType<{
-    href: string
-    className?: string
-    children: ReactNode
-  }> | undefined
+  linkComponent?:
+    | React.ComponentType<{
+        href: string
+        className?: string
+        children: ReactNode
+      }>
+    | undefined
   /** Custom image component (e.g., Next.js Image) */
-  imageComponent?: React.ComponentType<{
-    src: string
-    alt: string
-    fill?: boolean
-    className?: string
-  }> | undefined
+  imageComponent?:
+    | React.ComponentType<{
+        src: string
+        alt: string
+        fill?: boolean
+        className?: string
+      }>
+    | undefined
   /** Price formatter function */
   formatPrice?: ((price: number) => string) | undefined
   /** Cart icon component */
@@ -50,13 +54,7 @@ export interface ProductListCardProps {
 // SUB-COMPONENTS
 // ============================================================================
 
-function StarIcon({
-  filled,
-  className,
-}: {
-  filled: boolean
-  className?: string
-}): JSX.Element {
+function StarIcon({ filled, className }: { filled: boolean; className?: string }): JSX.Element {
   return (
     <svg
       className={className}

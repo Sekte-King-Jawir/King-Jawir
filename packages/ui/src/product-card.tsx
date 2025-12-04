@@ -23,20 +23,26 @@ export interface ProductCardProps {
   onToggleWishlist?: (() => void) | undefined
   isWishlisted?: boolean | undefined
   /** Custom link component (e.g., Next.js Link) */
-  linkComponent?: React.ComponentType<{ href: string; className?: string; children: ReactNode }> | undefined
+  linkComponent?:
+    | React.ComponentType<{ href: string; className?: string; children: ReactNode }>
+    | undefined
   /** Custom image component (e.g., Next.js Image) */
-  imageComponent?: React.ComponentType<{
-    src: string
-    alt: string
-    width: number
-    height: number
-    className?: string
-  }> | undefined
+  imageComponent?:
+    | React.ComponentType<{
+        src: string
+        alt: string
+        width: number
+        height: number
+        className?: string
+      }>
+    | undefined
   /** Currency format options */
-  currencyOptions?: {
-    locale?: string
-    currency?: string
-  } | undefined
+  currencyOptions?:
+    | {
+        locale?: string
+        currency?: string
+      }
+    | undefined
 }
 
 // ============================================================================
@@ -95,8 +101,20 @@ function PlaceholderImage(): JSX.Element {
 // ============================================================================
 
 // Default link component
-function DefaultLink({ href, className, children }: { href: string; className?: string; children: ReactNode }): JSX.Element {
-  return <a href={href} className={className}>{children}</a>
+function DefaultLink({
+  href,
+  className,
+  children,
+}: {
+  href: string
+  className?: string
+  children: ReactNode
+}): JSX.Element {
+  return (
+    <a href={href} className={className}>
+      {children}
+    </a>
+  )
 }
 
 export function ProductCard({
@@ -133,7 +151,9 @@ export function ProductCard({
         {/* Wishlist Button */}
         <button
           className={`absolute top-3 right-3 w-9 h-9 rounded-full bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 cursor-pointer flex items-center justify-center z-10 transition-all duration-200 hover:border-gray-900 dark:hover:border-gray-300 ${
-            isWishlisted ? 'text-red-500 border-red-500' : 'text-gray-400 hover:text-gray-900 dark:hover:text-gray-100'
+            isWishlisted
+              ? 'text-red-500 border-red-500'
+              : 'text-gray-400 hover:text-gray-900 dark:hover:text-gray-100'
           }`}
           onClick={e => {
             e.preventDefault()
@@ -145,7 +165,10 @@ export function ProductCard({
         </button>
 
         {/* Product Image */}
-        <LinkWrapper href={productUrl} className="flex items-center justify-center w-full h-full p-5">
+        <LinkWrapper
+          href={productUrl}
+          className="flex items-center justify-center w-full h-full p-5"
+        >
           {image !== null && image !== undefined && image !== '' ? (
             ImageComponent !== null && ImageComponent !== undefined ? (
               <ImageComponent
@@ -156,11 +179,7 @@ export function ProductCard({
                 className="max-w-full max-h-full object-contain"
               />
             ) : (
-              <img
-                src={image}
-                alt={name}
-                className="max-w-full max-h-full object-contain"
-              />
+              <img src={image} alt={name} className="max-w-full max-h-full object-contain" />
             )
           ) : (
             <PlaceholderImage />

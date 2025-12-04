@@ -12,7 +12,7 @@ export function NavbarWrapper() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const checkAuth = async () => {
+    const checkAuth = async (): Promise<void> => {
       try {
         // First, check if user data exists in localStorage
         const storedUser = localStorage.getItem('user')
@@ -48,25 +48,35 @@ export function NavbarWrapper() {
       }
     }
 
-    void checkAuth()
-  }, [])
-
-  const handleLogout = async () => {
-    try {
-      await authService.logout()
+    // Listen for auth-cleared event from ApiClient
+    const handleAuthCleared = (): void => {
       setUser(null)
-      localStorage.removeItem('user')
-      localStorage.removeItem('token')
-      router.push('/')
-      router.refresh()
-    } catch (error) {
-      console.error('Logout failed:', error)
-      // Even if API fails, clear local state
-      setUser(null)
-      localStorage.removeItem('user')
-      localStorage.removeItem('token')
-      router.push('/')
+      router.push('/auth/login')
     }
+
+    window.addEventListener('auth-cleared', handleAuthCleared)
+
+    void checkAuth()
+
+    return (): void => {
+      window.removeEventListener('auth-cleared', handleAuthCleared)
+    }
+  }, [router])
+
+  const handleLogout = (): void => {
+    authService
+      .logout()
+      .catch(error => {
+        console.error('Logout failed:', error)
+      })
+      .finally(() => {
+        // Clear user state and localStorage regardless of API call result
+        setUser(null)
+        localStorage.removeItem('user')
+        localStorage.removeItem('token')
+        router.push('/')
+        router.refresh()
+      })
   }
 
   if (loading) {

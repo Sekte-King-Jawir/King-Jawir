@@ -66,6 +66,22 @@ export class ApiClient {
       const data = (await response.json()) as Record<string, unknown>
 
       if (!response.ok) {
+        // If unauthorized (401) or token invalid, clear storage
+        if (response.status === 401 || data.error?.code === 'UNAUTHORIZED') {
+          if (typeof window !== 'undefined') {
+            localStorage.removeItem('user')
+            localStorage.removeItem('token')
+            // Trigger a storage event to notify other components
+            window.dispatchEvent(new Event('auth-cleared'))
+          }
+        }
+
+        throw new ApiClientError(
+          data.message || 'Request failed',
+          data.error?.code || 'UNKNOWN_ERROR',
+          response.status,
+          data.error?.details
+        )
         const message = typeof data.message === 'string' ? data.message : 'Request failed'
         const errorObj = data.error as Record<string, unknown> | undefined
         const errorCode = typeof errorObj?.code === 'string' ? errorObj.code : 'UNKNOWN_ERROR'
