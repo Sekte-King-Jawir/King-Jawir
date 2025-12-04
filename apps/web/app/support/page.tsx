@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { Search, TrendingUp, ShoppingBag, BarChart3 } from 'lucide-react'
-import { HeaderThemeToggle } from '../../components/theme-toggle'
+import { HeaderThemeToggle } from '@repo/ui/theme/theme-toggle'
 
 interface TokopediaProduct {
   name: string
