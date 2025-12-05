@@ -20,6 +20,9 @@ export * from './checkout-address'
 export * from './checkout-summary'
 export * from './checkout-skeleton'
 
+// Cart components
+export * from './cart'
+
 // Seller Components
 export * from './seller'
 

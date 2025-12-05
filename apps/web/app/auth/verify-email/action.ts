@@ -22,7 +22,7 @@ export async function verifyEmailAction(token: string): Promise<ActionResult> {
 
   try {
     const response = await fetch(
-      `${API_URL}/auth/verify-email?token=${encodeURIComponent(token)}`,
+      `${API_URL}/verify-email?token=${encodeURIComponent(token)}`,
       {
         method: 'GET',
         headers: {
