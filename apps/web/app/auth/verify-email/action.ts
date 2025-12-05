@@ -21,8 +21,9 @@ export async function verifyEmailAction(token: string): Promise<ActionResult> {
   }
 
   try {
+    // API mounts auth routes under `/api/auth` on the backend, so call that path
     const response = await fetch(
-      `${API_URL}/verify-email?token=${encodeURIComponent(token)}`,
+      `${API_URL}/auth/verify-email?token=${encodeURIComponent(token)}`,
       {
         method: 'GET',
         headers: {
