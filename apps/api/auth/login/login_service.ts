@@ -26,11 +26,14 @@ export const loginService = {
     }
 
     // Generate tokens
+    console.log('User ID:', user.id, 'Role:', user.role)
     const accessToken = await jwtAccess.sign({
       sub: user.id,
       role: user.role,
       emailVerified: user.emailVerified,
+      exp: Math.floor(Date.now() / 1000) + (15 * 60), // 15 minutes
     })
+    console.log('Access token generated')
     const refreshToken = await jwtRefresh.sign({ sub: user.id })
 
     // Simpan refresh token

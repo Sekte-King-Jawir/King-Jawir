@@ -15,8 +15,7 @@ const jwtRefreshPlugin = jwt({
   secret: process.env['JWT_SECRET'] || 'secret-key-min-32-chars-long!!',
 })
 
-export const sellerAuthRoutes = new Elysia({ prefix: '/api/seller/auth' })
-  .use(jwtPlugin)
+export const sellerAuthRoutes = new Elysia({ prefix: '/auth' })
   .use(jwtRefreshPlugin)
   .derive(authDerive)
 

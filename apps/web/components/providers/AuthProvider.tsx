@@ -9,8 +9,8 @@ export interface AuthContextType {
   user: User | null
   loading: boolean
   error: string | null
-  login: (credentials: LoginRequest) => Promise<{ success: boolean; user?: User; error?: string }>
-  register: (data: RegisterRequest) => Promise<{ success: boolean; user?: User; error?: string }>
+  login: (credentials: LoginRequest) => Promise<{ success: boolean; user: User | null; error?: string }>
+  register: (data: RegisterRequest) => Promise<{ success: boolean; user: User | null; error?: string }>
   logout: () => Promise<{ success: boolean; error?: string }>
   checkAuth: () => Promise<User | null>
   isAuthenticated: boolean
@@ -56,11 +56,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
 
       setError(response.message)
-      return { success: false, error: response.message }
+      return { success: false, user: null, error: response.message }
     } catch (err) {
       const message = isApiError(err) ? err.message : 'Login failed'
       setError(message)
-      return { success: false, error: message }
+      return { success: false, user: null, error: message }
     } finally {
       setLoading(false)
     }
@@ -79,11 +79,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
 
       setError(response.message)
-      return { success: false, error: response.message }
+      return { success: false, user: null, error: response.message }
     } catch (err) {
       const message = isApiError(err) ? err.message : 'Registration failed'
       setError(message)
-      return { success: false, error: message }
+      return { success: false, user: null, error: message }
     } finally {
       setLoading(false)
     }

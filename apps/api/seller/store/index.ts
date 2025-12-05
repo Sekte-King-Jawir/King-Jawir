@@ -4,7 +4,49 @@ import { isSeller } from '../../lib/auth-helper'
 import { errorResponse, ErrorCode } from '../../lib/response'
 
 // Note: jwtPlugin & authDerive sudah di-apply di parent (seller/index.ts)
-export const sellerStoreRoutes = new Elysia({ prefix: '/api/seller/store' })
+export const sellerStoreRoutes = new Elysia({ prefix: '/store' })
+  // POST /seller/store - Create store (if not exists)
+  .post(
+    '/',
+    async ({ user, body, set }: any) => {
+      if (!user) {
+        set.status = 401
+        return errorResponse('Unauthorized - Silakan login sebagai seller', ErrorCode.UNAUTHORIZED)
+      }
+      if (!isSeller(user)) {
+        set.status = 403
+        return errorResponse('Forbidden - Hanya seller yang bisa mengakses', ErrorCode.FORBIDDEN)
+      }
+
+      // Check if store already exists
+      const existingStore = await sellerStoreController.getStore(user.id)
+      if (existingStore.success) {
+        set.status = 400
+        return errorResponse('Toko sudah ada', ErrorCode.BAD_REQUEST)
+      }
+
+      const result = await sellerStoreController.createStore(user.id, body)
+
+      if (!result.success) {
+        set.status = 400
+      }
+
+      return result
+    },
+    {
+      body: t.Object({
+        name: t.String({ minLength: 2, maxLength: 100 }),
+        description: t.Optional(t.String({ maxLength: 500 })),
+        logo: t.Optional(t.String()),
+      }),
+      detail: {
+        tags: ['Seller Store'],
+        summary: 'Create store',
+        description: 'Membuat toko baru untuk seller.',
+      },
+    }
+  )
+
   // GET /seller/store - Get store profile
   .get(
     '/',
