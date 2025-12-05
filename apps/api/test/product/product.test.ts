@@ -97,7 +97,7 @@ describe('Product Service', () => {
 
       expect(result.success).toBe(true)
       expect(result.data?.products).toHaveLength(1)
-      expect(result.data?.pagination.page).toBe(1)
+      expect(result.data?.page).toBe(1)
       expect(productRepository.findAll).toHaveBeenCalledWith(undefined, 1, 20)
     })
 

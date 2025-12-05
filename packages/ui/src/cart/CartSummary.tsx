@@ -1,4 +1,4 @@
- 'use client'
+'use client'
 
 import type { JSX } from 'react'
 
@@ -9,17 +9,26 @@ export interface CartSummaryProps {
   formatPrice?: (price: number) => string
 }
 
-export function CartSummary({ totalAmount, isSubmitting, onCheckout, formatPrice }: CartSummaryProps): JSX.Element {
+export function CartSummary({
+  totalAmount,
+  isSubmitting,
+  onCheckout,
+  formatPrice,
+}: CartSummaryProps): JSX.Element {
   const localFormatPrice = (price: number): string => {
     if (formatPrice) return formatPrice(price)
-    return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(
-      price
-    )
+    return new Intl.NumberFormat('id-ID', {
+      style: 'currency',
+      currency: 'IDR',
+      minimumFractionDigits: 0,
+    }).format(price)
   }
 
   return (
     <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-6">
-      <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Ringkasan Pesanan</h2>
+      <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">
+        Ringkasan Pesanan
+      </h2>
 
       <div className="space-y-3 mb-4">
         <div className="flex justify-between text-sm text-slate-600 dark:text-slate-300">

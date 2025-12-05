@@ -13,6 +13,7 @@ import { reviewRoutes, productReviewsRoute } from './review'
 import { adminRoutes } from './admin'
 import { priceAnalysisRoutes } from './price-analysis'
 import { priceAnalysisWebSocket } from './price-analysis/websocket'
+import { sellerRoutes } from './seller'
 import { logger } from './lib/logger'
 
 const app = new Elysia()
@@ -91,16 +92,26 @@ const app = new Elysia()
           description: 'API documentation for King Jawir Marketplace - Hackathon Project',
         },
         tags: [
-          { name: 'Auth', description: 'Authentication endpoints' },
+          { name: 'Auth', description: 'Customer authentication endpoints' },
+          {
+            name: 'Seller Auth',
+            description: 'Seller authentication endpoints (separated from customer)',
+          },
           { name: 'Profile', description: 'User profile management' },
           { name: 'Store', description: 'Store management' },
+          { name: 'Seller Store', description: 'Seller store profile management' },
           { name: 'Categories', description: 'Product categories' },
           { name: 'Products', description: 'Product management' },
+          {
+            name: 'Seller Products',
+            description: 'Seller product CMS (CRUD for seller-owned products)',
+          },
           { name: 'Cart', description: 'Shopping cart' },
           { name: 'Orders', description: 'Order management' },
           { name: 'Reviews', description: 'Product reviews' },
           { name: 'Admin', description: 'Admin management' },
           { name: 'Price Analysis', description: 'AI-powered price analysis from Tokopedia' },
+          { name: 'Seller', description: 'Seller dashboard and analytics' },
         ],
         components: {
           securitySchemes: {
@@ -133,6 +144,7 @@ const app = new Elysia()
   .use(adminRoutes)
   .use(priceAnalysisRoutes)
   .use(priceAnalysisWebSocket)
+  .use(sellerRoutes)
   .get('/api', () => ({ message: 'Marketplace API' }), {
     detail: {
       tags: ['General'],

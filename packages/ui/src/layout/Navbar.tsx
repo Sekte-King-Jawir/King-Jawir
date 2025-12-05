@@ -39,10 +39,10 @@ export default function Navbar({ user, onLogout }: NavbarProps): React.ReactElem
         <div className="flex h-16 lg:h-20 items-center justify-between gap-4">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 shrink-0">
-            <div className="w-10 h-10 bg-gradient-to-br from-violet-600 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-violet-500/30">
+            <div className="w-10 h-10 bg-linear-to-br from-violet-600 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-violet-500/30">
               <span className="text-white font-bold text-lg">K</span>
             </div>
-            <span className="text-xl font-bold bg-gradient-to-r from-violet-600 to-indigo-600 bg-clip-text text-transparent hidden sm:block">
+            <span className="text-xl font-bold bg-linear-to-r from-violet-600 to-indigo-600 bg-clip-text text-transparent hidden sm:block">
               KingJawir
             </span>
           </Link>
@@ -79,7 +79,7 @@ export default function Navbar({ user, onLogout }: NavbarProps): React.ReactElem
                 />
               </svg>
               {cartCount > 0 && (
-                <span className="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-r from-rose-500 to-pink-500 text-white text-xs font-bold rounded-full flex items-center justify-center shadow-lg">
+                <span className="absolute -top-1 -right-1 w-5 h-5 bg-linear-to-r from-rose-500 to-pink-500 text-white text-xs font-bold rounded-full flex items-center justify-center shadow-lg">
                   {cartCount}
                 </span>
               )}
@@ -95,7 +95,7 @@ export default function Navbar({ user, onLogout }: NavbarProps): React.ReactElem
                   onClick={() => setShowUserMenu(!showUserMenu)}
                   className="flex items-center gap-2 px-3 py-2 hover:bg-violet-50 rounded-xl transition-all"
                 >
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center text-white font-semibold text-sm">
+                  <div className="w-8 h-8 rounded-full bg-linear-to-br from-violet-600 to-indigo-600 flex items-center justify-center text-white font-semibold text-sm">
                     {user.avatar !== null && user.avatar !== undefined ? (
                       <img
                         src={user.avatar}
@@ -190,7 +190,7 @@ export default function Navbar({ user, onLogout }: NavbarProps): React.ReactElem
 
                 <Link
                   href="/auth/register"
-                  className="hidden md:flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-violet-600 to-indigo-600 rounded-xl hover:shadow-lg hover:shadow-violet-500/30 hover:-translate-y-0.5 transition-all"
+                  className="hidden md:flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-white bg-linear-to-r from-violet-600 to-indigo-600 rounded-xl hover:shadow-lg hover:shadow-violet-500/30 hover:-translate-y-0.5 transition-all"
                 >
                   Daftar
                 </Link>
@@ -297,7 +297,7 @@ export default function Navbar({ user, onLogout }: NavbarProps): React.ReactElem
             {user !== null && user !== undefined ? (
               <div className="bg-white rounded-xl p-4">
                 <div className="flex items-center gap-3 mb-3">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center text-white font-semibold">
+                  <div className="w-12 h-12 rounded-full bg-linear-to-br from-violet-600 to-indigo-600 flex items-center justify-center text-white font-semibold">
                     {user.avatar !== null && user.avatar !== undefined && user.avatar !== '' ? (
                       <img
                         src={user.avatar}
@@ -362,7 +362,7 @@ export default function Navbar({ user, onLogout }: NavbarProps): React.ReactElem
                 <Link
                   href="/auth/register"
                   onClick={() => setIsMenuOpen(false)}
-                  className="flex-1 py-3 text-center text-sm font-semibold text-white bg-gradient-to-r from-violet-600 to-indigo-600 rounded-xl hover:shadow-lg transition-all"
+                  className="flex-1 py-3 text-center text-sm font-semibold text-white bg-linear-to-r from-violet-600 to-indigo-600 rounded-xl hover:shadow-lg transition-all"
                 >
                   Daftar
                 </Link>
