@@ -1,6 +1,7 @@
 import { Elysia } from 'elysia'
 import { cors } from '@elysiajs/cors'
 import { swagger } from '@elysiajs/swagger'
+import { staticPlugin } from '@elysiajs/static'
 import { rateLimit } from 'elysia-rate-limit'
 import { authRoutes } from './auth'
 import { storeRoutes, publicStoreRoutes } from './store'
@@ -82,6 +83,7 @@ const app = new Elysia()
       allowedHeaders: ['Content-Type', 'Authorization', 'Cookie', 'X-Requested-With'],
     })
   )
+  .use(staticPlugin({ assets: 'uploads', prefix: '/uploads' }))
   .use(
     swagger({
       path: '/docs',

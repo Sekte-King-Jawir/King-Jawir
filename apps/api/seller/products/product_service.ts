@@ -1,6 +1,9 @@
 import { storeRepository } from '../../store/store_repository'
 import { productRepository } from '../../product/product_repository'
 import { successResponse, errorResponse, ErrorCode } from '../../lib/response'
+import { writeFile } from 'fs/promises'
+import { join } from 'path'
+import { mkdir } from 'fs/promises'
 
 export const sellerProductService = {
   // Get all products untuk seller (dari tokonya sendiri)
@@ -46,12 +49,24 @@ export const sellerProductService = {
       description?: string
       price: number
       stock: number
-      image?: string
+      image?: File
     }
   ) {
     const store = await storeRepository.findByUserId(userId)
     if (!store) {
       return errorResponse('Toko tidak ditemukan. Buat toko terlebih dahulu.', ErrorCode.NOT_FOUND)
+    }
+
+    // Handle image upload if provided
+    let imagePath: string | undefined
+    if (data.image) {
+      const uploadDir = join(process.cwd(), 'uploads')
+      await mkdir(uploadDir, { recursive: true })
+      const filename = `${Date.now()}-${data.image.name}`
+      const filepath = join(uploadDir, filename)
+      const buffer = await data.image.arrayBuffer()
+      await writeFile(filepath, new Uint8Array(buffer))
+      imagePath = `/uploads/${filename}`
     }
 
     // Generate slug dari name
@@ -75,7 +90,7 @@ export const sellerProductService = {
         ...(data.description && { description: data.description }),
         price: data.price,
         stock: data.stock,
-        ...(data.image && { image: data.image }),
+        ...(imagePath && { image: imagePath }),
       }
 
       const product = await productRepository.create(productData)
@@ -90,7 +105,7 @@ export const sellerProductService = {
       ...(data.description && { description: data.description }),
       price: data.price,
       stock: data.stock,
-      ...(data.image && { image: data.image }),
+      ...(imagePath && { image: imagePath }),
     }
 
     const product = await productRepository.create(productData)
@@ -107,7 +122,7 @@ export const sellerProductService = {
       description?: string
       price?: number
       stock?: number
-      image?: string
+      image?: File
     }
   ) {
     const store = await storeRepository.findByUserId(userId)
@@ -141,6 +156,17 @@ export const sellerProductService = {
       } else {
         updateData.slug = newSlug
       }
+    }
+
+    // Handle image upload if provided
+    if (data.image) {
+      const uploadDir = join(process.cwd(), 'uploads')
+      await mkdir(uploadDir, { recursive: true })
+      const filename = `${Date.now()}-${data.image.name}`
+      const filepath = join(uploadDir, filename)
+      const buffer = await data.image.arrayBuffer()
+      await writeFile(filepath, new Uint8Array(buffer))
+      updateData.image = `/uploads/${filename}`
     }
 
     const updatedProduct = await productRepository.update(productId, updateData)

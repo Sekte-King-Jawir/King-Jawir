@@ -17,7 +17,7 @@ export const sellerProductController = {
       description?: string
       price: number
       stock: number
-      image?: string
+      image?: File
     }
   ) {
     return sellerProductService.createProduct(userId, data)
@@ -32,7 +32,7 @@ export const sellerProductController = {
       description?: string
       price?: number
       stock?: number
-      image?: string
+      image?: File
     }
   ) {
     return sellerProductService.updateProduct(userId, productId, data)

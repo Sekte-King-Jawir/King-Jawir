@@ -220,14 +220,14 @@ export function useSellerProducts(): UseSellerProductsReturn {
 
   const fetchProducts = useCallback(async (): Promise<void> => {
     try {
-      const res = await fetch(`${API_URL}/products/mine?page=${page}&limit=10`, {
+      const res = await fetch(`${API_URL}/my-products?page=${page}&limit=10`, {
         credentials: 'include',
       })
       const result = (await res.json()) as ProductsApiResponse
 
       if (result.success && result.data !== undefined) {
         setProducts(result.data.products)
-        setTotalPages(result.data.pagination.totalPages)
+        setTotalPages(result.data.totalPages)
       }
     } catch {
       setError('Gagal memuat produk')
