@@ -40,10 +40,14 @@ export function UpdateStatusModal({
 
           <div className="mb-4">
             <p className="text-sm text-slate-600 dark:text-slate-400 mb-2">
-              Order ID: <span className="font-medium text-slate-900 dark:text-white">#{order.id.slice(-8)}</span>
+              Order ID:{' '}
+              <span className="font-medium text-slate-900 dark:text-white">
+                #{order.id.slice(-8)}
+              </span>
             </p>
             <p className="text-sm text-slate-600 dark:text-slate-400">
-              Pelanggan: <span className="font-medium text-slate-900 dark:text-white">{order.user.name}</span>
+              Pelanggan:{' '}
+              <span className="font-medium text-slate-900 dark:text-white">{order.user.name}</span>
             </p>
           </div>
 

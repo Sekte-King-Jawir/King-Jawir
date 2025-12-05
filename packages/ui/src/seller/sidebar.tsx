@@ -40,7 +40,7 @@ export function SellerSidebar({ storeName, urls }: SellerSidebarProps): React.JS
       <nav className="p-4">
         <ul className="space-y-1">
           {menuItems.map(item => {
-            const isActive = pathname === item.href || pathname.startsWith(`${item.href  }/`)
+            const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`)
             return (
               <li key={item.href}>
                 <Link

@@ -276,96 +276,105 @@ export function useSellerProducts(): UseSellerProductsReturn {
     }
   }, [page, fetchProducts, isLoading])
 
-  const createProduct = useCallback(async (data: CreateProductData): Promise<boolean> => {
-    setIsSubmitting(true)
-    setError('')
-    setSuccess('')
+  const createProduct = useCallback(
+    async (data: CreateProductData): Promise<boolean> => {
+      setIsSubmitting(true)
+      setError('')
+      setSuccess('')
 
-    try {
-      const res = await fetch(`${API_URL}/products`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify(data),
-      })
+      try {
+        const res = await fetch(`${API_URL}/products`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify(data),
+        })
 
-      const result = (await res.json()) as { success: boolean; message: string }
+        const result = (await res.json()) as { success: boolean; message: string }
 
-      if (result.success) {
-        setSuccess('Produk berhasil ditambahkan!')
-        await fetchProducts()
-        return true
-      } else {
-        setError(result.message ?? 'Gagal menambah produk')
+        if (result.success) {
+          setSuccess('Produk berhasil ditambahkan!')
+          await fetchProducts()
+          return true
+        } else {
+          setError(result.message ?? 'Gagal menambah produk')
+          return false
+        }
+      } catch {
+        setError('Gagal menambah produk')
         return false
+      } finally {
+        setIsSubmitting(false)
       }
-    } catch {
-      setError('Gagal menambah produk')
-      return false
-    } finally {
-      setIsSubmitting(false)
-    }
-  }, [fetchProducts])
+    },
+    [fetchProducts]
+  )
 
-  const updateProduct = useCallback(async (slug: string, data: CreateProductData): Promise<boolean> => {
-    setIsSubmitting(true)
-    setError('')
-    setSuccess('')
+  const updateProduct = useCallback(
+    async (slug: string, data: CreateProductData): Promise<boolean> => {
+      setIsSubmitting(true)
+      setError('')
+      setSuccess('')
 
-    try {
-      const res = await fetch(`${API_URL}/products/${slug}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify(data),
-      })
+      try {
+        const res = await fetch(`${API_URL}/products/${slug}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify(data),
+        })
 
-      const result = (await res.json()) as { success: boolean; message: string }
+        const result = (await res.json()) as { success: boolean; message: string }
 
-      if (result.success) {
-        setSuccess('Produk berhasil diperbarui!')
-        await fetchProducts()
-        return true
-      } else {
-        setError(result.message ?? 'Gagal memperbarui produk')
+        if (result.success) {
+          setSuccess('Produk berhasil diperbarui!')
+          await fetchProducts()
+          return true
+        } else {
+          setError(result.message ?? 'Gagal memperbarui produk')
+          return false
+        }
+      } catch {
+        setError('Gagal memperbarui produk')
         return false
+      } finally {
+        setIsSubmitting(false)
       }
-    } catch {
-      setError('Gagal memperbarui produk')
-      return false
-    } finally {
-      setIsSubmitting(false)
-    }
-  }, [fetchProducts])
+    },
+    [fetchProducts]
+  )
 
-  const deleteProduct = useCallback(async (slug: string): Promise<boolean> => {
-    setIsSubmitting(true)
-    setError('')
-    setSuccess('')
+  const deleteProduct = useCallback(
+    async (slug: string): Promise<boolean> => {
+      setIsSubmitting(true)
+      setError('')
+      setSuccess('')
 
-    try {
-      const res = await fetch(`${API_URL}/products/${slug}`, {
-        method: 'DELETE',
-        credentials: 'include',
-      })
+      try {
+        const res = await fetch(`${API_URL}/products/${slug}`, {
+          method: 'DELETE',
+          credentials: 'include',
+        })
 
-      const result = (await res.json()) as { success: boolean; message: string }
+        const result = (await res.json()) as { success: boolean; message: string }
 
-      if (result.success) {
-        setSuccess('Produk berhasil dihapus!')
-        await fetchProducts()
-        return true
-      } else {
-        setError(result.message ?? 'Gagal menghapus produk')
+        if (result.success) {
+          setSuccess('Produk berhasil dihapus!')
+          await fetchProducts()
+          return true
+        } else {
+          setError(result.message ?? 'Gagal menghapus produk')
+          return false
+        }
+      } catch {
+        setError('Gagal menghapus produk')
         return false
+      } finally {
+        setIsSubmitting(false)
       }
-    } catch {
-      setError('Gagal menghapus produk')
-      return false
-    } finally {
-      setIsSubmitting(false)
-    }
-  }, [fetchProducts])
+    },
+    [fetchProducts]
+  )
 
   const clearMessages = useCallback(() => {
     setError('')
@@ -477,36 +486,39 @@ export function useSellerOrders(): UseSellerOrdersReturn {
     }
   }, [page, statusFilter, fetchOrders, isLoading])
 
-  const updateOrderStatus = useCallback(async (orderId: string, newStatus: string): Promise<boolean> => {
-    setIsSubmitting(true)
-    setError('')
-    setSuccess('')
+  const updateOrderStatus = useCallback(
+    async (orderId: string, newStatus: string): Promise<boolean> => {
+      setIsSubmitting(true)
+      setError('')
+      setSuccess('')
 
-    try {
-      const res = await fetch(`${API_URL}/orders/${orderId}/status`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({ status: newStatus }),
-      })
+      try {
+        const res = await fetch(`${API_URL}/orders/${orderId}/status`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({ status: newStatus }),
+        })
 
-      const result = (await res.json()) as { success: boolean; message: string }
+        const result = (await res.json()) as { success: boolean; message: string }
 
-      if (result.success) {
-        setSuccess('Status pesanan berhasil diperbarui!')
-        await fetchOrders()
-        return true
-      } else {
-        setError(result.message ?? 'Gagal memperbarui status')
+        if (result.success) {
+          setSuccess('Status pesanan berhasil diperbarui!')
+          await fetchOrders()
+          return true
+        } else {
+          setError(result.message ?? 'Gagal memperbarui status')
+          return false
+        }
+      } catch {
+        setError('Gagal memperbarui status')
         return false
+      } finally {
+        setIsSubmitting(false)
       }
-    } catch {
-      setError('Gagal memperbarui status')
-      return false
-    } finally {
-      setIsSubmitting(false)
-    }
-  }, [fetchOrders])
+    },
+    [fetchOrders]
+  )
 
   const handleSetStatusFilter = useCallback((status: string) => {
     setStatusFilter(status)

@@ -112,7 +112,9 @@ export function OrdersTable({
                 {/* Customer */}
                 <td className="px-6 py-4">
                   <div className="text-sm text-slate-900 dark:text-white">{order.user.name}</div>
-                  <div className="text-xs text-slate-500 dark:text-slate-400">{order.user.email}</div>
+                  <div className="text-xs text-slate-500 dark:text-slate-400">
+                    {order.user.email}
+                  </div>
                 </td>
 
                 {/* Products */}

@@ -4,13 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useSellerProducts, useSellerUrls } from '@/hooks'
-import {
-  SellerNavbar,
-  SellerSidebar,
-  ProductsTable,
-  ProductForm,
-  DeleteModal,
-} from '@repo/ui'
+import { SellerNavbar, SellerSidebar, ProductsTable, ProductForm, DeleteModal } from '@repo/ui'
 import type { SellerProduct, CreateProductData } from '@/types'
 
 export default function SellerProductsPage(): React.JSX.Element {
@@ -185,12 +179,14 @@ export default function SellerProductsPage(): React.JSX.Element {
       </div>
 
       {/* Create Modal */}
-      {showForm ? <ProductForm
+      {showForm ? (
+        <ProductForm
           categories={categories}
           onSubmit={handleCreateProduct}
           onCancel={() => setShowForm(false)}
           isLoading={isSubmitting}
-        /> : null}
+        />
+      ) : null}
 
       {/* Edit Modal */}
       {editingProduct !== null && (

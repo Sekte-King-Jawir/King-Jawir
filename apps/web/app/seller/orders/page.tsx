@@ -4,12 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useSellerOrders, useSellerUrls } from '@/hooks'
-import {
-  SellerNavbar,
-  SellerSidebar,
-  OrdersTable,
-  UpdateStatusModal,
-} from '@repo/ui'
+import { SellerNavbar, SellerSidebar, OrdersTable, UpdateStatusModal } from '@repo/ui'
 import type { SellerOrder, OrderStatus } from '@/types'
 
 export default function SellerOrdersPage(): React.JSX.Element {

@@ -14,7 +14,13 @@ export interface StatCardProps {
   trendType?: 'up' | 'down' | 'neutral'
 }
 
-export function StatCard({ title, value, icon, trend, trendType = 'neutral' }: StatCardProps): React.JSX.Element {
+export function StatCard({
+  title,
+  value,
+  icon,
+  trend,
+  trendType = 'neutral',
+}: StatCardProps): React.JSX.Element {
   const trendColors = {
     up: 'text-green-600 dark:text-green-400',
     down: 'text-red-600 dark:text-red-400',
@@ -47,21 +53,9 @@ export function StatsGrid({ stats }: StatsGridProps): React.JSX.Element {
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      <StatCard
-        title="Total Pendapatan"
-        value={formatCurrency(stats.totalRevenue)}
-        icon="💰"
-      />
-      <StatCard
-        title="Total Pesanan"
-        value={stats.totalOrders}
-        icon="📦"
-      />
-      <StatCard
-        title="Produk Aktif"
-        value={stats.totalProducts}
-        icon="🏷️"
-      />
+      <StatCard title="Total Pendapatan" value={formatCurrency(stats.totalRevenue)} icon="💰" />
+      <StatCard title="Total Pesanan" value={stats.totalOrders} icon="📦" />
+      <StatCard title="Produk Aktif" value={stats.totalProducts} icon="🏷️" />
       <StatCard
         title="Pesanan Pending"
         value={stats.pendingOrders}
