@@ -1,4 +1,4 @@
- 'use client'
+'use client'
 
 import Image from 'next/image'
 
@@ -24,9 +24,11 @@ export function CartItem({
   onRemove,
 }: CartItemProps): React.JSX.Element {
   const formatPrice = (priceValue: number): string =>
-    new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(
-      priceValue
-    )
+    new Intl.NumberFormat('id-ID', {
+      style: 'currency',
+      currency: 'IDR',
+      minimumFractionDigits: 0,
+    }).format(priceValue)
 
   const handleDecrement = (): void => {
     if (quantity > 1) onUpdateQuantity(id, quantity - 1)
@@ -38,7 +40,13 @@ export function CartItem({
     <div className="flex items-center gap-4 p-4 bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700">
       <div className="w-20 h-20 bg-slate-100 dark:bg-slate-700 rounded-lg overflow-hidden flex items-center justify-center shrink-0">
         {image ? (
-          <Image src={image} alt={name} width={80} height={80} className="w-full h-full object-cover" />
+          <Image
+            src={image}
+            alt={name}
+            width={80}
+            height={80}
+            className="w-full h-full object-cover"
+          />
         ) : (
           <div className="text-2xl">📦</div>
         )}
@@ -59,7 +67,11 @@ export function CartItem({
           −
         </button>
         <span className="w-8 text-center">{quantity}</span>
-        <button className="px-3 py-1 bg-slate-100 dark:bg-slate-700 rounded" onClick={handleIncrement} aria-label="Increase quantity">
+        <button
+          className="px-3 py-1 bg-slate-100 dark:bg-slate-700 rounded"
+          onClick={handleIncrement}
+          aria-label="Increase quantity"
+        >
           +
         </button>
       </div>

@@ -30,7 +30,10 @@ export function ResendVerificationForm(): React.JSX.Element {
 
         <form action={formAction} className="space-y-4">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
               Email
             </label>
             <input
@@ -43,11 +46,7 @@ export function ResendVerificationForm(): React.JSX.Element {
             />
           </div>
 
-          <Button
-            type="submit"
-            className="w-full"
-            loading={isPending}
-          >
+          <Button type="submit" className="w-full" loading={isPending}>
             {isPending ? 'Mengirim...' : 'Kirim Ulang Verifikasi'}
           </Button>
         </form>

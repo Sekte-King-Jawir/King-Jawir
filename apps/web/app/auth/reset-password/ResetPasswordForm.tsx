@@ -29,7 +29,9 @@ export function ResetPasswordForm({ token }: { token: string }): React.JSX.Eleme
       <Card className="w-full max-w-md">
         <div className="text-center mb-6">
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Reset Password</h1>
-          <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">Masukkan password baru Anda</p>
+          <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+            Masukkan password baru Anda
+          </p>
         </div>
 
         {state.message.length > 0 && !state.success && (
@@ -43,7 +45,10 @@ export function ResetPasswordForm({ token }: { token: string }): React.JSX.Eleme
           <input type="hidden" name="token" value={token} />
 
           <div>
-            <label htmlFor="newPassword" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label
+              htmlFor="newPassword"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
               Password Baru
             </label>
             <input
@@ -58,7 +63,10 @@ export function ResetPasswordForm({ token }: { token: string }): React.JSX.Eleme
           </div>
 
           <div>
-            <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label
+              htmlFor="confirmPassword"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
               Konfirmasi Password
             </label>
             <input
@@ -72,11 +80,7 @@ export function ResetPasswordForm({ token }: { token: string }): React.JSX.Eleme
             />
           </div>
 
-          <Button
-            type="submit"
-            className="w-full"
-            loading={isPending}
-          >
+          <Button type="submit" className="w-full" loading={isPending}>
             {isPending ? 'Memproses...' : 'Reset Password'}
           </Button>
         </form>

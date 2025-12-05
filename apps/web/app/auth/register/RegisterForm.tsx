@@ -48,13 +48,14 @@ export function RegisterForm(): React.JSX.Element {
           </p>
         </div>
 
-        {error.length > 0 && (
-          <Alert type="error" message={error} />
-        )}
+        {error.length > 0 && <Alert type="error" message={error} />}
 
         <div className="space-y-4">
           <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label
+              htmlFor="name"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
               Nama Lengkap
             </label>
             <input
@@ -69,7 +70,10 @@ export function RegisterForm(): React.JSX.Element {
           </div>
 
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
               Email
             </label>
             <input
@@ -84,7 +88,10 @@ export function RegisterForm(): React.JSX.Element {
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
               Password
             </label>
             <input
