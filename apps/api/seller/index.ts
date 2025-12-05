@@ -10,11 +10,11 @@ import { sellerPriceAnalysisRoutes } from './price-analysis'
 export const sellerRoutes = new Elysia({ prefix: '/api/seller' })
   // Auth routes tidak perlu jwt (karena register & login)
   .use(sellerAuthRoutes)
-  
+
   // Apply JWT & auth middleware untuk semua routes selanjutnya
   .use(jwtPlugin)
   .derive(authDerive)
-  
+
   // Protected routes - require seller authentication
   .use(sellerProductRoutes)
   .use(sellerStoreRoutes)

@@ -14,6 +14,7 @@ Seller CMS menyediakan sistem lengkap untuk seller mengelola toko dan produk mer
 - **🆕 Price Analysis** - AI-powered price analysis sebelum menambah produk
 
 ## Documentation
+
 - 📖 [AUTHENTICATION.md](./AUTHENTICATION.md) - Authentication & Authorization pattern
 - 📖 [price-analysis/INTEGRATION_GUIDE.md](./price-analysis/INTEGRATION_GUIDE.md) - Price Analysis integration guide
 
@@ -416,6 +417,7 @@ Hapus produk milik seller.
 ```
 
 **Features:**
+
 - Jika name berubah, slug di-regenerate
 - Cek uniqueness untuk slug baru
 
@@ -426,16 +428,19 @@ Hapus produk milik seller.
 Fitur AI-powered price analysis khusus untuk seller sebelum menambahkan produk ke toko.
 
 #### 1. Full Price Analysis
+
 **GET** `/api/seller/price-analysis?productName={name}&userPrice={price}&limit={n}`
 
 Analisis lengkap harga produk dari market (Tokopedia) dengan insights khusus seller.
 
 **Query Parameters:**
+
 - `productName` (required): Nama produk yang ingin dianalisis
 - `userPrice` (optional): Harga yang ingin dijual seller
 - `limit` (optional): Jumlah produk market untuk analisis (default: 10, max: 50)
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -464,7 +469,7 @@ Analisis lengkap harga produk dari market (Tokopedia) dengan insights khusus sel
       "recommendation": "Harga Rp15.000.000 sangat kompetitif...",
       "insights": [
         "Mayoritas produk dijual di range Rp15-17 juta",
-        "Produk dengan rating tinggi cenderung lebih mahal",
+        "Produk dengan rating tinggi cenderung lebih mahal"
         // ... more insights
       ],
       "suggestedPrice": 15800000
@@ -489,6 +494,7 @@ Analisis lengkap harga produk dari market (Tokopedia) dengan insights khusus sel
 ```
 
 **Price Position Values:**
+
 - `very_low`: < 70% dari harga minimum market
 - `low`: < harga minimum market
 - `below_average`: < 90% dari rata-rata
@@ -503,11 +509,13 @@ Seller ingin menambahkan laptop gaming ROG ke toko dengan harga Rp15.000.000. Se
 ---
 
 #### 2. Quick Price Check
+
 **POST** `/api/seller/price-analysis/quick-check`
 
 Validasi cepat harga produk. Response lebih cepat dengan sample kecil (5 produk).
 
 **Request Body:**
+
 ```json
 {
   "productName": "iPhone 15 Pro",
@@ -516,6 +524,7 @@ Validasi cepat harga produk. Response lebih cepat dengan sample kecil (5 produk)
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -542,16 +551,19 @@ Real-time validation saat seller mengetik harga di form. Memberikan feedback ins
 #### Price Analysis Features
 
 **🤖 AI-Powered:**
+
 - Query optimization (misal: "iphone" → "iphone smartphone")
 - Market insights dan rekomendasi strategis
 - Suggested price berdasarkan analisis AI
 
 **📊 Market Statistics:**
+
 - Min, max, average, median price
 - Price distribution analysis
 - Competitor location data
 
 **💡 Seller Guidance:**
+
 - `shouldProceed`: Boolean apakah sebaiknya proceed dengan harga tersebut
 - `pricePosition`: Posisi harga relatif terhadap market
 - `warnings`: Array warning jika harga ekstrem atau ada concern
@@ -559,6 +571,7 @@ Real-time validation saat seller mengetik harga di form. Memberikan feedback ins
 
 **🎯 Strategic Advice:**
 Sistem memberikan saran berbeda berdasarkan price position:
+
 - **Low price**: Strategi volume tinggi, fokus pada service
 - **High price**: Strategi premium, tonjolkan kualitas/bonus
 - **Average**: Kompetitif via review dan foto produk
@@ -570,6 +583,7 @@ Sistem memberikan saran berbeda berdasarkan price position:
 **Workflow yang direkomendasikan:**
 
 1. **Step 1: Seller input nama produk**
+
    ```bash
    GET /api/seller/price-analysis?productName=Laptop Gaming ROG
    ```
@@ -579,6 +593,7 @@ Sistem memberikan saran berbeda berdasarkan price position:
    - Seller mendapat insights tentang kompetitor
 
 3. **Step 3: Seller input harga (bisa adopt suggested atau custom)**
+
    ```bash
    POST /api/seller/price-analysis/quick-check
    {
@@ -605,6 +620,7 @@ Sistem memberikan saran berbeda berdasarkan price position:
 ---
 
 **Features:**
+
 - Jika name berubah, slug di-regenerate
 - Cek uniqueness untuk slug baru
 
@@ -648,21 +664,23 @@ seller/
 ├── seller_service.ts
 └── seller_repository.ts
 ```
-│       ├── me_controller.ts
-│       └── me_service.ts
-├── products/                  # Product CMS
-│   ├── index.ts              # Routes definition
-│   ├── product_controller.ts
-│   └── product_service.ts
-├── store/                     # Store management
-│   ├── index.ts              # Routes definition
-│   ├── store_controller.ts
-│   └── store_service.ts
-├── index.ts                   # Main seller routes
-├── seller_controller.ts       # Dashboard & analytics
+
+│ ├── me_controller.ts
+│ └── me_service.ts
+├── products/ # Product CMS
+│ ├── index.ts # Routes definition
+│ ├── product_controller.ts
+│ └── product_service.ts
+├── store/ # Store management
+│ ├── index.ts # Routes definition
+│ ├── store_controller.ts
+│ └── store_service.ts
+├── index.ts # Main seller routes
+├── seller_controller.ts # Dashboard & analytics
 ├── seller_service.ts
 └── seller_repository.ts
-```
+
+````
 
 ## Authorization
 
@@ -676,7 +694,7 @@ Contoh request dengan Bearer token:
 ```bash
 curl -X GET http://localhost:4101/api/seller/products \
   -H "Authorization: Bearer YOUR_ACCESS_TOKEN"
-```
+````
 
 Atau dengan cookie (otomatis jika login via browser).
 
@@ -760,6 +778,7 @@ curl -X POST http://localhost:4101/api/seller/auth/login \
 ```
 
 ### 3. Price Analysis
+
 ```bash
 # Full analysis
 curl -X GET "http://localhost:4101/api/seller/price-analysis?productName=Laptop%20Gaming&userPrice=15000000&limit=10" \
@@ -776,6 +795,7 @@ curl -X POST http://localhost:4101/api/seller/price-analysis/quick-check \
 ```
 
 ### 4. Create Product
+
 ```bash
 curl -X POST http://localhost:4101/api/seller/products \
   -H "Content-Type: application/json" \

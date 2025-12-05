@@ -70,7 +70,7 @@ export default function SellerRegisterPage(): React.JSX.Element {
       storeName: formData.storeName,
       ...(formData.storeDescription !== '' && { storeDescription: formData.storeDescription }),
     }
-    
+
     const success = await register(registerPayload)
     setIsSubmitting(false)
 
@@ -113,9 +113,7 @@ export default function SellerRegisterPage(): React.JSX.Element {
         <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-8">
           {(error !== '' || validationError !== '') && (
             <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
-              <p className="text-red-600 dark:text-red-400 text-sm">
-                {validationError || error}
-              </p>
+              <p className="text-red-600 dark:text-red-400 text-sm">{validationError || error}</p>
             </div>
           )}
 

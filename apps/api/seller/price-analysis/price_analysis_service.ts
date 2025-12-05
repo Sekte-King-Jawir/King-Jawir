@@ -7,11 +7,7 @@ export const sellerPriceAnalysisService = {
    * Analyze product price sebelum seller menambahkan ke toko
    * Memberikan rekomendasi harga berdasarkan market data dari Tokopedia
    */
-  async analyzeBeforeCreate(
-    productName: string,
-    userPrice?: number,
-    limit: number = 10
-  ) {
+  async analyzeBeforeCreate(productName: string, userPrice?: number, limit: number = 10) {
     try {
       if (!productName || productName.trim() === '') {
         return errorResponse('Nama produk tidak boleh kosong', ErrorCode.VALIDATION_ERROR)
@@ -27,11 +23,7 @@ export const sellerPriceAnalysisService = {
       })
 
       // Gunakan service yang sudah ada untuk analisis
-      const result = await priceAnalysisService.analyzePrices(
-        productName,
-        analysisLimit,
-        userPrice
-      )
+      const result = await priceAnalysisService.analyzePrices(productName, analysisLimit, userPrice)
 
       // Format response untuk seller dengan informasi lebih contextual
       return successResponse('Analisis harga berhasil', {
@@ -138,17 +130,13 @@ export const sellerPriceAnalysisService = {
     // Suggestion berdasarkan suggested price dari AI
     if (result.analysis.suggestedPrice) {
       const suggestedPrice = result.analysis.suggestedPrice
-      suggestions.push(
-        `💰 Harga yang disarankan: Rp${suggestedPrice.toLocaleString('id-ID')}`
-      )
+      suggestions.push(`💰 Harga yang disarankan: Rp${suggestedPrice.toLocaleString('id-ID')}`)
 
       if (userPrice) {
         const diff = ((userPrice - suggestedPrice) / suggestedPrice) * 100
         if (Math.abs(diff) > 10) {
           if (diff > 0) {
-            suggestions.push(
-              `📊 Harga Anda ${diff.toFixed(1)}% lebih tinggi dari saran AI.`
-            )
+            suggestions.push(`📊 Harga Anda ${diff.toFixed(1)}% lebih tinggi dari saran AI.`)
           } else {
             suggestions.push(
               `📊 Harga Anda ${Math.abs(diff).toFixed(1)}% lebih rendah dari saran AI.`
@@ -162,17 +150,13 @@ export const sellerPriceAnalysisService = {
     suggestions.push(
       `📈 Range harga market: Rp${stats.min.toLocaleString('id-ID')} - Rp${stats.max.toLocaleString('id-ID')}`
     )
-    suggestions.push(
-      `📊 Harga rata-rata: Rp${stats.average.toLocaleString('id-ID')}`
-    )
-    suggestions.push(
-      `📌 Harga median: Rp${stats.median.toLocaleString('id-ID')}`
-    )
+    suggestions.push(`📊 Harga rata-rata: Rp${stats.average.toLocaleString('id-ID')}`)
+    suggestions.push(`📌 Harga median: Rp${stats.median.toLocaleString('id-ID')}`)
 
     // Suggestion strategis
     if (userPrice) {
       const position = this.getPricePosition(result, userPrice)
-      
+
       if (position === 'below_average' || position === 'low') {
         suggestions.push('💡 Strategi: Volume tinggi dengan margin rendah')
         suggestions.push('🎯 Fokus pada kecepatan pengiriman dan service')
@@ -228,10 +212,7 @@ export const sellerPriceAnalysisService = {
         msg: 'Quick price check error',
         error: error instanceof Error ? error.message : 'Unknown',
       })
-      return errorResponse(
-        'Gagal melakukan quick check',
-        ErrorCode.INTERNAL_ERROR
-      )
+      return errorResponse('Gagal melakukan quick check', ErrorCode.INTERNAL_ERROR)
     }
   },
 }

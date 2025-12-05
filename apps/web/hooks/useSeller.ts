@@ -72,7 +72,9 @@ export function useSellerStore(): UseSellerStoreReturn {
 
     try {
       // Check auth with seller endpoint
-      const meRes = await fetch(`${API_URL}${API_ENDPOINTS.SELLER_AUTH.ME}`, { credentials: 'include' })
+      const meRes = await fetch(`${API_URL}${API_ENDPOINTS.SELLER_AUTH.ME}`, {
+        credentials: 'include',
+      })
       const meData = (await meRes.json()) as AuthMeResponse
 
       if (!meData.success || meData.data === undefined) {
@@ -84,7 +86,9 @@ export function useSellerStore(): UseSellerStoreReturn {
 
       // Fetch store if user is seller
       if (meData.data.user.role === 'SELLER' || meData.data.user.role === 'ADMIN') {
-        const storeRes = await fetch(`${API_URL}${API_ENDPOINTS.SELLER.STORE}`, { credentials: 'include' })
+        const storeRes = await fetch(`${API_URL}${API_ENDPOINTS.SELLER.STORE}`, {
+          credentials: 'include',
+        })
         const storeData = (await storeRes.json()) as StoreApiResponse
 
         if (storeData.success && storeData.data !== undefined) {
@@ -241,7 +245,9 @@ export function useSellerProducts(): UseSellerProductsReturn {
 
     try {
       // Check auth with seller endpoint
-      const authRes = await fetch(`${API_URL}${API_ENDPOINTS.SELLER_AUTH.ME}`, { credentials: 'include' })
+      const authRes = await fetch(`${API_URL}${API_ENDPOINTS.SELLER_AUTH.ME}`, {
+        credentials: 'include',
+      })
       const authData = (await authRes.json()) as AuthMeResponse
 
       if (!authData.success || authData.data === undefined) {

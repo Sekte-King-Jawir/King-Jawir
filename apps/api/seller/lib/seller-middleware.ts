@@ -12,10 +12,7 @@ export const sellerOnly = (app: Elysia) =>
   app.onBeforeHandle(({ user, set }: any) => {
     if (!user) {
       set.status = 401
-      return errorResponse(
-        'Unauthorized - Silakan login sebagai seller',
-        ErrorCode.UNAUTHORIZED
-      )
+      return errorResponse('Unauthorized - Silakan login sebagai seller', ErrorCode.UNAUTHORIZED)
     }
 
     if (!isSeller(user)) {

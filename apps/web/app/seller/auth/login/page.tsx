@@ -61,9 +61,7 @@ function SellerLoginForm(): React.JSX.Element {
             <h1 className="text-3xl font-bold text-blue-600 dark:text-blue-400">King Jawir</h1>
           </Link>
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Login Seller</h2>
-          <p className="text-slate-500 dark:text-slate-400 mt-2">
-            Masuk ke dashboard seller Anda
-          </p>
+          <p className="text-slate-500 dark:text-slate-400 mt-2">Masuk ke dashboard seller Anda</p>
         </div>
 
         {/* Form */}
@@ -214,14 +212,16 @@ function SellerLoginForm(): React.JSX.Element {
 
 export default function SellerLoginPage(): React.JSX.Element {
   return (
-    <Suspense fallback={
-      <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-slate-500 dark:text-slate-400">Loading...</p>
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center">
+          <div className="text-center">
+            <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+            <p className="text-slate-500 dark:text-slate-400">Loading...</p>
+          </div>
         </div>
-      </div>
-    }>
+      }
+    >
       <SellerLoginForm />
     </Suspense>
   )
