@@ -5,7 +5,7 @@
 /**
  * Format angka ke format currency
  */
-export function formatCurrency(amount: number, currency: string = 'USD'): string {
+export function formatCurrency(amount: number, currency = 'USD'): string {
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency,
@@ -37,7 +37,7 @@ export function formatPrice(amount: number): string {
  */
 export function truncateText(text: string, maxLength: number): string {
   if (text.length <= maxLength) return text
-  return text.slice(0, maxLength).trim() + '...'
+  return `${text.slice(0, maxLength).trim()}...`
 }
 
 /**

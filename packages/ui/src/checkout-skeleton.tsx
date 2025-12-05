@@ -2,11 +2,14 @@
 
 import { type JSX } from 'react'
 
-// ============================================================================
+// ===========================================================================
 // MAIN COMPONENT
-// ============================================================================
+// ===========================================================================
 
 export function CheckoutSkeleton(): JSX.Element {
+  // Create static array of skeleton items with unique IDs to avoid array index in keys
+  const skeletonItems = [{ id: 'cart-item-1' }, { id: 'cart-item-2' }, { id: 'cart-item-3' }]
+
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
       <main className="max-w-4xl mx-auto px-4 py-8">
@@ -22,8 +25,8 @@ export function CheckoutSkeleton(): JSX.Element {
                 <div className="h-6 bg-slate-200 dark:bg-slate-700 rounded w-32 animate-pulse" />
               </div>
               <div className="divide-y divide-slate-200 dark:divide-slate-700">
-                {Array.from({ length: 3 }).map((_, index) => (
-                  <div key={index} className="px-6 py-4 flex items-center gap-4">
+                {skeletonItems.map(item => (
+                  <div key={item.id} className="px-6 py-4 flex items-center gap-4">
                     <div className="w-16 h-16 bg-slate-200 dark:bg-slate-700 rounded-lg animate-pulse shrink-0" />
                     <div className="flex-1 min-w-0">
                       <div className="h-5 bg-slate-200 dark:bg-slate-700 rounded w-3/4 mb-2 animate-pulse" />

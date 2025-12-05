@@ -1,99 +1,73 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { useAuth } from '@/hooks'
+import { formatPrice } from '@/lib/utils'
 import styles from './CartSummary.module.css'
 
 interface CartSummaryProps {
-  subtotal: number
-  estimatedTax?: number
-  shippingCost?: number
-  onCheckout: () => void
-  isLoading?: boolean
+  totalAmount: number
+  isSubmitting: boolean
+  onCheckout: () => Promise<void>
+  formatPrice?: (price: number) => string
 }
 
 export function CartSummary({
-  subtotal,
-  estimatedTax = 0,
-  shippingCost = 0,
+  totalAmount,
+  isSubmitting,
   onCheckout,
-  isLoading = false,
-}: CartSummaryProps) {
-  const [promoCode, setPromoCode] = useState('')
-  const [cardNumber, setCardNumber] = useState('')
+  formatPrice: propFormatPrice,
+}: CartSummaryProps): React.JSX.Element {
+  const [_isGuestCheckout, _setIsGuestCheckout] = useState(false)
+  const { _user } = useAuth()
+  const _router = useRouter()
 
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('id-ID', {
-      style: 'currency',
-      currency: 'IDR',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(price)
+  const handleCheckout = async (): Promise<void> => {
+    try {
+      await onCheckout()
+    } catch (error) {
+      console.error('Checkout failed:', error)
+    }
   }
 
-  const total = subtotal + estimatedTax + shippingCost
-
-  const handleApplyCard = () => {
-    // TODO: Implement bonus card logic
-    console.log('Apply card:', cardNumber)
+  const localFormatPrice = (price: number): string => {
+    return propFormatPrice
+      ? propFormatPrice(price)
+      : new Intl.NumberFormat('id-ID', {
+          style: 'currency',
+          currency: 'IDR',
+          minimumFractionDigits: 0,
+        }).format(price)
   }
 
   return (
-    <div className={styles.summary}>
+    <div className={styles.summaryCard}>
       <h2 className={styles.title}>Ringkasan Pesanan</h2>
 
-      <div className={styles.inputGroup}>
-        <label className={styles.label}>Kode Promo</label>
-        <input
-          type="text"
-          className={styles.input}
-          placeholder="Masukkan kode"
-          value={promoCode}
-          onChange={e => setPromoCode(e.target.value)}
-        />
-      </div>
+      <div className={styles.summaryItems}>
+        <div className={styles.summaryRow}>
+          <span className={styles.label}>Subtotal:</span>
+          <span className={styles.value}>{localFormatPrice(totalAmount)}</span>
+        </div>
 
-      <div className={styles.inputGroup}>
-        <label className={styles.label}>Nomor Kartu Bonus</label>
-        <div className={styles.inputWithButton}>
-          <input
-            type="text"
-            className={styles.input}
-            placeholder="Masukkan nomor kartu"
-            value={cardNumber}
-            onChange={e => setCardNumber(e.target.value)}
-          />
-          <button className={styles.applyButton} onClick={handleApplyCard} disabled={!cardNumber}>
-            Terapkan
-          </button>
+        <div className={styles.summaryRow}>
+          <span className={styles.label}>Ongkir:</span>
+          <span className={styles.value}>Gratis</span>
         </div>
-      </div>
 
-      <div className={styles.breakdown}>
-        <div className={styles.row}>
-          <span className={styles.rowLabel}>Subtotal</span>
-          <span className={styles.rowValue}>{formatPrice(subtotal)}</span>
+        <div className={styles.summaryRow}>
+          <span className={styles.label}>Total:</span>
+          <span className={styles.total}>{localFormatPrice(totalAmount)}</span>
         </div>
-        <div className={styles.row}>
-          <span className={styles.rowLabel}>Pajak</span>
-          <span className={styles.rowValue}>{formatPrice(estimatedTax)}</span>
-        </div>
-        <div className={styles.row}>
-          <span className={styles.rowLabel}>Ongkos Kirim</span>
-          <span className={styles.rowValue}>{formatPrice(shippingCost)}</span>
-        </div>
-      </div>
-
-      <div className={styles.totalRow}>
-        <span className={styles.totalLabel}>Total</span>
-        <span className={styles.totalValue}>{formatPrice(total)}</span>
       </div>
 
       <button
-        className={styles.checkoutButton}
-        onClick={onCheckout}
-        disabled={isLoading || subtotal === 0}
+        className={`${styles.checkoutButton} ${isSubmitting ? styles.disabled : ''}`}
+        onClick={() => void handleCheckout()}
+        disabled={isSubmitting}
       >
-        {isLoading ? 'Memproses...' : 'Bayar Sekarang'}
+        {isSubmitting ? 'Memproses...' : 'Lanjutkan ke Pembayaran'}
       </button>
     </div>
   )

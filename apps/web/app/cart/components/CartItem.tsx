@@ -23,8 +23,8 @@ export function CartItem({
   image,
   onUpdateQuantity,
   onRemove,
-}: CartItemProps) {
-  const formatPrice = (price: number) => {
+}: CartItemProps): React.JSX.Element {
+  const formatPrice = (price: number): string => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD',
@@ -33,20 +33,20 @@ export function CartItem({
     }).format(price)
   }
 
-  const handleDecrement = () => {
+  const handleDecrement = (): void => {
     if (quantity > 1) {
       onUpdateQuantity(id, quantity - 1)
     }
   }
 
-  const handleIncrement = () => {
+  const handleIncrement = (): void => {
     onUpdateQuantity(id, quantity + 1)
   }
 
   return (
     <div className={styles.cartItem}>
       <div className={styles.imageWrapper}>
-        {image ? (
+        {image !== null ? (
           <Image src={image} alt={name} width={80} height={80} className={styles.image} />
         ) : (
           <div className={styles.placeholder}>

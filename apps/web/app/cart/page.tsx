@@ -1,99 +1,104 @@
 'use client'
 
-import { useCallback, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { useCart } from '@/hooks'
-import styles from './page.module.css'
-import { CartItem, CartSummary } from './components'
+import Link from 'next/link'
+import Image from 'next/image'
+import { useCart, useOrders } from '@/hooks'
+import { formatPrice } from '@/lib/utils'
+import { CheckoutCard, CheckoutSummary, CheckoutSkeleton } from '@repo/ui'
 
-export default function CartPage() {
+export default function CheckoutPage(): React.JSX.Element {
   const router = useRouter()
-  const { items: cartItems, loading, updateQuantity, removeItem, fetchCart } = useCart()
+  const { items: cartItems, loading: isLoading, fetchCart } = useCart()
+  const { createOrder, loading: isSubmitting, error: orderError } = useOrders()
+
+  const [error, setError] = useState('')
 
   // Fetch cart on mount
   useEffect(() => {
     void fetchCart()
   }, [fetchCart])
 
-  const handleUpdateQuantity = useCallback(
-    async (id: string, quantity: number) => {
-      await updateQuantity(id, quantity)
-    },
-    [updateQuantity]
-  )
-
-  const handleRemoveItem = useCallback(
-    async (id: string) => {
-      await removeItem(id)
-    },
-    [removeItem]
-  )
-
-  const handleCheckout = useCallback(() => {
-    if (cartItems.length === 0) {
-      alert('Keranjang masih kosong!')
-      return
+  useEffect(() => {
+    if (orderError !== null && orderError !== '') {
+      setError(orderError)
     }
-    router.push('/checkout')
-  }, [cartItems.length, router])
+  }, [orderError])
 
-  const subtotal = cartItems.reduce(
-    (sum, item) => sum + Number(item.product.price) * item.quantity,
-    0
-  )
-  const estimatedTax = Math.round(subtotal * 0.11) // PPN 11%
-  const shippingCost = cartItems.length > 0 ? 15000 : 0
+  const totalAmount = cartItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0)
 
-  if (loading) {
+  const handleCheckout = async (): Promise<void> => {
+    setError('')
+
+    try {
+      const order = await createOrder()
+      if (order !== null) {
+        // Redirect to orders page with success message
+        router.push('/orders?success=true')
+      }
+    } catch (err) {
+      console.error('Checkout error:', err)
+      setError('Terjadi kesalahan. Pastikan koneksi internet Anda stabil.')
+    }
+  }
+
+  if (isLoading) {
+    return <CheckoutSkeleton />
+  }
+
+  if (cartItems.length === 0) {
     return (
-      <div className={styles.container}>
-        <div className={styles.loading}>Memuat keranjang...</div>
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
+        <main className="max-w-4xl mx-auto px-4 py-8">
+          <div className="text-center py-20">
+            <div className="text-6xl mb-4">🛒</div>
+            <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
+              Keranjang Kosong
+            </h1>
+            <p className="text-slate-600 dark:text-slate-400 mb-6">
+              Tambahkan produk ke keranjang terlebih dahulu
+            </p>
+            <Link
+              href="/products"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors"
+            >
+              Lihat Produk
+            </Link>
+          </div>
+        </main>
       </div>
     )
   }
 
   return (
-    <div className={styles.container}>
-      <div className={styles.layout}>
-        <div className={styles.cartSection}>
-          <h1 className={styles.title}>Keranjang Belanja</h1>
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
+      <main className="max-w-4xl mx-auto px-4 py-8">
+        <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-8">Checkout</h1>
 
-          {cartItems.length === 0 ? (
-            <div className={styles.emptyCart}>
-              <p>Keranjang Anda kosong</p>
-              <a href="/products" className={styles.continueLink}>
-                Lanjut Belanja
-              </a>
-            </div>
-          ) : (
-            <div className={styles.cartItems}>
-              {cartItems.map(item => (
-                <CartItem
-                  key={item.id}
-                  id={item.id}
-                  name={item.product.name}
-                  productId={item.product.id}
-                  price={Number(item.product.price)}
-                  quantity={item.quantity}
-                  image={item.product.image}
-                  onUpdateQuantity={handleUpdateQuantity}
-                  onRemove={handleRemoveItem}
-                />
-              ))}
-            </div>
-          )}
-        </div>
+        {error !== '' && (
+          <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg text-red-600 dark:text-red-400">
+            {error}
+          </div>
+        )}
 
-        <div className={styles.summarySection}>
-          <CartSummary
-            subtotal={subtotal}
-            estimatedTax={estimatedTax}
-            shippingCost={shippingCost}
-            onCheckout={handleCheckout}
-            isLoading={loading}
-          />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Cart Items */}
+          <div className="lg:col-span-2 space-y-6">
+            <CheckoutCard items={cartItems} imageComponent={Image} formatPrice={formatPrice} />
+          </div>
+
+          {/* Order Summary */}
+          <div className="lg:col-span-1">
+            <CheckoutSummary
+              totalAmount={totalAmount}
+              isSubmitting={isSubmitting}
+              onCheckout={() => void handleCheckout()}
+              formatPrice={formatPrice}
+            />
+          </div>
         </div>
-      </div>
+      </main>
     </div>
   )
 }

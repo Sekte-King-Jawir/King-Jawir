@@ -2,19 +2,19 @@
 
 import { type JSX } from 'react'
 
-// ============================================================================
+// ===========================================================================
 // TYPES
-// ============================================================================
+// ===========================================================================
 
 export interface CheckoutAddressProps {
   shippingAddress: string
   onShippingAddressChange: (address: string) => void
-  error?: string
+  error?: string | null
 }
 
-// ============================================================================
+// ===========================================================================
 // MAIN COMPONENT
-// ============================================================================
+// ===========================================================================
 
 export function CheckoutAddress({
   shippingAddress,
@@ -43,12 +43,14 @@ export function CheckoutAddress({
               placeholder="Masukkan alamat lengkap pengiriman..."
               rows={4}
               className={`w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-700 dark:border-slate-600 dark:text-white ${
-                error
+                error !== null
                   ? 'border-red-300 focus:border-red-500'
                   : 'border-slate-300 dark:border-slate-600'
               }`}
             />
-            {error ? <p className="mt-1 text-sm text-red-600 dark:text-red-400">{error}</p> : null}
+            {error !== null ? (
+              <p className="mt-1 text-sm text-red-600 dark:text-red-400">{error}</p>
+            ) : null}
           </div>
         </div>
       </div>
