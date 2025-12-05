@@ -6,6 +6,7 @@ import { sellerAuthRoutes } from './auth'
 import { sellerStoreRoutes } from './store'
 import { sellerPriceAnalysisRoutes } from './price-analysis'
 import { sellerAIRoutes } from './ai'
+import { sellerProductRoutes } from './products'
 
 export const sellerRoutes = new Elysia({ prefix: '/api/seller' })
   .use(jwtPlugin)
@@ -18,6 +19,7 @@ export const sellerRoutes = new Elysia({ prefix: '/api/seller' })
   .use(sellerStoreRoutes)
   .use(sellerPriceAnalysisRoutes)
   .use(sellerAIRoutes)
+  .use(sellerProductRoutes)
 
   // GET /seller/dashboard - Get seller dashboard data
   .get(

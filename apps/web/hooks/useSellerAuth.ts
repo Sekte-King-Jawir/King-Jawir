@@ -87,7 +87,13 @@ export function useSellerAuth(): UseSellerAuthReturn {
       const data = (await res.json()) as MeApiResponse
 
       if (data.success && data.data !== undefined) {
-        setUser(data.data)
+        // Seller / seller-me endpoint returns { user, store }
+        // Normalize to SellerUser so hooks/components can rely on user shape
+        // If data.data already is the user object, use it directly.
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        const maybeUser = data.data.user ?? data.data
+        setUser(maybeUser)
       } else {
         setUser(null)
       }

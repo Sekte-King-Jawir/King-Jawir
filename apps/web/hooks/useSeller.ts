@@ -3,10 +3,8 @@
 import { useState, useEffect, useCallback } from 'react'
 import { API_ENDPOINTS } from '@/lib/config/api'
 import type {
-  Store,
   CreateStoreData,
   UpdateStoreData,
-  StoreApiResponse,
   SellerProduct,
   CreateProductData,
   ProductsApiResponse,
@@ -18,15 +16,12 @@ import type {
   User,
   AuthMeResponse,
 } from '@/types'
-
-type SellerStore = Store
+import type { SellerStore } from '@repo/ui'
 
 interface StoreApiResponse {
   success: boolean
   message: string
-  data?: {
-    store: SellerStore
-  }
+  data?: SellerStore
 }
 
 const API_URL = `${process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4101'}`
@@ -102,7 +97,7 @@ export function useSellerStore(): UseSellerStoreReturn {
         const storeData = (await storeRes.json()) as StoreApiResponse
 
         if (storeData.success && storeData.data !== undefined) {
-          setStore(storeData.data.store)
+          setStore(storeData.data)
         }
       }
     } catch {
@@ -132,7 +127,7 @@ export function useSellerStore(): UseSellerStoreReturn {
       const result = (await res.json()) as StoreApiResponse
 
       if (result.success && result.data !== undefined) {
-        setStore(result.data.store)
+        setStore(result.data)
         setUser(prev => (prev !== null ? { ...prev, role: 'SELLER' } : null))
         setSuccess('Toko berhasil dibuat! Anda sekarang menjadi SELLER.')
         return true
@@ -164,7 +159,7 @@ export function useSellerStore(): UseSellerStoreReturn {
       const result = (await res.json()) as StoreApiResponse
 
       if (result.success && result.data !== undefined) {
-        setStore(result.data.store)
+        setStore(result.data)
         setSuccess('Toko berhasil diperbarui!')
         return true
       } else {
@@ -243,6 +238,9 @@ export function useSellerProducts(): UseSellerProductsReturn {
       if (result.success && result.data !== undefined) {
         setProducts(result.data.products)
         setTotalPages(result.data.pagination.totalPages)
+      } else {
+        // Surface API error message when available
+        setError(result.message ?? 'Gagal memuat produk')
       }
     } catch {
       setError('Gagal memuat produk')

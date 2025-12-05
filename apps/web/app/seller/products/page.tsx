@@ -37,11 +37,9 @@ export default function SellerProductsPage(): React.JSX.Element {
     if (!authLoading) {
       if (user === null) {
         router.push('/seller/auth/login?redirect=/seller/products')
-      } else if (!isSeller) {
-        router.push(urls.seller.store)
       }
     }
-  }, [authLoading, user, isSeller, router, urls.seller.store])
+  }, [authLoading, user, router])
 
   const handleCreateProduct = async (data: CreateProductData): Promise<void> => {
     const created = await createProduct(data)
@@ -101,6 +99,21 @@ export default function SellerProductsPage(): React.JSX.Element {
     return (
       <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
         <SellerNavbar userName={user.name} urls={urls} />
+        <div className="flex">
+          <SellerSidebar urls={urls} />
+          <main className="flex-1 p-8 ml-64">
+            <NeedStoreState storeUrl={urls.seller.store} />
+          </main>
+        </div>
+      </div>
+    )
+  }
+
+  // If API reports that store is missing, show create-store state
+  if (error !== '' && error.toLowerCase().includes('toko')) {
+    return (
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
+        <SellerNavbar userName={user?.name} urls={urls} />
         <div className="flex">
           <SellerSidebar urls={urls} />
           <main className="flex-1 p-8 ml-64">
