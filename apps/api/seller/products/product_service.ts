@@ -1,9 +1,7 @@
 import { storeRepository } from '../../store/store_repository'
 import { productRepository } from '../../product/product_repository'
 import { successResponse, errorResponse, ErrorCode } from '../../lib/response'
-import { writeFile } from 'fs/promises'
-import { join } from 'path'
-import { mkdir } from 'fs/promises'
+import { uploadProductImage } from '../../lib/minio'
 
 export const sellerProductService = {
   // Get all products untuk seller (dari tokonya sendiri)
@@ -60,13 +58,7 @@ export const sellerProductService = {
     // Handle image upload if provided
     let imagePath: string | undefined
     if (data.image) {
-      const uploadDir = join(process.cwd(), 'uploads')
-      await mkdir(uploadDir, { recursive: true })
-      const filename = `${Date.now()}-${data.image.name}`
-      const filepath = join(uploadDir, filename)
-      const buffer = await data.image.arrayBuffer()
-      await writeFile(filepath, new Uint8Array(buffer))
-      imagePath = `/uploads/${filename}`
+      imagePath = await uploadProductImage(data.image, store.id)
     }
 
     // Generate slug dari name
@@ -160,13 +152,7 @@ export const sellerProductService = {
 
     // Handle image upload if provided
     if (data.image) {
-      const uploadDir = join(process.cwd(), 'uploads')
-      await mkdir(uploadDir, { recursive: true })
-      const filename = `${Date.now()}-${data.image.name}`
-      const filepath = join(uploadDir, filename)
-      const buffer = await data.image.arrayBuffer()
-      await writeFile(filepath, new Uint8Array(buffer))
-      updateData.image = `/uploads/${filename}`
+      updateData.image = await uploadProductImage(data.image, store.id)
     }
 
     const updatedProduct = await productRepository.update(productId, updateData)

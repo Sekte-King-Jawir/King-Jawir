@@ -2,6 +2,7 @@ import { Elysia, t } from 'elysia'
 import { sellerStoreController } from './store_controller'
 import { isSeller } from '../../lib/auth-helper'
 import { errorResponse, ErrorCode } from '../../lib/response'
+import { uploadToMinIO } from '../../lib/minio'
 
 // Note: jwtPlugin & authDerive sudah di-apply di parent (seller/index.ts)
 export const sellerStoreRoutes = new Elysia({ prefix: '/store' })
@@ -108,6 +109,69 @@ export const sellerStoreRoutes = new Elysia({ prefix: '/store' })
         tags: ['Seller Store'],
         summary: 'Update store profile',
         description: 'Update data toko milik seller (nama, deskripsi, logo).',
+      },
+    }
+  )
+
+  // POST /seller/store/logo/upload - Upload store logo
+  .post(
+    '/logo/upload',
+    async ({ user, body, set }: any) => {
+      if (!user) {
+        set.status = 401
+        return errorResponse('Unauthorized - Silakan login sebagai seller', ErrorCode.UNAUTHORIZED)
+      }
+      if (!isSeller(user)) {
+        set.status = 403
+        return errorResponse('Forbidden - Hanya seller yang bisa mengakses', ErrorCode.FORBIDDEN)
+      }
+
+      if (!body.logo) {
+        set.status = 400
+        return errorResponse('Logo file is required', ErrorCode.BAD_REQUEST)
+      }
+
+      // Validate file type
+      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
+      if (!allowedTypes.includes(body.logo.type)) {
+        set.status = 400
+        return errorResponse(
+          'Invalid file type. Only JPEG, PNG, and WebP are allowed',
+          ErrorCode.BAD_REQUEST
+        )
+      }
+
+      // Validate file size (max 5MB)
+      const maxSize = 5 * 1024 * 1024 // 5MB in bytes
+      if (body.logo.size > maxSize) {
+        set.status = 400
+        return errorResponse('File size exceeds 5MB limit', ErrorCode.BAD_REQUEST)
+      }
+
+      try {
+        // Upload to MinIO
+        const logoUrl = await uploadToMinIO(body.logo, `stores/${user.id}`)
+
+        // Update store with new logo URL
+        const result = await sellerStoreController.updateStore(user.id, { logo: logoUrl })
+
+        return result
+      } catch (error) {
+        set.status = 500
+        return errorResponse('Failed to upload logo', ErrorCode.INTERNAL_ERROR)
+      }
+    },
+    {
+      body: t.Object({
+        logo: t.File({
+          type: ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'],
+          maxSize: 5 * 1024 * 1024, // 5MB
+        }),
+      }),
+      detail: {
+        tags: ['Seller Store'],
+        summary: 'Upload store logo',
+        description: 'Upload store logo image file directly to MinIO storage',
       },
     }
   )

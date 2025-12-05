@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import type { SellerStats } from '@/types'
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4101'
+
 export function useSellerDashboard() {
   const [stats, setStats] = useState<SellerStats>({
     totalRevenue: 0,
@@ -21,7 +23,7 @@ export function useSellerDashboard() {
     setError('')
 
     try {
-      const res = await fetch('/api/seller/dashboard', {
+      const res = await fetch(`${API_URL}/api/seller/dashboard`, {
         credentials: 'include',
       })
 

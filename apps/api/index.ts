@@ -1,7 +1,6 @@
 import { Elysia } from 'elysia'
 import { cors } from '@elysiajs/cors'
 import { swagger } from '@elysiajs/swagger'
-import { staticPlugin } from '@elysiajs/static'
 import { rateLimit } from 'elysia-rate-limit'
 import { authRoutes } from './auth'
 import { storeRoutes, publicStoreRoutes } from './store'
@@ -16,6 +15,12 @@ import { priceAnalysisRoutes } from './price-analysis'
 import { priceAnalysisWebSocket } from './price-analysis/websocket'
 import { sellerRoutes } from './seller'
 import { logger } from './lib/logger'
+import { initMinIO } from './lib/minio'
+
+// Initialize MinIO on startup
+await initMinIO().catch((error) => {
+  logger.warn('⚠️ MinIO initialization failed, continuing without it:', error)
+})
 
 const app = new Elysia()
   .onRequest(({ request }) => {
@@ -83,7 +88,6 @@ const app = new Elysia()
       allowedHeaders: ['Content-Type', 'Authorization', 'Cookie', 'X-Requested-With'],
     })
   )
-  .use(staticPlugin({ assets: 'uploads', prefix: '/uploads' }))
   .use(
     swagger({
       path: '/docs',

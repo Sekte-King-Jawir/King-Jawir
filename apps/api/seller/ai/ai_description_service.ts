@@ -21,7 +21,7 @@ export const aiDescriptionService = {
     input: GenerateDescriptionInput
   ): Promise<ApiResponse<GenerateDescriptionOutput>> {
     try {
-      const { productName, category, specs, targetMarket = 'general', currentDescription } = input
+      const { productName } = input
 
       // Validation
       if (!productName || productName.trim().length < 3) {
@@ -32,17 +32,17 @@ export const aiDescriptionService = {
       const prompt = this.buildDescriptionPrompt(input)
 
       // Generate dengan AI
-      const aiResponse = await generateCompletion(prompt, {
+      const completionResult = await generateCompletion(prompt, {
         temperature: 0.7,
         maxTokens: 1000,
       })
 
-      if (!aiResponse) {
+      if (!completionResult || !completionResult.text) {
         return errorResponse('Gagal generate deskripsi dengan AI', ErrorCode.INTERNAL_ERROR)
       }
 
       // Parse AI response
-      const parsed = this.parseAIResponse(aiResponse)
+      const parsed = this.parseAIResponse(completionResult.text)
 
       if (!parsed) {
         return errorResponse(
@@ -154,16 +154,16 @@ Berikan versi yang lebih baik. Output dalam format JSON:
   "improvedDescription": "..."
 }`
 
-      const aiResponse = await generateCompletion(prompt, {
+      const completionResult = await generateCompletion(prompt, {
         temperature: 0.6,
         maxTokens: 800,
       })
 
-      if (!aiResponse) {
+      if (!completionResult || !completionResult.text) {
         return errorResponse('Gagal improve deskripsi', ErrorCode.INTERNAL_ERROR)
       }
 
-      const jsonMatch = aiResponse.match(/\{[\s\S]*\}/)
+      const jsonMatch = completionResult.text.match(/\{[\s\S]*\}/)
       if (!jsonMatch) {
         return errorResponse('Format response tidak valid', ErrorCode.INTERNAL_ERROR)
       }
