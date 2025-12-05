@@ -11,7 +11,7 @@ export function AvatarSection({ profile }: AvatarSectionProps): React.JSX.Elemen
     <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-6">
       <div className="flex items-center gap-4">
         <div className="w-20 h-20 bg-slate-200 dark:bg-slate-700 rounded-full flex items-center justify-center text-2xl">
-          {profile.avatar ? (
+          {profile.avatar != null && profile.avatar.length > 0 ? (
             <img
               src={profile.avatar}
               alt={profile.name}

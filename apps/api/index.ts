@@ -13,6 +13,7 @@ import { reviewRoutes, productReviewsRoute } from './review'
 import { adminRoutes } from './admin'
 import { priceAnalysisRoutes } from './price-analysis'
 import { priceAnalysisWebSocket } from './price-analysis/websocket'
+import { sellerRoutes } from './seller'
 import { logger } from './lib/logger'
 
 const app = new Elysia()
@@ -101,6 +102,7 @@ const app = new Elysia()
           { name: 'Reviews', description: 'Product reviews' },
           { name: 'Admin', description: 'Admin management' },
           { name: 'Price Analysis', description: 'AI-powered price analysis from Tokopedia' },
+          { name: 'Seller', description: 'Seller dashboard and analytics' },
         ],
         components: {
           securitySchemes: {
@@ -133,6 +135,7 @@ const app = new Elysia()
   .use(adminRoutes)
   .use(priceAnalysisRoutes)
   .use(priceAnalysisWebSocket)
+  .use(sellerRoutes)
   .get('/api', () => ({ message: 'Marketplace API' }), {
     detail: {
       tags: ['General'],

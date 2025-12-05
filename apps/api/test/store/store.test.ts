@@ -78,7 +78,7 @@ describe('Store Service', () => {
       const result = await storeService.getMyStore('user-123')
 
       expect(result.success).toBe(true)
-      expect(result.data?.store?.name).toBe('Test Store')
+      expect((result.data as { store: { name: string } })?.store?.name).toBe('Test Store')
       expect(storeRepository.findByUserId).toHaveBeenCalledWith('user-123')
     })
 
@@ -102,7 +102,7 @@ describe('Store Service', () => {
       const result = await storeService.getBySlug('test-store')
 
       expect(result.success).toBe(true)
-      expect(result.data?.store?.slug).toBe('test-store')
+      expect((result.data as { store: { slug: string } })?.store?.slug).toBe('test-store')
       expect(storeRepository.findBySlug).toHaveBeenCalledWith('test-store')
     })
 
@@ -131,7 +131,7 @@ describe('Store Service', () => {
       const result = await storeService.create('user-123', createData)
 
       expect(result.success).toBe(true)
-      expect(result.data?.store?.name).toBe('New Store')
+      expect((result.data as { store: { name: string } })?.store?.name).toBe('New Store')
     })
 
     it('should return error if user already has store', async () => {
@@ -192,7 +192,7 @@ describe('Store Service', () => {
       const result = await storeService.update('user-123', updateData)
 
       expect(result.success).toBe(true)
-      expect(result.data?.store?.name).toBe('Updated Store')
+      expect((result.data as { store: { name: string } })?.store?.name).toBe('Updated Store')
       expect(storeRepository.update).toHaveBeenCalledWith('store-123', updateData)
     })
 

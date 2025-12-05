@@ -9,8 +9,5 @@ export { useProducts } from './useProducts'
 export { useOrders } from './useOrders'
 export { useCategories } from './useCategories'
 export { usePriceAnalysis } from './usePriceAnalysis'
-export { useSellerDashboard, useSellerAuth } from './useSellerDashboard'
+export { useSellerDashboard } from './useSellerDashboard'
 export { useSellerUrls, useSellerStore, useSellerProducts, useSellerOrders } from './useSeller'
-
-// Re-export seller types from @/types
-export type { SellerStats, SellerOrder, SellerProduct } from '@/types'

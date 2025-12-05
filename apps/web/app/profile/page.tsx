@@ -22,7 +22,7 @@ export default function ProfilePage(): React.JSX.Element {
   useEffect(() => {
     async function loadProfile(): Promise<void> {
       const authenticated = await checkAuth()
-      if (!authenticated) {
+      if (authenticated === null) {
         router.push('/auth/login')
       }
       setIsLoading(false)
@@ -35,12 +35,17 @@ export default function ProfilePage(): React.JSX.Element {
     setTimeout(() => setSuccessMessage(''), 5000)
   }
 
-  const handleUpdateProfile = async (data: UpdateProfileData): Promise<void> => {
+  const handleUpdateProfile = async (formData: UpdateProfileData): Promise<void> => {
     setIsUpdatingProfile(true)
     setError('')
 
     try {
-      const response = await profileService.update(data)
+      // Map UpdateProfileData to UpdateProfileRequest
+      const updateData = {
+        name: (formData as { name?: string; phone?: string }).name,
+        phone: (formData as { name?: string; phone?: string }).phone,
+      }
+      const response = await profileService.update(updateData)
       if (response.success) {
         await checkAuth() // Refresh user data
         showSuccess('Profil berhasil diperbarui')
@@ -54,8 +59,9 @@ export default function ProfilePage(): React.JSX.Element {
     }
   }
 
-  const handleChangePassword = async (data: ChangePasswordData): Promise<void> => {
-    if (data.newPassword !== data.confirmPassword) {
+  const handleChangePassword = async (formData: ChangePasswordData): Promise<void> => {
+    const pwdData = formData as { currentPassword: string; newPassword: string; confirmPassword: string }
+    if (pwdData.newPassword !== pwdData.confirmPassword) {
       setError('Password baru tidak cocok')
       return
     }
@@ -64,7 +70,7 @@ export default function ProfilePage(): React.JSX.Element {
     setError('')
 
     try {
-      const response = await authService.changePassword(data.currentPassword, data.newPassword)
+      const response = await authService.changePassword(pwdData.currentPassword, pwdData.newPassword)
 
       if (response.success) {
         showSuccess('Password berhasil diubah')
@@ -98,7 +104,7 @@ export default function ProfilePage(): React.JSX.Element {
     )
   }
 
-  if (!user) {
+  if (user === null) {
     return (
       <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
         <main className="max-w-2xl mx-auto px-4 py-8 text-center">
@@ -133,11 +139,11 @@ export default function ProfilePage(): React.JSX.Element {
         )}
 
         <div className="space-y-6">
-          <AvatarSection profile={profile as any} />
+          <AvatarSection profile={profile} />
 
           {/* Profile Form */}
           <ProfileForm
-            profile={profile as any}
+            profile={profile}
             onSubmit={handleUpdateProfile}
             isSubmitting={isUpdatingProfile}
           />
@@ -170,7 +176,7 @@ export default function ProfilePage(): React.JSX.Element {
               <div>
                 <p className="text-sm text-slate-500 dark:text-slate-400">Bergabung</p>
                 <p className="text-slate-900 dark:text-white">
-                  {profile.createdAt
+                  {profile.createdAt !== ''
                     ? new Date(profile.createdAt).toLocaleDateString('id-ID', {
                         day: 'numeric',
                         month: 'long',
