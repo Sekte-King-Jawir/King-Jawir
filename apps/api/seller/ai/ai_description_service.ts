@@ -54,10 +54,7 @@ export const aiDescriptionService = {
       return successResponse('Deskripsi berhasil di-generate', parsed)
     } catch (error) {
       console.error('Error generating description:', error)
-      return errorResponse(
-        'Terjadi kesalahan saat generate deskripsi',
-        ErrorCode.INTERNAL_ERROR
-      )
+      return errorResponse('Terjadi kesalahan saat generate deskripsi', ErrorCode.INTERNAL_ERROR)
     }
   },
 

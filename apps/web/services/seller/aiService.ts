@@ -72,13 +72,10 @@ class AIService {
   async generateDescription(
     input: GenerateDescriptionInput
   ): Promise<ApiResponse<DescriptionOutput>> {
-    return this.fetchWithAuth<DescriptionOutput>(
-      API_ENDPOINTS.SELLER.AI.GENERATE_DESCRIPTION,
-      {
-        method: 'POST',
-        body: JSON.stringify(input),
-      }
-    )
+    return this.fetchWithAuth<DescriptionOutput>(API_ENDPOINTS.SELLER.AI.GENERATE_DESCRIPTION, {
+      method: 'POST',
+      body: JSON.stringify(input),
+    })
   }
 
   /**
@@ -87,22 +84,17 @@ class AIService {
   async improveDescription(
     input: ImproveDescriptionInput
   ): Promise<ApiResponse<DescriptionOutput>> {
-    return this.fetchWithAuth<DescriptionOutput>(
-      API_ENDPOINTS.SELLER.AI.IMPROVE_DESCRIPTION,
-      {
-        method: 'POST',
-        body: JSON.stringify(input),
-      }
-    )
+    return this.fetchWithAuth<DescriptionOutput>(API_ENDPOINTS.SELLER.AI.IMPROVE_DESCRIPTION, {
+      method: 'POST',
+      body: JSON.stringify(input),
+    })
   }
 
   /**
    * Get copywriting tips (no AI cost)
    */
   async getDescriptionTips(): Promise<ApiResponse<DescriptionTip[]>> {
-    return this.fetchWithAuth<DescriptionTip[]>(
-      API_ENDPOINTS.SELLER.AI.DESCRIPTION_TIPS
-    )
+    return this.fetchWithAuth<DescriptionTip[]>(API_ENDPOINTS.SELLER.AI.DESCRIPTION_TIPS)
   }
 }
 

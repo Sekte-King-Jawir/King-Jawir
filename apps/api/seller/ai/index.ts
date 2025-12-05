@@ -13,10 +13,7 @@ export const sellerAIRoutes = new Elysia({ prefix: '/api/seller/ai' })
       // Auth check
       if (!user) {
         set.status = 401
-        return errorResponse(
-          'Unauthorized - Silakan login sebagai seller',
-          ErrorCode.UNAUTHORIZED
-        )
+        return errorResponse('Unauthorized - Silakan login sebagai seller', ErrorCode.UNAUTHORIZED)
       }
       if (!isSeller(user)) {
         set.status = 403
@@ -57,10 +54,7 @@ export const sellerAIRoutes = new Elysia({ prefix: '/api/seller/ai' })
       // Auth check
       if (!user) {
         set.status = 401
-        return errorResponse(
-          'Unauthorized - Silakan login sebagai seller',
-          ErrorCode.UNAUTHORIZED
-        )
+        return errorResponse('Unauthorized - Silakan login sebagai seller', ErrorCode.UNAUTHORIZED)
       }
       if (!isSeller(user)) {
         set.status = 403
@@ -101,10 +95,7 @@ export const sellerAIRoutes = new Elysia({ prefix: '/api/seller/ai' })
       // Auth check
       if (!user) {
         set.status = 401
-        return errorResponse(
-          'Unauthorized - Silakan login sebagai seller',
-          ErrorCode.UNAUTHORIZED
-        )
+        return errorResponse('Unauthorized - Silakan login sebagai seller', ErrorCode.UNAUTHORIZED)
       }
       if (!isSeller(user)) {
         set.status = 403
@@ -123,8 +114,7 @@ export const sellerAIRoutes = new Elysia({ prefix: '/api/seller/ai' })
             },
             {
               title: '📝 Gunakan Storytelling',
-              description:
-                'Ceritakan bagaimana produk ini menyelesaikan masalah customer.',
+              description: 'Ceritakan bagaimana produk ini menyelesaikan masalah customer.',
               example:
                 'Bosan nasi bungkus biasa? Cobain nasi kotak premium kami dengan lauk homemade...',
             },
@@ -160,13 +150,7 @@ export const sellerAIRoutes = new Elysia({ prefix: '/api/seller/ai' })
             },
             budget: {
               tone: 'Friendly, value-focused, relatable',
-              keywords: [
-                'terjangkau',
-                'hemat',
-                'value for money',
-                'berkualitas',
-                'ekonomis',
-              ],
+              keywords: ['terjangkau', 'hemat', 'value for money', 'berkualitas', 'ekonomis'],
               highlight: 'Harga kompetitif + kualitas yang tetap baik',
             },
             general: {

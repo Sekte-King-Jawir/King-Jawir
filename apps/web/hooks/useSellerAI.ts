@@ -62,8 +62,7 @@ export function useSellerAI(): UseSellerAIReturn {
         throw new Error(response.message || 'Gagal generate deskripsi')
       }
     } catch (error) {
-      const message =
-        error instanceof Error ? error.message : 'Terjadi kesalahan'
+      const message = error instanceof Error ? error.message : 'Terjadi kesalahan'
       setGenerateError(message)
       console.error('Generate description error:', error)
     } finally {
@@ -85,8 +84,7 @@ export function useSellerAI(): UseSellerAIReturn {
         throw new Error(response.message || 'Gagal improve deskripsi')
       }
     } catch (error) {
-      const message =
-        error instanceof Error ? error.message : 'Terjadi kesalahan'
+      const message = error instanceof Error ? error.message : 'Terjadi kesalahan'
       setImproveError(message)
       console.error('Improve description error:', error)
     } finally {
@@ -107,8 +105,7 @@ export function useSellerAI(): UseSellerAIReturn {
         throw new Error(response.message || 'Gagal load tips')
       }
     } catch (error) {
-      const message =
-        error instanceof Error ? error.message : 'Terjadi kesalahan'
+      const message = error instanceof Error ? error.message : 'Terjadi kesalahan'
       setTipsError(message)
       console.error('Load tips error:', error)
     } finally {
