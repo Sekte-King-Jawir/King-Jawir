@@ -58,7 +58,12 @@ export const sellerAuthRoutes = new Elysia({ prefix: '/api/seller/auth' })
   .post(
     '/login',
     async ({ body, set, jwtAccess, jwtRefresh, cookie }) => {
-      const result = await sellerLoginController.handle(body.email, body.password, jwtAccess, jwtRefresh)
+      const result = await sellerLoginController.handle(
+        body.email,
+        body.password,
+        jwtAccess,
+        jwtRefresh
+      )
 
       if (!result.success) {
         set.status = 400
@@ -94,7 +99,8 @@ export const sellerAuthRoutes = new Elysia({ prefix: '/api/seller/auth' })
       detail: {
         tags: ['Seller Auth'],
         summary: 'Login seller',
-        description: 'Login untuk seller. Hanya akun dengan role SELLER atau ADMIN yang bisa login.',
+        description:
+          'Login untuk seller. Hanya akun dengan role SELLER atau ADMIN yang bisa login.',
       },
     }
   )

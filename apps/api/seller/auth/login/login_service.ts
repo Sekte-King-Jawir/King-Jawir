@@ -13,12 +13,18 @@ export const sellerLoginService = {
 
     // Validasi role - harus SELLER atau ADMIN
     if (user.role !== 'SELLER' && user.role !== 'ADMIN') {
-      return errorResponse('Akses ditolak. Hanya seller yang bisa login di sini.', ErrorCode.FORBIDDEN)
+      return errorResponse(
+        'Akses ditolak. Hanya seller yang bisa login di sini.',
+        ErrorCode.FORBIDDEN
+      )
     }
 
     // Cek password
     if (!user.password) {
-      return errorResponse('Akun ini menggunakan Google OAuth. Gunakan login Google.', ErrorCode.BAD_REQUEST)
+      return errorResponse(
+        'Akun ini menggunakan Google OAuth. Gunakan login Google.',
+        ErrorCode.BAD_REQUEST
+      )
     }
 
     const validPassword = await verifyPassword(password, user.password)
@@ -28,7 +34,10 @@ export const sellerLoginService = {
 
     // Cek email verified
     if (!user.emailVerified) {
-      return errorResponse('Email belum diverifikasi. Cek email untuk verifikasi.', ErrorCode.EMAIL_NOT_VERIFIED)
+      return errorResponse(
+        'Email belum diverifikasi. Cek email untuk verifikasi.',
+        ErrorCode.EMAIL_NOT_VERIFIED
+      )
     }
 
     // Generate tokens

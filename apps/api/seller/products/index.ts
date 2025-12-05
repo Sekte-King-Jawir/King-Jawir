@@ -104,7 +104,7 @@ export const sellerProductRoutes = new Elysia({ prefix: '/api/seller/products' }
         description: t.Optional(t.String({ maxLength: 2000 })),
         price: t.Number({ minimum: 0 }),
         stock: t.Integer({ minimum: 0 }),
-        image: t.Optional(t.String()),
+        image: t.Optional(t.File()), // Changed to File for local upload
       }),
       detail: {
         tags: ['Seller Products'],
@@ -145,7 +145,7 @@ export const sellerProductRoutes = new Elysia({ prefix: '/api/seller/products' }
         description: t.Optional(t.String({ maxLength: 2000 })),
         price: t.Optional(t.Number({ minimum: 0 })),
         stock: t.Optional(t.Integer({ minimum: 0 })),
-        image: t.Optional(t.String()),
+        image: t.Optional(t.File()), // Changed to File for local upload
       }),
       detail: {
         tags: ['Seller Products'],

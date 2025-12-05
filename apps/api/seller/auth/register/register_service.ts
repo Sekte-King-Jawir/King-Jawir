@@ -7,7 +7,13 @@ import { successResponse, errorResponse, ErrorCode } from '../../../lib/response
 import { randomBytes } from 'crypto'
 
 export const sellerRegisterService = {
-  async register(email: string, password: string, name: string, storeName: string, storeDescription?: string) {
+  async register(
+    email: string,
+    password: string,
+    name: string,
+    storeName: string,
+    storeDescription?: string
+  ) {
     // Validasi input
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRegex.test(email)) {
@@ -41,7 +47,10 @@ export const sellerRegisterService = {
     // Cek store slug sudah ada
     const storeExists = await storeRepository.findBySlug(slug)
     if (storeExists) {
-      return errorResponse('Nama toko sudah digunakan, silakan gunakan nama lain', ErrorCode.VALIDATION_ERROR)
+      return errorResponse(
+        'Nama toko sudah digunakan, silakan gunakan nama lain',
+        ErrorCode.VALIDATION_ERROR
+      )
     }
 
     // Hash password & buat user dengan role SELLER

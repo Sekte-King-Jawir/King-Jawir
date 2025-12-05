@@ -7,6 +7,7 @@ Modul terpisah untuk seller dengan authentication dan product management yang in
 ## Overview
 
 Seller CMS menyediakan sistem lengkap untuk seller mengelola toko dan produk mereka:
+
 - **Authentication terpisah** dari customer (register, login, logout, refresh)
 - **Product Management** (CRUD) untuk produk toko seller
 - **Store Management** untuk update profile toko
@@ -21,11 +22,13 @@ Seller CMS menyediakan sistem lengkap untuk seller mengelola toko dan produk mer
 ### Seller Authentication (`/api/seller/auth/*`)
 
 #### 1. Register Seller
+
 **POST** `/api/seller/auth/register`
 
 Register akun seller baru beserta toko.
 
 **Request Body:**
+
 ```json
 {
   "email": "seller@example.com",
@@ -37,6 +40,7 @@ Register akun seller baru beserta toko.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -60,6 +64,7 @@ Register akun seller baru beserta toko.
 ```
 
 **Features:**
+
 - Otomatis set role sebagai `SELLER`
 - Buat toko sekaligus dengan slug auto-generated
 - Kirim email verifikasi
@@ -68,11 +73,13 @@ Register akun seller baru beserta toko.
 ---
 
 #### 2. Login Seller
+
 **POST** `/api/seller/auth/login`
 
 Login khusus untuk seller dan admin.
 
 **Request Body:**
+
 ```json
 {
   "email": "seller@example.com",
@@ -81,6 +88,7 @@ Login khusus untuk seller dan admin.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -99,6 +107,7 @@ Login khusus untuk seller dan admin.
 ```
 
 **Notes:**
+
 - Hanya user dengan role `SELLER` atau `ADMIN` yang bisa login
 - Customer tidak bisa login di endpoint ini
 - Tokens disimpan di httpOnly cookies
@@ -106,11 +115,13 @@ Login khusus untuk seller dan admin.
 ---
 
 #### 3. Logout Seller
+
 **POST** `/api/seller/auth/logout`
 
 Logout dan hapus refresh token.
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -121,11 +132,13 @@ Logout dan hapus refresh token.
 ---
 
 #### 4. Refresh Token
+
 **POST** `/api/seller/auth/refresh`
 
 Refresh access token menggunakan refresh token.
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -140,11 +153,13 @@ Refresh access token menggunakan refresh token.
 ---
 
 #### 5. Get Seller Profile
+
 **GET** `/api/seller/auth/me`
 
 **Headers:** `Authorization: Bearer <accessToken>` atau cookie
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -174,11 +189,13 @@ Refresh access token menggunakan refresh token.
 Semua endpoint memerlukan authentication dan role `SELLER` atau `ADMIN`.
 
 #### 1. List Products
+
 **GET** `/api/seller/products?page=1&limit=20`
 
 Mendapatkan semua produk dari toko seller yang login.
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -210,11 +227,13 @@ Mendapatkan semua produk dari toko seller yang login.
 ---
 
 #### 2. Get Product by ID
+
 **GET** `/api/seller/products/:id`
 
 Mendapatkan detail produk milik seller.
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -236,11 +255,13 @@ Mendapatkan detail produk milik seller.
 ---
 
 #### 3. Create Product
+
 **POST** `/api/seller/products`
 
 Membuat produk baru untuk toko seller.
 
 **Request Body:**
+
 ```json
 {
   "categoryId": "cat_123",
@@ -253,6 +274,7 @@ Membuat produk baru untuk toko seller.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -268,6 +290,7 @@ Membuat produk baru untuk toko seller.
 ```
 
 **Features:**
+
 - Auto-generate slug dari name
 - Jika slug sudah ada, tambahkan random suffix
 - Validasi seller harus punya toko
@@ -275,11 +298,13 @@ Membuat produk baru untuk toko seller.
 ---
 
 #### 4. Update Product
+
 **PUT** `/api/seller/products/:id`
 
 Update produk milik seller.
 
 **Request Body (semua optional):**
+
 ```json
 {
   "categoryId": "cat_123",
@@ -292,6 +317,7 @@ Update produk milik seller.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -306,6 +332,7 @@ Update produk milik seller.
 ```
 
 **Features:**
+
 - Validasi ownership: hanya bisa update produk milik sendiri
 - Jika name berubah, slug di-regenerate
 - Partial update (kirim field yang ingin diubah saja)
@@ -313,11 +340,13 @@ Update produk milik seller.
 ---
 
 #### 5. Delete Product
+
 **DELETE** `/api/seller/products/:id`
 
 Hapus produk milik seller.
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -327,6 +356,7 @@ Hapus produk milik seller.
 ```
 
 **Features:**
+
 - Validasi ownership: hanya bisa hapus produk milik sendiri
 
 ---
@@ -334,9 +364,11 @@ Hapus produk milik seller.
 ### Seller Store Management (`/api/seller/store`)
 
 #### 1. Get Store Profile
+
 **GET** `/api/seller/store`
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -355,9 +387,11 @@ Hapus produk milik seller.
 ---
 
 #### 2. Update Store Profile
+
 **PUT** `/api/seller/store`
 
 **Request Body (semua optional):**
+
 ```json
 {
   "name": "Toko John Updated",
@@ -367,6 +401,7 @@ Hapus produk milik seller.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -632,10 +667,12 @@ seller/
 ## Authorization
 
 Semua seller endpoints (kecuali register & login) memerlukan:
+
 1. Valid JWT access token (via header atau cookie)
 2. Role `SELLER` atau `ADMIN`
 
 Contoh request dengan Bearer token:
+
 ```bash
 curl -X GET http://localhost:4101/api/seller/products \
   -H "Authorization: Bearer YOUR_ACCESS_TOKEN"
@@ -646,6 +683,7 @@ Atau dengan cookie (otomatis jika login via browser).
 ## Error Responses
 
 ### 401 Unauthorized
+
 ```json
 {
   "success": false,
@@ -655,6 +693,7 @@ Atau dengan cookie (otomatis jika login via browser).
 ```
 
 ### 403 Forbidden
+
 ```json
 {
   "success": false,
@@ -664,6 +703,7 @@ Atau dengan cookie (otomatis jika login via browser).
 ```
 
 ### 404 Not Found
+
 ```json
 {
   "success": false,
@@ -673,6 +713,7 @@ Atau dengan cookie (otomatis jika login via browser).
 ```
 
 ### 400 Validation Error
+
 ```json
 {
   "success": false,
@@ -683,18 +724,19 @@ Atau dengan cookie (otomatis jika login via browser).
 
 ## Perbedaan dengan Customer
 
-| Aspek | Customer | Seller |
-|-------|----------|--------|
-| **Auth Endpoint** | `/api/auth/*` | `/api/seller/auth/*` |
-| **Register** | Hanya buat user | User + Store sekaligus |
-| **Login** | Role: CUSTOMER | Role: SELLER/ADMIN only |
-| **Product Access** | View/search only | Full CRUD untuk produk miliknya |
-| **Store Management** | - | Update store profile |
-| **Dashboard** | - | Analytics & statistics |
+| Aspek                | Customer         | Seller                          |
+| -------------------- | ---------------- | ------------------------------- |
+| **Auth Endpoint**    | `/api/auth/*`    | `/api/seller/auth/*`            |
+| **Register**         | Hanya buat user  | User + Store sekaligus          |
+| **Login**            | Role: CUSTOMER   | Role: SELLER/ADMIN only         |
+| **Product Access**   | View/search only | Full CRUD untuk produk miliknya |
+| **Store Management** | -                | Update store profile            |
+| **Dashboard**        | -                | Analytics & statistics          |
 
 ## Testing
 
 ### 1. Register Seller
+
 ```bash
 curl -X POST http://localhost:4101/api/seller/auth/register \
   -H "Content-Type: application/json" \
@@ -707,6 +749,7 @@ curl -X POST http://localhost:4101/api/seller/auth/register \
 ```
 
 ### 2. Login Seller
+
 ```bash
 curl -X POST http://localhost:4101/api/seller/auth/login \
   -H "Content-Type: application/json" \
