@@ -2,8 +2,14 @@ import { Elysia, t } from 'elysia'
 import { sellerController } from './seller_controller'
 import { jwtPlugin, authDerive, isSeller } from '../lib/auth-helper'
 import { errorResponse, ErrorCode } from '../lib/response'
+import { sellerAuthRoutes } from './auth'
+import { sellerProductRoutes } from './products'
+import { sellerStoreRoutes } from './store'
 
 export const sellerRoutes = new Elysia({ prefix: '/api/seller' })
+  .use(sellerAuthRoutes)
+  .use(sellerProductRoutes)
+  .use(sellerStoreRoutes)
   .use(jwtPlugin)
   .derive(authDerive)
 
