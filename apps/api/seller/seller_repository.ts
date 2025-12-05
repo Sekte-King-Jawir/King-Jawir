@@ -154,7 +154,7 @@ export const sellerRepository = {
           JOIN \`Order\` o ON oi.orderId = o.id
           WHERE oi.productId = ${product.id} AND o.status = 'DONE'
         `
-        
+
         return {
           ...product,
           revenue: (revenueResult as any)[0]?.revenue || 0,
@@ -239,7 +239,7 @@ export const sellerRepository = {
           JOIN \`Order\` o ON oi.orderId = o.id
           WHERE oi.productId = ${product.id} AND o.status = 'DONE'
         `
-        
+
         return {
           ...product,
           revenue: (revenueResult as any)[0]?.revenue || 0,

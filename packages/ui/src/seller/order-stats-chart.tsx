@@ -49,7 +49,7 @@ export function OrderStatsChart({ stats }: OrderStatsChartProps): React.JSX.Elem
           {/* Progress Bar */}
           <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden flex mb-4">
             {items.map(
-              (item) =>
+              item =>
                 item.percentage > 0 && (
                   <div
                     key={item.label}
@@ -62,7 +62,7 @@ export function OrderStatsChart({ stats }: OrderStatsChartProps): React.JSX.Elem
 
           {/* Legend */}
           <div className="space-y-2">
-            {items.map((item) => (
+            {items.map(item => (
               <div key={item.label} className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <div className={`w-3 h-3 rounded-full ${item.color}`} />

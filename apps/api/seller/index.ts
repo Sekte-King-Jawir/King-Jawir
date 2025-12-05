@@ -63,9 +63,7 @@ export const sellerRoutes = new Elysia({ prefix: '/api/seller' })
     },
     {
       query: t.Object({
-        period: t.Optional(
-          t.Union([t.Literal('day'), t.Literal('week'), t.Literal('month')])
-        ),
+        period: t.Optional(t.Union([t.Literal('day'), t.Literal('week'), t.Literal('month')])),
       }),
       detail: {
         tags: ['Seller'],

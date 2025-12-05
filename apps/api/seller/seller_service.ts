@@ -20,7 +20,7 @@ export const sellerService = {
         cancelledOrders,
         totalRevenue,
         recentOrders,
-        topProducts
+        topProducts,
       ] = await Promise.all([
         sellerRepository.getProductCount(store.id),
         sellerRepository.getOrderCount(store.id),
@@ -29,7 +29,7 @@ export const sellerService = {
         sellerRepository.getCancelledOrderCount(store.id),
         sellerRepository.getTotalRevenue(store.id),
         sellerRepository.getRecentOrders(store.id, 5),
-        sellerRepository.getTopProducts(store.id, 5)
+        sellerRepository.getTopProducts(store.id, 5),
       ])
 
       return successResponse('Dashboard data retrieved', {
@@ -90,7 +90,7 @@ export const sellerService = {
       const [revenueData, orderData, productPerformance] = await Promise.all([
         sellerRepository.getRevenueByPeriod(store.id, startDate, endDate),
         sellerRepository.getOrdersByPeriod(store.id, startDate, endDate),
-        sellerRepository.getProductPerformance(store.id)
+        sellerRepository.getProductPerformance(store.id),
       ])
 
       return successResponse('Analytics data retrieved', {
@@ -102,7 +102,7 @@ export const sellerService = {
           name: product.name,
           sales: product._count.orders,
           revenue: Number(product.revenue),
-        }))
+        })),
       })
     } catch (error) {
       console.error('Error getting analytics data:', error)

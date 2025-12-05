@@ -60,7 +60,11 @@ export default function ProfilePage(): React.JSX.Element {
   }
 
   const handleChangePassword = async (formData: ChangePasswordData): Promise<void> => {
-    const pwdData = formData as { currentPassword: string; newPassword: string; confirmPassword: string }
+    const pwdData = formData as {
+      currentPassword: string
+      newPassword: string
+      confirmPassword: string
+    }
     if (pwdData.newPassword !== pwdData.confirmPassword) {
       setError('Password baru tidak cocok')
       return
@@ -70,7 +74,10 @@ export default function ProfilePage(): React.JSX.Element {
     setError('')
 
     try {
-      const response = await authService.changePassword(pwdData.currentPassword, pwdData.newPassword)
+      const response = await authService.changePassword(
+        pwdData.currentPassword,
+        pwdData.newPassword
+      )
 
       if (response.success) {
         showSuccess('Password berhasil diubah')
