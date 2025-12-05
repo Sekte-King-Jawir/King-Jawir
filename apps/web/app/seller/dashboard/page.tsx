@@ -1,9 +1,9 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { useSellerDashboard, useSellerUrls } from '@/hooks'
+import { useSellerDashboard, useSellerUrls, useSellerAuth } from '@/hooks'
 import {
   SellerNavbar,
   SellerSidebar,
@@ -21,7 +21,7 @@ export default function SellerDashboardPage(): React.JSX.Element {
   // Redirect if not seller
   useEffect(() => {
     if (!authLoading && user === null) {
-      router.push('/auth/login?redirect=/seller')
+      router.push('/seller/auth/login?redirect=/seller/dashboard')
     } else if (!authLoading && !isSeller) {
       router.push('/seller/store')
     }
@@ -191,35 +191,4 @@ export default function SellerDashboardPage(): React.JSX.Element {
       </div>
     </div>
   )
-}
-
-function useSellerAuth() {
-  const [user, setUser] = useState<any>(null)
-  const [isLoading, setIsLoading] = useState(true)
-  const [isSeller, setIsSeller] = useState(false)
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const res = await fetch('/api/auth/me', {
-          credentials: 'include',
-        })
-        if (res.ok) {
-          const data = await res.json()
-          if (data.success) {
-            setUser(data.data.user)
-            setIsSeller(data.data.user.role === 'SELLER' || data.data.user.role === 'ADMIN')
-          }
-        }
-      } catch (error) {
-        console.error('Error fetching user:', error)
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
-    void fetchUser()
-  }, [])
-
-  return { user, isLoading, isSeller }
 }

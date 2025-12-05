@@ -80,4 +80,20 @@ export const API_ENDPOINTS = {
     ORDERS: '/api/admin/orders',
     STORES: '/api/admin/stores',
   },
+  // Seller Auth
+  SELLER_AUTH: {
+    REGISTER: '/api/seller/auth/register',
+    LOGIN: '/api/seller/auth/login',
+    LOGOUT: '/api/seller/auth/logout',
+    ME: '/api/seller/auth/me',
+    REFRESH: '/api/seller/auth/refresh',
+  },
+  // Seller
+  SELLER: {
+    PRODUCTS: '/api/seller/products',
+    PRODUCT_BY_ID: (id: string) => `/api/seller/products/${id}`,
+    STORE: '/api/seller/store',
+    PRICE_ANALYSIS: '/api/seller/price-analysis',
+    PRICE_ANALYSIS_QUICK: '/api/seller/price-analysis/quick-check',
+  },
 } as const

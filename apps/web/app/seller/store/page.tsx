@@ -3,15 +3,15 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { useSellerStore, useSellerUrls } from '@/hooks'
+import { useSellerStore, useSellerUrls, useSellerAuth } from '@/hooks'
 import { SellerNavbar, SellerSidebar, StoreInfoCard, StoreForm } from '@repo/ui'
 import type { CreateStoreData, UpdateStoreData } from '@/types'
 
 export default function SellerStorePage(): React.JSX.Element {
   const router = useRouter()
   const urls = useSellerUrls()
+  const { user, isLoading: authLoading } = useSellerAuth()
   const {
-    user,
     store,
     isLoading,
     isSubmitting,
@@ -26,10 +26,10 @@ export default function SellerStorePage(): React.JSX.Element {
 
   // Redirect if not logged in
   useEffect(() => {
-    if (!isLoading && user === null) {
-      router.push(`/auth/login?redirect=${urls.seller.store}`)
+    if (!authLoading && user === null) {
+      router.push('/seller/auth/login?redirect=/seller/store')
     }
-  }, [isLoading, user, router, urls.seller.store])
+  }, [authLoading, user, router])
 
   const handleCreateStore = async (data: CreateStoreData | UpdateStoreData): Promise<void> => {
     await createStore(data as CreateStoreData)
@@ -43,7 +43,7 @@ export default function SellerStorePage(): React.JSX.Element {
   }
 
   // Loading State
-  if (isLoading) {
+  if (authLoading || isLoading) {
     return (
       <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
         <SellerNavbar urls={urls} />

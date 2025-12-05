@@ -3,15 +3,15 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { useSellerProducts, useSellerUrls } from '@/hooks'
+import { useSellerProducts, useSellerUrls, useSellerAuth } from '@/hooks'
 import { SellerNavbar, SellerSidebar, ProductsTable, ProductForm, DeleteModal } from '@repo/ui'
 import type { SellerProduct, CreateProductData } from '@/types'
 
 export default function SellerProductsPage(): React.JSX.Element {
   const router = useRouter()
   const urls = useSellerUrls()
+  const { user, isLoading: authLoading, isSeller } = useSellerAuth()
   const {
-    user,
     products,
     categories,
     isLoading,
@@ -20,7 +20,6 @@ export default function SellerProductsPage(): React.JSX.Element {
     success,
     page,
     totalPages,
-    isSeller,
     setPage,
     createProduct,
     updateProduct,
@@ -35,14 +34,14 @@ export default function SellerProductsPage(): React.JSX.Element {
 
   // Redirect if not logged in or not seller
   useEffect(() => {
-    if (!isLoading) {
+    if (!authLoading) {
       if (user === null) {
-        router.push(`/auth/login?redirect=${urls.seller.products}`)
+        router.push('/seller/auth/login?redirect=/seller/products')
       } else if (!isSeller) {
         router.push(urls.seller.store)
       }
     }
-  }, [isLoading, user, isSeller, router, urls.seller.products, urls.seller.store])
+  }, [authLoading, user, isSeller, router, urls.seller.store])
 
   const handleCreateProduct = async (data: CreateProductData): Promise<void> => {
     const created = await createProduct(data)
@@ -68,7 +67,7 @@ export default function SellerProductsPage(): React.JSX.Element {
   }
 
   // Loading State
-  if (isLoading) {
+  if (authLoading || isLoading) {
     return (
       <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
         <SellerNavbar urls={urls} />
@@ -90,7 +89,7 @@ export default function SellerProductsPage(): React.JSX.Element {
         <div className="flex">
           <SellerSidebar urls={urls} />
           <main className="flex-1 p-8 ml-64">
-            <NeedLoginState loginUrl={`/auth/login?redirect=${urls.seller.products}`} />
+            <NeedLoginState loginUrl="/seller/auth/login?redirect=/seller/products" />
           </main>
         </div>
       </div>

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
+import { API_ENDPOINTS } from '@/lib/config/api'
 import type {
   SellerStore,
   CreateStoreData,
@@ -18,7 +19,7 @@ import type {
   AuthMeResponse,
 } from '@/types'
 
-const API_URL = `${process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4101'}/api`
+const API_URL = `${process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4101'}`
 
 // ============================================================================
 // URL HOOK - Provides consistent URLs across seller pages
@@ -70,8 +71,8 @@ export function useSellerStore(): UseSellerStoreReturn {
     setError('')
 
     try {
-      // Check auth
-      const meRes = await fetch(`${API_URL}/auth/me`, { credentials: 'include' })
+      // Check auth with seller endpoint
+      const meRes = await fetch(`${API_URL}${API_ENDPOINTS.SELLER_AUTH.ME}`, { credentials: 'include' })
       const meData = (await meRes.json()) as AuthMeResponse
 
       if (!meData.success || meData.data === undefined) {
@@ -83,7 +84,7 @@ export function useSellerStore(): UseSellerStoreReturn {
 
       // Fetch store if user is seller
       if (meData.data.user.role === 'SELLER' || meData.data.user.role === 'ADMIN') {
-        const storeRes = await fetch(`${API_URL}/store`, { credentials: 'include' })
+        const storeRes = await fetch(`${API_URL}${API_ENDPOINTS.SELLER.STORE}`, { credentials: 'include' })
         const storeData = (await storeRes.json()) as StoreApiResponse
 
         if (storeData.success && storeData.data !== undefined) {
@@ -139,7 +140,7 @@ export function useSellerStore(): UseSellerStoreReturn {
     setSuccess('')
 
     try {
-      const res = await fetch(`${API_URL}/store`, {
+      const res = await fetch(`${API_URL}${API_ENDPOINTS.SELLER.STORE}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -220,7 +221,7 @@ export function useSellerProducts(): UseSellerProductsReturn {
 
   const fetchProducts = useCallback(async (): Promise<void> => {
     try {
-      const res = await fetch(`${API_URL}/products/mine?page=${page}&limit=10`, {
+      const res = await fetch(`${API_URL}${API_ENDPOINTS.SELLER.PRODUCTS}?page=${page}&limit=10`, {
         credentials: 'include',
       })
       const result = (await res.json()) as ProductsApiResponse
@@ -239,8 +240,8 @@ export function useSellerProducts(): UseSellerProductsReturn {
     setError('')
 
     try {
-      // Check auth
-      const authRes = await fetch(`${API_URL}/auth/me`, { credentials: 'include' })
+      // Check auth with seller endpoint
+      const authRes = await fetch(`${API_URL}${API_ENDPOINTS.SELLER_AUTH.ME}`, { credentials: 'include' })
       const authData = (await authRes.json()) as AuthMeResponse
 
       if (!authData.success || authData.data === undefined) {
@@ -254,7 +255,7 @@ export function useSellerProducts(): UseSellerProductsReturn {
       await fetchProducts()
 
       // Fetch categories
-      const catRes = await fetch(`${API_URL}/categories`)
+      const catRes = await fetch(`${API_URL}/api/categories`)
       const catData = (await catRes.json()) as CategoriesApiResponse
       if (catData.success && catData.data !== undefined) {
         // Normalize data shape: API may return data as Category[] or { categories: Category[] }
@@ -294,7 +295,7 @@ export function useSellerProducts(): UseSellerProductsReturn {
       setSuccess('')
 
       try {
-        const res = await fetch(`${API_URL}/products`, {
+        const res = await fetch(`${API_URL}${API_ENDPOINTS.SELLER.PRODUCTS}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include',
@@ -322,13 +323,13 @@ export function useSellerProducts(): UseSellerProductsReturn {
   )
 
   const updateProduct = useCallback(
-    async (slug: string, data: CreateProductData): Promise<boolean> => {
+    async (id: string, data: CreateProductData): Promise<boolean> => {
       setIsSubmitting(true)
       setError('')
       setSuccess('')
 
       try {
-        const res = await fetch(`${API_URL}/products/${slug}`, {
+        const res = await fetch(`${API_URL}${API_ENDPOINTS.SELLER.PRODUCT_BY_ID(id)}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include',
@@ -356,13 +357,13 @@ export function useSellerProducts(): UseSellerProductsReturn {
   )
 
   const deleteProduct = useCallback(
-    async (slug: string): Promise<boolean> => {
+    async (id: string): Promise<boolean> => {
       setIsSubmitting(true)
       setError('')
       setSuccess('')
 
       try {
-        const res = await fetch(`${API_URL}/products/${slug}`, {
+        const res = await fetch(`${API_URL}${API_ENDPOINTS.SELLER.PRODUCT_BY_ID(id)}`, {
           method: 'DELETE',
           credentials: 'include',
         })
