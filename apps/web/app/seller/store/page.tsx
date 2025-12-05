@@ -3,120 +3,47 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import type {
-  SellerStore,
-  User,
-  AuthMeResponse,
-  StoreApiResponse,
-  CreateStoreData,
-  UpdateStoreData,
-} from '../types'
-import { Navbar, Sidebar } from '../components'
-import { StoreInfoCard, StoreForm } from './components'
-
-const API_URL = (process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4101') + '/api'
+import { useSellerStore, useSellerUrls } from '@/hooks'
+import {
+  SellerNavbar,
+  SellerSidebar,
+  StoreInfoCard,
+  StoreForm,
+} from '@repo/ui'
+import type { CreateStoreData, UpdateStoreData } from '@/types'
 
 export default function SellerStorePage(): React.JSX.Element {
   const router = useRouter()
+  const urls = useSellerUrls()
+  const {
+    user,
+    store,
+    isLoading,
+    isSubmitting,
+    error,
+    success,
+    createStore,
+    updateStore,
+    clearMessages,
+  } = useSellerStore()
 
-  const [user, setUser] = useState<User | null>(null)
-  const [store, setStore] = useState<SellerStore | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
-  const [isSubmitting, setIsSubmitting] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
-  const [error, setError] = useState('')
-  const [success, setSuccess] = useState('')
 
-  // Fetch user & store data
+  // Redirect if not logged in
   useEffect(() => {
-    async function fetchData(): Promise<void> {
-      setIsLoading(true)
-      try {
-        // Check auth
-        const meRes = await fetch(`${API_URL}/auth/me`, { credentials: 'include' })
-        const meData = (await meRes.json()) as AuthMeResponse
-
-        if (!meData.success || meData.data === undefined) {
-          router.push('/auth/login?redirect=/seller/store')
-          return
-        }
-
-        setUser(meData.data.user)
-
-        // Fetch store if user is seller
-        if (meData.data.user.role === 'SELLER' || meData.data.user.role === 'ADMIN') {
-          const storeRes = await fetch(`${API_URL}/store`, { credentials: 'include' })
-          const storeData = (await storeRes.json()) as StoreApiResponse
-
-          if (storeData.success && storeData.data !== undefined) {
-            setStore(storeData.data.store)
-          }
-        }
-      } catch {
-        setError('Gagal memuat data')
-      } finally {
-        setIsLoading(false)
-      }
+    if (!isLoading && user === null) {
+      router.push(`/auth/login?redirect=${urls.seller.store}`)
     }
-
-    void fetchData()
-  }, [router])
+  }, [isLoading, user, router, urls.seller.store])
 
   const handleCreateStore = async (data: CreateStoreData | UpdateStoreData): Promise<void> => {
-    setIsSubmitting(true)
-    setError('')
-    setSuccess('')
-
-    try {
-      const res = await fetch(`${API_URL}/store`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify(data),
-      })
-
-      const result = (await res.json()) as StoreApiResponse
-
-      if (result.success && result.data !== undefined) {
-        setStore(result.data.store)
-        setUser(prev => (prev !== null ? { ...prev, role: 'SELLER' } : null))
-        setSuccess('Toko berhasil dibuat! Anda sekarang menjadi SELLER.')
-      } else {
-        setError(result.message ?? 'Gagal membuat toko')
-      }
-    } catch {
-      setError('Gagal membuat toko')
-    } finally {
-      setIsSubmitting(false)
-    }
+    await createStore(data as CreateStoreData)
   }
 
   const handleUpdateStore = async (data: CreateStoreData | UpdateStoreData): Promise<void> => {
-    setIsSubmitting(true)
-    setError('')
-    setSuccess('')
-
-    try {
-      const res = await fetch(`${API_URL}/store`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify(data),
-      })
-
-      const result = (await res.json()) as StoreApiResponse
-
-      if (result.success && result.data !== undefined) {
-        setStore(result.data.store)
-        setIsEditing(false)
-        setSuccess('Toko berhasil diperbarui!')
-      } else {
-        setError(result.message ?? 'Gagal memperbarui toko')
-      }
-    } catch {
-      setError('Gagal memperbarui toko')
-    } finally {
-      setIsSubmitting(false)
+    const updated = await updateStore(data as UpdateStoreData)
+    if (updated) {
+      setIsEditing(false)
     }
   }
 
@@ -124,10 +51,10 @@ export default function SellerStorePage(): React.JSX.Element {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
-        <Navbar />
+        <SellerNavbar urls={urls} />
         <div className="flex">
-          <Sidebar />
-          <main className="flex-1 p-8">
+          <SellerSidebar urls={urls} />
+          <main className="flex-1 p-8 ml-64">
             <LoadingSkeleton />
           </main>
         </div>
@@ -139,11 +66,11 @@ export default function SellerStorePage(): React.JSX.Element {
   if (user === null) {
     return (
       <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
-        <Navbar />
+        <SellerNavbar urls={urls} />
         <div className="flex">
-          <Sidebar />
-          <main className="flex-1 p-8">
-            <NeedLoginState />
+          <SellerSidebar urls={urls} />
+          <main className="flex-1 p-8 ml-64">
+            <NeedLoginState loginUrl={`/auth/login?redirect=${urls.seller.store}`} />
           </main>
         </div>
       </div>
@@ -154,12 +81,12 @@ export default function SellerStorePage(): React.JSX.Element {
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
-      <Navbar userName={user.name} />
+      <SellerNavbar userName={user.name} urls={urls} />
 
       <div className="flex">
-        <Sidebar storeName={store?.name} />
+        <SellerSidebar storeName={store?.name} urls={urls} />
 
-        <main className="flex-1 p-8">
+        <main className="flex-1 p-8 ml-64">
           <div className="max-w-4xl">
             {/* Header */}
             <div className="mb-8">
@@ -174,17 +101,29 @@ export default function SellerStorePage(): React.JSX.Element {
             </div>
 
             {/* Alerts */}
-            {error !== '' ? (
+            {error !== '' && (
               <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-xl text-red-600 dark:text-red-400">
                 {error}
+                <button
+                  onClick={clearMessages}
+                  className="ml-2 text-red-800 dark:text-red-300 hover:underline"
+                >
+                  ✕
+                </button>
               </div>
-            ) : null}
+            )}
 
-            {success !== '' ? (
+            {success !== '' && (
               <div className="mb-6 p-4 bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 rounded-xl text-green-600 dark:text-green-400">
                 {success}
+                <button
+                  onClick={clearMessages}
+                  className="ml-2 text-green-800 dark:text-green-300 hover:underline"
+                >
+                  ✕
+                </button>
               </div>
-            ) : null}
+            )}
 
             {/* Content */}
             {hasStore && !isEditing ? (
@@ -194,7 +133,7 @@ export default function SellerStorePage(): React.JSX.Element {
                 {/* Quick Actions */}
                 <div className="mt-8 grid md:grid-cols-3 gap-4">
                   <Link
-                    href="/seller/products"
+                    href={urls.seller.products}
                     className="p-4 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-600 transition-colors group"
                   >
                     <span className="text-2xl mb-2 block">📦</span>
@@ -207,7 +146,7 @@ export default function SellerStorePage(): React.JSX.Element {
                   </Link>
 
                   <Link
-                    href="/seller/orders"
+                    href={urls.seller.orders}
                     className="p-4 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-600 transition-colors group"
                   >
                     <span className="text-2xl mb-2 block">📋</span>
@@ -271,7 +210,7 @@ function LoadingSkeleton(): React.JSX.Element {
   )
 }
 
-function NeedLoginState(): React.JSX.Element {
+function NeedLoginState({ loginUrl }: { loginUrl: string }): React.JSX.Element {
   return (
     <div className="max-w-4xl">
       <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-12 text-center">
@@ -281,7 +220,7 @@ function NeedLoginState(): React.JSX.Element {
           Silakan login untuk mengakses Seller Dashboard
         </p>
         <Link
-          href="/auth/login?redirect=/seller/store"
+          href={loginUrl}
           className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
         >
           Masuk Sekarang

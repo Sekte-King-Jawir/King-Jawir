@@ -1,9 +1,9 @@
 'use client'
 
 import Image from 'next/image'
-import type { SellerProduct } from '../types'
+import type { SellerProduct } from '../types/index.js'
 
-interface ProductsTableProps {
+export interface ProductsTableProps {
   products: SellerProduct[]
   onEdit: (product: SellerProduct) => void
   onDelete: (product: SellerProduct) => void

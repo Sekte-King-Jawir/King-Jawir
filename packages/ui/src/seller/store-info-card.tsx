@@ -1,8 +1,10 @@
+'use client'
+
 import Image from 'next/image'
 import Link from 'next/link'
-import type { SellerStore } from '../../types'
+import type { SellerStore } from '../types/index.js'
 
-interface StoreInfoCardProps {
+export interface StoreInfoCardProps {
   store: SellerStore
   onEdit: () => void
 }

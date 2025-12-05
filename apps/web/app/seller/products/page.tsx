@@ -1,193 +1,86 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import type {
-  SellerProduct,
-  Category,
-  ProductsApiResponse,
-  CategoriesApiResponse,
-  CreateProductData,
-} from './types'
-import type { User, AuthMeResponse } from '../types'
-import { Navbar, Sidebar } from '../components'
-import { ProductsTable, ProductForm, DeleteModal } from './components/index'
-
-const API_URL = (process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4101') + '/api'
+import Link from 'next/link'
+import { useSellerProducts, useSellerUrls } from '@/hooks'
+import {
+  SellerNavbar,
+  SellerSidebar,
+  ProductsTable,
+  ProductForm,
+  DeleteModal,
+} from '@repo/ui'
+import type { SellerProduct, CreateProductData } from '@/types'
 
 export default function SellerProductsPage(): React.JSX.Element {
   const router = useRouter()
-
-  const [user, setUser] = useState<User | null>(null)
-  const [products, setProducts] = useState<SellerProduct[]>([])
-  const [categories, setCategories] = useState<Category[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState('')
-  const [success, setSuccess] = useState('')
+  const urls = useSellerUrls()
+  const {
+    user,
+    products,
+    categories,
+    isLoading,
+    isSubmitting,
+    error,
+    success,
+    page,
+    totalPages,
+    isSeller,
+    setPage,
+    createProduct,
+    updateProduct,
+    deleteProduct,
+    clearMessages,
+  } = useSellerProducts()
 
   // Modal states
   const [showForm, setShowForm] = useState(false)
   const [editingProduct, setEditingProduct] = useState<SellerProduct | null>(null)
   const [deletingProduct, setDeletingProduct] = useState<SellerProduct | null>(null)
-  const [isSubmitting, setIsSubmitting] = useState(false)
 
-  // Pagination
-  const [page, setPage] = useState(1)
-  const [totalPages, setTotalPages] = useState(1)
-
-  const fetchProducts = useCallback(async (): Promise<void> => {
-    try {
-      const res = await fetch(`${API_URL}/products/mine?page=${page}&limit=10`, {
-        credentials: 'include',
-      })
-      const result = (await res.json()) as ProductsApiResponse
-
-      if (result.success && result.data !== undefined) {
-        setProducts(result.data.products)
-        setTotalPages(result.data.pagination.totalPages)
-      }
-    } catch {
-      setError('Gagal memuat produk')
-    }
-  }, [page])
-
+  // Redirect if not logged in or not seller
   useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      try {
-        // Check auth
-        const authRes = await fetch(`${API_URL}/auth/me`, {
-          credentials: 'include',
-        })
-        const authData = (await authRes.json()) as AuthMeResponse
-
-        if (!authData.success || authData.data === undefined) {
-          router.push('/auth/login')
-          return
-        }
-
-        const currentUser = authData.data.user
-        if (currentUser.role !== 'SELLER' && currentUser.role !== 'ADMIN') {
-          router.push('/seller/store')
-          return
-        }
-
-        setUser(currentUser)
-
-        // Fetch products
-        await fetchProducts()
-
-        // Fetch categories
-        const catRes = await fetch(`${API_URL}/categories`)
-        const catData = (await catRes.json()) as CategoriesApiResponse
-        if (catData.success && catData.data !== undefined) {
-          setCategories(catData.data)
-        }
-      } catch {
-        setError('Gagal memuat data')
-      } finally {
-        setIsLoading(false)
+    if (!isLoading) {
+      if (user === null) {
+        router.push(`/auth/login?redirect=${urls.seller.products}`)
+      } else if (!isSeller) {
+        router.push(urls.seller.store)
       }
     }
-
-    void fetchData()
-  }, [router, fetchProducts])
+  }, [isLoading, user, isSeller, router, urls.seller.products, urls.seller.store])
 
   const handleCreateProduct = async (data: CreateProductData): Promise<void> => {
-    setIsSubmitting(true)
-    setError('')
-    setSuccess('')
-
-    try {
-      const res = await fetch(`${API_URL}/products`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify(data),
-      })
-
-      const result = (await res.json()) as { success: boolean; message: string }
-
-      if (result.success) {
-        setSuccess('Produk berhasil ditambahkan!')
-        setShowForm(false)
-        await fetchProducts()
-      } else {
-        setError(result.message ?? 'Gagal menambah produk')
-      }
-    } catch {
-      setError('Gagal menambah produk')
-    } finally {
-      setIsSubmitting(false)
+    const created = await createProduct(data)
+    if (created) {
+      setShowForm(false)
     }
   }
 
   const handleUpdateProduct = async (data: CreateProductData): Promise<void> => {
     if (editingProduct === null) return
-
-    setIsSubmitting(true)
-    setError('')
-    setSuccess('')
-
-    try {
-      const res = await fetch(`${API_URL}/products/${editingProduct.slug}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify(data),
-      })
-
-      const result = (await res.json()) as { success: boolean; message: string }
-
-      if (result.success) {
-        setSuccess('Produk berhasil diperbarui!')
-        setEditingProduct(null)
-        await fetchProducts()
-      } else {
-        setError(result.message ?? 'Gagal memperbarui produk')
-      }
-    } catch {
-      setError('Gagal memperbarui produk')
-    } finally {
-      setIsSubmitting(false)
+    const updated = await updateProduct(editingProduct.slug, data)
+    if (updated) {
+      setEditingProduct(null)
     }
   }
 
   const handleDeleteProduct = async (): Promise<void> => {
     if (deletingProduct === null) return
-
-    setIsSubmitting(true)
-    setError('')
-    setSuccess('')
-
-    try {
-      const res = await fetch(`${API_URL}/products/${deletingProduct.slug}`, {
-        method: 'DELETE',
-        credentials: 'include',
-      })
-
-      const result = (await res.json()) as { success: boolean; message: string }
-
-      if (result.success) {
-        setSuccess('Produk berhasil dihapus!')
-        setDeletingProduct(null)
-        await fetchProducts()
-      } else {
-        setError(result.message ?? 'Gagal menghapus produk')
-      }
-    } catch {
-      setError('Gagal menghapus produk')
-    } finally {
-      setIsSubmitting(false)
+    const deleted = await deleteProduct(deletingProduct.slug)
+    if (deleted) {
+      setDeletingProduct(null)
     }
   }
 
+  // Loading State
   if (isLoading) {
     return (
       <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
-        <Navbar />
+        <SellerNavbar urls={urls} />
         <div className="flex">
-          <Sidebar />
-          <main className="flex-1 p-8">
+          <SellerSidebar urls={urls} />
+          <main className="flex-1 p-8 ml-64">
             <LoadingSkeleton />
           </main>
         </div>
@@ -195,17 +88,31 @@ export default function SellerProductsPage(): React.JSX.Element {
     )
   }
 
+  // Not logged in
   if (user === null) {
     return (
-      <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center">
-        <div className="text-center">
-          <div className="text-6xl mb-4">🔒</div>
-          <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
-            Login Diperlukan
-          </h1>
-          <p className="text-slate-600 dark:text-slate-400">
-            Silakan login untuk mengakses halaman ini
-          </p>
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
+        <SellerNavbar urls={urls} />
+        <div className="flex">
+          <SellerSidebar urls={urls} />
+          <main className="flex-1 p-8 ml-64">
+            <NeedLoginState loginUrl={`/auth/login?redirect=${urls.seller.products}`} />
+          </main>
+        </div>
+      </div>
+    )
+  }
+
+  // Not a seller
+  if (!isSeller) {
+    return (
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
+        <SellerNavbar userName={user.name} urls={urls} />
+        <div className="flex">
+          <SellerSidebar urls={urls} />
+          <main className="flex-1 p-8 ml-64">
+            <NeedStoreState storeUrl={urls.seller.store} />
+          </main>
         </div>
       </div>
     )
@@ -213,12 +120,12 @@ export default function SellerProductsPage(): React.JSX.Element {
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
-      <Navbar userName={user.name} />
+      <SellerNavbar userName={user.name} urls={urls} />
 
       <div className="flex">
-        <Sidebar />
+        <SellerSidebar urls={urls} />
 
-        <main className="flex-1 p-8">
+        <main className="flex-1 p-8 ml-64">
           <div className="max-w-6xl">
             {/* Header */}
             <div className="flex items-center justify-between mb-8">
@@ -244,11 +151,23 @@ export default function SellerProductsPage(): React.JSX.Element {
             {error !== '' && (
               <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl text-red-600 dark:text-red-400">
                 {error}
+                <button
+                  onClick={clearMessages}
+                  className="ml-2 text-red-800 dark:text-red-300 hover:underline"
+                >
+                  ✕
+                </button>
               </div>
             )}
             {success !== '' && (
               <div className="mb-6 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl text-green-600 dark:text-green-400">
                 {success}
+                <button
+                  onClick={clearMessages}
+                  className="ml-2 text-green-800 dark:text-green-300 hover:underline"
+                >
+                  ✕
+                </button>
               </div>
             )}
 
@@ -266,14 +185,12 @@ export default function SellerProductsPage(): React.JSX.Element {
       </div>
 
       {/* Create Modal */}
-      {showForm ? (
-        <ProductForm
+      {showForm ? <ProductForm
           categories={categories}
           onSubmit={handleCreateProduct}
           onCancel={() => setShowForm(false)}
           isLoading={isSubmitting}
-        />
-      ) : null}
+        /> : null}
 
       {/* Edit Modal */}
       {editingProduct !== null && (
@@ -289,8 +206,9 @@ export default function SellerProductsPage(): React.JSX.Element {
       {/* Delete Modal */}
       {deletingProduct !== null && (
         <DeleteModal
-          productName={deletingProduct.name}
-          onConfirm={handleDeleteProduct}
+          title="Hapus Produk"
+          message={`Apakah Anda yakin ingin menghapus "${deletingProduct.name}"? Tindakan ini tidak dapat dibatalkan.`}
+          onConfirm={() => void handleDeleteProduct()}
           onCancel={() => setDeletingProduct(null)}
           isLoading={isSubmitting}
         />
@@ -315,6 +233,46 @@ function LoadingSkeleton(): React.JSX.Element {
             <div key={`skeleton-${n}`} className="h-16 bg-slate-100 dark:bg-slate-700 rounded" />
           ))}
         </div>
+      </div>
+    </div>
+  )
+}
+
+function NeedLoginState({ loginUrl }: { loginUrl: string }): React.JSX.Element {
+  return (
+    <div className="max-w-4xl">
+      <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-12 text-center">
+        <span className="text-6xl mb-4 block">🔒</span>
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Login Diperlukan</h2>
+        <p className="text-slate-600 dark:text-slate-400 mb-6">
+          Silakan login untuk mengakses halaman ini
+        </p>
+        <Link
+          href={loginUrl}
+          className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
+        >
+          Masuk Sekarang
+        </Link>
+      </div>
+    </div>
+  )
+}
+
+function NeedStoreState({ storeUrl }: { storeUrl: string }): React.JSX.Element {
+  return (
+    <div className="max-w-4xl">
+      <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-12 text-center">
+        <span className="text-6xl mb-4 block">🏪</span>
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Toko Belum Ada</h2>
+        <p className="text-slate-600 dark:text-slate-400 mb-6">
+          Buat toko terlebih dahulu untuk mengelola produk
+        </p>
+        <Link
+          href={storeUrl}
+          className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
+        >
+          Buat Toko
+        </Link>
       </div>
     </div>
   )

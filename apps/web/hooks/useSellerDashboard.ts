@@ -1,89 +1,15 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
+import type {
+  SellerStats,
+  SellerOrder,
+  SellerProduct,
+  OrdersApiResponse,
+  ProductsApiResponse,
+} from '@/types'
 
 const API_URL = `${process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4101'}/api`
-
-// Types
-export interface SellerStats {
-  totalRevenue: number
-  totalOrders: number
-  totalProducts: number
-  pendingOrders: number
-  completedOrders: number
-  cancelledOrders: number
-}
-
-export interface OrderItem {
-  id: string
-  quantity: number
-  price: number
-  product: {
-    id: string
-    name: string
-    slug: string
-    image: string | null
-  }
-}
-
-export interface SellerOrder {
-  id: string
-  status: 'PENDING' | 'PAID' | 'SHIPPED' | 'DONE' | 'CANCELLED'
-  total: number
-  createdAt: string
-  user: {
-    id: string
-    name: string
-    email: string
-    phone: string | null
-    address: string | null
-  }
-  items: OrderItem[]
-}
-
-export interface SellerProduct {
-  id: string
-  name: string
-  slug: string
-  price: number
-  stock: number
-  image: string | null
-  reviewCount: number
-  createdAt: string
-  category: {
-    id: string
-    name: string
-    slug: string
-  }
-}
-
-interface OrdersApiResponse {
-  success: boolean
-  message: string
-  data?: {
-    orders: SellerOrder[]
-    pagination: {
-      page: number
-      limit: number
-      total: number
-      totalPages: number
-    }
-  }
-}
-
-interface ProductsApiResponse {
-  success: boolean
-  message: string
-  data?: {
-    products: SellerProduct[]
-    pagination: {
-      page: number
-      limit: number
-      total: number
-      totalPages: number
-    }
-  }
-}
 
 interface UseSellerDashboardReturn {
   stats: SellerStats
@@ -177,7 +103,7 @@ export function useSellerDashboard(): UseSellerDashboardReturn {
 
         // Sort products by reviewCount as proxy for popularity
         const sortedProducts = [...productsData.data.products].sort(
-          (a, b) => b.reviewCount - a.reviewCount
+          (a, b) => (b.reviewCount ?? 0) - (a.reviewCount ?? 0)
         )
         setTopProducts(sortedProducts.slice(0, 5))
       }

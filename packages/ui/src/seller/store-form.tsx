@@ -1,9 +1,9 @@
 'use client'
 
 import { useState } from 'react'
-import type { CreateStoreData, UpdateStoreData, SellerStore } from '../../types'
+import type { CreateStoreData, UpdateStoreData, SellerStore } from '../types/index.js'
 
-interface StoreFormProps {
+export interface StoreFormProps {
   store?: SellerStore | null
   onSubmit: (data: CreateStoreData | UpdateStoreData) => Promise<void>
   onCancel?: () => void

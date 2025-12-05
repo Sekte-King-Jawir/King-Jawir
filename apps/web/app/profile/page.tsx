@@ -5,10 +5,8 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useAuth } from '@/hooks'
 import { profileService, authService } from '@/lib/api'
-import type { UpdateProfileData, ChangePasswordData } from './types'
-import { ProfileForm } from './components/profile-form'
-import { ChangePasswordForm } from './components/change-password-form'
-import { AvatarSection } from './components/avatar-section'
+import type { UpdateProfileData, ChangePasswordData } from '@repo/ui'
+import { ProfileForm, ChangePasswordForm, AvatarSection } from '@repo/ui'
 
 export default function ProfilePage(): React.JSX.Element {
   const router = useRouter()

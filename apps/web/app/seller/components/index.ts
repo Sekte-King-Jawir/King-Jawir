@@ -1,6 +1,0 @@
-export { Navbar } from './navbar'
-export { Sidebar } from './sidebar'
-export { StatsGrid, StatCard } from './stats-grid'
-export { RecentOrdersTable } from './recent-orders-table'
-export { TopProductsCard } from './top-products-card'
-export { OrderStatsChart } from './order-stats-chart'

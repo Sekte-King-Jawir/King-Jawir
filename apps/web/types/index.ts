@@ -225,3 +225,163 @@ export interface ProductApiResponse {
     product: ProductDetail
   }
 }
+
+// ============================================================================
+// SELLER TYPES
+// ============================================================================
+
+export interface SellerStore {
+  id: string
+  name: string
+  slug: string
+  description: string | null
+  logo: string | null
+  productCount: number
+  createdAt: string
+}
+
+export interface CreateStoreData {
+  name: string
+  slug?: string
+  description?: string
+  logo?: string
+}
+
+export interface UpdateStoreData {
+  name?: string
+  slug?: string
+  description?: string
+  logo?: string
+}
+
+export interface StoreApiResponse {
+  success: boolean
+  message: string
+  data?: {
+    store: SellerStore
+  }
+}
+
+export interface SellerProduct {
+  id: string
+  name: string
+  slug: string
+  description: string | null
+  price: number
+  stock: number
+  image: string | null
+  categoryId: string | null
+  category?: Category | null
+  reviewCount?: number
+  createdAt: string
+  updatedAt: string
+}
+
+export interface CreateProductData {
+  name: string
+  description?: string
+  price: number
+  stock: number
+  image?: string
+  categoryId?: string
+}
+
+export interface UpdateProductData {
+  name?: string
+  description?: string
+  price?: number
+  stock?: number
+  image?: string
+  categoryId?: string
+}
+
+export interface ProductsApiResponse {
+  success: boolean
+  message: string
+  data?: {
+    products: SellerProduct[]
+    pagination: PaginationInfo
+  }
+}
+
+export interface CategoriesApiResponse {
+  success: boolean
+  message: string
+  data?: Category[]
+}
+
+export interface SellerOrder {
+  id: string
+  status: OrderStatus
+  total: number
+  totalAmount?: number
+  createdAt: string
+  updatedAt: string
+  user: {
+    id: string
+    name: string
+    email: string
+    phone?: string | null
+    address?: string | null
+  }
+  items: SellerOrderItem[]
+  shippingAddress?: string | null
+}
+
+export interface SellerOrderItem {
+  id: string
+  quantity: number
+  price: number
+  product: {
+    id: string
+    name: string
+    slug: string
+    image: string | null
+  }
+}
+
+export interface OrdersApiResponse {
+  success: boolean
+  message: string
+  data?: {
+    orders: SellerOrder[]
+    pagination: PaginationInfo
+  }
+}
+
+export interface SellerStats {
+  totalRevenue: number
+  totalOrders: number
+  totalProducts: number
+  pendingOrders: number
+  completedOrders: number
+  cancelledOrders: number
+}
+
+export interface PaginationInfo {
+  page: number
+  limit: number
+  total: number
+  totalPages: number
+}
+
+export interface SellerUrls {
+  home: string
+  products: string
+  seller: {
+    dashboard: string
+    store: string
+    products: string
+    orders: string
+    analytics: string
+  }
+  priceAnalysis: string
+}
+
+export interface AuthMeResponse {
+  success: boolean
+  message: string
+  data?: {
+    user: User
+  }
+}

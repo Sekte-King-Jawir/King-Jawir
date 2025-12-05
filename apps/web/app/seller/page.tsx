@@ -3,18 +3,19 @@
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { useSellerDashboard, useSellerAuth } from '@/hooks'
+import { useSellerDashboard, useSellerAuth, useSellerUrls } from '@/hooks'
 import {
-  Navbar,
-  Sidebar,
+  SellerNavbar,
+  SellerSidebar,
   StatsGrid,
   RecentOrdersTable,
   TopProductsCard,
   OrderStatsChart,
-} from './components'
+} from '@repo/ui'
 
 export default function SellerDashboardPage(): React.JSX.Element {
   const router = useRouter()
+  const urls = useSellerUrls()
   const { user, isLoading: authLoading, isSeller } = useSellerAuth()
   const { stats, recentOrders, topProducts, isLoading, error, refresh } = useSellerDashboard()
 
@@ -31,9 +32,9 @@ export default function SellerDashboardPage(): React.JSX.Element {
   if (authLoading || isLoading) {
     return (
       <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
-        <Navbar userName={user?.name} />
+        <SellerNavbar userName={user?.name} urls={urls} />
         <div className="flex">
-          <Sidebar />
+          <SellerSidebar urls={urls} />
           <main className="flex-1 p-6 ml-64">
             <div className="animate-pulse space-y-6">
               <div className="h-8 bg-slate-200 dark:bg-slate-700 rounded w-48" />
@@ -66,9 +67,9 @@ export default function SellerDashboardPage(): React.JSX.Element {
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
-      <Navbar userName={user.name} />
+      <SellerNavbar userName={user.name} urls={urls} />
       <div className="flex">
-        <Sidebar />
+        <SellerSidebar urls={urls} />
         <main className="flex-1 p-6 ml-64">
           {/* Header */}
           <div className="mb-6">
@@ -185,7 +186,7 @@ export default function SellerDashboardPage(): React.JSX.Element {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Recent Orders - 2 columns */}
             <div className="lg:col-span-2">
-              <RecentOrdersTable orders={recentOrders} />
+              <RecentOrdersTable orders={recentOrders} urls={urls} />
             </div>
 
             {/* Order Stats Chart - 1 column */}
@@ -196,7 +197,7 @@ export default function SellerDashboardPage(): React.JSX.Element {
 
           {/* Top Products */}
           <div className="mt-6">
-            <TopProductsCard products={topProducts} />
+            <TopProductsCard products={topProducts} urls={urls} />
           </div>
         </main>
       </div>

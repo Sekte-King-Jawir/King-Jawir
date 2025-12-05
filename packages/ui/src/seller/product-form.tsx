@@ -1,9 +1,9 @@
 'use client'
 
 import { useState } from 'react'
-import type { SellerProduct, Category, CreateProductData } from '../types'
+import type { SellerProduct, Category, CreateProductData } from '../types/index.js'
 
-interface ProductFormProps {
+export interface ProductFormProps {
   product?: SellerProduct | null
   categories: Category[]
   onSubmit: (data: CreateProductData) => Promise<void>

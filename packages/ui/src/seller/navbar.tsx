@@ -1,18 +1,20 @@
 'use client'
 
 import Link from 'next/link'
+import type { SellerUrls } from '../types/index.js'
 
-interface NavbarProps {
+export interface SellerNavbarProps {
   userName?: string | undefined
+  urls: SellerUrls
 }
 
-export function Navbar({ userName }: NavbarProps): React.JSX.Element {
+export function SellerNavbar({ userName, urls }: SellerNavbarProps): React.JSX.Element {
   return (
     <nav className="sticky top-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
       <div className="px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center gap-4">
-            <Link href="/" className="flex items-center gap-2">
+            <Link href={urls.home} className="flex items-center gap-2">
               <span className="text-2xl">👑</span>
               <span className="font-bold text-xl text-slate-900 dark:text-white">King Jawir</span>
             </Link>
@@ -24,7 +26,7 @@ export function Navbar({ userName }: NavbarProps): React.JSX.Element {
 
           <div className="flex items-center gap-4">
             <Link
-              href="/products"
+              href={urls.products}
               className="text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors text-sm"
             >
               Marketplace
