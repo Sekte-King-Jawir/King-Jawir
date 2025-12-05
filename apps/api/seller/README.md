@@ -8,6 +8,7 @@ Seller CMS menyediakan sistem lengkap untuk seller mengelola toko dan produk mer
 - **Authentication terpisah** dari customer (register, login, logout, refresh)
 - **Product Management** (CRUD) untuk produk toko seller
 - **Store Management** untuk update profile toko
+- **🆕 Price Analysis** - AI-powered price analysis sebelum menambah produk
 
 ## Endpoints
 
@@ -379,6 +380,195 @@ Hapus produk milik seller.
 
 ---
 
+### Seller Price Analysis (`/api/seller/price-analysis`) 🆕
+
+Fitur AI-powered price analysis khusus untuk seller sebelum menambahkan produk ke toko.
+
+#### 1. Full Price Analysis
+**GET** `/api/seller/price-analysis?productName={name}&userPrice={price}&limit={n}`
+
+Analisis lengkap harga produk dari market (Tokopedia) dengan insights khusus seller.
+
+**Query Parameters:**
+- `productName` (required): Nama produk yang ingin dianalisis
+- `userPrice` (optional): Harga yang ingin dijual seller
+- `limit` (optional): Jumlah produk market untuk analisis (default: 10, max: 50)
+
+**Response:**
+```json
+{
+  "success": true,
+  "message": "Analisis harga berhasil",
+  "data": {
+    "query": "Laptop Gaming ROG",
+    "optimizedQuery": "laptop gaming rog",
+    "products": [
+      {
+        "name": "ROG Strix G15",
+        "price": "Rp15.999.000",
+        "rating": "4.9",
+        "sold": "250+",
+        "shop_location": "Jakarta Pusat"
+      }
+      // ... more products
+    ],
+    "statistics": {
+      "min": 12500000,
+      "max": 22000000,
+      "average": 16500000,
+      "median": 16000000,
+      "totalProducts": 10
+    },
+    "analysis": {
+      "recommendation": "Harga Rp15.000.000 sangat kompetitif...",
+      "insights": [
+        "Mayoritas produk dijual di range Rp15-17 juta",
+        "Produk dengan rating tinggi cenderung lebih mahal",
+        // ... more insights
+      ],
+      "suggestedPrice": 15800000
+    },
+    "sellerGuidance": {
+      "shouldProceed": true,
+      "pricePosition": "below_average",
+      "warnings": [
+        "💡 Harga di bawah rata-rata market. Bisa menarik banyak pembeli.",
+        "Pastikan margin profit masih cukup."
+      ],
+      "suggestions": [
+        "💰 Harga yang disarankan: Rp15.800.000",
+        "📈 Range harga market: Rp12.500.000 - Rp22.000.000",
+        "📊 Harga rata-rata: Rp16.500.000",
+        "💡 Strategi: Volume tinggi dengan margin rendah",
+        "🎯 Fokus pada kecepatan pengiriman dan service"
+      ]
+    }
+  }
+}
+```
+
+**Price Position Values:**
+- `very_low`: < 70% dari harga minimum market
+- `low`: < harga minimum market
+- `below_average`: < 90% dari rata-rata
+- `average`: ±10% dari rata-rata
+- `above_average`: di atas rata-rata tapi < max
+- `high`: > max tapi < 120% max
+- `very_high`: > 120% dari max
+
+**Use Case:**
+Seller ingin menambahkan laptop gaming ROG ke toko dengan harga Rp15.000.000. Sebelum menambahkan, seller cek dulu analisis market untuk memastikan harga kompetitif.
+
+---
+
+#### 2. Quick Price Check
+**POST** `/api/seller/price-analysis/quick-check`
+
+Validasi cepat harga produk. Response lebih cepat dengan sample kecil (5 produk).
+
+**Request Body:**
+```json
+{
+  "productName": "iPhone 15 Pro",
+  "userPrice": 18500000
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "message": "Quick check berhasil",
+  "data": {
+    "userPrice": 18500000,
+    "marketAverage": 19200000,
+    "marketRange": {
+      "min": 17500000,
+      "max": 21000000
+    },
+    "position": "below_average",
+    "shouldProceed": true,
+    "quickAdvice": "Harga kompetitif"
+  }
+}
+```
+
+**Use Case:**
+Real-time validation saat seller mengetik harga di form. Memberikan feedback instant apakah harga wajar atau tidak.
+
+---
+
+#### Price Analysis Features
+
+**🤖 AI-Powered:**
+- Query optimization (misal: "iphone" → "iphone smartphone")
+- Market insights dan rekomendasi strategis
+- Suggested price berdasarkan analisis AI
+
+**📊 Market Statistics:**
+- Min, max, average, median price
+- Price distribution analysis
+- Competitor location data
+
+**💡 Seller Guidance:**
+- `shouldProceed`: Boolean apakah sebaiknya proceed dengan harga tersebut
+- `pricePosition`: Posisi harga relatif terhadap market
+- `warnings`: Array warning jika harga ekstrem atau ada concern
+- `suggestions`: Array saran strategis untuk seller
+
+**🎯 Strategic Advice:**
+Sistem memberikan saran berbeda berdasarkan price position:
+- **Low price**: Strategi volume tinggi, fokus pada service
+- **High price**: Strategi premium, tonjolkan kualitas/bonus
+- **Average**: Kompetitif via review dan foto produk
+
+---
+
+### Integration Example: Create Product dengan Price Analysis
+
+**Workflow yang direkomendasikan:**
+
+1. **Step 1: Seller input nama produk**
+   ```bash
+   GET /api/seller/price-analysis?productName=Laptop Gaming ROG
+   ```
+
+2. **Step 2: Seller lihat analisis market dan suggested price**
+   - System menampilkan: range harga, rata-rata, suggested price
+   - Seller mendapat insights tentang kompetitor
+
+3. **Step 3: Seller input harga (bisa adopt suggested atau custom)**
+   ```bash
+   POST /api/seller/price-analysis/quick-check
+   {
+     "productName": "Laptop Gaming ROG",
+     "userPrice": 15500000
+   }
+   ```
+
+4. **Step 4: Sistem validasi dan beri feedback**
+   - Position: "below_average"
+   - Quick advice: "Harga kompetitif"
+   - shouldProceed: true
+
+5. **Step 5: Seller proceed create product**
+   ```bash
+   POST /api/seller/products
+   {
+     "name": "Laptop Gaming ROG",
+     "price": 15500000,
+     ...
+   }
+   ```
+
+---
+
+**Features:**
+- Jika name berubah, slug di-regenerate
+- Cek uniqueness untuk slug baru
+
+---
+
 ## Struktur File
 
 ```
@@ -398,6 +588,25 @@ seller/
 │   │   ├── refresh_controller.ts
 │   │   └── refresh_service.ts
 │   └── me/
+│       ├── me_controller.ts
+│       └── me_service.ts
+├── products/                  # Product CMS
+│   ├── index.ts              # Routes definition
+│   ├── product_controller.ts
+│   └── product_service.ts
+├── store/                     # Store management
+│   ├── index.ts              # Routes definition
+│   ├── store_controller.ts
+│   └── store_service.ts
+├── price-analysis/            # 🆕 AI Price Analysis
+│   ├── index.ts              # Routes definition
+│   ├── price_analysis_controller.ts
+│   └── price_analysis_service.ts
+├── index.ts                   # Main seller routes
+├── seller_controller.ts       # Dashboard & analytics
+├── seller_service.ts
+└── seller_repository.ts
+```
 │       ├── me_controller.ts
 │       └── me_service.ts
 ├── products/                  # Product CMS
@@ -501,7 +710,23 @@ curl -X POST http://localhost:4101/api/seller/auth/login \
   }'
 ```
 
-### 3. Create Product
+### 3. Price Analysis
+```bash
+# Full analysis
+curl -X GET "http://localhost:4101/api/seller/price-analysis?productName=Laptop%20Gaming&userPrice=15000000&limit=10" \
+  -H "Authorization: Bearer YOUR_TOKEN"
+
+# Quick check
+curl -X POST http://localhost:4101/api/seller/price-analysis/quick-check \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -d '{
+    "productName": "iPhone 15",
+    "userPrice": 18500000
+  }'
+```
+
+### 4. Create Product
 ```bash
 curl -X POST http://localhost:4101/api/seller/products \
   -H "Content-Type: application/json" \

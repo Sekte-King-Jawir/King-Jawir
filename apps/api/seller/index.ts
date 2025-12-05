@@ -5,11 +5,13 @@ import { errorResponse, ErrorCode } from '../lib/response'
 import { sellerAuthRoutes } from './auth'
 import { sellerProductRoutes } from './products'
 import { sellerStoreRoutes } from './store'
+import { sellerPriceAnalysisRoutes } from './price-analysis'
 
 export const sellerRoutes = new Elysia({ prefix: '/api/seller' })
   .use(sellerAuthRoutes)
   .use(sellerProductRoutes)
   .use(sellerStoreRoutes)
+  .use(sellerPriceAnalysisRoutes)
   .use(jwtPlugin)
   .derive(authDerive)
 

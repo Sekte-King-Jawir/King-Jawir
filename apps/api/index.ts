@@ -100,6 +100,7 @@ const app = new Elysia()
           { name: 'Categories', description: 'Product categories' },
           { name: 'Products', description: 'Product management' },
           { name: 'Seller Products', description: 'Seller product CMS (CRUD for seller-owned products)' },
+          { name: 'Seller Price Analysis', description: 'AI price analysis tools for sellers before adding products' },
           { name: 'Cart', description: 'Shopping cart' },
           { name: 'Orders', description: 'Order management' },
           { name: 'Reviews', description: 'Product reviews' },
