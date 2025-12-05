@@ -2,7 +2,17 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts'
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  BarChart,
+  Bar,
+} from 'recharts'
 import { SellerNavbar, SellerSidebar } from '@repo/ui'
 
 export default function SellerAnalyticsPage(): React.JSX.Element {
@@ -138,11 +148,11 @@ export default function SellerAnalyticsPage(): React.JSX.Element {
                   Lihat performa toko Anda dalam periode tertentu
                 </p>
               </div>
-              
+
               <div className="flex gap-2">
                 <select
                   value={period}
-                  onChange={(e) => setPeriod(e.target.value as any)}
+                  onChange={e => setPeriod(e.target.value as any)}
                   className="px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="day">Harian</option>
@@ -174,20 +184,16 @@ export default function SellerAnalyticsPage(): React.JSX.Element {
                         margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
                       >
                         <CartesianGrid strokeDasharray="3 3" stroke="#334155" opacity={0.2} />
-                        <XAxis 
-                          dataKey="date" 
-                          stroke="#94a3b8" 
+                        <XAxis dataKey="date" stroke="#94a3b8" tick={{ fill: '#94a3b8' }} />
+                        <YAxis
+                          stroke="#94a3b8"
                           tick={{ fill: '#94a3b8' }}
+                          tickFormatter={value => `Rp${value.toLocaleString()}`}
                         />
-                        <YAxis 
-                          stroke="#94a3b8" 
-                          tick={{ fill: '#94a3b8' }}
-                          tickFormatter={(value) => `Rp${value.toLocaleString()}`}
-                        />
-                        <Tooltip 
-                          formatter={(value) => [`Rp${Number(value).toLocaleString()}`, 'Pendapatan']}
-                          labelFormatter={(label) => `Tanggal: ${label}`}
-                          contentStyle={{ 
+                        <Tooltip
+                          formatter={value => [`Rp${Number(value).toLocaleString()}`, 'Pendapatan']}
+                          labelFormatter={label => `Tanggal: ${label}`}
+                          contentStyle={{
                             backgroundColor: 'rgba(15, 23, 42, 0.8)',
                             borderColor: '#334155',
                             borderRadius: '0.5rem',
@@ -219,28 +225,17 @@ export default function SellerAnalyticsPage(): React.JSX.Element {
                         margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
                       >
                         <CartesianGrid strokeDasharray="3 3" stroke="#334155" opacity={0.2} />
-                        <XAxis 
-                          dataKey="date" 
-                          stroke="#94a3b8" 
-                          tick={{ fill: '#94a3b8' }}
-                        />
-                        <YAxis 
-                          stroke="#94a3b8" 
-                          tick={{ fill: '#94a3b8' }}
-                        />
-                        <Tooltip 
-                          contentStyle={{ 
+                        <XAxis dataKey="date" stroke="#94a3b8" tick={{ fill: '#94a3b8' }} />
+                        <YAxis stroke="#94a3b8" tick={{ fill: '#94a3b8' }} />
+                        <Tooltip
+                          contentStyle={{
                             backgroundColor: 'rgba(15, 23, 42, 0.8)',
                             borderColor: '#334155',
                             borderRadius: '0.5rem',
                           }}
                           itemStyle={{ color: '#f1f5f9' }}
                         />
-                        <Bar
-                          dataKey="orders"
-                          fill="#10b981"
-                          radius={[4, 4, 0, 0]}
-                        />
+                        <Bar dataKey="orders" fill="#10b981" radius={[4, 4, 0, 0]} />
                       </BarChart>
                     </ResponsiveContainer>
                   </div>

@@ -10,7 +10,7 @@ export function useSellerDashboard() {
     completedOrders: 0,
     cancelledOrders: 0,
   })
-  
+
   const [recentOrders, setRecentOrders] = useState<any[]>([])
   const [topProducts, setTopProducts] = useState<any[]>([])
   const [isLoading, setIsLoading] = useState(true)
@@ -24,7 +24,7 @@ export function useSellerDashboard() {
       const res = await fetch('/api/seller/dashboard', {
         credentials: 'include',
       })
-      
+
       if (res.ok) {
         const data = await res.json()
         if (data.success) {

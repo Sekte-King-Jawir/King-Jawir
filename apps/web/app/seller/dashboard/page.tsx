@@ -4,7 +4,13 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useSellerDashboard, useSellerUrls } from '@/hooks'
-import { SellerNavbar, SellerSidebar, StatsGrid, RecentOrdersTable, TopProductsCard } from '@repo/ui'
+import {
+  SellerNavbar,
+  SellerSidebar,
+  StatsGrid,
+  RecentOrdersTable,
+  TopProductsCard,
+} from '@repo/ui'
 
 export default function SellerDashboardPage(): React.JSX.Element {
   const router = useRouter()
