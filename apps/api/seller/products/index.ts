@@ -4,7 +4,7 @@ import { isSeller } from '../../lib/auth-helper'
 import { errorResponse, ErrorCode } from '../../lib/response'
 
 // Note: jwtPlugin & authDerive sudah di-apply di parent (seller/index.ts)
-export const sellerProductRoutes = new Elysia({ prefix: '/api/seller/products' })
+export const sellerProductRoutes = new Elysia({ prefix: '/products' })
 
   // GET /seller/products - List all products dari toko seller
   .get(
