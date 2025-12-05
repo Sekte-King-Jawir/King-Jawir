@@ -95,5 +95,10 @@ export const API_ENDPOINTS = {
     STORE: '/api/seller/store',
     PRICE_ANALYSIS: '/api/seller/price-analysis',
     PRICE_ANALYSIS_QUICK: '/api/seller/price-analysis/quick-check',
+    AI: {
+      GENERATE_DESCRIPTION: '/api/seller/ai/generate-description',
+      IMPROVE_DESCRIPTION: '/api/seller/ai/improve-description',
+      DESCRIPTION_TIPS: '/api/seller/ai/description-tips',
+    },
   },
 } as const

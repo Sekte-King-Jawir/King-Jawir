@@ -5,6 +5,15 @@
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "outputs": [".next/**", "!.next/cache/**", "dist/**", "target/**"]
+    },
+    "api#build": {
+      "outputs": ["dist/**"]
+    },
+    "scraper#build": {
+      "outputs": ["target/**"]
+    },
+    "web#build": {
       "outputs": [".next/**", "!.next/cache/**"]
     },
     "lint": {

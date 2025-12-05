@@ -9,8 +9,12 @@ export interface AuthContextType {
   user: User | null
   loading: boolean
   error: string | null
-  login: (credentials: LoginRequest) => Promise<{ success: boolean; user: User | null; error?: string }>
-  register: (data: RegisterRequest) => Promise<{ success: boolean; user: User | null; error?: string }>
+  login: (
+    credentials: LoginRequest
+  ) => Promise<{ success: boolean; user: User | null; error?: string }>
+  register: (
+    data: RegisterRequest
+  ) => Promise<{ success: boolean; user: User | null; error?: string }>
   logout: () => Promise<{ success: boolean; error?: string }>
   checkAuth: () => Promise<User | null>
   isAuthenticated: boolean
