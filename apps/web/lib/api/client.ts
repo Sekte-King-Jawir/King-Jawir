@@ -71,7 +71,20 @@ export class ApiClient {
         const errorCode = errorObj?.code ?? 'UNKNOWN_ERROR'
 
         // If unauthorized (401) or token invalid, try to refresh token
-        if (response.status === 401 || errorCode === 'UNAUTHORIZED') {
+        if (
+          response.status === 401 ||
+          errorCode === 'UNAUTHORIZED' ||
+          errorCode === 'TOKEN_EXPIRED'
+        ) {
+          // If refresh token already expired, don't attempt rotation — clear auth immediately
+          if (errorCode === 'TOKEN_EXPIRED') {
+            if (typeof window !== 'undefined') {
+              window.dispatchEvent(new Event('auth-cleared'))
+            }
+
+            const message = typeof data.message === 'string' ? data.message : 'Token expired'
+            throw new ApiClientError(message, errorCode, response.status)
+          }
           // Don't try to refresh if we're already refreshing or logging in
           const isAuthRequest =
             endpoint.includes('/auth/refresh') || endpoint.includes('/auth/login')

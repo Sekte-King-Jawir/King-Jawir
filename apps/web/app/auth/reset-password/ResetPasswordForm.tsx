@@ -5,13 +5,14 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { resetPasswordAction } from './action'
 import { initialState } from '../_shared/types'
+import { Card, Button, Alert } from '@repo/ui'
 
 export function ResetPasswordForm({ token }: { token: string }): React.JSX.Element {
   const router = useRouter()
   const [state, formAction, isPending] = useActionState(resetPasswordAction, initialState)
 
   useEffect(() => {
-    if (state.success && state.redirectTo !== undefined && state.redirectTo !== '') {
+    if (state.success && state.redirectTo && state.redirectTo.length > 0) {
       const redirectPath = state.redirectTo
       const timer = setTimeout(() => {
         router.push(redirectPath)
@@ -24,70 +25,75 @@ export function ResetPasswordForm({ token }: { token: string }): React.JSX.Eleme
   }, [state, router])
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-background">
-      <div className="w-full max-w-md p-8 rounded-xl bg-background border border-gray-200 dark:border-gray-700 shadow-md dark:shadow-lg">
-        <h1 className="text-2xl font-bold text-center mb-2 text-foreground">Reset Password</h1>
-        <p className="text-center text-gray-500 mb-6 text-sm">Masukkan password baru Anda</p>
+    <div className="min-h-screen flex items-center justify-center p-4 bg-gray-50 dark:bg-gray-900">
+      <Card className="w-full max-w-md">
+        <div className="text-center mb-6">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Reset Password</h1>
+          <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+            Masukkan password baru Anda
+          </p>
+        </div>
 
-        {state.message !== '' && !state.success && (
-          <div className="bg-red-50 dark:bg-red-950 text-red-600 dark:text-red-400 px-4 py-3 rounded-lg mb-4 text-sm border border-red-200 dark:border-red-800">
-            {state.message}
-          </div>
+        {state.message.length > 0 && !state.success && (
+          <Alert type="error" message={state.message} />
         )}
-        {state.message !== '' && state.success ? (
-          <div className="bg-green-50 dark:bg-green-950 text-green-600 dark:text-green-400 px-4 py-3 rounded-lg mb-4 text-sm border border-green-200 dark:border-green-800">
-            {state.message}
-          </div>
-        ) : null}
+        {state.message.length > 0 && state.success && (
+          <Alert type="success" message={state.message} />
+        )}
 
-        <form action={formAction} className="flex flex-col gap-4">
+        <form action={formAction} className="space-y-4">
           <input type="hidden" name="token" value={token} />
 
-          <div className="flex flex-col gap-2">
-            <label htmlFor="newPassword" className="text-sm font-medium text-foreground">
+          <div>
+            <label
+              htmlFor="newPassword"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
               Password Baru
             </label>
             <input
               type="password"
               id="newPassword"
               name="newPassword"
-              className="px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg text-base bg-background text-foreground transition-colors focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 dark:focus:ring-blue-400/20 placeholder:text-gray-400"
               placeholder="Minimal 6 karakter"
               required
               minLength={6}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
             />
           </div>
 
-          <div className="flex flex-col gap-2">
-            <label htmlFor="confirmPassword" className="text-sm font-medium text-foreground">
+          <div>
+            <label
+              htmlFor="confirmPassword"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
               Konfirmasi Password
             </label>
             <input
               type="password"
               id="confirmPassword"
               name="confirmPassword"
-              className="px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg text-base bg-background text-foreground transition-colors focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 dark:focus:ring-blue-400/20 placeholder:text-gray-400"
               placeholder="Ulangi password baru"
               required
               minLength={6}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
             />
           </div>
 
-          <button
-            type="submit"
-            className="mt-2 px-6 py-3 bg-blue-500 hover:bg-blue-600 disabled:bg-blue-300 text-white rounded-lg text-base font-semibold transition-colors disabled:cursor-not-allowed"
-            disabled={isPending}
-          >
+          <Button type="submit" className="w-full" loading={isPending}>
             {isPending ? 'Memproses...' : 'Reset Password'}
-          </button>
+          </Button>
         </form>
 
-        <p className="text-center mt-6 text-sm text-gray-500">
-          <Link href="/auth/login" className="text-blue-500 font-medium hover:underline">
+        <div className="text-center mt-6">
+          <Link
+            href="/auth/login"
+            className="text-sm text-blue-600 hover:text-blue-500 font-medium"
+          >
             Kembali ke Login
           </Link>
-        </p>
-      </div>
+        </div>
+      </Card>
     </div>
   )
 }

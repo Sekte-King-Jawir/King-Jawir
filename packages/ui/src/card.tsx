@@ -1,27 +1,22 @@
 import { type JSX } from 'react'
 
-export function Card({
-  className,
-  title,
-  children,
-  href,
-}: {
-  className?: string
-  title: string
+interface CardProps {
   children: React.ReactNode
-  href: string
-}): JSX.Element {
+  className?: string
+  padding?: 'none' | 'sm' | 'md' | 'lg'
+}
+
+export function Card({ children, className = '', padding = 'md' }: CardProps): JSX.Element {
+  const paddingClasses = {
+    none: '',
+    sm: 'p-4',
+    md: 'p-6',
+    lg: 'p-8',
+  }
+
   return (
-    <a
-      className={className}
-      href={`${href}?utm_source=create-turbo&utm_medium=basic&utm_campaign=create-turbo"`}
-      rel="noopener noreferrer"
-      target="_blank"
-    >
-      <h2>
-        {title} <span>-&gt;</span>
-      </h2>
-      <p>{children}</p>
-    </a>
+    <div className={`bg-white rounded-lg shadow ${paddingClasses[padding]} ${className}`}>
+      {children}
+    </div>
   )
 }

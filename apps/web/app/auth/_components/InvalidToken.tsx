@@ -1,30 +1,42 @@
 'use client'
 
 import Link from 'next/link'
+import { Card, Alert } from '@repo/ui'
 
 export function InvalidToken(): React.JSX.Element {
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-background">
-      <div className="w-full max-w-md p-8 rounded-xl bg-background border border-gray-200 dark:border-gray-700 shadow-md dark:shadow-lg">
-        <h1 className="text-2xl font-bold text-center mb-2 text-foreground">Reset Password</h1>
-        <div className="bg-red-50 dark:bg-red-950 text-red-600 dark:text-red-400 px-4 py-3 rounded-lg mb-4 text-sm border border-red-200 dark:border-red-800">
-          Token reset password tidak ditemukan atau tidak valid
+    <div className="min-h-screen flex items-center justify-center p-4 bg-gray-50 dark:bg-gray-900">
+      <Card className="w-full max-w-md">
+        <div className="text-center mb-6">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Reset Password</h1>
         </div>
-        <p className="text-center text-gray-500 mb-6 text-sm">
+
+        <Alert
+          type="error"
+          title="Token Tidak Valid"
+          message="Token reset password tidak ditemukan atau tidak valid"
+        />
+
+        <p className="text-center text-gray-600 dark:text-gray-400 mb-6 text-sm">
           Silakan minta link reset password baru
         </p>
+
         <Link
           href="/auth/forgot-password"
-          className="block text-center no-underline mt-4 px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-base font-semibold transition-colors"
+          className="inline-flex items-center justify-center w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors"
         >
           Minta Link Baru
         </Link>
-        <p className="text-center mt-6 text-sm text-gray-500">
-          <Link href="/auth/login" className="text-blue-500 font-medium hover:underline">
+
+        <div className="text-center">
+          <Link
+            href="/auth/login"
+            className="text-sm text-blue-600 hover:text-blue-500 font-medium"
+          >
             Kembali ke Login
           </Link>
-        </p>
-      </div>
+        </div>
+      </Card>
     </div>
   )
 }

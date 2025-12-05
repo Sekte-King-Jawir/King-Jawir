@@ -3,11 +3,13 @@ import { userRepository } from '../shared/user_repository'
 import { refreshTokenRepository } from '../shared/refresh_token_repository'
 
 // Initialize Google OAuth
+const apiPort = process.env['API_PORT'] || 4101
+const defaultRedirect = `http://localhost:${apiPort}/api/auth/google/callback`
+
 const google = new Google(
   process.env['GOOGLE_OAUTH_CLIENT_ID'] || '',
   process.env['GOOGLE_OAUTH_CLIENT_SECRET'] || '',
-  process.env['GOOGLE_REDIRECT_URI'] ||
-    `http://localhost:${process.env['API_PORT'] || 4101}/auth/google/callback`
+  process.env['GOOGLE_REDIRECT_URI'] || defaultRedirect
 )
 
 interface GoogleUserInfo {

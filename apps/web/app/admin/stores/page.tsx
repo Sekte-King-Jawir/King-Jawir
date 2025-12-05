@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { adminApi, type Store } from '@/lib/api/admin'
-import { Card, Alert, LoadingSpinner } from '@/components/ui'
+import { Card, Alert, LoadingSpinner } from '@repo/ui'
 
 export default function StoresPage(): React.ReactElement {
   const [stores, setStores] = useState<Store[]>([])

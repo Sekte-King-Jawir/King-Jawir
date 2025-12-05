@@ -17,7 +17,7 @@ export interface Product {
   }
 }
 
-export interface CartItem {
+export interface CheckoutCartItem {
   id: string
   userId: string
   productId: string
@@ -27,7 +27,7 @@ export interface CartItem {
 }
 
 export interface CheckoutCardProps {
-  items: CartItem[]
+  items: CheckoutCartItem[]
   /** Custom link component (e.g., Next.js Link) */
   linkComponent?:
     | React.ComponentType<{ href: string; className?: string; children: ReactNode }>

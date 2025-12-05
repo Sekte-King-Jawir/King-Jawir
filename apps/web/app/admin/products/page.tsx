@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { adminApi, type Product, type Category } from '@/lib/api/admin'
-import { Card, Alert, LoadingSpinner, Badge } from '@/components/ui'
+import { Card, Alert, LoadingSpinner, Badge } from '@repo/ui'
 import Image from 'next/image'
 
 export default function ProductsPage(): React.ReactElement {
