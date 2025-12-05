@@ -46,7 +46,7 @@ export function CartItem({
   return (
     <div className={styles.cartItem}>
       <div className={styles.imageWrapper}>
-        {image !== null ? (
+        {image ? (
           <Image src={image} alt={name} width={80} height={80} className={styles.image} />
         ) : (
           <div className={styles.placeholder}>

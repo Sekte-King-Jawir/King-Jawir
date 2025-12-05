@@ -257,7 +257,18 @@ export function useSellerProducts(): UseSellerProductsReturn {
       const catRes = await fetch(`${API_URL}/categories`)
       const catData = (await catRes.json()) as CategoriesApiResponse
       if (catData.success && catData.data !== undefined) {
-        setCategories(catData.data)
+        // Normalize data shape: API may return data as Category[] or { categories: Category[] }
+        if (Array.isArray(catData.data)) {
+          setCategories(catData.data)
+        } else {
+          const maybeObj = catData.data as unknown as { categories?: Category[] }
+          if (Array.isArray(maybeObj.categories)) {
+            setCategories(maybeObj.categories)
+          } else {
+            // Fallback to empty array to avoid runtime errors
+            setCategories([])
+          }
+        }
       }
     } catch {
       setError('Gagal memuat data')

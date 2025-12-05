@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { useAuth } from '@/hooks'
 import { formatPrice } from '@/lib/utils'
 import styles from './CartSummary.module.css'
 
@@ -20,7 +19,6 @@ export function CartSummary({
   formatPrice: propFormatPrice,
 }: CartSummaryProps): React.JSX.Element {
   const [_isGuestCheckout, _setIsGuestCheckout] = useState(false)
-  const { _user } = useAuth()
   const _router = useRouter()
 
   const handleCheckout = async (): Promise<void> => {

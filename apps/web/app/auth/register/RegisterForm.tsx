@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { register } from '@/lib/api/services'
 import { useAuth } from '@/hooks'
 import styles from './RegisterForm.module.css'
 
@@ -12,7 +11,7 @@ export function RegisterForm(): React.JSX.Element {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const { login: authLogin } = useAuth()
+  const { register: authRegister } = useAuth()
   const router = useRouter()
 
   const handleSubmit = async (e: React.FormEvent): Promise<void> => {
@@ -21,12 +20,11 @@ export function RegisterForm(): React.JSX.Element {
     setIsSubmitting(true)
 
     try {
-      const response = await register(name, email, password)
+      const response = await authRegister({ name, email, password })
       if (response.success) {
-        await authLogin(response.data.token)
         router.push('/')
       } else {
-        setError(response.message || 'Registrasi failed')
+        setError(response.error || 'Registrasi failed')
       }
     } catch (err) {
       setError('Terjadi kesalahan. Silakan coba lagi.')

@@ -2,9 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { login } from '@/lib/api/services'
 import { useAuth } from '@/hooks'
-import styles from './LoginForm.module.css'
 
 export function LoginForm(): React.JSX.Element {
   const [email, setEmail] = useState('')
@@ -20,12 +18,11 @@ export function LoginForm(): React.JSX.Element {
     setIsSubmitting(true)
 
     try {
-      const response = await login(email, password)
+      const response = await authLogin({ email, password })
       if (response.success) {
-        await authLogin(response.data.token)
         router.push('/')
       } else {
-        setError(response.message || 'Login failed')
+        setError(response.error || 'Login failed')
       }
     } catch (err) {
       setError('Terjadi kesalahan. Silakan coba lagi.')
@@ -36,13 +33,20 @@ export function LoginForm(): React.JSX.Element {
   }
 
   return (
-    <form onSubmit={handleSubmit} className={styles.form}>
-      <h2 className={styles.title}>Masuk ke Akun</h2>
+    <form
+      onSubmit={handleSubmit}
+      className="max-w-md mx-auto p-6 space-y-4 bg-white/50 dark:bg-slate-900/60 rounded-md shadow-sm"
+    >
+      <h2 className="text-2xl font-semibold">Masuk ke Akun</h2>
 
-      {error && <div className={styles.error}>{error}</div>}
+      {error && (
+        <div className="text-sm text-red-600 bg-red-50 dark:bg-red-900/30 p-2 rounded">{error}</div>
+      )}
 
-      <div className={styles.inputGroup}>
-        <label htmlFor="email">Email</label>
+      <div className="flex flex-col gap-2">
+        <label htmlFor="email" className="text-sm font-medium">
+          Email
+        </label>
         <input
           type="email"
           id="email"
@@ -50,12 +54,14 @@ export function LoginForm(): React.JSX.Element {
           onChange={e => setEmail(e.target.value)}
           placeholder="masukkan email Anda"
           required
-          className={styles.input}
+          className="w-full border border-slate-300 dark:border-slate-700 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 dark:bg-slate-800"
         />
       </div>
 
-      <div className={styles.inputGroup}>
-        <label htmlFor="password">Password</label>
+      <div className="flex flex-col gap-2">
+        <label htmlFor="password" className="text-sm font-medium">
+          Password
+        </label>
         <input
           type="password"
           id="password"
@@ -63,13 +69,13 @@ export function LoginForm(): React.JSX.Element {
           onChange={e => setPassword(e.target.value)}
           placeholder="masukkan password Anda"
           required
-          className={styles.input}
+          className="w-full border border-slate-300 dark:border-slate-700 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 dark:bg-slate-800"
         />
       </div>
 
       <button
         type="submit"
-        className={styles.submitButton}
+        className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white py-2 rounded mt-2"
         disabled={isSubmitting || !email || !password}
       >
         {isSubmitting ? 'Masuk...' : 'Masuk'}
