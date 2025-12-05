@@ -10,11 +10,14 @@ export interface StoreInfoCardProps {
 }
 
 export function StoreInfoCard({ store, onEdit }: StoreInfoCardProps): React.JSX.Element {
-  const memberSince = store.createdAt && store.createdAt !== '' ? new Date(store.createdAt).toLocaleDateString('id-ID', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  }) : 'Unknown'
+  const memberSince =
+    store.createdAt && store.createdAt !== ''
+      ? new Date(store.createdAt).toLocaleDateString('id-ID', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        })
+      : 'Unknown'
 
   return (
     <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">

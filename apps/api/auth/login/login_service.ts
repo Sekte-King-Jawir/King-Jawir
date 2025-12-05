@@ -31,7 +31,7 @@ export const loginService = {
       sub: user.id,
       role: user.role,
       emailVerified: user.emailVerified,
-      exp: Math.floor(Date.now() / 1000) + (15 * 60), // 15 minutes
+      exp: Math.floor(Date.now() / 1000) + 15 * 60, // 15 minutes
     })
     console.log('Access token generated')
     const refreshToken = await jwtRefresh.sign({ sub: user.id })

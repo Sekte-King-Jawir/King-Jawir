@@ -24,7 +24,13 @@ export default function SellerDashboardPage(): React.JSX.Element {
   useEffect(() => {
     if (!authLoading && !isAuthenticated) {
       router.push('/seller/auth/login?redirect=/seller/dashboard')
-    } else if (!authLoading && isAuthenticated && user && (user.role !== 'SELLER' && user.role !== 'ADMIN')) {
+    } else if (
+      !authLoading &&
+      isAuthenticated &&
+      user &&
+      user.role !== 'SELLER' &&
+      user.role !== 'ADMIN'
+    ) {
       router.push('/seller/store')
     }
   }, [authLoading, isAuthenticated, user, router])
