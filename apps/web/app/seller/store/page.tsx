@@ -154,7 +154,7 @@ export default function SellerStorePage(): React.JSX.Element {
                   </Link>
 
                   <Link
-                    href={`/stores/${store.slug}`}
+                    href={store?.slug ? `/stores/${store.slug}` : '#'}
                     className="p-4 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-600 transition-colors group"
                   >
                     <span className="text-2xl mb-2 block">👁️</span>

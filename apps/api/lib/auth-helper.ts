@@ -46,12 +46,16 @@ export const authDerive = async ({
   }
 
   try {
-    const payload = (await jwtAccess.verify(token)) as JWTPayload | false
-    if (!payload) {
+    const payload = (await jwtAccess.verify(token)) as any
+    if (!payload || typeof payload !== 'object') {
+      return { user: null }
+    }
+    const userId = payload.id || payload.sub
+    if (typeof userId !== 'string' || typeof payload.role !== 'string') {
       return { user: null }
     }
     return {
-      user: { id: payload.sub, role: payload.role },
+      user: { id: userId, role: payload.role },
     }
   } catch {
     return { user: null }

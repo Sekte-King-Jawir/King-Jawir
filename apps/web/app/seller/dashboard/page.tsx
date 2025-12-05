@@ -3,7 +3,7 @@
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { useSellerDashboard, useSellerUrls, useSellerAuth } from '@/hooks'
+import { useSellerDashboard, useSellerUrls, useAuth } from '@/hooks'
 import {
   SellerNavbar,
   SellerSidebar,
@@ -15,17 +15,25 @@ import {
 export default function SellerDashboardPage(): React.JSX.Element {
   const router = useRouter()
   const urls = useSellerUrls()
-  const { user, isLoading: authLoading, isSeller } = useSellerAuth()
+  const { user, loading: authLoading, isAuthenticated } = useAuth()
   const { stats, recentOrders, topProducts, isLoading, error, refresh } = useSellerDashboard()
 
-  // Redirect if not seller
+  const isSeller = user && (user.role === 'SELLER' || user.role === 'ADMIN')
+
+  // Redirect if not authenticated or not seller
   useEffect(() => {
-    if (!authLoading && user === null) {
+    if (!authLoading && !isAuthenticated) {
       router.push('/seller/auth/login?redirect=/seller/dashboard')
-    } else if (!authLoading && !isSeller) {
+    } else if (
+      !authLoading &&
+      isAuthenticated &&
+      user &&
+      user.role !== 'SELLER' &&
+      user.role !== 'ADMIN'
+    ) {
       router.push('/seller/store')
     }
-  }, [authLoading, user, isSeller, router])
+  }, [authLoading, isAuthenticated, user, router])
 
   // Loading state
   if (authLoading || isLoading) {

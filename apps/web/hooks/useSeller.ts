@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { API_ENDPOINTS } from '@/lib/config/api'
 import type {
-  SellerStore,
+  Store,
   CreateStoreData,
   UpdateStoreData,
   StoreApiResponse,
@@ -18,6 +18,16 @@ import type {
   User,
   AuthMeResponse,
 } from '@/types'
+
+type SellerStore = Store
+
+interface StoreApiResponse {
+  success: boolean
+  message: string
+  data?: {
+    store: SellerStore
+  }
+}
 
 const API_URL = `${process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4101'}`
 
@@ -112,7 +122,7 @@ export function useSellerStore(): UseSellerStoreReturn {
     setSuccess('')
 
     try {
-      const res = await fetch(`${API_URL}/store`, {
+      const res = await fetch(`${API_URL}${API_ENDPOINTS.SELLER.STORE}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',

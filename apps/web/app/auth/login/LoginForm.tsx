@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useAuth } from '@/hooks'
 import { API_CONFIG, API_ENDPOINTS } from '@/lib/config/api'
 import { Button, Card, Alert } from '@repo/ui'
@@ -13,6 +13,9 @@ export function LoginForm(): React.JSX.Element {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const { login: authLogin } = useAuth()
   const router = useRouter()
+  const searchParams = useSearchParams()
+
+  const redirect = searchParams?.get('redirect') ?? '/'
 
   const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault()
@@ -22,7 +25,22 @@ export function LoginForm(): React.JSX.Element {
     try {
       const response = await authLogin({ email, password })
       if (response.success) {
-        router.push('/')
+        if (response.user !== null) {
+          const user = response.user
+          // If user is seller, always redirect to seller dashboard
+          if (user.role === 'SELLER' || user.role === 'ADMIN') {
+            router.push('/seller/dashboard')
+            return
+          }
+          // Check if redirecting to seller area but user is not seller
+          if (redirect === '/seller' && user.role !== 'SELLER' && user.role !== 'ADMIN') {
+            setError('Seller only')
+            return
+          }
+          router.push(redirect)
+        } else {
+          setError('Login failed: user data missing')
+        }
       } else {
         setError(response.error ?? 'Login failed')
       }

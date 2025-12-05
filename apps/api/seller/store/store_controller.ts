@@ -5,6 +5,17 @@ export const sellerStoreController = {
     return sellerStoreService.getStore(userId)
   },
 
+  async createStore(
+    userId: string,
+    data: {
+      name: string
+      description?: string
+      logo?: string
+    }
+  ) {
+    return sellerStoreService.createStore(userId, data)
+  },
+
   async updateStore(
     userId: string,
     data: {
