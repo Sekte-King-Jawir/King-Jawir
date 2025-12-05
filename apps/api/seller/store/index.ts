@@ -1,23 +1,21 @@
 import { Elysia, t } from 'elysia'
 import { sellerStoreController } from './store_controller'
-import { jwtPlugin, authDerive, isSeller } from '../../lib/auth-helper'
+import { isSeller } from '../../lib/auth-helper'
 import { errorResponse, ErrorCode } from '../../lib/response'
 
+// Note: jwtPlugin & authDerive sudah di-apply di parent (seller/index.ts)
 export const sellerStoreRoutes = new Elysia({ prefix: '/api/seller/store' })
-  .use(jwtPlugin)
-  .derive(authDerive)
-
   // GET /seller/store - Get store profile
   .get(
     '/',
-    async ({ user, set }) => {
+    async ({ user, set }: any) => {
       if (!user) {
         set.status = 401
-        return errorResponse('Unauthorized - Please login', ErrorCode.UNAUTHORIZED)
+        return errorResponse('Unauthorized - Silakan login sebagai seller', ErrorCode.UNAUTHORIZED)
       }
       if (!isSeller(user)) {
         set.status = 403
-        return errorResponse('Forbidden - Seller only', ErrorCode.FORBIDDEN)
+        return errorResponse('Forbidden - Hanya seller yang bisa mengakses', ErrorCode.FORBIDDEN)
       }
 
       const result = await sellerStoreController.getStore(user.id)
@@ -40,14 +38,14 @@ export const sellerStoreRoutes = new Elysia({ prefix: '/api/seller/store' })
   // PUT /seller/store - Update store profile
   .put(
     '/',
-    async ({ user, body, set }) => {
+    async ({ user, body, set }: any) => {
       if (!user) {
         set.status = 401
-        return errorResponse('Unauthorized - Please login', ErrorCode.UNAUTHORIZED)
+        return errorResponse('Unauthorized - Silakan login sebagai seller', ErrorCode.UNAUTHORIZED)
       }
       if (!isSeller(user)) {
         set.status = 403
-        return errorResponse('Forbidden - Seller only', ErrorCode.FORBIDDEN)
+        return errorResponse('Forbidden - Hanya seller yang bisa mengakses', ErrorCode.FORBIDDEN)
       }
 
       const result = await sellerStoreController.updateStore(user.id, body)

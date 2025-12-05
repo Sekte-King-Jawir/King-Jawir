@@ -1,25 +1,23 @@
 import { Elysia, t } from 'elysia'
 import { sellerPriceAnalysisController } from './price_analysis_controller'
-import { jwtPlugin, authDerive, isSeller } from '../../lib/auth-helper'
+import { isSeller } from '../../lib/auth-helper'
 import { errorResponse, ErrorCode } from '../../lib/response'
 
+// Note: jwtPlugin & authDerive sudah di-apply di parent (seller/index.ts)
 export const sellerPriceAnalysisRoutes = new Elysia({
   prefix: '/api/seller/price-analysis',
 })
-  .use(jwtPlugin)
-  .derive(authDerive)
-
   // GET /seller/price-analysis - Full analysis sebelum create product
   .get(
     '/',
-    async ({ user, query, set }) => {
+    async ({ user, query, set }: any) => {
       if (!user) {
         set.status = 401
-        return errorResponse('Unauthorized - Please login', ErrorCode.UNAUTHORIZED)
+        return errorResponse('Unauthorized - Silakan login sebagai seller', ErrorCode.UNAUTHORIZED)
       }
       if (!isSeller(user)) {
         set.status = 403
-        return errorResponse('Forbidden - Seller only', ErrorCode.FORBIDDEN)
+        return errorResponse('Forbidden - Hanya seller yang bisa mengakses', ErrorCode.FORBIDDEN)
       }
 
       const result = await sellerPriceAnalysisController.analyze(
@@ -66,14 +64,14 @@ export const sellerPriceAnalysisRoutes = new Elysia({
   // POST /seller/price-analysis/quick-check - Quick validation
   .post(
     '/quick-check',
-    async ({ user, body, set }) => {
+    async ({ user, body, set }: any) => {
       if (!user) {
         set.status = 401
-        return errorResponse('Unauthorized - Please login', ErrorCode.UNAUTHORIZED)
+        return errorResponse('Unauthorized - Silakan login sebagai seller', ErrorCode.UNAUTHORIZED)
       }
       if (!isSeller(user)) {
         set.status = 403
-        return errorResponse('Forbidden - Seller only', ErrorCode.FORBIDDEN)
+        return errorResponse('Forbidden - Hanya seller yang bisa mengakses', ErrorCode.FORBIDDEN)
       }
 
       const result = await sellerPriceAnalysisController.quickCheck(

@@ -2,6 +2,8 @@
 
 Modul terpisah untuk seller dengan authentication dan product management yang independen dari customer.
 
+> **⚠️ SECURITY:** Semua endpoint seller (kecuali `/api/seller/auth/*`) **WAJIB** dilindungi authentication. Lihat [AUTHENTICATION.md](./AUTHENTICATION.md) untuk detail implementasi.
+
 ## Overview
 
 Seller CMS menyediakan sistem lengkap untuk seller mengelola toko dan produk mereka:
@@ -9,6 +11,10 @@ Seller CMS menyediakan sistem lengkap untuk seller mengelola toko dan produk mer
 - **Product Management** (CRUD) untuk produk toko seller
 - **Store Management** untuk update profile toko
 - **🆕 Price Analysis** - AI-powered price analysis sebelum menambah produk
+
+## Documentation
+- 📖 [AUTHENTICATION.md](./AUTHENTICATION.md) - Authentication & Authorization pattern
+- 📖 [price-analysis/INTEGRATION_GUIDE.md](./price-analysis/INTEGRATION_GUIDE.md) - Price Analysis integration guide
 
 ## Endpoints
 

@@ -1,23 +1,22 @@
 import { Elysia, t } from 'elysia'
 import { sellerProductController } from './product_controller'
-import { jwtPlugin, authDerive, isSeller } from '../../lib/auth-helper'
+import { isSeller } from '../../lib/auth-helper'
 import { errorResponse, ErrorCode } from '../../lib/response'
 
+// Note: jwtPlugin & authDerive sudah di-apply di parent (seller/index.ts)
 export const sellerProductRoutes = new Elysia({ prefix: '/api/seller/products' })
-  .use(jwtPlugin)
-  .derive(authDerive)
 
   // GET /seller/products - List all products dari toko seller
   .get(
     '/',
-    async ({ user, query, set }) => {
+    async ({ user, query, set }: any) => {
       if (!user) {
         set.status = 401
-        return errorResponse('Unauthorized - Please login', ErrorCode.UNAUTHORIZED)
+        return errorResponse('Unauthorized - Silakan login sebagai seller', ErrorCode.UNAUTHORIZED)
       }
       if (!isSeller(user)) {
         set.status = 403
-        return errorResponse('Forbidden - Seller only', ErrorCode.FORBIDDEN)
+        return errorResponse('Forbidden - Hanya seller yang bisa mengakses', ErrorCode.FORBIDDEN)
       }
 
       const page = parseInt(query.page || '1')
@@ -47,14 +46,14 @@ export const sellerProductRoutes = new Elysia({ prefix: '/api/seller/products' }
   // GET /seller/products/:id - Get single product
   .get(
     '/:id',
-    async ({ user, params, set }) => {
+    async ({ user, params, set }: any) => {
       if (!user) {
         set.status = 401
-        return errorResponse('Unauthorized - Please login', ErrorCode.UNAUTHORIZED)
+        return errorResponse('Unauthorized - Silakan login sebagai seller', ErrorCode.UNAUTHORIZED)
       }
       if (!isSeller(user)) {
         set.status = 403
-        return errorResponse('Forbidden - Seller only', ErrorCode.FORBIDDEN)
+        return errorResponse('Forbidden - Hanya seller yang bisa mengakses', ErrorCode.FORBIDDEN)
       }
 
       const result = await sellerProductController.getProductById(user.id, params.id)
@@ -80,14 +79,14 @@ export const sellerProductRoutes = new Elysia({ prefix: '/api/seller/products' }
   // POST /seller/products - Create new product
   .post(
     '/',
-    async ({ user, body, set }) => {
+    async ({ user, body, set }: any) => {
       if (!user) {
         set.status = 401
-        return errorResponse('Unauthorized - Please login', ErrorCode.UNAUTHORIZED)
+        return errorResponse('Unauthorized - Silakan login sebagai seller', ErrorCode.UNAUTHORIZED)
       }
       if (!isSeller(user)) {
         set.status = 403
-        return errorResponse('Forbidden - Seller only', ErrorCode.FORBIDDEN)
+        return errorResponse('Forbidden - Hanya seller yang bisa mengakses', ErrorCode.FORBIDDEN)
       }
 
       const result = await sellerProductController.createProduct(user.id, body)
@@ -118,14 +117,14 @@ export const sellerProductRoutes = new Elysia({ prefix: '/api/seller/products' }
   // PUT /seller/products/:id - Update product
   .put(
     '/:id',
-    async ({ user, params, body, set }) => {
+    async ({ user, params, body, set }: any) => {
       if (!user) {
         set.status = 401
-        return errorResponse('Unauthorized - Please login', ErrorCode.UNAUTHORIZED)
+        return errorResponse('Unauthorized - Silakan login sebagai seller', ErrorCode.UNAUTHORIZED)
       }
       if (!isSeller(user)) {
         set.status = 403
-        return errorResponse('Forbidden - Seller only', ErrorCode.FORBIDDEN)
+        return errorResponse('Forbidden - Hanya seller yang bisa mengakses', ErrorCode.FORBIDDEN)
       }
 
       const result = await sellerProductController.updateProduct(user.id, params.id, body)
@@ -159,14 +158,14 @@ export const sellerProductRoutes = new Elysia({ prefix: '/api/seller/products' }
   // DELETE /seller/products/:id - Delete product
   .delete(
     '/:id',
-    async ({ user, params, set }) => {
+    async ({ user, params, set }: any) => {
       if (!user) {
         set.status = 401
-        return errorResponse('Unauthorized - Please login', ErrorCode.UNAUTHORIZED)
+        return errorResponse('Unauthorized - Silakan login sebagai seller', ErrorCode.UNAUTHORIZED)
       }
       if (!isSeller(user)) {
         set.status = 403
-        return errorResponse('Forbidden - Seller only', ErrorCode.FORBIDDEN)
+        return errorResponse('Forbidden - Hanya seller yang bisa mengakses', ErrorCode.FORBIDDEN)
       }
 
       const result = await sellerProductController.deleteProduct(user.id, params.id)
