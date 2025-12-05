@@ -16,6 +16,7 @@ const jwtRefreshPlugin = jwt({
 })
 
 export const sellerAuthRoutes = new Elysia({ prefix: '/auth' })
+  .use(jwtPlugin)
   .use(jwtRefreshPlugin)
   .derive(authDerive)
 

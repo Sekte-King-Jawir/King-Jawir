@@ -46,13 +46,15 @@ export const sellerStoreService = {
       finalSlug = `${slug}-${randomSuffix}`
     }
 
-    const store = await storeRepository.create({
+    const storeData: any = {
       userId,
       name: data.name,
       slug: finalSlug,
-      description: data.description || undefined,
-      logo: data.logo || undefined,
-    })
+    }
+    if (data.description != null) storeData.description = data.description
+    if (data.logo != null) storeData.logo = data.logo
+
+    const store = await storeRepository.create(storeData)
 
     // Map to SellerStore format
     const mappedStore = {
