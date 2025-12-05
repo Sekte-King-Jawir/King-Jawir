@@ -94,7 +94,9 @@ export function RecentOrdersTable({ orders, urls }: RecentOrdersTableProps): Rea
                 </td>
                 <td className="px-4 py-3">
                   <div className="text-sm text-slate-900 dark:text-white">{order.user.name}</div>
-                  <div className="text-xs text-slate-500 dark:text-slate-400">{order.user.email}</div>
+                  <div className="text-xs text-slate-500 dark:text-slate-400">
+                    {order.user.email}
+                  </div>
                 </td>
                 <td className="px-4 py-3">
                   <span

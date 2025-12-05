@@ -4,12 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useSellerStore, useSellerUrls } from '@/hooks'
-import {
-  SellerNavbar,
-  SellerSidebar,
-  StoreInfoCard,
-  StoreForm,
-} from '@repo/ui'
+import { SellerNavbar, SellerSidebar, StoreInfoCard, StoreForm } from '@repo/ui'
 import type { CreateStoreData, UpdateStoreData } from '@/types'
 
 export default function SellerStorePage(): React.JSX.Element {

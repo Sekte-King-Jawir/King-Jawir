@@ -47,7 +47,10 @@ export function TopProductsCard({ products, urls }: TopProductsCardProps): React
 
       <div className="divide-y divide-slate-200 dark:divide-slate-700">
         {products.map(product => (
-          <div key={product.id} className="p-4 flex items-center gap-4 hover:bg-slate-50 dark:hover:bg-slate-700/30">
+          <div
+            key={product.id}
+            className="p-4 flex items-center gap-4 hover:bg-slate-50 dark:hover:bg-slate-700/30"
+          >
             <div className="w-12 h-12 bg-slate-100 dark:bg-slate-700 rounded-lg overflow-hidden shrink-0">
               {product.image !== null && product.image !== '' ? (
                 <Image
@@ -73,9 +76,7 @@ export function TopProductsCard({ products, urls }: TopProductsCardProps): React
               <p className="text-sm font-medium text-slate-900 dark:text-white">
                 {formatCurrency(product.price)}
               </p>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
-                Stok: {product.stock}
-              </p>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Stok: {product.stock}</p>
             </div>
           </div>
         ))}

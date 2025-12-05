@@ -8,7 +8,7 @@ export interface OrderStatsChartProps {
 
 export function OrderStatsChart({ stats }: OrderStatsChartProps): React.JSX.Element {
   const total = stats.completedOrders + stats.pendingOrders + stats.cancelledOrders
-  
+
   const getPercentage = (value: number): number => {
     if (total === 0) return 0
     return Math.round((value / total) * 100)
@@ -48,15 +48,16 @@ export function OrderStatsChart({ stats }: OrderStatsChartProps): React.JSX.Elem
         <>
           {/* Progress Bar */}
           <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden flex mb-4">
-            {items.map((item, index) => (
-              item.percentage > 0 && (
-                <div
-                  key={index}
-                  className={`${item.color} transition-all duration-300`}
-                  style={{ width: `${item.percentage}%` }}
-                />
-              )
-            ))}
+            {items.map(
+              (item, index) =>
+                item.percentage > 0 && (
+                  <div
+                    key={index}
+                    className={`${item.color} transition-all duration-300`}
+                    style={{ width: `${item.percentage}%` }}
+                  />
+                )
+            )}
           </div>
 
           {/* Legend */}
