@@ -66,7 +66,7 @@ export const sellerProductService = {
       // Tambahkan random suffix jika slug sudah ada
       const randomSuffix = Math.random().toString(36).substring(2, 8)
       const newSlug = `${slug}-${randomSuffix}`
-      
+
       const productData = {
         storeId: store.id,
         categoryId: data.categoryId,

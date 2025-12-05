@@ -13,7 +13,12 @@ export const userRepository = {
     return prisma.user.findUnique({ where: { googleId } })
   },
 
-  async create(data: { email: string; password: string; name: string; role?: 'CUSTOMER' | 'SELLER' | 'ADMIN' }) {
+  async create(data: {
+    email: string
+    password: string
+    name: string
+    role?: 'CUSTOMER' | 'SELLER' | 'ADMIN'
+  }) {
     return prisma.user.create({
       data: {
         email: data.email,

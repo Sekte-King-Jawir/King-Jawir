@@ -93,13 +93,19 @@ const app = new Elysia()
         },
         tags: [
           { name: 'Auth', description: 'Customer authentication endpoints' },
-          { name: 'Seller Auth', description: 'Seller authentication endpoints (separated from customer)' },
+          {
+            name: 'Seller Auth',
+            description: 'Seller authentication endpoints (separated from customer)',
+          },
           { name: 'Profile', description: 'User profile management' },
           { name: 'Store', description: 'Store management' },
           { name: 'Seller Store', description: 'Seller store profile management' },
           { name: 'Categories', description: 'Product categories' },
           { name: 'Products', description: 'Product management' },
-          { name: 'Seller Products', description: 'Seller product CMS (CRUD for seller-owned products)' },
+          {
+            name: 'Seller Products',
+            description: 'Seller product CMS (CRUD for seller-owned products)',
+          },
           { name: 'Cart', description: 'Shopping cart' },
           { name: 'Orders', description: 'Order management' },
           { name: 'Reviews', description: 'Product reviews' },

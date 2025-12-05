@@ -24,7 +24,10 @@ export const sellerRefreshService = {
 
     // Validasi role - harus SELLER atau ADMIN
     if (user.role !== 'SELLER' && user.role !== 'ADMIN') {
-      return errorResponse('Akses ditolak. Hanya seller yang bisa refresh token di sini.', ErrorCode.FORBIDDEN)
+      return errorResponse(
+        'Akses ditolak. Hanya seller yang bisa refresh token di sini.',
+        ErrorCode.FORBIDDEN
+      )
     }
 
     // Generate tokens baru
