@@ -16,13 +16,13 @@ const MINIO_AVATAR_PREFIX = process.env['MINIO_AVATAR_PREFIX'] || 'avatars'
 const parseEndpoint = (endpoint: string): { host: string; port?: number } => {
   const urlPattern = /^(https?:\/\/)?([^:\/\s]+)(:(\d+))?/
   const match = endpoint.match(urlPattern)
-  
+
   if (match && match[2]) {
     const host = match[2]
     const port = match[4] ? parseInt(match[4], 10) : undefined
     return port !== undefined ? { host, port } : { host }
   }
-  
+
   return { host: endpoint }
 }
 
@@ -44,11 +44,11 @@ export const minioClient = new Minio.Client({
 export async function initMinIO(): Promise<void> {
   try {
     const bucketExists = await minioClient.bucketExists(MINIO_BUCKET_NAME)
-    
+
     if (!bucketExists) {
       await minioClient.makeBucket(MINIO_BUCKET_NAME, MINIO_REGION)
       logger.info(`✅ MinIO bucket created: ${MINIO_BUCKET_NAME}`)
-      
+
       // Set bucket policy to public read for images
       const policy = {
         Version: '2012-10-17',
@@ -61,7 +61,7 @@ export async function initMinIO(): Promise<void> {
           },
         ],
       }
-      
+
       await minioClient.setBucketPolicy(MINIO_BUCKET_NAME, JSON.stringify(policy))
       logger.info(`✅ MinIO bucket policy set to public read`)
     } else {
@@ -79,10 +79,7 @@ export async function initMinIO(): Promise<void> {
  * @param folder - Folder prefix (e.g., 'avatars', 'products')
  * @returns Public URL of uploaded file
  */
-export async function uploadToMinIO(
-  file: File,
-  folder: string = 'uploads'
-): Promise<string> {
+export async function uploadToMinIO(file: File, folder: string = 'uploads'): Promise<string> {
   try {
     // Generate unique filename
     const timestamp = Date.now()
@@ -90,25 +87,19 @@ export async function uploadToMinIO(
     const extension = file.name.split('.').pop() || 'jpg'
     const filename = `${timestamp}-${randomString}.${extension}`
     const objectName = `${folder}/${filename}`
-    
+
     // Convert File to Buffer
     const buffer = Buffer.from(await file.arrayBuffer())
-    
+
     // Upload to MinIO
-    await minioClient.putObject(
-      MINIO_BUCKET_NAME,
-      objectName,
-      buffer,
-      buffer.length,
-      {
-        'Content-Type': file.type || 'application/octet-stream',
-      }
-    )
-    
+    await minioClient.putObject(MINIO_BUCKET_NAME, objectName, buffer, buffer.length, {
+      'Content-Type': file.type || 'application/octet-stream',
+    })
+
     // Return public URL
     const publicUrl = `${MINIO_PUBLIC_URL}/${MINIO_BUCKET_NAME}/${objectName}`
     logger.info(`✅ File uploaded to MinIO: ${publicUrl}`)
-    
+
     return publicUrl
   } catch (error) {
     logger.error({ err: error }, '❌ Failed to upload to MinIO')
@@ -148,18 +139,18 @@ export async function deleteFromMinIO(objectUrl: string): Promise<boolean> {
     // Extract object name from URL
     const urlPattern = new RegExp(`${MINIO_PUBLIC_URL}/${MINIO_BUCKET_NAME}/(.+)`)
     const match = objectUrl.match(urlPattern)
-    
+
     if (!match || !match[1]) {
       logger.warn(`⚠️ Invalid MinIO URL format: ${objectUrl}`)
       return false
     }
-    
+
     const objectName = match[1]
-    
+
     // Delete from MinIO
     await minioClient.removeObject(MINIO_BUCKET_NAME, objectName)
     logger.info(`✅ File deleted from MinIO: ${objectName}`)
-    
+
     return true
   } catch (error) {
     logger.error({ err: error }, '❌ Failed to delete from MinIO')
@@ -178,11 +169,7 @@ export async function getPresignedUrl(
   expirySeconds: number = 7 * 24 * 60 * 60
 ): Promise<string> {
   try {
-    return await minioClient.presignedGetObject(
-      MINIO_BUCKET_NAME,
-      objectName,
-      expirySeconds
-    )
+    return await minioClient.presignedGetObject(MINIO_BUCKET_NAME, objectName, expirySeconds)
   } catch (error) {
     logger.error({ err: error }, '❌ Failed to generate presigned URL')
     throw new Error('Failed to generate presigned URL')

@@ -18,7 +18,7 @@ import { logger } from './lib/logger'
 import { initMinIO } from './lib/minio'
 
 // Initialize MinIO on startup
-await initMinIO().catch((error) => {
+await initMinIO().catch(error => {
   logger.warn('⚠️ MinIO initialization failed, continuing without it:', error)
 })
 

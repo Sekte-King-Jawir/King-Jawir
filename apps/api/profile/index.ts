@@ -98,11 +98,7 @@ export const profileRoutes = new Elysia({ prefix: '/api/profile' })
         const avatarUrl = await uploadAvatar(body.avatar, user.id)
 
         // Update user profile with new avatar URL
-        const result = await profileController.updateAvatar(
-          user,
-          { avatarUrl },
-          set
-        )
+        const result = await profileController.updateAvatar(user, { avatarUrl }, set)
 
         return result
       } catch (error) {
