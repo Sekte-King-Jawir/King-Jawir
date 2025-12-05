@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { adminApi, type Stats } from '@/lib/api/admin'
-import { Card, Alert, LoadingSpinner, Badge } from '@/components/ui'
+import { Card, Alert, LoadingSpinner, Badge } from '@repo/ui'
 
 export default function OrdersPage(): React.ReactElement {
   const [stats, setStats] = useState<Stats | null>(null)

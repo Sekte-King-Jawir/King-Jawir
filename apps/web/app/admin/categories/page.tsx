@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { adminApi, type Category } from '@/lib/api/admin'
-import { Card, Alert, LoadingSpinner } from '@/components/ui'
+import { Card, Alert, LoadingSpinner } from '@repo/ui'
 
 export default function CategoriesPage(): React.ReactElement {
   const [categories, setCategories] = useState<Category[]>([])

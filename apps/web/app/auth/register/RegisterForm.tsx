@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/hooks'
+import { Button, Card, Alert } from '@repo/ui'
 
 export function RegisterForm(): React.JSX.Element {
   const [name, setName] = useState('')
@@ -33,69 +34,89 @@ export function RegisterForm(): React.JSX.Element {
     }
   }
 
+  const onSubmit = (e: React.FormEvent): void => {
+    void handleSubmit(e)
+  }
+
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="max-w-md mx-auto p-6 space-y-4 bg-white/50 dark:bg-slate-900/60 rounded-md shadow-sm"
-    >
-      <h2 className="text-2xl font-semibold">Buat Akun Baru</h2>
+    <Card className="max-w-md mx-auto">
+      <form onSubmit={onSubmit} className="space-y-6">
+        <div className="text-center">
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Buat Akun Baru</h2>
+          <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+            Bergabunglah dengan King Jawir dan mulai berbelanja!
+          </p>
+        </div>
 
-      {error && (
-        <div className="text-sm text-red-600 bg-red-50 dark:bg-red-900/30 p-2 rounded">{error}</div>
-      )}
+        {error.length > 0 && (
+          <Alert type="error" message={error} />
+        )}
 
-      <div className="flex flex-col gap-2">
-        <label htmlFor="name" className="text-sm font-medium">
-          Nama Lengkap
-        </label>
-        <input
-          type="text"
-          id="name"
-          value={name}
-          onChange={e => setName(e.target.value)}
-          placeholder="masukkan nama Anda"
-          required
-          className="w-full border border-slate-300 dark:border-slate-700 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 dark:bg-slate-800"
-        />
-      </div>
+        <div className="space-y-4">
+          <div>
+            <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              Nama Lengkap
+            </label>
+            <input
+              type="text"
+              id="name"
+              value={name}
+              onChange={e => setName(e.target.value)}
+              placeholder="masukkan nama Anda"
+              required
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+            />
+          </div>
 
-      <div className="flex flex-col gap-2">
-        <label htmlFor="email" className="text-sm font-medium">
-          Email
-        </label>
-        <input
-          type="email"
-          id="email"
-          value={email}
-          onChange={e => setEmail(e.target.value)}
-          placeholder="masukkan email Anda"
-          required
-          className="w-full border border-slate-300 dark:border-slate-700 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 dark:bg-slate-800"
-        />
-      </div>
+          <div>
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              Email
+            </label>
+            <input
+              type="email"
+              id="email"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              placeholder="masukkan email Anda"
+              required
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+            />
+          </div>
 
-      <div className="flex flex-col gap-2">
-        <label htmlFor="password" className="text-sm font-medium">
-          Password
-        </label>
-        <input
-          type="password"
-          id="password"
-          value={password}
-          onChange={e => setPassword(e.target.value)}
-          placeholder="masukkan password Anda"
-          required
-          className="w-full border border-slate-300 dark:border-slate-700 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 dark:bg-slate-800"
-        />
-      </div>
+          <div>
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              Password
+            </label>
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              placeholder="masukkan password Anda"
+              required
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+            />
+          </div>
+        </div>
 
-      <button
-        type="submit"
-        className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white py-2 rounded mt-2"
-        disabled={isSubmitting || name.trim() === '' || email.trim() === '' || password.trim() === ''}
-      >
-        {isSubmitting ? 'Mendaftar...' : 'Daftar'}
-      </button>
-    </form>
+        <Button
+          type="submit"
+          className="w-full"
+          loading={isSubmitting}
+          disabled={name.trim() === '' || email.trim() === '' || password.trim() === ''}
+        >
+          {isSubmitting ? 'Mendaftar...' : 'Daftar'}
+        </Button>
+
+        <div className="text-center">
+          <p className="text-sm text-gray-600 dark:text-gray-400">
+            Sudah punya akun?{' '}
+            <a href="/auth/login" className="font-medium text-blue-600 hover:text-blue-500">
+              Masuk sekarang
+            </a>
+          </p>
+        </div>
+      </form>
+    </Card>
   )
 }

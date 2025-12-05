@@ -22,7 +22,7 @@ export function CartItem({
   image,
   onUpdateQuantity,
   onRemove,
-}: CartItemProps): JSX.Element {
+}: CartItemProps): React.JSX.Element {
   const formatPrice = (priceValue: number): string =>
     new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(
       priceValue

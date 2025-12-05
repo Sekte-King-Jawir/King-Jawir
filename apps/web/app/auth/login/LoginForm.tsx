@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/hooks'
 import { API_CONFIG, API_ENDPOINTS } from '@/lib/config/api'
+import { Button, Card, Alert } from '@repo/ui'
 
 export function LoginForm(): React.JSX.Element {
   const [email, setEmail] = useState('')
@@ -23,7 +24,7 @@ export function LoginForm(): React.JSX.Element {
       if (response.success) {
         router.push('/')
       } else {
-        setError(response.error || 'Login failed')
+        setError(response.error ?? 'Login failed')
       }
     } catch (err) {
       setError('Terjadi kesalahan. Silakan coba lagi.')
@@ -33,21 +34,30 @@ export function LoginForm(): React.JSX.Element {
     }
   }
 
+  const onSubmit = (e: React.FormEvent): void => {
+    void handleSubmit(e)
+  }
+
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="max-w-md mx-auto p-6 space-y-4 bg-white/50 dark:bg-slate-900/60 rounded-md shadow-sm"
-    >
-      <h2 className="text-2xl font-semibold">Masuk ke Akun</h2>
+    <Card className="max-w-md mx-auto">
+      <form onSubmit={onSubmit} className="space-y-6">
+        <div className="text-center">
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Masuk ke Akun</h2>
+          <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+            Selamat datang kembali! Masukkan kredensial Anda.
+          </p>
+        </div>
 
-      {error ? <div className="text-sm text-red-600 bg-red-50 dark:bg-red-900/30 p-2 rounded">{error}</div> : null}
+        {error.length > 0 && (
+          <Alert type="error" message={error} />
+        )}
 
-      {/* Google Sign-in */}
-      <div>
-        <button
+        {/* Google Sign-in */}
+        <Button
           type="button"
+          variant="secondary"
+          className="w-full flex items-center justify-center gap-3"
           onClick={() => (window.location.href = `${API_CONFIG.BASE_URL}${API_ENDPOINTS.AUTH.GOOGLE_LOGIN}`)}
-          className="w-full flex items-center justify-center gap-3 border border-slate-300 dark:border-slate-700 rounded px-3 py-2 text-sm bg-white dark:bg-slate-800 hover:bg-slate-50"
         >
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" className="w-5 h-5">
             <path fill="#EA4335" d="M24 9.5c3.8 0 6.9 1.6 9.1 3.1l6.7-6.6C36.9 2.6 30.9 0 24 0 14.7 0 6.9 5.5 3.1 13.6l7.8 6.1C12.8 14 18 9.5 24 9.5z"/>
@@ -57,46 +67,67 @@ export function LoginForm(): React.JSX.Element {
             <path fill="none" d="M0 0h48v48H0z"/>
           </svg>
           Masuk dengan Google
-        </button>
-      </div>
+        </Button>
 
-      <div className="flex flex-col gap-2">
-        <label htmlFor="email" className="text-sm font-medium">
-          Email
-        </label>
-        <input
-          type="email"
-          id="email"
-          value={email}
-          onChange={e => setEmail(e.target.value)}
-          placeholder="masukkan email Anda"
-          required
-          className="w-full border border-slate-300 dark:border-slate-700 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 dark:bg-slate-800"
-        />
-      </div>
+        <div className="relative">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-gray-300 dark:border-gray-600" />
+          </div>
+          <div className="relative flex justify-center text-sm">
+            <span className="px-2 bg-white dark:bg-gray-800 text-gray-500">Atau</span>
+          </div>
+        </div>
 
-      <div className="flex flex-col gap-2">
-        <label htmlFor="password" className="text-sm font-medium">
-          Password
-        </label>
-        <input
-          type="password"
-          id="password"
-          value={password}
-          onChange={e => setPassword(e.target.value)}
-          placeholder="masukkan password Anda"
-          required
-          className="w-full border border-slate-300 dark:border-slate-700 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 dark:bg-slate-800"
-        />
-      </div>
+        <div className="space-y-4">
+          <div>
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              Email
+            </label>
+            <input
+              type="email"
+              id="email"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              placeholder="masukkan email Anda"
+              required
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+            />
+          </div>
 
-      <button
-        type="submit"
-        className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white py-2 rounded mt-2"
-        disabled={isSubmitting || email.trim() === '' || password.trim() === ''}
-      >
-        {isSubmitting ? 'Masuk...' : 'Masuk'}
-      </button>
-    </form>
+          <div>
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              Password
+            </label>
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              placeholder="masukkan password Anda"
+              required
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+            />
+          </div>
+        </div>
+
+        <Button
+          type="submit"
+          className="w-full"
+          loading={isSubmitting}
+          disabled={email.trim() === '' || password.trim() === ''}
+        >
+          {isSubmitting ? 'Masuk...' : 'Masuk'}
+        </Button>
+
+        <div className="text-center">
+          <p className="text-sm text-gray-600 dark:text-gray-400">
+            Belum punya akun?{' '}
+            <a href="/auth/register" className="font-medium text-blue-600 hover:text-blue-500">
+              Daftar sekarang
+            </a>
+          </p>
+        </div>
+      </form>
+    </Card>
   )
 }
