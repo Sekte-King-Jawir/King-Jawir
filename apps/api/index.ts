@@ -112,6 +112,11 @@ const app = new Elysia()
             name: 'Seller Price Analysis',
             description: 'AI price analysis tools for sellers before adding products',
           },
+          {
+            name: 'Seller AI Tools',
+            description:
+              'AI-powered tools untuk UMKM seller (product description generator, copywriting assistance)',
+          },
           { name: 'Cart', description: 'Shopping cart' },
           { name: 'Orders', description: 'Order management' },
           { name: 'Reviews', description: 'Product reviews' },

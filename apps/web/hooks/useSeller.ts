@@ -232,7 +232,7 @@ export function useSellerProducts(): UseSellerProductsReturn {
 
       if (result.success && result.data !== undefined) {
         setProducts(result.data.products)
-        setTotalPages(result.data.totalPages)
+        setTotalPages(result.data.pagination.totalPages)
       }
     } catch {
       setError('Gagal memuat produk')
