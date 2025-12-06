@@ -69,7 +69,10 @@ export function parseProductDescriptionResponse(rawText: string): ProductDescrip
       } else if (line.startsWith('SEO_KEYWORDS:')) {
         currentSection = 'seo'
         const keywords = line.replace('SEO_KEYWORDS:', '').trim()
-        result.seoKeywords = keywords.split(',').map(k => k.trim()).filter(k => k.length > 0)
+        result.seoKeywords = keywords
+          .split(',')
+          .map(k => k.trim())
+          .filter(k => k.length > 0)
       } else if (currentSection === 'bullets' && line.startsWith('- ')) {
         result.bullets.push(line.substring(2).trim())
       } else if (currentSection === 'short' && result.short === '') {

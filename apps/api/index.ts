@@ -5,6 +5,7 @@ import { rateLimit } from 'elysia-rate-limit'
 import { priceAnalysisRoutes } from './price-analysis'
 import { priceAnalysisWebSocket } from './price-analysis/websocket'
 import { productDescriptionRoutes } from './product-description'
+import { marketingRoutes } from './marketing'
 import { logger } from './lib/logger'
 import { initMinIO } from './lib/minio'
 
@@ -106,6 +107,7 @@ const app = new Elysia()
   )
   .use(priceAnalysisRoutes)
   .use(productDescriptionRoutes)
+  .use(marketingRoutes)
   .use(priceAnalysisWebSocket)
   .get(
     '/api',

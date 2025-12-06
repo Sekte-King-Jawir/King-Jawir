@@ -268,7 +268,8 @@ export default function SupportPage(): React.JSX.Element {
                   </p>
                   {result.analysis.suggestedPrice && (
                     <p className="text-foreground leading-relaxed mt-2">
-                      <strong>💡 Suggested Price:</strong> {formatPrice(result.analysis.suggestedPrice)}
+                      <strong>💡 Suggested Price:</strong>{' '}
+                      {formatPrice(result.analysis.suggestedPrice)}
                     </p>
                   )}
                 </div>
