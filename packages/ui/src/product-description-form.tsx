@@ -76,9 +76,7 @@ export function ProductDescriptionForm({
     <Card className={`p-6 ${className}`}>
       <div className="space-y-4">
         <div>
-          <h3 className="text-lg font-semibold text-foreground">
-            Generate Deskripsi Produk
-          </h3>
+          <h3 className="text-lg font-semibold text-foreground">Generate Deskripsi Produk</h3>
           <p className="text-sm text-muted-foreground mt-1">
             Masukkan detail produk untuk menghasilkan deskripsi yang menarik dengan bantuan AI
           </p>
@@ -105,9 +103,7 @@ export function ProductDescriptionForm({
               aria-describedby={error !== '' ? 'error-message' : undefined}
             />
             <div className="flex justify-between items-center mt-1">
-              <div className="text-xs text-muted-foreground">
-                {charCount}/500 karakter
-              </div>
+              <div className="text-xs text-muted-foreground">{charCount}/500 karakter</div>
               {isOverLimit ? (
                 <div className="text-xs text-destructive">Melebihi batas karakter</div>
               ) : null}
