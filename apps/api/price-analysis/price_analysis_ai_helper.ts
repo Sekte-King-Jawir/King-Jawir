@@ -57,12 +57,17 @@ export function buildAnalysisPrompt(
   const formatRupiah = (num: number) => `Rp${num.toLocaleString('id-ID')}`
 
   // Count products by source
-  const sourceCount = products.reduce((acc, p) => {
-    acc[p.source] = (acc[p.source] || 0) + 1
-    return acc
-  }, {} as Record<string, number>)
+  const sourceCount = products.reduce(
+    (acc, p) => {
+      acc[p.source] = (acc[p.source] || 0) + 1
+      return acc
+    },
+    {} as Record<string, number>
+  )
 
-  const sources = Object.keys(sourceCount).map(source => `${source} (${sourceCount[source]} products)`).join(', ')
+  const sources = Object.keys(sourceCount)
+    .map(source => `${source} (${sourceCount[source]} products)`)
+    .join(', ')
 
   let prompt = `Analyze the following price data for "${query}" from multiple Indonesian marketplaces (${sources}):\n\n`
 

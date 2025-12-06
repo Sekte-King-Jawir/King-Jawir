@@ -53,11 +53,13 @@ Server will start on `http://0.0.0.0:4103`
 ### API Endpoints
 
 #### Tokopedia
+
 ```
 GET /api/scraper/tokopedia?query={search_term}&limit={number}
 ```
 
 #### Blibli
+
 ```
 GET /api/scraper/blibli?query={search_term}&limit={number}
 ```
@@ -70,6 +72,7 @@ GET /api/scraper/blibli?query={search_term}&limit={number}
 ### Examples
 
 #### Tokopedia
+
 ```bash
 # Search for laptops (limit 5)
 curl "http://localhost:4103/api/scraper/tokopedia?query=laptop&limit=5"
@@ -82,6 +85,7 @@ curl "http://localhost:4103/api/scraper/tokopedia"
 ```
 
 #### Blibli
+
 ```bash
 # Search for laptops (limit 5)
 curl "http://localhost:4103/api/scraper/blibli?query=laptop&limit=5"
