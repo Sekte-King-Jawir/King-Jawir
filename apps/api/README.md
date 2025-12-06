@@ -201,12 +201,14 @@ Real-time price analysis menggunakan WebSocket di `/api/price-analysis/stream`:
 
 ```javascript
 const ws = new WebSocket('ws://localhost:4101/api/price-analysis/stream')
-ws.send(JSON.stringify({
-  type: 'start-analysis',
-  query: 'laptop',
-  limit: 10,
-  userPrice: 5000000
-}))
+ws.send(
+  JSON.stringify({
+    type: 'start-analysis',
+    query: 'laptop',
+    limit: 10,
+    userPrice: 5000000,
+  })
+)
 ```
 
 ## 🚀 Deployment

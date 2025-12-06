@@ -15,7 +15,6 @@ interface StreamMessage {
   error?: string
 }
 
-
 interface UsePriceAnalysisReturn {
   loading: boolean
   error: string | null
@@ -96,7 +95,6 @@ export function usePriceAnalysis(): UsePriceAnalysisReturn {
 
     wsRef.current = ws
   }, [])
-
 
   const cancelStream = useCallback(() => {
     if (wsRef.current !== null) {

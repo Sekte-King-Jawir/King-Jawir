@@ -251,7 +251,6 @@ export default function SupportPage(): React.JSX.Element {
                   </p>
                 </div>
 
-
                 <div className="bg-background/50 rounded-lg p-4">
                   <h3 className="text-lg font-semibold text-foreground mb-3">Key Insights:</h3>
                   <ul className="space-y-2">
