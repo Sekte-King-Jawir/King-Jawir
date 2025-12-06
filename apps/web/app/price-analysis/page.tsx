@@ -195,6 +195,17 @@ export default function SupportPage(): React.JSX.Element {
         {/* Results */}
         {result !== null ? (
           <div className="space-y-8">
+            {/* Query Info */}
+            {result.optimizedQuery && result.optimizedQuery !== result.query ? (
+              <div className="bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+                <p className="text-sm text-foreground">
+                  <span className="font-semibold">🔍 Optimized Query:</span>{' '}
+                  <span className="text-blue-600 dark:text-blue-400">{result.optimizedQuery}</span>
+                  <span className="text-muted-foreground ml-2">(from: {result.query})</span>
+                </p>
+              </div>
+            ) : null}
+
             {/* Statistics */}
             <section className="bg-card/50 backdrop-blur-sm border border-border rounded-xl p-6 shadow-lg">
               <h2 className="text-2xl font-semibold text-foreground mb-6 flex items-center gap-2">
@@ -210,7 +221,7 @@ export default function SupportPage(): React.JSX.Element {
                 <div className="bg-background/50 rounded-lg p-4 text-center">
                   <div className="text-sm text-muted-foreground mb-1">Average</div>
                   <div className="text-xl font-bold text-foreground">
-                    {formatPrice(result.statistics.mean)}
+                    {formatPrice(result.statistics.average)}
                   </div>
                 </div>
                 <div className="bg-background/50 rounded-lg p-4 text-center">
@@ -247,9 +258,19 @@ export default function SupportPage(): React.JSX.Element {
                 <div className="bg-primary/10 border border-primary/20 rounded-lg p-4">
                   <h3 className="text-lg font-semibold text-foreground mb-2">Price Range:</h3>
                   <p className="text-foreground leading-relaxed">
-                    Median: {formatPrice(result.statistics.median)} | Q1-Q3:{' '}
-                    {formatPrice(result.statistics.q1)} - {formatPrice(result.statistics.q3)}
+                    Median: {formatPrice(result.statistics.median)}
+                    {result.statistics.q1 && result.statistics.q3 && (
+                      <span>
+                        {' | Q1-Q3: '}
+                        {formatPrice(result.statistics.q1)} - {formatPrice(result.statistics.q3)}
+                      </span>
+                    )}
                   </p>
+                  {result.analysis.suggestedPrice && (
+                    <p className="text-foreground leading-relaxed mt-2">
+                      <strong>💡 Suggested Price:</strong> {formatPrice(result.analysis.suggestedPrice)}
+                    </p>
+                  )}
                 </div>
 
                 <div className="bg-background/50 rounded-lg p-4">
@@ -276,9 +297,9 @@ export default function SupportPage(): React.JSX.Element {
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {result.products.map((product, idx) => {
-                  const productUrl = product.url ?? ''
-                  const imageUrl = product.imageUrl ?? '/placeholder.png'
-                  const location = product.location ?? ''
+                  const productUrl = product.product_url ?? ''
+                  const imageUrl = product.image_url ?? '/placeholder.png'
+                  const location = product.shop_location ?? ''
 
                   return (
                     <div

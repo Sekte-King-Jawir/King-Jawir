@@ -43,34 +43,34 @@ export interface PriceAnalysisRequest {
 export interface TokopediaProduct {
   name: string
   price: string
-  rating: string | null
-  sold: string | null
-  location: string | null
-  url: string
-  imageUrl: string | null
+  rating?: string
+  image_url?: string
+  product_url: string
+  shop_location?: string
 }
 
 export interface PriceStatistics {
-  mean: number
-  median: number
-  mode: number
   min: number
   max: number
-  q1: number
-  q3: number
-  iqr: number
-  standardDeviation: number
-  lowerOutlierBound: number
-  upperOutlierBound: number
-  outlierCount: number
+  average: number // Changed from 'mean' to match backend response
+  median: number
   totalProducts: number
-  priceRange: number
-  confidenceInterval: {
+  // Optional extended statistics (may not be present in all responses)
+  mode?: number
+  q1?: number
+  q3?: number
+  iqr?: number
+  standardDeviation?: number
+  lowerOutlierBound?: number
+  upperOutlierBound?: number
+  outlierCount?: number
+  priceRange?: number
+  confidenceInterval?: {
     lower: number
     upper: number
     confidenceLevel: number
   }
-  priceDistribution: {
+  priceDistribution?: {
     lowRange: { min: number; max: number; count: number; percentage: number }
     midRange: { min: number; max: number; count: number; percentage: number }
     highRange: { min: number; max: number; count: number; percentage: number }
@@ -79,13 +79,13 @@ export interface PriceStatistics {
 
 export interface AIAnalysis {
   recommendation: string
-  competitorAnalysis: string
-  marketTrend: string
   insights: string[]
+  suggestedPrice?: number
 }
 
 export interface PriceAnalysisResult {
   query: string
+  optimizedQuery?: string
   products: TokopediaProduct[]
   statistics: PriceStatistics
   analysis: AIAnalysis
