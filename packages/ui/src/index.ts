@@ -13,3 +13,7 @@ export * from './loading-spinner'
 export * from './empty-state'
 export * from './badge'
 export * from './alert'
+
+// Product Description Components
+export * from './product-description-form'
+export * from './product-description-result'

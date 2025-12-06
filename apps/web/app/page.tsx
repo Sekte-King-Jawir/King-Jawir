@@ -37,7 +37,13 @@ export default function HomePage(): React.JSX.Element {
               href="/price-analysis"
               className="w-full sm:w-auto px-8 py-4 bg-linear-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl font-semibold text-lg transition-all hover:scale-105 shadow-lg shadow-blue-600/30"
             >
-              🚀 Mulai Analisis Gratis
+              🚀 Mulai Analisis Harga
+            </Link>
+            <Link
+              href="/product-description"
+              className="w-full sm:w-auto px-8 py-4 bg-linear-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white rounded-xl font-semibold text-lg transition-all hover:scale-105 shadow-lg shadow-green-600/30"
+            >
+              📝 Generate Deskripsi Produk
             </Link>
           </div>
         </div>

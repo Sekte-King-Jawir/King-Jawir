@@ -33,10 +33,15 @@ export const API_CONFIG = {
  * @property {Object} PRICE_ANALYSIS - Price analysis endpoints
  * @property {string} PRICE_ANALYSIS.ANALYZE - HTTP POST for analysis
  * @property {string} PRICE_ANALYSIS.STREAM - WebSocket endpoint for streaming
+ * @property {Object} PRODUCT_DESCRIPTION - Product description endpoints
+ * @property {string} PRODUCT_DESCRIPTION.GENERATE - HTTP POST for generating description
  */
 export const API_ENDPOINTS = {
   PRICE_ANALYSIS: {
     ANALYZE: '/api/price-analysis',
     STREAM: '/api/price-analysis/stream',
+  },
+  PRODUCT_DESCRIPTION: {
+    GENERATE: '/api/product-description/generate',
   },
 } as const
