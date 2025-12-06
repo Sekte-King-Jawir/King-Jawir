@@ -29,7 +29,8 @@ export const productDescriptionService = {
       const messages: Array<{ role: 'system' | 'user' | 'assistant'; content: string }> = [
         {
           role: 'system',
-          content: 'Anda adalah AI yang membantu SMEs Indonesia membuat deskripsi produk yang menarik dan persuasif untuk marketplace.',
+          content:
+            'Anda adalah AI yang membantu SMEs Indonesia membuat deskripsi produk yang menarik dan persuasif untuk marketplace.',
         },
         {
           role: 'user',
@@ -49,7 +50,10 @@ export const productDescriptionService = {
       logger.info({ msg: 'Product description generated successfully' })
       return parsed
     } catch (error) {
-      logger.error({ msg: 'Failed to generate product description', error: error instanceof Error ? error.message : 'Unknown' })
+      logger.error({
+        msg: 'Failed to generate product description',
+        error: error instanceof Error ? error.message : 'Unknown',
+      })
       // Return fallback description
       return getFallbackDescription(productInput)
     }

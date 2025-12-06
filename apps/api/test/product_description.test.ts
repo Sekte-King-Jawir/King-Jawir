@@ -4,9 +4,15 @@ import { productDescriptionRepository } from '../product-description/product_des
 
 describe('product description service', () => {
   it('throws error for invalid input', async () => {
-    await expect(productDescriptionService.generateDescription('')).rejects.toThrow('Invalid product input')
-    await expect(productDescriptionService.generateDescription('   ')).rejects.toThrow('Invalid product input')
-    await expect(productDescriptionService.generateDescription('a'.repeat(501))).rejects.toThrow('Invalid product input')
+    await expect(productDescriptionService.generateDescription('')).rejects.toThrow(
+      'Invalid product input'
+    )
+    await expect(productDescriptionService.generateDescription('   ')).rejects.toThrow(
+      'Invalid product input'
+    )
+    await expect(productDescriptionService.generateDescription('a'.repeat(501))).rejects.toThrow(
+      'Invalid product input'
+    )
   })
 })
 
