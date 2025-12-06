@@ -10,7 +10,7 @@
  * import { API_CONFIG, API_ENDPOINTS } from '@/lib/config/api'
  *
  * fetch(`${API_CONFIG.BASE_URL}${API_ENDPOINTS.PRICE_ANALYSIS.ANALYZE}`)
- * 
+ *
  * // WebSocket connection
  * const ws = new WebSocket(`${API_CONFIG.WS_URL}${API_ENDPOINTS.PRICE_ANALYSIS.STREAM}`)
  */
