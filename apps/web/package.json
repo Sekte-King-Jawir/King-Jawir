@@ -13,6 +13,8 @@
   "dependencies": {
     "@next/swc-win32-x64-msvc": "^16.0.7",
     "@repo/ui": "*",
+    "framer-motion": "^12.23.25",
+    "gsap": "^3.13.0",
     "lucide-react": "^0.556.0",
     "next": "^16.0.7",
     "react": "^19.2.1",
