@@ -337,10 +337,4 @@ export const priceAnalysisService = {
       analysis,
     }
   },
-
-
-
-
-
-
 }

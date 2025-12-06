@@ -247,7 +247,8 @@ export default function SupportPage(): React.JSX.Element {
                 <div className="bg-primary/10 border border-primary/20 rounded-lg p-4">
                   <h3 className="text-lg font-semibold text-foreground mb-2">Price Range:</h3>
                   <p className="text-foreground leading-relaxed">
-                    Median: {formatPrice(result.statistics.median)} | Q1-Q3: {formatPrice(result.statistics.q1)} - {formatPrice(result.statistics.q3)}
+                    Median: {formatPrice(result.statistics.median)} | Q1-Q3:{' '}
+                    {formatPrice(result.statistics.q1)} - {formatPrice(result.statistics.q3)}
                   </p>
                 </div>
 

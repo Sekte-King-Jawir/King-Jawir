@@ -146,11 +146,7 @@ export function parseAIResponse(
       recommendation = trimmed
     } else if (currentSection === 'insights' && trimmed.startsWith('-')) {
       insights.push(trimmed.replace(/^-\s*/, ''))
-    } else if (
-      currentSection === 'insights' &&
-      trimmed &&
-      !trimmed.startsWith('SUGGESTED_PRICE')
-    ) {
+    } else if (currentSection === 'insights' && trimmed && !trimmed.startsWith('SUGGESTED_PRICE')) {
       insights.push(trimmed)
     }
   }
