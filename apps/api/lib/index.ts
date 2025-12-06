@@ -1,15 +1,15 @@
 /**
  * Central Library Exports
- * 
+ *
  * @description Single import point for all shared utilities across the API.
  * Provides response helpers, validators, logging, database access, AI, MinIO, and formatting.
- * 
+ *
  * @module lib/index
- * 
+ *
  * @example
  * // Import everything from one place
  * import { successResponse, v, logger, prisma, formatRupiah } from './lib'
- * 
+ *
  * @example
  * // Or import specific utilities
  * import { ErrorCode, errorResponse } from './lib/response'

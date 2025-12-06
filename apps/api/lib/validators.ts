@@ -2,14 +2,14 @@ import { t } from 'elysia'
 
 /**
  * Custom TypeBox validators for Elysia with Indonesian error messages
- * 
+ *
  * @description Provides pre-configured validators for common input types
  * with Indonesian error messages for better UX
- * 
+ *
  * @example
  * ```typescript
  * import { v } from './lib/validators'
- * 
+ *
  * body: t.Object({
  *   email: v.email(),
  *   password: v.password(),

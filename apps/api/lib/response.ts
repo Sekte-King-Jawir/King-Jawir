@@ -1,9 +1,9 @@
 /**
  * API Response Utilities
- * 
+ *
  * @description Provides standardized response helpers for consistent API responses
  * across all endpoints with proper error codes and logging
- * 
+ *
  * @module lib/response
  */
 
@@ -60,12 +60,12 @@ export interface ApiResponse<T = unknown> {
 
 /**
  * Creates a standardized success response
- * 
+ *
  * @template T - Type of the response data
  * @param message - Success message to display
  * @param data - Optional response data payload
  * @returns Formatted success response object
- * 
+ *
  * @example
  * ```typescript
  * return successResponse('User created successfully', user)
@@ -82,12 +82,12 @@ export function successResponse<T>(message: string, data?: T): ApiResponse<T> {
 
 /**
  * Creates a standardized error response
- * 
+ *
  * @param message - Error message to display
  * @param code - Error code from ErrorCode enum
  * @param details - Optional additional error details
  * @returns Formatted error response object
- * 
+ *
  * @example
  * ```typescript
  * return errorResponse('User not found', ErrorCode.USER_NOT_FOUND)
@@ -111,10 +111,10 @@ export function errorResponse(
 
 /**
  * Pre-configured common response helpers for frequently used responses
- * 
+ *
  * @description Provides shorthand methods for common API responses
  * to reduce boilerplate code in controllers
- * 
+ *
  * @example
  * ```typescript
  * if (!user) return CommonResponse.userNotFound()
