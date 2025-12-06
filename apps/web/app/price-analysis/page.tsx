@@ -196,7 +196,10 @@ export default function SupportPage(): React.JSX.Element {
         {result !== null ? (
           <div className="space-y-8">
             {/* Query Info */}
-            {result.optimizedQuery !== null && result.optimizedQuery !== undefined && result.optimizedQuery !== '' && result.optimizedQuery !== result.query ? (
+            {result.optimizedQuery !== null &&
+            result.optimizedQuery !== undefined &&
+            result.optimizedQuery !== '' &&
+            result.optimizedQuery !== result.query ? (
               <div className="bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
                 <p className="text-sm text-foreground">
                   <span className="font-semibold">🔍 Optimized Query:</span>{' '}
@@ -272,15 +275,23 @@ export default function SupportPage(): React.JSX.Element {
                   <h3 className="text-lg font-semibold text-foreground mb-2">Price Range:</h3>
                   <p className="text-foreground leading-relaxed">
                     Median: {formatPrice(result.statistics.median)}
-                    {result.statistics.q1 !== null && result.statistics.q1 !== undefined && result.statistics.q3 !== null && result.statistics.q3 !== undefined ? <span>
+                    {result.statistics.q1 !== null &&
+                    result.statistics.q1 !== undefined &&
+                    result.statistics.q3 !== null &&
+                    result.statistics.q3 !== undefined ? (
+                      <span>
                         {' | Q1-Q3: '}
                         {formatPrice(result.statistics.q1)} - {formatPrice(result.statistics.q3)}
-                      </span> : null}
+                      </span>
+                    ) : null}
                   </p>
-                  {result.analysis.suggestedPrice !== null && result.analysis.suggestedPrice !== undefined ? <p className="text-foreground leading-relaxed mt-2">
+                  {result.analysis.suggestedPrice !== null &&
+                  result.analysis.suggestedPrice !== undefined ? (
+                    <p className="text-foreground leading-relaxed mt-2">
                       <strong>💡 Suggested Price:</strong>{' '}
                       {formatPrice(result.analysis.suggestedPrice)}
-                    </p> : null}
+                    </p>
+                  ) : null}
                 </div>
 
                 <div className="bg-background/50 rounded-lg p-4">
@@ -353,7 +364,9 @@ export default function SupportPage(): React.JSX.Element {
                             📍 {location}
                           </p>
                         ) : null}
-                        {product.sold !== null && product.sold !== undefined && product.sold !== '' ? (
+                        {product.sold !== null &&
+                        product.sold !== undefined &&
+                        product.sold !== '' ? (
                           <p className="text-sm text-muted-foreground flex items-center gap-1">
                             🛒 {product.sold} sold
                           </p>

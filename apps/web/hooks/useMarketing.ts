@@ -95,28 +95,30 @@ export function useMarketing(): UseMarketingReturn {
       try {
         const response = await marketingService.generate(data)
 
-      if (response.success && response.data !== null) {
-        setResult(response.data ?? null)
-      } else {
-        setError(response.message ?? 'Failed to generate marketing content')
-      }
+        if (response.success && response.data !== null) {
+          setResult(response.data ?? null)
+        } else {
+          setError(response.message ?? 'Failed to generate marketing content')
+        }
 
-      return response
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred'
-      if (errorMessage === '') {
-        setError('Unknown error occurred')
-      } else {
-        setError(errorMessage)
+        return response
+      } catch (err) {
+        const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred'
+        if (errorMessage === '') {
+          setError('Unknown error occurred')
+        } else {
+          setError(errorMessage)
+        }
+        return {
+          success: false,
+          message: errorMessage,
+        }
+      } finally {
+        setLoading(false)
       }
-      return {
-        success: false,
-        message: errorMessage,
-      }
-    } finally {
-      setLoading(false)
-    }
-  }, [])
+    },
+    []
+  )
 
   /**
    * Resets the hook state to initial values

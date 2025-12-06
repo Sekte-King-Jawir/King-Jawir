@@ -55,10 +55,5 @@
     "gagal",
     "evenodd"
   ],
-  "ignorePaths": [
-    "node_modules/**",
-    ".next/**",
-    "dist/**",
-    "build/**"
-  ]
+  "ignorePaths": ["node_modules/**", ".next/**", "dist/**", "build/**"]
 }
