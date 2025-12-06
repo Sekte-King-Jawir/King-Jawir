@@ -24,7 +24,7 @@
  */
 
 import { apiClient } from './client'
-import { API_ENDPOINTS } from '../config/api'
+import { API_CONFIG, API_ENDPOINTS } from '../config/api'
 
 /**
  * Request payload for price analysis
@@ -157,7 +157,8 @@ export const priceAnalysisService = {
     onMessage: (message: WebSocketMessage) => void,
     onError: (error: Error | string) => void
   ): WebSocket {
-    const wsUrl = `${process.env.NEXT_PUBLIC_WS_URL ?? 'ws://localhost:4101'}${API_ENDPOINTS.PRICE_ANALYSIS.STREAM}`
+    // Use the centralized WS_URL configuration
+    const wsUrl = `${API_CONFIG.WS_URL}${API_ENDPOINTS.PRICE_ANALYSIS.STREAM}`
     const ws = new WebSocket(wsUrl)
 
     ws.onopen = () => {

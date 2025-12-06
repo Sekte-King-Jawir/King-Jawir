@@ -180,7 +180,8 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4101'
 
 ### WebSocket Streaming
 ```typescript
-// Frontend connects to ws://localhost:4101/api/price-analysis/stream
+// Frontend connects to wss://kjg.asepharyana.tech/api/price-analysis/stream (production)
+// or ws://localhost:4101/api/price-analysis/stream (development)
 // Server sends JSON messages: { type: 'progress' | 'complete' | 'error', ... }
 ```
 
