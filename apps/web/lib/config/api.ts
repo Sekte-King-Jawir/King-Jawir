@@ -44,4 +44,7 @@ export const API_ENDPOINTS = {
   PRODUCT_DESCRIPTION: {
     GENERATE: '/api/product-description/generate',
   },
+  MARKETING: {
+    GENERATE: '/api/marketing/generate',
+  },
 } as const

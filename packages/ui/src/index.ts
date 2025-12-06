@@ -17,3 +17,7 @@ export * from './alert'
 // Product Description Components
 export * from './product-description-form'
 export * from './product-description-result'
+
+// Marketing Components
+export * from './marketing-form'
+export * from './marketing-result'

@@ -53,6 +53,12 @@ export default function Navbar(): React.ReactElement {
             >
               Deskripsi Produk
             </Link>
+            <Link
+              href="/marketing"
+              className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-xl transition-all"
+            >
+              Konten Pemasaran
+            </Link>
           </nav>
 
           {/* Right Actions */}
