@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 /**
  * Marketing Content Form Component
@@ -130,7 +130,7 @@ export function MarketingForm({
               Pilih Platform Tujuan
             </label>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-              {PLATFORMS.map((platform) => (
+              {PLATFORMS.map(platform => (
                 <button
                   key={platform.value}
                   type="button"
@@ -152,20 +152,12 @@ export function MarketingForm({
           </div>
 
           {error !== '' ? (
-            <div
-              id="error-message"
-              className="text-sm text-red-600 dark:text-red-400"
-              role="alert"
-            >
+            <div id="error-message" className="text-sm text-red-600 dark:text-red-400" role="alert">
               {error}
             </div>
           ) : null}
 
-          <Button
-            type="submit"
-            disabled={isDisabled || !selectedPlatform}
-            className="w-full"
-          >
+          <Button type="submit" disabled={isDisabled || !selectedPlatform} className="w-full">
             {loading ? (
               <>
                 <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />

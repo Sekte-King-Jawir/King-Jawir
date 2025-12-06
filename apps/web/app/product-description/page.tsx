@@ -2,14 +2,26 @@
 
 import { useState } from 'react'
 import { Megaphone, Sparkles, Copy } from 'lucide-react'
-import { ThemeToggle, ProductDescriptionForm, ProductDescriptionResult, MarketingForm, MarketingResult } from '@repo/ui'
+import {
+  ThemeToggle,
+  ProductDescriptionForm,
+  ProductDescriptionResult,
+  MarketingForm,
+  MarketingResult,
+} from '@repo/ui'
 import { useProductDescription, useMarketing } from '@/hooks'
 import type { ProductDescriptionRequest } from '@/types/product-description'
 import type { MarketingContentRequest } from '@/types/marketing'
 
 export default function ProductDescriptionPage(): React.JSX.Element {
   const { result, loading, error, generate, reset } = useProductDescription()
-  const { result: marketingResult, loading: marketingLoading, error: marketingError, generate: generateMarketing, reset: resetMarketing } = useMarketing()
+  const {
+    result: marketingResult,
+    loading: marketingLoading,
+    error: marketingError,
+    generate: generateMarketing,
+    reset: resetMarketing,
+  } = useMarketing()
   const [copiedText, setCopiedText] = useState<string | null>(null)
 
   const handleGenerate = async (productInput: string): Promise<void> => {
@@ -36,7 +48,7 @@ export default function ProductDescriptionPage(): React.JSX.Element {
 
     const request: MarketingContentRequest = {
       productDescription: result,
-      platform: platform as MarketingContentRequest['platform']
+      platform: platform as MarketingContentRequest['platform'],
     }
     await generateMarketing(request)
   }
@@ -69,40 +81,41 @@ export default function ProductDescriptionPage(): React.JSX.Element {
             AI Product & Marketing Generator
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            Hasilkan deskripsi produk yang menarik dan konten pemasaran yang optimal untuk marketplace Indonesia
-            dengan bantuan kecerdasan buatan. Cocok untuk Tokopedia, Shopee, Instagram, Facebook, dan platform lainnya.
+            Hasilkan deskripsi produk yang menarik dan konten pemasaran yang optimal untuk
+            marketplace Indonesia dengan bantuan kecerdasan buatan. Cocok untuk Tokopedia, Shopee,
+            Instagram, Facebook, dan platform lainnya.
           </p>
         </div>
 
         {/* Main Content */}
         <div className="space-y-8">
           {/* Form Section */}
-          <ProductDescriptionForm
-            onSubmit={handleGenerate}
-            loading={loading}
-          />
+          <ProductDescriptionForm onSubmit={handleGenerate} loading={loading} />
 
           {/* Error Display */}
-          {error ? <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
+          {error ? (
+            <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
               <div className="flex">
                 <div className="shrink-0">
                   <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                    <path
+                      fillRule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                      clipRule="evenodd"
+                    />
                   </svg>
                 </div>
                 <div className="ml-3">
-                  <h3 className="text-sm font-medium text-red-800 dark:text-red-200">
-                    Error
-                  </h3>
-                  <div className="mt-2 text-sm text-red-700 dark:text-red-300">
-                    {error}
-                  </div>
+                  <h3 className="text-sm font-medium text-red-800 dark:text-red-200">Error</h3>
+                  <div className="mt-2 text-sm text-red-700 dark:text-red-300">{error}</div>
                 </div>
               </div>
-            </div> : null}
+            </div>
+          ) : null}
 
           {/* Loading State */}
-          {loading ? <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6">
+          {loading ? (
+            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6">
               <div className="flex items-center">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mr-4" />
                 <div>
@@ -114,10 +127,12 @@ export default function ProductDescriptionPage(): React.JSX.Element {
                   </p>
                 </div>
               </div>
-            </div> : null}
+            </div>
+          ) : null}
 
           {/* Results Section */}
-          {result && !loading ? <div className="space-y-6">
+          {result && !loading ? (
+            <div className="space-y-6">
               <div className="text-center">
                 <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-green-100 dark:bg-green-900/20 mb-4">
                   <Sparkles className="h-6 w-6 text-green-600 dark:text-green-400" />
@@ -126,7 +141,8 @@ export default function ProductDescriptionPage(): React.JSX.Element {
                   Deskripsi Produk Berhasil Dibuat!
                 </h2>
                 <p className="text-gray-600 dark:text-gray-400">
-                  Deskripsi ini dioptimalkan untuk marketplace Indonesia dengan fokus pada manfaat dan SEO.
+                  Deskripsi ini dioptimalkan untuk marketplace Indonesia dengan fokus pada manfaat
+                  dan SEO.
                 </p>
               </div>
 
@@ -146,7 +162,8 @@ export default function ProductDescriptionPage(): React.JSX.Element {
                     Generate Konten Pemasaran
                   </h3>
                   <p className="text-gray-600 dark:text-gray-400">
-                    Gunakan deskripsi produk ini untuk membuat konten pemasaran yang menarik di berbagai platform.
+                    Gunakan deskripsi produk ini untuk membuat konten pemasaran yang menarik di
+                    berbagai platform.
                   </p>
                 </div>
 
@@ -157,11 +174,20 @@ export default function ProductDescriptionPage(): React.JSX.Element {
                 />
 
                 {/* Marketing Error */}
-                {marketingError ? <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 mt-4">
+                {marketingError ? (
+                  <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 mt-4">
                     <div className="flex">
                       <div className="shrink-0">
-                        <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
-                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                        <svg
+                          className="h-5 w-5 text-red-400"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                            clipRule="evenodd"
+                          />
                         </svg>
                       </div>
                       <div className="ml-3">
@@ -173,10 +199,12 @@ export default function ProductDescriptionPage(): React.JSX.Element {
                         </div>
                       </div>
                     </div>
-                  </div> : null}
+                  </div>
+                ) : null}
 
                 {/* Marketing Loading */}
-                {marketingLoading ? <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6 mt-4">
+                {marketingLoading ? (
+                  <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6 mt-4">
                     <div className="flex items-center">
                       <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mr-4" />
                       <div>
@@ -188,28 +216,34 @@ export default function ProductDescriptionPage(): React.JSX.Element {
                         </p>
                       </div>
                     </div>
-                  </div> : null}
+                  </div>
+                ) : null}
 
                 {/* Marketing Results */}
-                {marketingResult && !marketingLoading ? <div className="mt-6">
+                {marketingResult && !marketingLoading ? (
+                  <div className="mt-6">
                     <MarketingResult
                       data={marketingResult}
                       onCopy={handleCopyMarketing}
                       onRegenerate={handleRegenerateMarketing}
                     />
-                  </div> : null}
+                  </div>
+                ) : null}
               </div>
 
               {/* Copy Success Message */}
-              {copiedText ? <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4">
+              {copiedText ? (
+                <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4">
                   <div className="flex items-center">
                     <Copy className="h-5 w-5 text-green-600 dark:text-green-400 mr-3" />
                     <span className="text-sm text-green-800 dark:text-green-200">
                       Teks berhasil disalin ke clipboard!
                     </span>
                   </div>
-                </div> : null}
-            </div> : null}
+                </div>
+              ) : null}
+            </div>
+          ) : null}
           {!result && !loading && !error && (
             <div className="text-center py-12">
               <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gray-100 dark:bg-gray-800 mb-4">
@@ -227,9 +261,7 @@ export default function ProductDescriptionPage(): React.JSX.Element {
 
         {/* Footer */}
         <footer className="mt-16 text-center text-sm text-gray-500 dark:text-gray-400">
-          <p>
-            Powered by AI • Optimized for Indonesian Marketplaces
-          </p>
+          <p>Powered by AI • Optimized for Indonesian Marketplaces</p>
         </footer>
       </main>
     </div>

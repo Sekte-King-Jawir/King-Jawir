@@ -21,7 +21,11 @@
 
 import { apiClient } from './client'
 import { API_ENDPOINTS } from '../config/api'
-import type { MarketingContentRequest, MarketingContentResponse, MarketingContentResult } from '@/types/marketing'
+import type {
+  MarketingContentRequest,
+  MarketingContentResponse,
+  MarketingContentResult,
+} from '@/types/marketing'
 
 /**
  * Service for marketing content operations
@@ -44,10 +48,7 @@ export const marketingService = {
    * }
    */
   generate(data: MarketingContentRequest): Promise<MarketingContentResponse> {
-    return apiClient.post<MarketingContentResult>(
-      API_ENDPOINTS.MARKETING.GENERATE,
-      data
-    )
+    return apiClient.post<MarketingContentResult>(API_ENDPOINTS.MARKETING.GENERATE, data)
   },
 }
 

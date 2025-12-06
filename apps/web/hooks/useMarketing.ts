@@ -43,9 +43,7 @@ interface UseMarketingReturn {
   loading: boolean
   error: string | null
   result: MarketingContentResult | null
-  generate: (
-    data: MarketingContentRequest
-  ) => Promise<MarketingContentResponse>
+  generate: (data: MarketingContentRequest) => Promise<MarketingContentResponse>
   reset: () => void
 }
 
@@ -88,32 +86,35 @@ export function useMarketing(): UseMarketingReturn {
    * @param {MarketingContentRequest} data - Request payload with product description and platform
    * @returns {Promise<MarketingContentResponse>} API response
    */
-  const generate = useCallback(async (data: MarketingContentRequest): Promise<MarketingContentResponse> => {
-    setLoading(true)
-    setError(null)
-    setResult(null)
+  const generate = useCallback(
+    async (data: MarketingContentRequest): Promise<MarketingContentResponse> => {
+      setLoading(true)
+      setError(null)
+      setResult(null)
 
-    try {
-      const response = await marketingService.generate(data)
+      try {
+        const response = await marketingService.generate(data)
 
-      if (response.success && response.data) {
-        setResult(response.data)
-      } else {
-        setError(response.message || 'Failed to generate marketing content')
+        if (response.success && response.data) {
+          setResult(response.data)
+        } else {
+          setError(response.message || 'Failed to generate marketing content')
+        }
+
+        return response
+      } catch (err) {
+        const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred'
+        setError(errorMessage)
+        return {
+          success: false,
+          message: errorMessage,
+        }
+      } finally {
+        setLoading(false)
       }
-
-      return response
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred'
-      setError(errorMessage)
-      return {
-        success: false,
-        message: errorMessage,
-      }
-    } finally {
-      setLoading(false)
-    }
-  }, [])
+    },
+    []
+  )
 
   /**
    * Resets the hook state to initial values

@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 /**
  * Product Description Form Component
@@ -108,19 +108,17 @@ export function ProductDescriptionForm({
               <div className="text-xs text-gray-500 dark:text-gray-400">
                 {charCount}/500 karakter
               </div>
-              {isOverLimit ? <div className="text-xs text-red-500">
-                  Melebihi batas karakter
-                </div> : null}
+              {isOverLimit ? (
+                <div className="text-xs text-red-500">Melebihi batas karakter</div>
+              ) : null}
             </div>
           </div>
 
-          {error !== '' ? <div
-              id="error-message"
-              className="text-sm text-red-600 dark:text-red-400"
-              role="alert"
-            >
+          {error !== '' ? (
+            <div id="error-message" className="text-sm text-red-600 dark:text-red-400" role="alert">
               {error}
-            </div> : null}
+            </div>
+          ) : null}
 
           <Button
             type="submit"
