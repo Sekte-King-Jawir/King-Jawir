@@ -4,6 +4,7 @@ import { swagger } from '@elysiajs/swagger'
 import { rateLimit } from 'elysia-rate-limit'
 import { priceAnalysisRoutes } from './price-analysis'
 import { priceAnalysisWebSocket } from './price-analysis/websocket'
+import { productDescriptionRoutes } from './product-description'
 import { logger } from './lib/logger'
 import { initMinIO } from './lib/minio'
 
@@ -104,6 +105,7 @@ const app = new Elysia()
     })
   )
   .use(priceAnalysisRoutes)
+  .use(productDescriptionRoutes)
   .use(priceAnalysisWebSocket)
   .get(
     '/api',
