@@ -74,9 +74,7 @@ export function ProductDescriptionResult({
             <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2">
               Deskripsi Singkat
             </h4>
-            <p className="text-lg font-semibold text-gray-900 dark:text-white">
-              {data.short}
-            </p>
+            <p className="text-lg font-semibold text-gray-900 dark:text-white">{data.short}</p>
           </div>
           <Button
             variant="secondary"
@@ -96,9 +94,7 @@ export function ProductDescriptionResult({
             <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2">
               Deskripsi Lengkap
             </h4>
-            <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-              {data.long}
-            </p>
+            <p className="text-gray-700 dark:text-gray-300 leading-relaxed">{data.long}</p>
           </div>
           <Button
             variant="secondary"

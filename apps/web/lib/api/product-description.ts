@@ -15,7 +15,11 @@
 
 import { apiClient } from './client'
 import { API_ENDPOINTS } from '../config/api'
-import type { ProductDescriptionRequest, ProductDescriptionResponse, ProductDescriptionResult } from '@/types/product-description'
+import type {
+  ProductDescriptionRequest,
+  ProductDescriptionResponse,
+  ProductDescriptionResult,
+} from '@/types/product-description'
 
 /**
  * Service for product description operations

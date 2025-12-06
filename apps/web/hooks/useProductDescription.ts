@@ -40,9 +40,7 @@ interface UseProductDescriptionReturn {
   loading: boolean
   error: string | null
   result: ProductDescriptionResult | null
-  generate: (
-    data: ProductDescriptionRequest
-  ) => Promise<ProductDescriptionResponse>
+  generate: (data: ProductDescriptionRequest) => Promise<ProductDescriptionResponse>
   reset: () => void
 }
 
@@ -82,13 +80,14 @@ export function useProductDescription(): UseProductDescriptionReturn {
    * @param {ProductDescriptionRequest} data - Request payload with product input
    * @returns {Promise<ProductDescriptionResponse>} API response
    */
-  const generate = useCallback(async (data: ProductDescriptionRequest): Promise<ProductDescriptionResponse> => {
-    setLoading(true)
-    setError(null)
-    setResult(null)
+  const generate = useCallback(
+    async (data: ProductDescriptionRequest): Promise<ProductDescriptionResponse> => {
+      setLoading(true)
+      setError(null)
+      setResult(null)
 
-    try {
-      const response = await productDescriptionService.generate(data)
+      try {
+        const response = await productDescriptionService.generate(data)
 
       if (response.success && response.data !== null && response.data !== undefined) {
         setResult(response.data)
@@ -96,18 +95,20 @@ export function useProductDescription(): UseProductDescriptionReturn {
         setError(response.message ?? 'Failed to generate description')
       }
 
-      return response
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred'
-      setError(errorMessage)
-      return {
-        success: false,
-        message: errorMessage,
+        return response
+      } catch (err) {
+        const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred'
+        setError(errorMessage)
+        return {
+          success: false,
+          message: errorMessage,
+        }
+      } finally {
+        setLoading(false)
       }
-    } finally {
-      setLoading(false)
-    }
-  }, [])
+    },
+    []
+  )
 
   /**
    * Resets the hook state to initial values

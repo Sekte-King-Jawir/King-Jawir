@@ -43,9 +43,7 @@ interface UseMarketingReturn {
   loading: boolean
   error: string | null
   result: MarketingContentResult | null
-  generate: (
-    data: MarketingContentRequest
-  ) => Promise<MarketingContentResponse>
+  generate: (data: MarketingContentRequest) => Promise<MarketingContentResponse>
   reset: () => void
 }
 
@@ -88,13 +86,14 @@ export function useMarketing(): UseMarketingReturn {
    * @param {MarketingContentRequest} data - Request payload with product description and platform
    * @returns {Promise<MarketingContentResponse>} API response
    */
-  const generate = useCallback(async (data: MarketingContentRequest): Promise<MarketingContentResponse> => {
-    setLoading(true)
-    setError(null)
-    setResult(null)
+  const generate = useCallback(
+    async (data: MarketingContentRequest): Promise<MarketingContentResponse> => {
+      setLoading(true)
+      setError(null)
+      setResult(null)
 
-    try {
-      const response = await marketingService.generate(data)
+      try {
+        const response = await marketingService.generate(data)
 
       if (response.success && response.data !== null) {
         setResult(response.data ?? null)

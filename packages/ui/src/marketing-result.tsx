@@ -77,7 +77,9 @@ export function MarketingResult({
       data.hashtags.length > 0 ? `Hashtags: ${data.hashtags.join(' ')}` : '',
       data.hashtags.length > 0 ? '' : '',
       `CTA: ${data.callToAction}`,
-    ].filter(line => line !== '').join('\n')
+    ]
+      .filter(line => line !== '')
+      .join('\n')
 
     void handleCopy(allText)
   }
@@ -87,7 +89,9 @@ export function MarketingResult({
       {/* Platform Header */}
       <Card className="p-6">
         <div className="flex items-center space-x-3">
-          <span className="text-2xl">{PLATFORM_ICONS[data.platform as keyof typeof PLATFORM_ICONS]}</span>
+          <span className="text-2xl">
+            {PLATFORM_ICONS[data.platform as keyof typeof PLATFORM_ICONS]}
+          </span>
           <div>
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
               Konten {PLATFORM_LABELS[data.platform as keyof typeof PLATFORM_LABELS]}
@@ -159,9 +163,7 @@ export function MarketingResult({
               Call to Action
             </h4>
             <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
-              <p className="text-blue-900 dark:text-blue-100 font-medium">
-                {data.callToAction}
-              </p>
+              <p className="text-blue-900 dark:text-blue-100 font-medium">{data.callToAction}</p>
             </div>
           </div>
           <Button
