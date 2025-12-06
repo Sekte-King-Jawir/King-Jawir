@@ -1,9 +1,40 @@
 /**
- * AI-related helper functions for price analysis
+ * AI Helper Functions for Price Analysis
+ * 
+ * @description Provides utilities for building AI prompts, parsing responses,
+ * and generating fallback analysis when AI services are unavailable.
+ * 
+ * @module price-analysis/price_analysis_ai_helper
+ * 
+ * @example
+ * // Build analysis prompt
+ * const prompt = buildAnalysisPrompt('laptop gaming', products, stats, userPrice)
+ * 
+ * @example
+ * // Parse AI response
+ * const analysis = parseAIResponse(aiText, stats)
+ * 
+ * @example
+ * // Fallback when AI fails
+ * const fallback = getFallbackAnalysis(stats)
  */
 
 /**
- * Build prompt for LLM price analysis
+ * Builds comprehensive LLM prompt for price analysis
+ * 
+ * @param {string} query - Product search query
+ * @param {Array<Object>} products - Array of product data with prices and ratings
+ * @param {Object} stats - Statistical summary (min, max, average, median)
+ * @param {number} [userPrice] - Optional user's intended price for comparison
+ * @returns {string} Formatted prompt text for LLM
+ * 
+ * @example
+ * const prompt = buildAnalysisPrompt(
+ *   'laptop gaming',
+ *   [{ name: 'ASUS ROG', price: 'Rp15.000.000', numericPrice: 15000000, rating: '4.8' }],
+ *   { min: 10000000, max: 20000000, average: 15000000, median: 14500000 },
+ *   12000000
+ * )
  */
 export function buildAnalysisPrompt(
   query: string,
@@ -61,7 +92,21 @@ export function buildAnalysisPrompt(
 }
 
 /**
- * Parse AI response into structured format
+ * Parses AI response text into structured analysis object
+ * 
+ * @description Extracts recommendation, insights, and suggested price from AI text output.
+ * Handles various response formats and provides fallback values if parsing fails.
+ * 
+ * @param {string} aiText - Raw text response from AI model
+ * @param {Object} stats - Statistical data for fallback calculations
+ * @returns {Object} Structured analysis with recommendation, insights, and suggestedPrice
+ * 
+ * @example
+ * const analysis = parseAIResponse(
+ *   'RECOMMENDATION: Price competitively\nINSIGHTS:\n- Market is saturated',
+ *   { min: 100000, max: 500000, average: 300000, median: 280000 }
+ * )
+ * // Returns: { recommendation: '...', insights: ['...'], suggestedPrice: 280000 }
  */
 export function parseAIResponse(
   aiText: string,
@@ -110,7 +155,6 @@ export function parseAIResponse(
     }
   }
 
-  // Fallbacks
   if (!recommendation) {
     recommendation = `Based on market data, prices range from Rp${stats.min.toLocaleString('id-ID')} to Rp${stats.max.toLocaleString('id-ID')}. The median price of Rp${stats.median.toLocaleString('id-ID')} represents a competitive market position.`
   }
@@ -135,7 +179,22 @@ export function parseAIResponse(
 }
 
 /**
- * Provide fallback analysis when AI fails
+ * Generates fallback analysis when AI service is unavailable
+ * 
+ * @description Provides statistical-based analysis using market data without AI.
+ * Used as emergency fallback to ensure service availability.
+ * 
+ * @param {Object} stats - Market statistics (min, max, average, median)
+ * @returns {Object} Fallback analysis with recommendation, insights, and suggestedPrice
+ * 
+ * @example
+ * const fallback = getFallbackAnalysis({
+ *   min: 1000000,
+ *   max: 5000000,
+ *   average: 3000000,
+ *   median: 2800000
+ * })
+ * // Returns analysis based purely on statistics
  */
 export function getFallbackAnalysis(stats: {
   min: number
@@ -166,7 +225,21 @@ export function getFallbackAnalysis(stats: {
 }
 
 /**
- * Optimize search query using AI
+ * Builds prompt for AI-powered search query optimization
+ * 
+ * @description Creates instructions for AI to optimize marketplace search queries.
+ * Adds relevant keywords while preserving user intent for accessory searches.
+ * 
+ * @param {string} query - Original user search query
+ * @returns {string} Formatted prompt for query optimization
+ * 
+ * @example
+ * const prompt = buildQueryOptimizationPrompt('iphone')
+ * // AI will return: 'iphone smartphone'
+ * 
+ * @example
+ * const prompt = buildQueryOptimizationPrompt('case iphone')
+ * // AI will return: 'case iphone' (unchanged, user wants case)
  */
 export function buildQueryOptimizationPrompt(query: string): string {
   return `Kamu adalah search query optimizer untuk marketplace Indonesia (Tokopedia).

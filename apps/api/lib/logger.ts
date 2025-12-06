@@ -1,8 +1,23 @@
+/**
+ * Logger Utilities using Pino
+ * 
+ * @description Provides structured logging with automatic pretty printing in development
+ * and JSON format in production for better log aggregation
+ * 
+ * @module lib/logger
+ */
+
 import pino from 'pino'
 
-// Configure Pino logger with pretty printing for development
 const isDevelopment = process.env['NODE_ENV'] !== 'production'
 
+/**
+ * Configured Pino logger instance
+ * 
+ * @description Automatically switches between pretty printing (dev) and JSON (prod)
+ * - Development: Colorized output with timestamps
+ * - Production: Structured JSON logs for aggregation
+ */
 export const logger = isDevelopment
   ? pino({
       level: process.env['LOG_LEVEL'] || 'debug',
@@ -22,7 +37,11 @@ export const logger = isDevelopment
     })
 
 /**
- * Log HTTP request with method, URL, and origin
+ * Logs HTTP request information
+ * 
+ * @param method - HTTP method (GET, POST, etc.)
+ * @param url - Request URL
+ * @param origin - Request origin header
  */
 export function logRequest(method: string, url: string, origin: string | null) {
   logger.info({
@@ -34,7 +53,17 @@ export function logRequest(method: string, url: string, origin: string | null) {
 }
 
 /**
- * Log HTTP response with status and duration
+ * Logs HTTP response with appropriate log level based on status code
+ * 
+ * @param method - HTTP method
+ * @param url - Request URL
+ * @param status - HTTP status code
+ * @param durationMs - Request duration in milliseconds
+ * 
+ * @description
+ * - 5xx status: error level
+ * - 4xx status: warn level
+ * - 2xx/3xx: info level
  */
 export function logResponse(method: string, url: string, status: number, durationMs: number) {
   const level = status >= 500 ? 'error' : status >= 400 ? 'warn' : 'info'

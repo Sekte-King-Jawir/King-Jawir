@@ -1,3 +1,27 @@
+/**
+ * Database Connection Module
+ * 
+ * @description Initializes Prisma client with MariaDB adapter and connection pooling.
+ * Handles connection lifecycle including cleanup on process exit.
+ * 
+ * @module lib/db
+ * @requires @prisma/adapter-mariadb
+ * @requires ./logger
+ * 
+ * @example
+ * import { prisma } from './lib/db'
+ * 
+ * // Query users
+ * const users = await prisma.user.findMany()
+ * 
+ * @example
+ * // Transaction
+ * await prisma.$transaction(async (tx) => {
+ *   await tx.user.create({ data: { email: 'test@example.com' } })
+ *   await tx.profile.create({ data: { userId: 'xxx' } })
+ * })
+ */
+
 import 'dotenv/config'
 import { PrismaClient } from '../generated/prisma/client'
 import { PrismaMariaDb } from '@prisma/adapter-mariadb'
@@ -11,7 +35,6 @@ if (process.env['NODE_ENV'] === 'test') {
 } else {
   logger.info('🔌 Initializing database connection...')
 
-  // Parse DATABASE_URL for mariadb adapter
   const dbUrl = process.env['DATABASE_URL'] || ''
 
   if (!dbUrl) {
@@ -48,13 +71,11 @@ if (process.env['NODE_ENV'] === 'test') {
 
   logger.info('✅ Database connection established')
 
-  // Test connection
   prisma
     .$connect()
     .then(() => logger.info('✅ Database connection verified'))
     .catch(err => logger.error({ msg: '❌ Database connection failed', error: err.message }))
 
-  // Cleanup on exit
   const cleanup = async () => {
     logger.info('🔌 Disconnecting from database...')
     await prisma.$disconnect()
@@ -72,4 +93,16 @@ if (process.env['NODE_ENV'] === 'test') {
   })
 }
 
+/**
+ * Prisma client instance with MariaDB adapter
+ * 
+ * @description Singleton instance configured with:
+ * - Connection pooling (10 connections, minimum 2 idle)
+ * - Extended timeouts (30s connect, 60s idle)
+ * - Automatic cleanup on process exit
+ * - Test mode mock for unit tests
+ * 
+ * @example
+ * const users = await prisma.user.findMany()
+ */
 export { prisma }

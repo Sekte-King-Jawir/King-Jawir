@@ -56,7 +56,6 @@ export const priceAnalysisRepository = {
    * Handles Indonesian currency format (Rp1.234.567)
    */
   parsePrice(priceString: string): number {
-    // Remove "Rp", spaces, and dots (thousands separator)
     const cleaned = priceString.replace(/Rp\.?/gi, '').replace(/\s/g, '').replace(/\./g, '')
     return parseInt(cleaned, 10)
   },

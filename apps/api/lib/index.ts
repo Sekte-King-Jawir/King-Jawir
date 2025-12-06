@@ -1,9 +1,21 @@
 /**
- * Central export file for shared library utilities
- * This file provides a single import point for commonly used functions
+ * Central Library Exports
+ * 
+ * @description Single import point for all shared utilities across the API.
+ * Provides response helpers, validators, logging, database access, AI, MinIO, and formatting.
+ * 
+ * @module lib/index
+ * 
+ * @example
+ * // Import everything from one place
+ * import { successResponse, v, logger, prisma, formatRupiah } from './lib'
+ * 
+ * @example
+ * // Or import specific utilities
+ * import { ErrorCode, errorResponse } from './lib/response'
+ * import { formatDate, formatNumber } from './lib/format'
  */
 
-// Response utilities
 export {
   ErrorCode,
   type ErrorCodeType,
@@ -13,16 +25,12 @@ export {
   CommonResponse,
 } from './response'
 
-// Validation utilities
 export { v } from './validators'
 
-// Logging utilities
 export { logger, logRequest, logResponse } from './logger'
 
-// Database connection
 export { prisma } from './db'
 
-// AI utilities
 export {
   generateCompletion,
   generateStreamingCompletion,
@@ -32,7 +40,6 @@ export {
   defaultModelName,
 } from './ai'
 
-// MinIO utilities
 export {
   minioClient,
   minioConfig,
@@ -44,7 +51,6 @@ export {
   getPresignedUrl,
 } from './minio'
 
-// Formatting utilities
 export {
   formatRupiah,
   formatNumber,

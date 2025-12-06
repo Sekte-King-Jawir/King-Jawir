@@ -2,10 +2,6 @@
 
 import Link from 'next/link'
 
-// ============================================================================
-// LANDING PAGE - AI-Powered Price Analysis Platform
-// ============================================================================
-
 export default function HomePage(): React.JSX.Element {
   return (
     <div className="min-h-screen bg-linear-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">

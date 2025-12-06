@@ -1,12 +1,18 @@
 /**
- * Price formatting utilities
- * For consistent price display across the application
+ * Price Formatting Utilities
+ * 
+ * @description Provides consistent price formatting functions for Indonesian Rupiah
+ * across the web application
+ * 
+ * @module lib/format
  */
 
 /**
- * Format number to Indonesian Rupiah currency
+ * Formats a number as Indonesian Rupiah currency
+ * 
  * @param num - Number to format
- * @returns Formatted string (e.g., "Rp1.234.567")
+ * @returns Formatted string with Rupiah symbol and thousands separators
+ * 
  * @example
  * formatRupiah(1500000) // "Rp1.500.000"
  */
@@ -19,18 +25,23 @@ export function formatRupiah(num: number): string {
 }
 
 /**
- * Alias for formatRupiah (for consistency with API)
+ * Alias for formatRupiah (for API consistency)
+ * 
  * @param amount - Amount to format
- * @returns Formatted string (e.g., "Rp1.234.567")
+ * @returns Formatted Rupiah string
  */
 export function formatPrice(amount: number): string {
   return formatRupiah(amount)
 }
 
 /**
- * Format number with thousand separators (Indonesian locale)
+ * Formats a number with Indonesian thousand separators
+ * 
  * @param num - Number to format
- * @returns Formatted string (e.g., "1.234.567")
+ * @returns Formatted string with dots as thousand separators
+ * 
+ * @example
+ * formatNumber(1234567) // "1.234.567"
  */
 export function formatNumber(num: number): string {
   return new Intl.NumberFormat('id-ID').format(num)

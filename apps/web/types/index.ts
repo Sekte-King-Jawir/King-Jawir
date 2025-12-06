@@ -1,7 +1,3 @@
-// ============================================================================
-// USER TYPES
-// ============================================================================
-
 export interface User {
   id: string
   email: string
@@ -9,10 +5,6 @@ export interface User {
   createdAt: string
   updatedAt: string
 }
-
-// ============================================================================
-// API RESPONSE TYPES
-// ============================================================================
 
 export interface ApiResponse<T = unknown> {
   success: boolean

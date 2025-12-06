@@ -29,8 +29,7 @@ const prisma = new PrismaClient({
 async function main() {
   logger.info('🌱 Starting database seed...')
 
-  // Clean existing data
-  logger.info('🗑️  Cleaning existing data...')
+  logger.info('🗑️ Cleaning existing data...')
   await prisma.user.deleteMany()
   logger.info('✅ Data cleaned')
 

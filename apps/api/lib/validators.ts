@@ -1,25 +1,47 @@
 import { t } from 'elysia'
 
 /**
- * Custom TypeBox validators untuk Elysia
- * Wrapper di atas t (TypeBox) bawaan Elysia
+ * Custom TypeBox validators for Elysia with Indonesian error messages
+ * 
+ * @description Provides pre-configured validators for common input types
+ * with Indonesian error messages for better UX
+ * 
+ * @example
+ * ```typescript
+ * import { v } from './lib/validators'
+ * 
+ * body: t.Object({
+ *   email: v.email(),
+ *   password: v.password(),
+ *   phone: v.phoneID()
+ * })
+ * ```
  */
 export const v = {
-  // Email validator
+  /**
+   * Validates email format
+   * @returns TypeBox email validator with Indonesian error message
+   */
   email: () =>
     t.String({
       format: 'email',
       error: 'Format email tidak valid',
     }),
 
-  // Password validator (min 6 chars)
+  /**
+   * Validates password with minimum 6 characters
+   * @returns TypeBox string validator
+   */
   password: () =>
     t.String({
       minLength: 6,
       error: 'Password minimal 6 karakter',
     }),
 
-  // Password strong (min 8, uppercase, lowercase, number)
+  /**
+   * Validates strong password (min 8 chars, must contain uppercase, lowercase, and number)
+   * @returns TypeBox string validator with pattern matching
+   */
   passwordStrong: () =>
     t.String({
       minLength: 8,
@@ -27,21 +49,32 @@ export const v = {
       error: 'Password minimal 8 karakter, harus ada huruf besar, huruf kecil, dan angka',
     }),
 
-  // Phone Indonesia (08xxx atau +628xxx)
+  /**
+   * Validates Indonesian phone number format (08xxx, 628xxx, or +628xxx)
+   * @returns TypeBox string validator with pattern matching
+   * @example phoneID() // Accepts: 081234567890, 6281234567890, +6281234567890
+   */
   phoneID: () =>
     t.String({
       pattern: '^(\\+62|62|0)8[1-9][0-9]{7,10}$',
       error: 'Format nomor HP tidak valid (contoh: 081234567890)',
     }),
 
-  // URL validator
+  /**
+   * Validates URL format
+   * @returns TypeBox URI format validator
+   */
   url: () =>
     t.String({
       format: 'uri',
       error: 'Format URL tidak valid',
     }),
 
-  // Slug validator (lowercase, numbers, dash)
+  /**
+   * Validates URL-friendly slug (lowercase letters, numbers, and dashes only)
+   * @returns TypeBox string validator with pattern matching
+   * @example slug() // Accepts: "product-name", "iphone-15-pro"
+   */
   slug: () =>
     t.String({
       minLength: 2,
@@ -50,7 +83,10 @@ export const v = {
       error: 'Slug hanya boleh huruf kecil, angka, dan dash',
     }),
 
-  // Price validator (positive number)
+  /**
+   * Validates price (positive number, max 999,999,999)
+   * @returns TypeBox number validator
+   */
   price: () =>
     t.Number({
       minimum: 0,
@@ -58,7 +94,10 @@ export const v = {
       error: 'Harga harus positif (max 999,999,999)',
     }),
 
-  // Rating validator (1-5)
+  /**
+   * Validates rating (1-5 stars)
+   * @returns TypeBox number validator
+   */
   rating: () =>
     t.Number({
       minimum: 1,
@@ -66,7 +105,10 @@ export const v = {
       error: 'Rating harus antara 1-5',
     }),
 
-  // Quantity validator (1-9999)
+  /**
+   * Validates quantity (1-9999)
+   * @returns TypeBox number validator
+   */
   quantity: () =>
     t.Number({
       minimum: 1,
@@ -74,7 +116,10 @@ export const v = {
       error: 'Quantity harus antara 1-9999',
     }),
 
-  // Stock validator (0-999999)
+  /**
+   * Validates stock quantity (0-999,999)
+   * @returns TypeBox number validator
+   */
   stock: () =>
     t.Number({
       minimum: 0,
@@ -82,7 +127,10 @@ export const v = {
       error: 'Stock harus antara 0-999,999',
     }),
 
-  // Name validator (1-100 chars)
+  /**
+   * Validates name (1-100 characters)
+   * @returns TypeBox string validator
+   */
   name: () =>
     t.String({
       minLength: 1,
@@ -90,28 +138,45 @@ export const v = {
       error: 'Nama harus 1-100 karakter',
     }),
 
-  // Bio validator (max 500 chars)
+  /**
+   * Validates bio text (max 500 characters)
+   * @returns TypeBox string validator
+   */
   bio: () =>
     t.String({
       maxLength: 500,
       error: 'Bio maksimal 500 karakter',
     }),
 
-  // Address validator (max 500 chars)
+  /**
+   * Validates address (max 500 characters)
+   * @returns TypeBox string validator
+   */
   address: () =>
     t.String({
       maxLength: 500,
       error: 'Alamat maksimal 500 karakter',
     }),
 
-  // ID validator (CUID format)
+  /**
+   * Validates ID (CUID format)
+   * @returns TypeBox string validator
+   */
   id: () =>
     t.String({
       minLength: 1,
       error: 'ID tidak valid',
     }),
 
-  // Pagination
+  /**
+   * Validates page number for pagination (optional)
+   * @returns TypeBox optional string validator with numeric pattern
+   */
   page: () => t.Optional(t.String({ pattern: '^[0-9]+$' })),
+
+  /**
+   * Validates limit for pagination (optional)
+   * @returns TypeBox optional string validator with numeric pattern
+   */
   limit: () => t.Optional(t.String({ pattern: '^[0-9]+$' })),
 }

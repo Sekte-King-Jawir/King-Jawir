@@ -80,7 +80,6 @@ export const priceAnalysisService = {
     userPrice?: number
   ): Promise<void> {
     try {
-      // Step 1: Initialize
       onUpdate({
         type: 'progress',
         step: 'initializing',
@@ -88,7 +87,6 @@ export const priceAnalysisService = {
         progress: 5,
       })
 
-      // Step 1.5: Optimize query with AI
       onUpdate({
         type: 'progress',
         step: 'optimizing',
@@ -132,7 +130,6 @@ export const priceAnalysisService = {
 
       await this.delay(1500)
 
-      // Step 3: Calculate statistics
       onUpdate({
         type: 'progress',
         step: 'calculating',
@@ -157,7 +154,6 @@ export const priceAnalysisService = {
 
       await this.delay(1000)
 
-      // Step 4: Prepare AI analysis
       onUpdate({
         type: 'progress',
         step: 'analyzing',
@@ -177,7 +173,6 @@ export const priceAnalysisService = {
 
       await this.delay(2000)
 
-      // Step 5: Generate insights
       onUpdate({
         type: 'progress',
         step: 'insights',
@@ -209,7 +204,6 @@ export const priceAnalysisService = {
           msg: 'Error generating AI response',
           error: aiError instanceof Error ? aiError.message : 'Unknown',
         })
-        // Fallback analysis without AI
         const analysis = getFallbackAnalysis(stats)
 
         onUpdate({
@@ -230,7 +224,6 @@ export const priceAnalysisService = {
 
       await this.delay(1000)
 
-      // Step 6: Finalize
       onUpdate({
         type: 'progress',
         step: 'finalizing',
@@ -251,7 +244,6 @@ export const priceAnalysisService = {
 
       await this.delay(500)
 
-      // Step 7: Complete
       onUpdate({
         type: 'complete',
         progress: 100,
@@ -292,22 +284,18 @@ export const priceAnalysisService = {
     limit: number = 10,
     userPrice?: number
   ): Promise<PriceAnalysisResult> {
-    // Optimize query with AI
     const optimizedQuery = await this.optimizeSearchQuery(query)
     logger.debug({ msg: '🔍 Using optimized query', query, optimizedQuery })
 
-    // Fetch product data from Tokopedia
     const products = await priceAnalysisRepository.fetchTokopediaPrices(optimizedQuery, limit)
 
     if (products.length === 0) {
       throw new Error('No products found for the given query')
     }
 
-    // Parse and calculate statistics
     const prices = products.map(p => priceAnalysisRepository.parsePrice(p.price))
     const stats = priceAnalysisRepository.calculateStats(prices)
 
-    // Prepare data for LLM analysis
     const productSummary = products.map((p, i) => ({
       name: p.name,
       price: p.price,
@@ -336,7 +324,6 @@ export const priceAnalysisService = {
       }
     )
 
-    // Parse AI response
     const analysis = parseAIResponse(aiResponse.text, stats)
 
     return {

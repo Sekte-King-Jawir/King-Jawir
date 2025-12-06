@@ -1,7 +1,18 @@
+/**
+ * AI/LLM Integration Utilities
+ * 
+ * @description OpenAI-compatible client for AI features supporting multiple providers
+ * (OpenAI, NVIDIA, GLM, etc.) via environment configuration
+ * 
+ * @module lib/ai
+ * 
+ * @requires OPENAI_API_KEY - API key for LLM provider
+ * @requires OPENAI_API_BASE - Base URL for API endpoint (optional)
+ * @requires OPENAI_MODEL - Model name to use (default: GLM 4.6)
+ */
+
 import OpenAI from 'openai'
 
-// Initialize OpenAI client with NVIDIA API configuration
-// Make sure to set OPENAI_API_KEY, OPENAI_API_BASE, and OPENAI_MODEL in your .env file
 const apiKey = process.env['OPENAI_API_KEY']
 const baseURL = process.env['OPENAI_API_BASE']
 const defaultModelName = process.env['OPENAI_MODEL'] || 'GLM 4.6'
@@ -14,7 +25,9 @@ if (!baseURL && process.env.NODE_ENV !== 'test') {
   console.warn('⚠️ OPENAI_API_BASE is not set. Using default OpenAI base URL.')
 }
 
-// Create OpenAI client instance
+/**
+ * OpenAI client instance configured from environment variables
+ */
 const openai = new OpenAI({
   apiKey: apiKey || 'dummy-key',
   baseURL: baseURL || 'https://api.openai.com/v1',
@@ -154,5 +167,4 @@ export async function generateStreamingChatCompletion(
   return stream
 }
 
-// Export client and model name for custom usage
 export { openai, defaultModelName }

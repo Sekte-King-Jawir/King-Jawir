@@ -1,6 +1,17 @@
-// Error Codes
+/**
+ * API Response Utilities
+ * 
+ * @description Provides standardized response helpers for consistent API responses
+ * across all endpoints with proper error codes and logging
+ * 
+ * @module lib/response
+ */
+
+/**
+ * Standard error codes used across the API
+ * @constant
+ */
 export const ErrorCode = {
-  // Auth Errors
   INVALID_CREDENTIALS: 'INVALID_CREDENTIALS',
   UNAUTHORIZED: 'UNAUTHORIZED',
   FORBIDDEN: 'FORBIDDEN',
@@ -8,32 +19,35 @@ export const ErrorCode = {
   TOKEN_INVALID: 'TOKEN_INVALID',
   TOKEN_EXPIRED: 'TOKEN_EXPIRED',
 
-  // User Errors
   USER_NOT_FOUND: 'USER_NOT_FOUND',
   USER_ALREADY_EXISTS: 'USER_ALREADY_EXISTS',
   EMAIL_NOT_VERIFIED: 'EMAIL_NOT_VERIFIED',
   EMAIL_ALREADY_VERIFIED: 'EMAIL_ALREADY_VERIFIED',
 
-  // Password Errors
   INVALID_PASSWORD: 'INVALID_PASSWORD',
   SAME_PASSWORD: 'SAME_PASSWORD',
   OAUTH_NO_PASSWORD: 'OAUTH_NO_PASSWORD',
 
-  // Resource Errors
   NOT_FOUND: 'NOT_FOUND',
   ALREADY_EXISTS: 'ALREADY_EXISTS',
   NOT_OWNER: 'NOT_OWNER',
 
-  // Validation Errors
   VALIDATION_ERROR: 'VALIDATION_ERROR',
 
-  // Server Errors
   INTERNAL_ERROR: 'INTERNAL_ERROR',
 } as const
 
+/**
+ * Type-safe error code union type
+ */
 export type ErrorCodeType = (typeof ErrorCode)[keyof typeof ErrorCode]
 
-// Response Types
+import { logger } from './logger'
+
+/**
+ * Standard API response structure
+ * @template T - Type of the data payload
+ */
 export interface ApiResponse<T = unknown> {
   success: boolean
   message: string
@@ -44,10 +58,19 @@ export interface ApiResponse<T = unknown> {
   }
 }
 
-// Import logger
-import { logger } from './logger'
-
-// Success Response Helper
+/**
+ * Creates a standardized success response
+ * 
+ * @template T - Type of the response data
+ * @param message - Success message to display
+ * @param data - Optional response data payload
+ * @returns Formatted success response object
+ * 
+ * @example
+ * ```typescript
+ * return successResponse('User created successfully', user)
+ * ```
+ */
 export function successResponse<T>(message: string, data?: T): ApiResponse<T> {
   logger.debug({ msg: '✅ Success response', message, hasData: !!data })
   return {
@@ -57,7 +80,19 @@ export function successResponse<T>(message: string, data?: T): ApiResponse<T> {
   }
 }
 
-// Error Response Helper
+/**
+ * Creates a standardized error response
+ * 
+ * @param message - Error message to display
+ * @param code - Error code from ErrorCode enum
+ * @param details - Optional additional error details
+ * @returns Formatted error response object
+ * 
+ * @example
+ * ```typescript
+ * return errorResponse('User not found', ErrorCode.USER_NOT_FOUND)
+ * ```
+ */
 export function errorResponse(
   message: string,
   code: ErrorCodeType,
@@ -74,7 +109,18 @@ export function errorResponse(
   }
 }
 
-// Common Responses
+/**
+ * Pre-configured common response helpers for frequently used responses
+ * 
+ * @description Provides shorthand methods for common API responses
+ * to reduce boilerplate code in controllers
+ * 
+ * @example
+ * ```typescript
+ * if (!user) return CommonResponse.userNotFound()
+ * if (!authorized) return CommonResponse.forbidden()
+ * ```
+ */
 export const CommonResponse = {
   unauthorized: () => errorResponse('Unauthorized', ErrorCode.UNAUTHORIZED),
   forbidden: (message?: string) =>

@@ -1,7 +1,29 @@
+/**
+ * MinIO Object Storage Integration
+ * 
+ * @description Provides file upload, deletion, and URL generation for MinIO S3-compatible storage.
+ * Supports avatar uploads, product images, and custom folder organization.
+ * 
+ * @module lib/minio
+ * @requires minio
+ * @requires ./logger
+ * 
+ * @example
+ * // Initialize MinIO bucket
+ * await initMinIO()
+ * 
+ * @example
+ * // Upload avatar
+ * const avatarUrl = await uploadAvatar(file, userId)
+ * 
+ * @example
+ * // Delete file
+ * await deleteFromMinIO(fileUrl)
+ */
+
 import * as Minio from 'minio'
 import { logger } from './logger'
 
-// MinIO configuration from environment variables
 const MINIO_ENDPOINT = process.env['MINIO_ENDPOINT'] || 'localhost'
 const MINIO_PORT = parseInt(process.env['MINIO_PORT'] || '9000', 10)
 const MINIO_ACCESS_KEY = process.env['MINIO_ACCESS_KEY'] || ''
@@ -12,7 +34,16 @@ const MINIO_REGION = process.env['MINIO_REGION'] || 'us-east-1'
 const MINIO_PUBLIC_URL = process.env['MINIO_PUBLIC_URL'] || 'http://localhost:9000'
 const MINIO_AVATAR_PREFIX = process.env['MINIO_AVATAR_PREFIX'] || 'avatars'
 
-// Parse endpoint to remove protocol if present
+/**
+ * Parses MinIO endpoint URL to extract host and port
+ * 
+ * @param endpoint - Endpoint URL (with or without protocol)
+ * @returns Object containing host and optional port
+ * 
+ * @example
+ * parseEndpoint('http://localhost:9000') // { host: 'localhost', port: 9000 }
+ * parseEndpoint('minio.example.com') // { host: 'minio.example.com' }
+ */
 const parseEndpoint = (endpoint: string): { host: string; port?: number } => {
   const urlPattern = /^(https?:\/\/)?([^:\/\s]+)(:(\d+))?/
   const match = endpoint.match(urlPattern)
@@ -28,7 +59,6 @@ const parseEndpoint = (endpoint: string): { host: string; port?: number } => {
 
 const { host: minioHost, port: minioPort } = parseEndpoint(MINIO_ENDPOINT)
 
-// Initialize MinIO client
 export const minioClient = new Minio.Client({
   endPoint: minioHost,
   port: minioPort || MINIO_PORT,
@@ -39,7 +69,16 @@ export const minioClient = new Minio.Client({
 })
 
 /**
- * Initialize MinIO bucket if it doesn't exist
+ * Initializes MinIO bucket with public read policy
+ * 
+ * @description Creates bucket if it doesn't exist and sets policy to allow public read access
+ * for image serving. Should be called on application startup.
+ * 
+ * @throws {Error} If bucket creation or policy setting fails
+ * 
+ * @example
+ * // In your app initialization
+ * await initMinIO()
  */
 export async function initMinIO(): Promise<void> {
   try {
@@ -49,7 +88,6 @@ export async function initMinIO(): Promise<void> {
       await minioClient.makeBucket(MINIO_BUCKET_NAME, MINIO_REGION)
       logger.info(`✅ MinIO bucket created: ${MINIO_BUCKET_NAME}`)
 
-      // Set bucket policy to public read for images
       const policy = {
         Version: '2012-10-17',
         Statement: [
@@ -74,29 +112,32 @@ export async function initMinIO(): Promise<void> {
 }
 
 /**
- * Upload file to MinIO
- * @param file - File object from Elysia
- * @param folder - Folder prefix (e.g., 'avatars', 'products')
- * @returns Public URL of uploaded file
+ * Uploads file to MinIO with unique filename generation
+ * 
+ * @param file - File object from Elysia request (contains arrayBuffer, name, type)
+ * @param folder - Folder prefix for organizing files (default: 'uploads')
+ * @returns Public URL of the uploaded file
+ * 
+ * @throws {Error} If upload fails
+ * 
+ * @example
+ * const url = await uploadToMinIO(file, 'avatars/user123')
+ * // Returns: 'http://localhost:9000/api/avatars/user123/1234567890-abc123.jpg'
  */
 export async function uploadToMinIO(file: File, folder: string = 'uploads'): Promise<string> {
   try {
-    // Generate unique filename
     const timestamp = Date.now()
     const randomString = Math.random().toString(36).substring(2, 10)
     const extension = file.name.split('.').pop() || 'jpg'
     const filename = `${timestamp}-${randomString}.${extension}`
     const objectName = `${folder}/${filename}`
 
-    // Convert File to Buffer
     const buffer = Buffer.from(await file.arrayBuffer())
 
-    // Upload to MinIO
     await minioClient.putObject(MINIO_BUCKET_NAME, objectName, buffer, buffer.length, {
       'Content-Type': file.type || 'application/octet-stream',
     })
 
-    // Return public URL
     const publicUrl = `${MINIO_PUBLIC_URL}/${MINIO_BUCKET_NAME}/${objectName}`
     logger.info(`✅ File uploaded to MinIO: ${publicUrl}`)
 
@@ -108,10 +149,15 @@ export async function uploadToMinIO(file: File, folder: string = 'uploads'): Pro
 }
 
 /**
- * Upload avatar to MinIO
- * @param file - Avatar file
- * @param userId - User ID for organizing files
+ * Uploads user avatar to dedicated folder
+ * 
+ * @param file - Avatar image file
+ * @param userId - User ID for folder organization
  * @returns Public URL of uploaded avatar
+ * 
+ * @example
+ * const avatarUrl = await uploadAvatar(file, 'user-uuid-123')
+ * // Uploads to: avatars/user-uuid-123/{timestamp}-{random}.{ext}
  */
 export async function uploadAvatar(file: File, userId: string): Promise<string> {
   const folder = `${MINIO_AVATAR_PREFIX}/${userId}`
@@ -119,10 +165,15 @@ export async function uploadAvatar(file: File, userId: string): Promise<string> 
 }
 
 /**
- * Upload product image to MinIO
+ * Uploads product image to store-specific folder
+ * 
  * @param file - Product image file
- * @param storeId - Store ID for organizing files
- * @returns Public URL of uploaded image
+ * @param storeId - Store ID for folder organization
+ * @returns Public URL of uploaded product image
+ * 
+ * @example
+ * const imageUrl = await uploadProductImage(file, 'store-123')
+ * // Uploads to: products/store-123/{timestamp}-{random}.{ext}
  */
 export async function uploadProductImage(file: File, storeId: string): Promise<string> {
   const folder = `products/${storeId}`
@@ -130,13 +181,17 @@ export async function uploadProductImage(file: File, storeId: string): Promise<s
 }
 
 /**
- * Delete file from MinIO
- * @param objectUrl - Full URL of the object to delete
- * @returns True if deleted successfully
+ * Deletes file from MinIO by parsing URL to extract object name
+ * 
+ * @param objectUrl - Full public URL of the object to delete
+ * @returns True if deletion succeeds, false if URL is invalid or deletion fails
+ * 
+ * @example
+ * const deleted = await deleteFromMinIO('http://localhost:9000/api/avatars/user123/file.jpg')
+ * // Extracts 'avatars/user123/file.jpg' and deletes it
  */
 export async function deleteFromMinIO(objectUrl: string): Promise<boolean> {
   try {
-    // Extract object name from URL
     const urlPattern = new RegExp(`${MINIO_PUBLIC_URL}/${MINIO_BUCKET_NAME}/(.+)`)
     const match = objectUrl.match(urlPattern)
 
@@ -147,7 +202,6 @@ export async function deleteFromMinIO(objectUrl: string): Promise<boolean> {
 
     const objectName = match[1]
 
-    // Delete from MinIO
     await minioClient.removeObject(MINIO_BUCKET_NAME, objectName)
     logger.info(`✅ File deleted from MinIO: ${objectName}`)
 
@@ -159,10 +213,16 @@ export async function deleteFromMinIO(objectUrl: string): Promise<boolean> {
 }
 
 /**
- * Get presigned URL for temporary access
- * @param objectName - Object name in bucket
- * @param expirySeconds - Expiry time in seconds (default: 7 days)
- * @returns Presigned URL
+ * Generates presigned URL for temporary file access
+ * 
+ * @param objectName - Object path within bucket (e.g., 'avatars/user123/file.jpg')
+ * @param expirySeconds - URL expiration time in seconds (default: 604800 = 7 days)
+ * @returns Presigned URL with temporary access token
+ * 
+ * @throws {Error} If URL generation fails
+ * 
+ * @example
+ * const url = await getPresignedUrl('avatars/user123/file.jpg', 3600) // 1 hour
  */
 export async function getPresignedUrl(
   objectName: string,

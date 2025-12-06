@@ -1,10 +1,39 @@
+/**
+ * Price Analysis Service Module
+ * 
+ * @description Provides HTTP and WebSocket client methods for real-time price analysis.
+ * Handles Tokopedia product scraping, statistical calculations, and AI-powered insights.
+ * 
+ * @module lib/api/price-analysis
+ * 
+ * @example
+ * // HTTP request
+ * const result = await priceAnalysisService.analyze({
+ *   query: 'laptop gaming',
+ *   limit: 20,
+ *   userPrice: 5000000
+ * })
+ * 
+ * @example
+ * // WebSocket streaming
+ * const ws = priceAnalysisService.connectStream(
+ *   { query: 'laptop', limit: 10 },
+ *   (message) => console.log(message.progress),
+ *   (error) => console.error(error)
+ * )
+ */
+
 import { apiClient } from './client'
 import { API_ENDPOINTS } from '../config/api'
 
-// ============================================================================
-// TYPES
-// ============================================================================
-
+/**
+ * Request payload for price analysis
+ * 
+ * @interface PriceAnalysisRequest
+ * @property {string} query - Product search query (e.g., 'laptop gaming')
+ * @property {number} [limit] - Maximum number of products to analyze (default: 10)
+ * @property {number} [userPrice] - User's target price for comparison (in Rupiah)
+ */
 export interface PriceAnalysisRequest {
   query: string
   limit?: number
@@ -71,13 +100,28 @@ export interface WebSocketMessage {
   error?: string
 }
 
-// ============================================================================
-// SERVICE
-// ============================================================================
-
+/**
+ * Price Analysis Service
+ * 
+ * @namespace priceAnalysisService
+ * @description Provides methods for price analysis via HTTP and WebSocket
+ */
 export const priceAnalysisService = {
   /**
-   * Analyze prices with HTTP request
+   * Performs price analysis via HTTP POST request
+   * 
+   * @param {PriceAnalysisRequest} data - Analysis request parameters
+   * @returns {Promise<{success: boolean, message: string, data?: PriceAnalysisResult}>} Analysis result
+   * 
+   * @example
+   * const result = await priceAnalysisService.analyze({
+   *   query: 'laptop',
+   *   limit: 20,
+   *   userPrice: 5000000
+   * })
+   * if (result.success) {
+   *   console.log(result.data?.statistics.mean)
+   * }
    */
   async analyze(
     data: PriceAnalysisRequest
@@ -86,7 +130,25 @@ export const priceAnalysisService = {
   },
 
   /**
-   * Connect to WebSocket for streaming analysis
+   * Establishes WebSocket connection for real-time streaming analysis
+   * 
+   * @param {PriceAnalysisRequest} data - Analysis request parameters
+   * @param {Function} onMessage - Callback for progress/complete messages
+   * @param {Function} onError - Callback for error handling
+   * @returns {WebSocket} Active WebSocket connection (call .close() when done)
+   * 
+   * @example
+   * const ws = priceAnalysisService.connectStream(
+   *   { query: 'laptop gaming', limit: 10 },
+   *   (msg) => {
+   *     if (msg.type === 'progress') console.log(msg.progress + '%')
+   *     if (msg.type === 'complete') console.log(msg.data)
+   *   },
+   *   (err) => console.error('Error:', err)
+   * )
+   * 
+   * // Cleanup when component unmounts
+   * return () => ws.close()
    */
   connectStream(
     data: PriceAnalysisRequest,
