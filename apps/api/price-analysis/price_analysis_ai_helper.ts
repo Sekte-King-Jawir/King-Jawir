@@ -1,19 +1,19 @@
 /**
  * AI Helper Functions for Price Analysis
- * 
+ *
  * @description Provides utilities for building AI prompts, parsing responses,
  * and generating fallback analysis when AI services are unavailable.
- * 
+ *
  * @module price-analysis/price_analysis_ai_helper
- * 
+ *
  * @example
  * // Build analysis prompt
  * const prompt = buildAnalysisPrompt('laptop gaming', products, stats, userPrice)
- * 
+ *
  * @example
  * // Parse AI response
  * const analysis = parseAIResponse(aiText, stats)
- * 
+ *
  * @example
  * // Fallback when AI fails
  * const fallback = getFallbackAnalysis(stats)
@@ -21,13 +21,13 @@
 
 /**
  * Builds comprehensive LLM prompt for price analysis
- * 
+ *
  * @param {string} query - Product search query
  * @param {Array<Object>} products - Array of product data with prices and ratings
  * @param {Object} stats - Statistical summary (min, max, average, median)
  * @param {number} [userPrice] - Optional user's intended price for comparison
  * @returns {string} Formatted prompt text for LLM
- * 
+ *
  * @example
  * const prompt = buildAnalysisPrompt(
  *   'laptop gaming',
@@ -93,14 +93,14 @@ export function buildAnalysisPrompt(
 
 /**
  * Parses AI response text into structured analysis object
- * 
+ *
  * @description Extracts recommendation, insights, and suggested price from AI text output.
  * Handles various response formats and provides fallback values if parsing fails.
- * 
+ *
  * @param {string} aiText - Raw text response from AI model
  * @param {Object} stats - Statistical data for fallback calculations
  * @returns {Object} Structured analysis with recommendation, insights, and suggestedPrice
- * 
+ *
  * @example
  * const analysis = parseAIResponse(
  *   'RECOMMENDATION: Price competitively\nINSIGHTS:\n- Market is saturated',
@@ -176,13 +176,13 @@ export function parseAIResponse(
 
 /**
  * Generates fallback analysis when AI service is unavailable
- * 
+ *
  * @description Provides statistical-based analysis using market data without AI.
  * Used as emergency fallback to ensure service availability.
- * 
+ *
  * @param {Object} stats - Market statistics (min, max, average, median)
  * @returns {Object} Fallback analysis with recommendation, insights, and suggestedPrice
- * 
+ *
  * @example
  * const fallback = getFallbackAnalysis({
  *   min: 1000000,
@@ -222,17 +222,17 @@ export function getFallbackAnalysis(stats: {
 
 /**
  * Builds prompt for AI-powered search query optimization
- * 
+ *
  * @description Creates instructions for AI to optimize marketplace search queries.
  * Adds relevant keywords while preserving user intent for accessory searches.
- * 
+ *
  * @param {string} query - Original user search query
  * @returns {string} Formatted prompt for query optimization
- * 
+ *
  * @example
  * const prompt = buildQueryOptimizationPrompt('iphone')
  * // AI will return: 'iphone smartphone'
- * 
+ *
  * @example
  * const prompt = buildQueryOptimizationPrompt('case iphone')
  * // AI will return: 'case iphone' (unchanged, user wants case)

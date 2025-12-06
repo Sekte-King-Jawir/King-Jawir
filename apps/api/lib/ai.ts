@@ -1,11 +1,11 @@
 /**
  * AI/LLM Integration Utilities
- * 
+ *
  * @description OpenAI-compatible client for AI features supporting multiple providers
  * (OpenAI, NVIDIA, GLM, etc.) via environment configuration
- * 
+ *
  * @module lib/ai
- * 
+ *
  * @requires OPENAI_API_KEY - API key for LLM provider
  * @requires OPENAI_API_BASE - Base URL for API endpoint (optional)
  * @requires OPENAI_MODEL - Model name to use (default: GLM 4.6)

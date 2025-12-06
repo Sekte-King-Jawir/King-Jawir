@@ -1,9 +1,9 @@
 /**
  * API Client for HTTP Communication
- * 
+ *
  * @description Type-safe HTTP client with error handling, timeout management,
  * and automatic credential inclusion for authenticated requests
- * 
+ *
  * @module lib/api/client
  */
 
@@ -35,7 +35,7 @@ export interface ApiError {
 
 /**
  * Custom error class for API client errors
- * 
+ *
  * @extends Error
  */
 export class ApiClientError extends Error {
@@ -52,10 +52,10 @@ export class ApiClientError extends Error {
 
 /**
  * HTTP client for making API requests
- * 
+ *
  * @description Provides a clean interface for HTTP operations with built-in
  * error handling, timeouts, and credential management
- * 
+ *
  * @example
  * ```typescript
  * const client = new ApiClient()
@@ -68,7 +68,7 @@ export class ApiClient {
 
   /**
    * Creates a new API client instance
-   * 
+   *
    * @param baseUrl - Base URL for API requests (defaults to API_CONFIG.BASE_URL)
    * @param timeout - Request timeout in milliseconds (defaults to API_CONFIG.TIMEOUT)
    */
@@ -79,7 +79,7 @@ export class ApiClient {
 
   /**
    * Internal method for making HTTP requests
-   * 
+   *
    * @template T - Expected response data type
    * @param endpoint - API endpoint path
    * @param options - Fetch API options
@@ -136,7 +136,7 @@ export class ApiClient {
 
   /**
    * Performs a GET request
-   * 
+   *
    * @template T - Expected response data type
    * @param endpoint - API endpoint path
    * @param options - Additional fetch options
@@ -148,7 +148,7 @@ export class ApiClient {
 
   /**
    * Performs a POST request
-   * 
+   *
    * @template T - Expected response data type
    * @param endpoint - API endpoint path
    * @param body - Request body data
@@ -191,10 +191,10 @@ export const apiClient = new ApiClient()
 
 /**
  * Builds a URL query string from parameters object
- * 
+ *
  * @param params - Object of query parameters
  * @returns URL-encoded query string with leading '?' or empty string
- * 
+ *
  * @example
  * buildQueryString({ page: 1, limit: 10 }) // "?page=1&limit=10"
  */
@@ -215,7 +215,7 @@ export function buildQueryString(
 
 /**
  * Type guard to check if an error is an ApiClientError
- * 
+ *
  * @param error - Error to check
  * @returns True if error is ApiClientError instance
  */
@@ -225,7 +225,7 @@ export function isApiError(error: unknown): error is ApiClientError {
 
 /**
  * Extracts a user-friendly error message from any error
- * 
+ *
  * @param error - Error object
  * @returns User-friendly error message string
  */

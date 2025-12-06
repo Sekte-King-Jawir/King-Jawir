@@ -1,19 +1,19 @@
 /**
  * Database Connection Module
- * 
+ *
  * @description Initializes Prisma client with MariaDB adapter and connection pooling.
  * Handles connection lifecycle including cleanup on process exit.
- * 
+ *
  * @module lib/db
  * @requires @prisma/adapter-mariadb
  * @requires ./logger
- * 
+ *
  * @example
  * import { prisma } from './lib/db'
- * 
+ *
  * // Query users
  * const users = await prisma.user.findMany()
- * 
+ *
  * @example
  * // Transaction
  * await prisma.$transaction(async (tx) => {
@@ -95,13 +95,13 @@ if (process.env['NODE_ENV'] === 'test') {
 
 /**
  * Prisma client instance with MariaDB adapter
- * 
+ *
  * @description Singleton instance configured with:
  * - Connection pooling (10 connections, minimum 2 idle)
  * - Extended timeouts (30s connect, 60s idle)
  * - Automatic cleanup on process exit
  * - Test mode mock for unit tests
- * 
+ *
  * @example
  * const users = await prisma.user.findMany()
  */

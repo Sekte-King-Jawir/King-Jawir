@@ -1,19 +1,19 @@
 /**
  * Client-side Utility Functions
- * 
+ *
  * @description Pure utility functions for common operations in the web application
  * All functions are side-effect free and can be safely used in any component
- * 
+ *
  * @module lib/utils
  */
 
 /**
  * Formats a number as USD currency
- * 
+ *
  * @param amount - Amount to format
  * @param currency - Currency code (default: 'USD')
  * @returns Formatted currency string
- * 
+ *
  * @example
  * formatCurrency(1500) // "$1,500"
  */
@@ -28,10 +28,10 @@ export function formatCurrency(amount: number, currency = 'USD'): string {
 
 /**
  * Formats a number as Indonesian Rupiah currency
- * 
+ *
  * @param amount - Amount to format
  * @returns Formatted Rupiah string with thousands separators
- * 
+ *
  * @example
  * formatRupiah(1500000) // "Rp1.500.000"
  */
@@ -45,7 +45,7 @@ export function formatRupiah(amount: number): string {
 
 /**
  * Alias for formatRupiah (for consistency with API)
- * 
+ *
  * @param amount - Amount to format
  * @returns Formatted Rupiah string
  */
@@ -55,11 +55,11 @@ export function formatPrice(amount: number): string {
 
 /**
  * Truncates text to a maximum length and adds ellipsis
- * 
+ *
  * @param text - Text to truncate
  * @param maxLength - Maximum length before truncation
  * @returns Truncated text with ellipsis if needed
- * 
+ *
  * @example
  * truncateText("Long product name", 10) // "Long produ..."
  */
@@ -70,10 +70,10 @@ export function truncateText(text: string, maxLength: number): string {
 
 /**
  * Generates a URL-friendly slug from text
- * 
+ *
  * @param text - Text to convert to slug
  * @returns URL-safe slug string
- * 
+ *
  * @example
  * generateSlug("iPhone 15 Pro Max") // "iphone-15-pro-max"
  */
@@ -86,10 +86,10 @@ export function generateSlug(text: string): string {
 
 /**
  * Creates a promise that resolves after specified milliseconds
- * 
+ *
  * @param ms - Milliseconds to delay
  * @returns Promise that resolves after delay
- * 
+ *
  * @example
  * await delay(1000) // Wait 1 second
  */
@@ -99,12 +99,12 @@ export function delay(ms: number): Promise<void> {
 
 /**
  * Creates a debounced version of a function
- * 
+ *
  * @template T - Function type
  * @param func - Function to debounce
  * @param wait - Milliseconds to wait before executing
  * @returns Debounced function
- * 
+ *
  * @example
  * const debouncedSearch = debounce(searchFunction, 300)
  */
@@ -122,7 +122,7 @@ export function debounce<T extends (...args: unknown[]) => unknown>(
 
 /**
  * Checks if an object is empty (has no keys)
- * 
+ *
  * @param obj - Object to check
  * @returns True if object has no keys
  */
@@ -132,11 +132,11 @@ export function isEmpty(obj: object): boolean {
 
 /**
  * Creates a deep copy of an object using JSON serialization
- * 
+ *
  * @template T - Type of object to clone
  * @param obj - Object to clone
  * @returns Deep cloned object
- * 
+ *
  * @warning Does not preserve functions, undefined, or circular references
  */
 export function deepClone<T>(obj: T): T {
@@ -145,7 +145,7 @@ export function deepClone<T>(obj: T): T {
 
 /**
  * Gets a random item from an array
- * 
+ *
  * @template T - Array item type
  * @param array - Array to pick from
  * @returns Random item or undefined if array is empty
@@ -157,7 +157,7 @@ export function getRandomItem<T>(array: T[]): T | undefined {
 
 /**
  * Shuffles an array using Fisher-Yates algorithm
- * 
+ *
  * @template T - Array item type
  * @param array - Array to shuffle
  * @returns New shuffled array (does not mutate original)
@@ -175,11 +175,11 @@ export function shuffleArray<T>(array: T[]): T[] {
 
 /**
  * Formats a date to Indonesian locale
- * 
+ *
  * @param date - Date to format (string or Date object)
  * @param options - Intl.DateTimeFormatOptions for custom formatting
  * @returns Formatted date string in Indonesian
- * 
+ *
  * @example
  * formatDate(new Date()) // "6 Desember 2025"
  */
@@ -197,10 +197,10 @@ export function formatDate(date: string | Date, options?: Intl.DateTimeFormatOpt
 
 /**
  * Formats a date as relative time in Indonesian
- * 
+ *
  * @param date - Date to format (string or Date object)
  * @returns Relative time string (e.g., "2 hari yang lalu")
- * 
+ *
  * @example
  * formatRelativeTime(yesterday) // "1 hari yang lalu"
  */
@@ -224,7 +224,7 @@ export function formatRelativeTime(date: string | Date): string {
 
 /**
  * Calculates discount percentage from original and discounted prices
- * 
+ *
  * @param originalPrice - Original price before discount
  * @param discountedPrice - Price after discount
  * @returns Discount percentage (0-100)
@@ -236,10 +236,10 @@ export function calculateDiscount(originalPrice: number, discountedPrice: number
 
 /**
  * Formats a number with Indonesian thousand separators
- * 
+ *
  * @param num - Number to format
  * @returns Formatted number string
- * 
+ *
  * @example
  * formatNumber(1234567) // "1.234.567"
  */
@@ -249,7 +249,7 @@ export function formatNumber(num: number): string {
 
 /**
  * Validates email format using regex
- * 
+ *
  * @param email - Email string to validate
  * @returns True if email format is valid
  */
@@ -260,7 +260,7 @@ export function isValidEmail(email: string): boolean {
 
 /**
  * Validates Indonesian phone number format
- * 
+ *
  * @param phone - Phone number string to validate
  * @returns True if phone format is valid (08xxx, 628xxx, +628xxx)
  */
@@ -271,10 +271,10 @@ export function isValidPhone(phone: string): boolean {
 
 /**
  * Extracts initials from a name (max 2 characters)
- * 
+ *
  * @param name - Full name string
  * @returns Uppercase initials
- * 
+ *
  * @example
  * getInitials("John Doe") // "JD"
  */
@@ -289,12 +289,12 @@ export function getInitials(name: string): string {
 
 /**
  * Clamps a number between minimum and maximum values
- * 
+ *
  * @param value - Value to clamp
  * @param min - Minimum allowed value
  * @param max - Maximum allowed value
  * @returns Clamped value
- * 
+ *
  * @example
  * clamp(150, 0, 100) // 100
  */

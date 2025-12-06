@@ -1,18 +1,18 @@
 /**
  * Data Formatting Utilities
- * 
+ *
  * @description Provides consistent formatting functions for dates, numbers, and currency
  * across the API with Indonesian locale support
- * 
+ *
  * @module lib/format
  */
 
 /**
  * Formats a number as Indonesian Rupiah currency
- * 
+ *
  * @param num - Number to format
  * @returns Formatted string with Rupiah symbol and thousands separators
- * 
+ *
  * @example
  * formatRupiah(1500000) // "Rp1.500.000"
  */
@@ -22,10 +22,10 @@ export function formatRupiah(num: number): string {
 
 /**
  * Formats a number with Indonesian thousand separators
- * 
+ *
  * @param num - Number to format
  * @returns Formatted string with dots as thousand separators
- * 
+ *
  * @example
  * formatNumber(1234567) // "1.234.567"
  */
@@ -35,11 +35,11 @@ export function formatNumber(num: number): string {
 
 /**
  * Formats a date to Indonesian locale
- * 
+ *
  * @param date - Date object or ISO string to format
  * @param options - Optional Intl.DateTimeFormatOptions for custom formatting
  * @returns Formatted date string in Indonesian
- * 
+ *
  * @example
  * formatDate(new Date()) // "6 Desember 2025"
  * formatDate(new Date(), { dateStyle: 'short' }) // "06/12/2025"
@@ -58,10 +58,10 @@ export function formatDate(date: string | Date, options?: Intl.DateTimeFormatOpt
 
 /**
  * Formats a date as relative time in Indonesian
- * 
+ *
  * @param date - Date object or ISO string
  * @returns Human-readable relative time string
- * 
+ *
  * @example
  * formatRelativeTime(yesterday) // "1 hari yang lalu"
  * formatRelativeTime(justNow) // "Baru saja"
@@ -86,11 +86,11 @@ export function formatRelativeTime(date: string | Date): string {
 
 /**
  * Calculates percentage from value and total
- * 
+ *
  * @param value - Current value
  * @param total - Total value (denominator)
  * @returns Rounded percentage (0-100)
- * 
+ *
  * @example
  * calculatePercentage(25, 100) // 25
  * calculatePercentage(1, 3) // 33

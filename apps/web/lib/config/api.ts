@@ -1,20 +1,20 @@
 /**
  * API Configuration Module
- * 
+ *
  * @description Centralized API configuration including base URLs, timeouts, and endpoints.
  * Reads from environment variables with fallback to localhost.
- * 
+ *
  * @module lib/config/api
- * 
+ *
  * @example
  * import { API_CONFIG, API_ENDPOINTS } from '@/lib/config/api'
- * 
+ *
  * fetch(`${API_CONFIG.BASE_URL}${API_ENDPOINTS.PRICE_ANALYSIS.ANALYZE}`)
  */
 
 /**
  * API client configuration
- * 
+ *
  * @constant {Object} API_CONFIG
  * @property {string} BASE_URL - API base URL (from NEXT_PUBLIC_API_URL env)
  * @property {number} TIMEOUT - Request timeout in milliseconds
@@ -28,7 +28,7 @@ export const API_CONFIG = {
 
 /**
  * API endpoint paths organized by feature
- * 
+ *
  * @constant {Object} API_ENDPOINTS
  * @property {Object} PRICE_ANALYSIS - Price analysis endpoints
  * @property {string} PRICE_ANALYSIS.ANALYZE - HTTP POST for analysis

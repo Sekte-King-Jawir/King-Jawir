@@ -1,26 +1,26 @@
 /**
  * Price Analysis React Hook
- * 
+ *
  * @description Custom hook for managing price analysis state and operations.
  * Supports both HTTP requests and WebSocket streaming with progress tracking.
- * 
+ *
  * @module hooks/usePriceAnalysis
- * 
+ *
  * @example
  * // Basic usage with HTTP
  * const { loading, error, result, analyze } = usePriceAnalysis()
- * 
+ *
  * const handleAnalyze = async () => {
  *   const response = await analyze({ query: 'laptop', limit: 10 })
  *   if (response.success) {
  *     console.log(response.data)
  *   }
  * }
- * 
+ *
  * @example
  * // Streaming with progress
  * const { loading, streamProgress, streamMessage, analyzeWithStream } = usePriceAnalysis()
- * 
+ *
  * useEffect(() => {
  *   analyzeWithStream({ query: 'laptop', limit: 20 })
  * }, [])
@@ -45,7 +45,7 @@ interface StreamMessage {
 
 /**
  * Return type for usePriceAnalysis hook
- * 
+ *
  * @interface UsePriceAnalysisReturn
  * @property {boolean} loading - Loading state indicator
  * @property {string | null} error - Error message if analysis fails
@@ -71,20 +71,20 @@ interface UsePriceAnalysisReturn {
 
 /**
  * Custom hook for price analysis with HTTP and WebSocket support
- * 
+ *
  * @returns {UsePriceAnalysisReturn} Analysis state and methods
- * 
+ *
  * @example
  * function PriceAnalysisPage() {
  *   const { loading, result, analyze } = usePriceAnalysis()
- *   
+ *
  *   const handleSubmit = async (query: string) => {
  *     const response = await analyze({ query, limit: 20 })
  *     if (response.success) {
  *       console.log('Mean price:', response.data?.statistics.mean)
  *     }
  *   }
- *   
+ *
  *   return <div>{loading ? 'Loading...' : JSON.stringify(result)}</div>
  * }
  */
@@ -98,10 +98,10 @@ export function usePriceAnalysis(): UsePriceAnalysisReturn {
 
   /**
    * Performs price analysis via HTTP POST request
-   * 
+   *
    * @param {PriceAnalysisRequest} data - Analysis parameters (query, limit, userPrice)
    * @returns {Promise<{success: boolean, message?: string, data?: PriceAnalysisResult}>}
-   * 
+   *
    * @example
    * const response = await analyze({ query: 'laptop gaming', limit: 15 })
    */
@@ -129,14 +129,14 @@ export function usePriceAnalysis(): UsePriceAnalysisReturn {
 
   /**
    * Performs price analysis via WebSocket with real-time progress updates
-   * 
+   *
    * @param {PriceAnalysisRequest} data - Analysis parameters
    * @returns {void} Updates state via streamProgress and streamMessage
-   * 
+   *
    * @example
    * // Start streaming analysis
    * analyzeWithStream({ query: 'smartphone', limit: 10 })
-   * 
+   *
    * // Cancel if needed
    * useEffect(() => {
    *   return () => cancelStream()
@@ -181,7 +181,7 @@ export function usePriceAnalysis(): UsePriceAnalysisReturn {
 
   /**
    * Cancels active WebSocket connection and resets loading state
-   * 
+   *
    * @example
    * <button onClick={cancelStream}>Cancel Analysis</button>
    */
