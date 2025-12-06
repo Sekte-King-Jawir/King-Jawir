@@ -11,35 +11,35 @@ export function useSmoothScroll(): void {
   useEffect(() => {
     // Configure ScrollTrigger
     ScrollTrigger.config({
-      autoRefreshEvents: 'visibilitychange,DOMContentLoaded,load'
+      autoRefreshEvents: 'visibilitychange,DOMContentLoaded,load',
     })
 
     // Set up smooth scrolling
     const smoothScroll = (): void => {
       const html = document.documentElement
       const body = document.body
-      
+
       // Store the original scroll position
       let scrollTop = window.pageYOffset || html.scrollTop || body.scrollTop
       let scrollLeft = window.pageXOffset || html.scrollLeft || body.scrollLeft
-      
+
       // Set up the animation loop
       const update = (): void => {
         // Calculate the difference between current and target scroll positions
         const currentY = html.scrollTop || body.scrollTop
         const currentX = html.scrollLeft || body.scrollLeft
-        
+
         // Apply easing to smooth the scroll
         scrollTop += (currentY - scrollTop) * 0.1
         scrollLeft += (currentX - scrollLeft) * 0.1
-        
+
         // Apply the smoothed scroll position
         window.scrollTo(scrollLeft, scrollTop)
-        
+
         // Continue the animation loop
         requestAnimationFrame(update)
       }
-      
+
       // Start the animation loop
       requestAnimationFrame(update)
     }

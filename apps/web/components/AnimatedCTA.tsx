@@ -12,9 +12,9 @@ export function AnimatedCTA(): React.JSX.Element {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_40%,rgba(99,102,241,0.1)_0%,transparent_40%)]"></div>
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_60%,rgba(129,140,248,0.1)_0%,transparent_40%)]"></div>
       </div>
-      
+
       <div className="max-w-4xl mx-auto text-center relative z-10">
-        <motion.h2 
+        <motion.h2
           className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white mb-6"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -23,8 +23,8 @@ export function AnimatedCTA(): React.JSX.Element {
         >
           Mulai Tentukan Harga Optimal dengan AI
         </motion.h2>
-        
-        <motion.p 
+
+        <motion.p
           className="text-lg text-slate-600 dark:text-slate-400 mb-8"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -34,7 +34,7 @@ export function AnimatedCTA(): React.JSX.Element {
           Tidak perlu riset manual lagi. Biarkan AI yang bekerja untuk Anda—analisis komprehensif
           dalam hitungan detik.
         </motion.p>
-        
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -50,18 +50,18 @@ export function AnimatedCTA(): React.JSX.Element {
             <span>🚀 Coba Analisis AI Sekarang</span>
             <motion.span
               animate={{ x: [0, 5, 0] }}
-              transition={{ 
+              transition={{
                 duration: 1.5,
                 repeat: Infinity,
-                ease: "easeInOut" as const
+                ease: 'easeInOut' as const,
               }}
             >
               →
             </motion.span>
           </Link>
         </motion.div>
-        
-        <motion.p 
+
+        <motion.p
           className="text-sm text-slate-500 dark:text-slate-500 mt-4"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -71,15 +71,15 @@ export function AnimatedCTA(): React.JSX.Element {
           Free to use • No credit card required • Instant results
         </motion.p>
       </div>
-      
+
       {/* Floating elements */}
       {[...Array(8)].map((_, i) => (
         <motion.div
           key={i}
           className="absolute rounded-full bg-blue-500/10 blur-xl"
           style={{
-            width: `${(i * 10 + 20) % 60 + 20}px`,
-            height: `${(i * 8 + 20) % 60 + 20}px`,
+            width: `${((i * 10 + 20) % 60) + 20}px`,
+            height: `${((i * 8 + 20) % 60) + 20}px`,
             top: `${(i * 15) % 100}%`,
             left: `${(i * 12) % 100}%`,
           }}
@@ -89,9 +89,9 @@ export function AnimatedCTA(): React.JSX.Element {
             opacity: [0.05, 0.15, 0.05],
           }}
           transition={{
-            duration: (i * 2 + 10) % 20 + 10,
+            duration: ((i * 2 + 10) % 20) + 10,
             repeat: Infinity,
-            repeatType: "reverse" as const,
+            repeatType: 'reverse' as const,
           }}
         />
       ))}

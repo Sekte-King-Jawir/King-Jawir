@@ -6,23 +6,23 @@ const features = [
   {
     icon: '⚡',
     title: 'Real-time',
-    description: 'Data diambil langsung dari marketplace tanpa cache'
+    description: 'Data diambil langsung dari marketplace tanpa cache',
   },
   {
     icon: '🎯',
     title: 'Akurat',
-    description: 'Algoritma statistik untuk analisis data yang presisi'
+    description: 'Algoritma statistik untuk analisis data yang presisi',
   },
   {
     icon: '🤖',
     title: 'AI-Powered',
-    description: 'LLM memberikan insight kontekstual dan strategis'
+    description: 'LLM memberikan insight kontekstual dan strategis',
   },
   {
     icon: '🚀',
     title: 'Cepat',
-    description: 'Hasil analisis dalam hitungan detik via WebSocket'
-  }
+    description: 'Hasil analisis dalam hitungan detik via WebSocket',
+  },
 ]
 
 export function EnhancedFeatureCards(): React.JSX.Element {
@@ -35,8 +35,8 @@ export function EnhancedFeatureCards(): React.JSX.Element {
             key={i}
             className="absolute rounded-full bg-white/5"
             style={{
-              width: `${(i * 8 + 20) % 100 + 20}px`,
-              height: `${(i * 6 + 20) % 100 + 20}px`,
+              width: `${((i * 8 + 20) % 100) + 20}px`,
+              height: `${((i * 6 + 20) % 100) + 20}px`,
               top: `${(i * 7) % 100}%`,
               left: `${(i * 5) % 100}%`,
             }}
@@ -46,16 +46,16 @@ export function EnhancedFeatureCards(): React.JSX.Element {
               opacity: [0.05, 0.15, 0.05],
             }}
             transition={{
-              duration: (i * 2 + 10) % 20 + 10,
+              duration: ((i * 2 + 10) % 20) + 10,
               repeat: Infinity,
-              repeatType: "reverse" as const,
+              repeatType: 'reverse' as const,
             }}
           />
         ))}
       </div>
-      
+
       <div className="max-w-6xl mx-auto relative z-10">
-        <motion.h3 
+        <motion.h3
           className="text-2xl font-bold text-center text-white mb-10"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -64,7 +64,7 @@ export function EnhancedFeatureCards(): React.JSX.Element {
         >
           Mengapa Pilih King Jawir AI?
         </motion.h3>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {features.map((feature, index) => (
             <motion.div
@@ -79,50 +79,48 @@ export function EnhancedFeatureCards(): React.JSX.Element {
                 rotateX: 10,
                 rotateZ: 2,
                 scale: 1.03,
-                transition: { type: "spring" as const, stiffness: 300 }
+                transition: { type: 'spring' as const, stiffness: 300 },
               }}
               style={{
                 transformStyle: 'preserve-3d' as const,
               }}
             >
-              <motion.div 
+              <motion.div
                 className="text-4xl mb-3"
-                animate={{ 
+                animate={{
                   rotate: [0, 10, -10, 0],
-                  scale: [1, 1.1, 1]
+                  scale: [1, 1.1, 1],
                 }}
-                transition={{ 
+                transition={{
                   duration: 3,
                   repeat: Infinity,
-                  repeatType: "reverse" as const,
-                  delay: index * 0.5
+                  repeatType: 'reverse' as const,
+                  delay: index * 0.5,
                 }}
               >
                 {feature.icon}
               </motion.div>
-              
-              <motion.div 
+
+              <motion.div
                 className="text-2xl font-bold mb-2 text-white"
-                animate={{ 
+                animate={{
                   textShadow: [
                     '0 0 0px rgba(255,255,255,0.5)',
                     '0 0 8px rgba(255,255,255,0.8)',
-                    '0 0 0px rgba(255,255,255,0.5)'
-                  ]
+                    '0 0 0px rgba(255,255,255,0.5)',
+                  ],
                 }}
-                transition={{ 
+                transition={{
                   duration: 2,
                   repeat: Infinity,
-                  repeatType: "reverse" as const,
-                  delay: index * 0.5
+                  repeatType: 'reverse' as const,
+                  delay: index * 0.5,
                 }}
               >
                 {feature.title}
               </motion.div>
-              
-              <div className="text-blue-100">
-                {feature.description}
-              </div>
+
+              <div className="text-blue-100">{feature.description}</div>
             </motion.div>
           ))}
         </div>

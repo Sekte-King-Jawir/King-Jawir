@@ -31,9 +31,7 @@ export default function RootLayout({
       >
         <ThemeProvider defaultTheme="system" storageKey="king-jawir-theme">
           <NavbarWrapper />
-          <PageTransition>
-            {children}
-          </PageTransition>
+          <PageTransition>{children}</PageTransition>
           <ThemeToggle />
         </ThemeProvider>
       </body>

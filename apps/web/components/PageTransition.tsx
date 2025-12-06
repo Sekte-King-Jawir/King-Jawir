@@ -7,16 +7,16 @@ import { useEffect, useRef } from 'react'
 export function PageTransition({ children }: { children: React.ReactNode }): React.JSX.Element {
   const pathname = usePathname()
   const previousPathname = useRef<string | null>(null)
-  
+
   // Determine animation direction
   const getDirection = (): number => {
     if (previousPathname.current === null) return 0
-    
+
     // Simple direction logic based on pathname length
     // In a real app, you might want more sophisticated logic
     return pathname.length > (previousPathname.current?.length || 0) ? 1 : -1
   }
-  
+
   useEffect(() => {
     previousPathname.current = pathname
   }, [pathname])
@@ -24,25 +24,25 @@ export function PageTransition({ children }: { children: React.ReactNode }): Rea
   return (
     <motion.div
       key={pathname}
-      initial={{ 
-        opacity: 0, 
+      initial={{
+        opacity: 0,
         x: getDirection() * 50,
-        y: 20
+        y: 20,
       }}
-      animate={{ 
-        opacity: 1, 
+      animate={{
+        opacity: 1,
         x: 0,
-        y: 0
+        y: 0,
       }}
-      exit={{ 
-        opacity: 0, 
+      exit={{
+        opacity: 0,
         x: -getDirection() * 50,
-        y: -20
+        y: -20,
       }}
       transition={{
-        type: "spring" as const,
+        type: 'spring' as const,
         stiffness: 300,
-        damping: 30
+        damping: 30,
       }}
     >
       {children}

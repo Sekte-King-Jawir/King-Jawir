@@ -87,7 +87,7 @@ export default function HomePage(): React.JSX.Element {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(99,102,241,0.05)_0%,transparent_70%)]"></div>
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 relative z-10">
           <div className="flex items-center gap-2">
-            <motion.span 
+            <motion.span
               className="text-xl"
               animate={{ rotate: [0, 10, -10, 0] }}
               transition={{ duration: 2, repeat: Infinity }}
