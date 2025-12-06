@@ -68,14 +68,29 @@ export default function ProductDescriptionPage(): React.JSX.Element {
   }
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-purple-50 via-pink-50 to-indigo-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 flex flex-col items-center justify-center px-4 py-12">
+    <div className="min-h-screen bg-linear-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex flex-col items-center justify-center px-4 py-12 relative overflow-hidden">
+      {/* Add floating elements for consistency with homepage */}
+      <div className="absolute inset-0 overflow-hidden">
+        {[...Array(10)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute rounded-full bg-blue-500/5"
+            style={{
+              width: `${(i * 8 + 20) % 80 + 20}px`,
+              height: `${(i * 6 + 20) % 80 + 20}px`,
+              top: `${(i * 10) % 100}%`,
+              left: `${(i * 15) % 100}%`,
+            }}
+          />
+        ))}
+      </div>
       <ThemeToggle />
 
       <main className="w-full max-w-4xl mx-auto">
         {/* Hero Section */}
-        <div className="text-center mb-10">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-primary/10 mb-6">
-            <Sparkles className="h-8 w-8 text-primary" />
+        <div className="text-center mb-10 relative z-10">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-blue-100 dark:bg-blue-900/50 mb-6">
+            <Sparkles className="h-8 w-8 text-blue-600 dark:text-blue-400" />
           </div>
           <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
             AI Product & Marketing Generator
@@ -162,8 +177,8 @@ export default function ProductDescriptionPage(): React.JSX.Element {
               {/* Marketing Section */}
               <div className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
                 <div className="text-center mb-6">
-                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-purple-100 dark:bg-purple-900/20 mb-4">
-                    <Megaphone className="h-6 w-6 text-purple-600 dark:text-purple-400" />
+                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-blue-100 dark:bg-blue-900/20 mb-4">
+                    <Megaphone className="h-6 w-6 text-blue-600 dark:text-blue-400" />
                   </div>
                   <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
                     Generate Konten Pemasaran
@@ -273,7 +288,7 @@ export default function ProductDescriptionPage(): React.JSX.Element {
         </div>
 
         {/* Footer */}
-        <footer className="mt-16 text-center text-sm text-gray-500 dark:text-gray-400">
+        <footer className="mt-16 text-center text-sm text-gray-500 dark:text-gray-400 relative z-10">
           <p>Powered by AI • Optimized for Indonesian Marketplaces</p>
         </footer>
       </main>
