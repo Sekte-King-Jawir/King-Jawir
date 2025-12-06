@@ -14,9 +14,7 @@ export function LoadingSpinner({ size = 'md', text }: LoadingSpinnerProps): Reac
 
   return (
     <div className="flex flex-col items-center justify-center p-8">
-      <div
-        className={`animate-spin rounded-full border-b-2 border-primary ${sizeClasses[size]}`}
-      />
+      <div className={`animate-spin rounded-full border-b-2 border-primary ${sizeClasses[size]}`} />
       {text !== null && text !== undefined && text.length > 0 ? (
         <p className="text-muted-foreground mt-4">{text}</p>
       ) : null}

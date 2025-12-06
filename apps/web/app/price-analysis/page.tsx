@@ -48,8 +48,8 @@ export default function SupportPage(): React.JSX.Element {
             key={i}
             className="absolute rounded-full bg-blue-500/5"
             style={{
-              width: `${(i * 8 + 20) % 80 + 20}px`,
-              height: `${(i * 6 + 20) % 80 + 20}px`,
+              width: `${((i * 8 + 20) % 80) + 20}px`,
+              height: `${((i * 6 + 20) % 80) + 20}px`,
               top: `${(i * 10) % 100}%`,
               left: `${(i * 15) % 100}%`,
             }}

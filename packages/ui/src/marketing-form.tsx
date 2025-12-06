@@ -82,9 +82,7 @@ export function MarketingForm({
     <Card className={`p-6 ${className}`}>
       <div className="space-y-4">
         <div>
-          <h3 className="text-lg font-semibold text-foreground">
-            Generate Konten Pemasaran
-          </h3>
+          <h3 className="text-lg font-semibold text-foreground">Generate Konten Pemasaran</h3>
           <p className="text-sm text-muted-foreground mt-1">
             Hasilkan konten pemasaran yang menarik untuk berbagai platform media sosial dan email
           </p>

@@ -50,7 +50,10 @@ export function Alert({ type, title, message, onClose }: AlertProps): React.JSX.
           </div>
         </div>
         {onClose !== null && onClose !== undefined ? (
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 ml-4">
+          <button
+            onClick={onClose}
+            className="text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 ml-4"
+          >
             ×
           </button>
         ) : null}

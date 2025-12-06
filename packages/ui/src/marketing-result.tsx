@@ -111,9 +111,7 @@ export function MarketingResult({
               Konten Pemasaran
             </h4>
             <div className="bg-muted rounded-lg p-4">
-              <p className="text-foreground whitespace-pre-wrap leading-relaxed">
-                {data.content}
-              </p>
+              <p className="text-foreground whitespace-pre-wrap leading-relaxed">{data.content}</p>
             </div>
           </div>
           <Button
