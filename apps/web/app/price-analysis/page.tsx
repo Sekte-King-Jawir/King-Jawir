@@ -240,15 +240,17 @@ export default function SupportPage(): React.JSX.Element {
               <p className="text-center text-sm text-muted-foreground mt-4">
                 Analyzed {result.statistics.totalProducts} products
                 {(() => {
-                  const tokopediaCount = result.products.filter(p => p.source === 'tokopedia').length
+                  const tokopediaCount = result.products.filter(
+                    p => p.source === 'tokopedia'
+                  ).length
                   const blibliCount = result.products.filter(p => p.source === 'blibli').length
                   return tokopediaCount > 0 && blibliCount > 0
                     ? ` (${tokopediaCount} from Tokopedia, ${blibliCount} from Blibli)`
                     : tokopediaCount > 0
-                    ? ' from Tokopedia'
-                    : blibliCount > 0
-                    ? ' from Blibli'
-                    : ''
+                      ? ' from Tokopedia'
+                      : blibliCount > 0
+                        ? ' from Blibli'
+                        : ''
                 })()}
               </p>
             </section>
@@ -332,11 +334,13 @@ export default function SupportPage(): React.JSX.Element {
                           <h4 className="font-semibold text-foreground line-clamp-2 leading-tight flex-1">
                             {product.name}
                           </h4>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${
-                            product.source === 'tokopedia'
-                              ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
-                              : 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
-                          }`}>
+                          <span
+                            className={`text-xs px-2 py-1 rounded-full font-medium ${
+                              product.source === 'tokopedia'
+                                ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+                                : 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
+                            }`}
+                          >
                             {product.source === 'tokopedia' ? 'Tokopedia' : 'Blibli'}
                           </span>
                         </div>
@@ -380,7 +384,9 @@ export default function SupportPage(): React.JSX.Element {
 
       {/* Footer */}
       <footer className="mt-12 text-center">
-        <p className="text-sm text-muted-foreground">Powered by Multi-Source Scrapers + AI Analysis</p>
+        <p className="text-sm text-muted-foreground">
+          Powered by Multi-Source Scrapers + AI Analysis
+        </p>
       </footer>
     </div>
   )
