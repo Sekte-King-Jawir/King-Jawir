@@ -1,4 +1,4 @@
-import { priceAnalysisRepository, type TokopediaProduct } from './price_analysis_repository'
+import { priceAnalysisRepository, type UnifiedProduct } from './price_analysis_repository'
 import { generateChatCompletion } from '../lib/ai'
 import { logger } from '../lib/logger'
 import {
@@ -11,7 +11,7 @@ import {
 interface PriceAnalysisResult {
   query: string
   optimizedQuery?: string
-  products: TokopediaProduct[]
+  products: UnifiedProduct[]
   statistics: {
     min: number
     max: number
@@ -104,9 +104,9 @@ export const priceAnalysisService = {
         progress: 15,
       })
 
-      let products: TokopediaProduct[] = []
+      let products: UnifiedProduct[] = []
       try {
-        products = await priceAnalysisRepository.fetchTokopediaPrices(optimizedQuery, limit)
+        products = await priceAnalysisRepository.fetchAllPrices(optimizedQuery, limit)
       } catch (fetchError) {
         logger.error({
           msg: 'Error fetching products',
@@ -167,6 +167,7 @@ export const priceAnalysisService = {
         numericPrice: prices[i] ?? 0,
         rating: p.rating || undefined,
         location: p.shop_location || undefined,
+        source: p.source,
       }))
 
       const prompt = buildAnalysisPrompt(query, productSummary, stats, userPrice)
@@ -287,7 +288,7 @@ export const priceAnalysisService = {
     const optimizedQuery = await this.optimizeSearchQuery(query)
     logger.debug({ msg: '🔍 Using optimized query', query, optimizedQuery })
 
-    const products = await priceAnalysisRepository.fetchTokopediaPrices(optimizedQuery, limit)
+    const products = await priceAnalysisRepository.fetchAllPrices(optimizedQuery, limit)
 
     if (products.length === 0) {
       throw new Error('No products found for the given query')
@@ -302,6 +303,7 @@ export const priceAnalysisService = {
       numericPrice: prices[i] ?? 0,
       rating: p.rating || undefined,
       location: p.shop_location || undefined,
+      source: p.source,
     }))
 
     // Generate AI analysis using chat completion (compatible with NVIDIA API)

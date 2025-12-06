@@ -44,6 +44,7 @@ export function buildAnalysisPrompt(
     numericPrice: number
     rating?: string | undefined
     location?: string | undefined
+    source: string
   }>,
   stats: {
     min: number
@@ -55,7 +56,15 @@ export function buildAnalysisPrompt(
 ): string {
   const formatRupiah = (num: number) => `Rp${num.toLocaleString('id-ID')}`
 
-  let prompt = `Analyze the following price data for "${query}" from Tokopedia marketplace:\n\n`
+  // Count products by source
+  const sourceCount = products.reduce((acc, p) => {
+    acc[p.source] = (acc[p.source] || 0) + 1
+    return acc
+  }, {} as Record<string, number>)
+
+  const sources = Object.keys(sourceCount).map(source => `${source} (${sourceCount[source]} products)`).join(', ')
+
+  let prompt = `Analyze the following price data for "${query}" from multiple Indonesian marketplaces (${sources}):\n\n`
 
   prompt += `MARKET STATISTICS:\n`
   prompt += `- Minimum Price: ${formatRupiah(stats.min)}\n`
@@ -68,6 +77,7 @@ export function buildAnalysisPrompt(
   products.slice(0, 5).forEach((p, i) => {
     prompt += `${i + 1}. ${p.name}\n`
     prompt += `   Price: ${p.price} (${formatRupiah(p.numericPrice)})\n`
+    prompt += `   Source: ${p.source}\n`
     if (p.rating) prompt += `   Rating: ${p.rating}\n`
     if (p.location) prompt += `   Location: ${p.location}\n`
     prompt += `\n`
