@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { FileText, Sparkles, Copy, Megaphone } from 'lucide-react'
+import { Megaphone, Sparkles, Copy } from 'lucide-react'
 import { ThemeToggle, ProductDescriptionForm, ProductDescriptionResult, MarketingForm, MarketingResult } from '@repo/ui'
 import { useProductDescription, useMarketing } from '@/hooks'
 import type { ProductDescriptionRequest } from '@/types/product-description'
@@ -56,21 +56,21 @@ export default function ProductDescriptionPage(): React.JSX.Element {
   }
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-green-50 via-emerald-50 to-teal-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 flex flex-col items-center justify-center px-4 py-12">
+    <div className="min-h-screen bg-linear-to-br from-purple-50 via-pink-50 to-indigo-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 flex flex-col items-center justify-center px-4 py-12">
       <ThemeToggle />
 
       <main className="w-full max-w-4xl mx-auto">
         {/* Hero Section */}
         <div className="text-center mb-10">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-primary/10 mb-6">
-            <FileText className="h-8 w-8 text-primary" />
+            <Sparkles className="h-8 w-8 text-primary" />
           </div>
           <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-            AI Product Description Generator
+            AI Product & Marketing Generator
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            Hasilkan deskripsi produk yang menarik dan optimal untuk marketplace Indonesia
-            dengan bantuan kecerdasan buatan. Cocok untuk Tokopedia, Shopee, dan platform e-commerce lainnya.
+            Hasilkan deskripsi produk yang menarik dan konten pemasaran yang optimal untuk marketplace Indonesia
+            dengan bantuan kecerdasan buatan. Cocok untuk Tokopedia, Shopee, Instagram, Facebook, dan platform lainnya.
           </p>
         </div>
 
@@ -213,7 +213,7 @@ export default function ProductDescriptionPage(): React.JSX.Element {
           {!result && !loading && !error && (
             <div className="text-center py-12">
               <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gray-100 dark:bg-gray-800 mb-4">
-                <FileText className="h-8 w-8 text-gray-400" />
+                <Sparkles className="h-8 w-8 text-gray-400" />
               </div>
               <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
                 Belum Ada Deskripsi
