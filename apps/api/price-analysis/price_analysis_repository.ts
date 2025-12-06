@@ -131,7 +131,8 @@ export const priceAnalysisRepository = {
     } else {
       logger.warn({
         msg: 'Failed to fetch from Tokopedia',
-        error: tokopediaProducts.reason instanceof Error ? tokopediaProducts.reason.message : 'Unknown',
+        error:
+          tokopediaProducts.reason instanceof Error ? tokopediaProducts.reason.message : 'Unknown',
       })
     }
 
