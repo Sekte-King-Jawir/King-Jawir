@@ -33,7 +33,7 @@ export default function HomePage(): React.JSX.Element {
 
           <p className="text-base sm:text-lg text-slate-500 dark:text-slate-400 max-w-2xl mx-auto mb-10">
             Scraping data real-time dari Tokopedia, analisis statistik mendalam, dan rekomendasi
-            harga cerdas dari AI—semuanya dalam satu platform.
+            harga cerdas dari AI—semuanya dalam satu platform. <strong>100% Gratis!</strong>
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -41,13 +41,7 @@ export default function HomePage(): React.JSX.Element {
               href="/price-analysis"
               className="w-full sm:w-auto px-8 py-4 bg-linear-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl font-semibold text-lg transition-all hover:scale-105 shadow-lg shadow-blue-600/30"
             >
-              🚀 Analisis Sekarang
-            </Link>
-            <Link
-              href="/products"
-              className="w-full sm:w-auto px-8 py-4 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 rounded-xl font-semibold text-lg border-2 border-slate-200 dark:border-slate-700 hover:border-blue-400 dark:hover:border-blue-600 transition-all"
-            >
-              🛒 Coba Integrasi Marketplace
+              🚀 Mulai Analisis Gratis
             </Link>
           </div>
         </div>
@@ -245,13 +239,7 @@ export default function HomePage(): React.JSX.Element {
               href="/price-analysis"
               className="text-sm text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 font-medium"
             >
-              Try Analysis
-            </Link>
-            <Link
-              href="/auth/login"
-              className="text-sm text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400"
-            >
-              Login
+              Start Analysis
             </Link>
           </div>
         </div>

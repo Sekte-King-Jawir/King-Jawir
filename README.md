@@ -1,135 +1,162 @@
-# Turborepo starter
+# King Jawir - AI Price Analysis & Product Description Generator
 
-This Turborepo starter is maintained by the Turborepo core team.
+Platform analisis harga berbasis AI yang membantu UMKM Indonesia menentukan strategi pricing yang kompetitif dan menguntungkan.
 
-## Using this example
+## 🚀 Features
 
-Run the following command:
+- 🤖 **AI-Powered Price Analysis** - Analisis harga kompetitor dari Tokopedia menggunakan web scraping + LLM
+- ✍️ **Product Description Generator** - Generate deskripsi produk menarik dengan AI
+- 📊 **Statistical Analysis** - Mean, median, quartile, dan confidence interval pricing
+- ⚡ **Real-time WebSocket** - Streaming progress updates untuk analisis
+- 🌐 **100% Public & Free** - No authentication required, completely open access
+- 🎨 **Modern UI** - Next.js 15 dengan TailwindCSS v4 dan dark mode
+
+## 📁 Project Structure
+
+This Turborepo monorepo contains:
+
+### Apps
+
+- `apps/api` - Elysia.js REST API with Bun runtime (port 4101)
+- `apps/web` - Next.js 15 frontend (port 4102)
+- `apps/scraper` - Rust-based Tokopedia scraper service (port 4103)
+
+### Packages
+
+- `@repo/ui` - Shared React component library
+- `@repo/eslint-config` - ESLint configurations
+- `@repo/typescript-config` - TypeScript configurations
+
+## 🛠️ Tech Stack
+
+- **Runtime:** Bun
+- **Backend:** Elysia.js + Prisma + MariaDB
+- **Frontend:** Next.js 15 + React + TailwindCSS v4
+- **Scraper:** Rust + Axum + headless Chrome
+- **AI:** OpenAI-compatible API (supports custom endpoints)
+- **Monorepo:** Turborepo
+
+## 📦 Installation
 
 ```sh
-npx create-turbo@latest
+bun install
+bun run copyenv
 ```
 
-## What's inside?
+## 🚀 Development
 
-This Turborepo includes the following packages/apps:
+Run all services:
 
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build
-yarn dlx turbo build
-pnpm exec turbo build
+```sh
+bun run dev
 ```
 
-You can build a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
+Run specific app:
 
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build --filter=docs
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build --filter=docs
-yarn exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
+```sh
+bun run api:dev    # API only
+bun run web:dev    # Web only
 ```
 
-### Develop
+## 🏗️ Build
 
-To develop all apps and packages, run the following command:
+Build all apps:
 
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev
-yarn exec turbo dev
-pnpm exec turbo dev
+```sh
+bun run build
 ```
 
-You can develop a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
+Build specific app:
 
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev --filter=web
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev --filter=web
-yarn exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
+```sh
+bun run api:build
+bun run web:build
 ```
 
-### Remote Caching
+## 🧪 Testing
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo login
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo login
-yarn exec turbo login
-pnpm exec turbo login
+```sh
+cd apps/api
+bun test           # Run all tests
+bun test --watch   # Watch mode
 ```
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+## 📊 Database
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
+Generate Prisma client:
 
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo link
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo link
-yarn exec turbo link
-pnpm exec turbo link
+```sh
+bunx prisma generate --schema=apps/api/prisma/schema.prisma
 ```
 
-## Useful Links
+Push schema to database:
 
-Learn more about the power of Turborepo:
+```sh
+bunx prisma db push --schema=apps/api/prisma/schema.prisma
+```
 
-- [Tasks](https://turborepo.com/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.com/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.com/docs/reference/configuration)
-- [CLI Usage](https://turborepo.com/docs/reference/command-line-reference)
+Seed database:
+
+```sh
+bun run apps/api/prisma/seed.ts
+```
+
+## 🔧 Quality Tools
+
+```sh
+bun run lint          # ESLint
+bun run format        # Prettier
+bun run check-types   # TypeScript
+bun run knip          # Unused exports/deps
+```
+
+## 📚 Documentation
+
+- API Swagger docs: `http://localhost:4101/docs`
+- See `apps/api/README.md` for backend documentation
+- See `apps/web/README.md` for frontend documentation
+- See `.github/copilot-instructions.md` for full coding guidelines
+
+## 🌐 Deployment
+
+### Docker
+
+```sh
+docker-compose up -d
+```
+
+### PM2
+
+```sh
+cd apps/api && pm2 start ecosystem.config.cjs --env production
+cd apps/web && pm2 start ecosystem.config.cjs --env production
+```
+
+## 🔑 Environment Variables
+
+Required `.env` variables:
+
+- `DATABASE_URL` - MariaDB connection string
+- `JWT_SECRET` - Minimum 32 characters
+- `API_PORT` - Default 4101
+- `SCRAPER_URL` - Rust scraper service URL
+- `SMTP_*` - Email configuration
+- `OPENAI_API_KEY` - AI model API key
+- `OPENAI_API_BASE` - Custom AI endpoint (optional)
+- `OPENAI_MODEL` - AI model name (optional)
+
+## 📖 Useful Links
+
+- [Turborepo Documentation](https://turborepo.com/docs)
+- [Elysia.js Documentation](https://elysiajs.com)
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Prisma Documentation](https://www.prisma.io/docs)
+- [Bun Documentation](https://bun.sh/docs)
+
+## 👥 Team
+
+King Jawir - AI-Powered Price Analysis Platform for Indonesian SMEs
+
+## 📄 License
+
+MIT License

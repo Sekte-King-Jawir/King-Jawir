@@ -1,4 +1,4 @@
-import { API_CONFIG, API_ENDPOINTS } from '@/lib/config/api'
+import { API_CONFIG } from '../config/api'
 
 // ============================================================================
 // TYPE DEFINITIONS
@@ -69,45 +69,6 @@ export class ApiClient {
         // Extract error info from response
         const errorObj = data.error as { code?: string; details?: unknown } | undefined
         const errorCode = errorObj?.code ?? 'UNKNOWN_ERROR'
-
-        // If unauthorized (401) or token invalid, try to refresh token
-        if (
-          response.status === 401 ||
-          errorCode === 'UNAUTHORIZED' ||
-          errorCode === 'TOKEN_EXPIRED'
-        ) {
-          // If refresh token already expired, don't attempt rotation — clear auth immediately
-          if (errorCode === 'TOKEN_EXPIRED') {
-            if (typeof window !== 'undefined') {
-              window.dispatchEvent(new Event('auth-cleared'))
-            }
-
-            const message = typeof data.message === 'string' ? data.message : 'Token expired'
-            throw new ApiClientError(message, errorCode, response.status)
-          }
-          // Don't try to refresh if we're already refreshing or logging in
-          const isAuthRequest =
-            endpoint.includes('/auth/refresh') || endpoint.includes('/auth/login')
-
-          if (!isAuthRequest) {
-            try {
-              // Try to refresh token
-              await this.post(API_ENDPOINTS.AUTH.REFRESH)
-
-              // Retry original request
-              return await this.request<T>(endpoint, options)
-            } catch (refreshError) {
-              // Refresh failed, proceed to logout
-              console.error('Token refresh failed:', refreshError)
-            }
-          }
-
-          if (typeof window !== 'undefined') {
-            // Dispatch event to notify components to clear auth state
-            window.dispatchEvent(new Event('auth-cleared'))
-          }
-        }
-
         const message = typeof data.message === 'string' ? data.message : 'Request failed'
         const errorDetails = errorObj?.details
 
@@ -117,6 +78,7 @@ export class ApiClient {
       return data as unknown as ApiResponse<T>
     } catch (error) {
       clearTimeout(timeoutId)
+
 
       if (error instanceof ApiClientError) {
         throw error

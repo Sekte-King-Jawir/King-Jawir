@@ -2,18 +2,8 @@ import { Elysia } from 'elysia'
 import { cors } from '@elysiajs/cors'
 import { swagger } from '@elysiajs/swagger'
 import { rateLimit } from 'elysia-rate-limit'
-import { authRoutes } from './auth'
-import { storeRoutes, publicStoreRoutes } from './store'
-import { categoryRoutes } from './category'
-import { productRoutes, myProductsRoute, storeProductsRoute } from './product'
-import { profileRoutes } from './profile'
-import { cartRoutes } from './cart'
-import { orderRoutes, sellerOrderRoutes } from './order'
-import { reviewRoutes, productReviewsRoute } from './review'
-import { adminRoutes } from './admin'
 import { priceAnalysisRoutes } from './price-analysis'
 import { priceAnalysisWebSocket } from './price-analysis/websocket'
-import { sellerRoutes } from './seller'
 import { logger } from './lib/logger'
 import { initMinIO } from './lib/minio'
 
@@ -93,49 +83,16 @@ const app = new Elysia()
       path: '/docs',
       documentation: {
         info: {
-          title: 'King Jawir Marketplace API',
+          title: 'King Jawir - AI Price Analysis & Product Description Generator',
           version: '1.0.0',
-          description: 'API documentation for King Jawir Marketplace - Hackathon Project',
+          description: 'API untuk analisis harga produk dari Tokopedia dan generator deskripsi produk dengan AI',
         },
         tags: [
-          { name: 'Auth', description: 'Customer authentication endpoints' },
-          {
-            name: 'Seller Auth',
-            description: 'Seller authentication endpoints (separated from customer)',
-          },
-          { name: 'Profile', description: 'User profile management' },
-          { name: 'Store', description: 'Store management' },
-          { name: 'Seller Store', description: 'Seller store profile management' },
-          { name: 'Categories', description: 'Product categories' },
-          { name: 'Products', description: 'Product management' },
-          {
-            name: 'Seller Products',
-            description: 'Seller product CMS (CRUD for seller-owned products)',
-          },
-          {
-            name: 'Seller Price Analysis',
-            description: 'AI price analysis tools for sellers before adding products',
-          },
-          {
-            name: 'Seller AI Tools',
-            description:
-              'AI-powered tools untuk UMKM seller (product description generator, copywriting assistance)',
-          },
-          { name: 'Cart', description: 'Shopping cart' },
-          { name: 'Orders', description: 'Order management' },
-          { name: 'Reviews', description: 'Product reviews' },
-          { name: 'Admin', description: 'Admin management' },
           { name: 'Price Analysis', description: 'AI-powered price analysis from Tokopedia' },
-          { name: 'Seller', description: 'Seller dashboard and analytics' },
+          { name: 'AI Tools', description: 'Product description generator and other AI-powered tools' },
         ],
         components: {
-          securitySchemes: {
-            cookieAuth: {
-              type: 'apiKey',
-              in: 'cookie',
-              name: 'accessToken',
-            },
-          },
+          securitySchemes: {},
         },
       },
       swaggerOptions: {
@@ -143,24 +100,9 @@ const app = new Elysia()
       },
     })
   )
-  .use(authRoutes)
-  .use(profileRoutes)
-  .use(storeRoutes)
-  .use(publicStoreRoutes)
-  .use(categoryRoutes)
-  .use(productRoutes)
-  .use(myProductsRoute)
-  .use(storeProductsRoute)
-  .use(cartRoutes)
-  .use(orderRoutes)
-  .use(sellerOrderRoutes)
-  .use(reviewRoutes)
-  .use(productReviewsRoute)
-  .use(adminRoutes)
   .use(priceAnalysisRoutes)
   .use(priceAnalysisWebSocket)
-  .use(sellerRoutes)
-  .get('/api', () => ({ message: 'Marketplace API' }), {
+  .get('/api', () => ({ message: 'King Jawir - AI Price Analysis & Product Description Generator API' }), {
     detail: {
       tags: ['General'],
       summary: 'Health check',

@@ -1,8 +1,8 @@
-# King Jawir Marketplace - AI Coding Guidelines
+# King Jawir - AI Coding Guidelines
 
 ## Project Overview
 
-**E-commerce marketplace platform** with AI-powered price analysis. Monorepo using Turborepo with:
+**AI-powered price analysis and product description generator platform** for Indonesian SMEs. Monorepo using Turborepo with:
 - `apps/api` - Elysia.js REST API on Bun runtime (port 4101)
 - `apps/web` - Next.js 16 frontend (port 4102)  
 - `apps/scraper` - Rust Tokopedia scraper service (port 4103)
@@ -20,27 +20,15 @@ Each domain follows **Controller → Service → Repository** pattern:
 ├── {domain}_service.ts     # Business logic, returns ApiResponse
 ├── {domain}_repository.ts  # Prisma queries only
 ```
-Example domains: `auth/`, `product/`, `store/`, `cart/`, `order/`, `review/`, `admin/`, `price-analysis/`
+Core domains: `auth/`, `profile/`, `price-analysis/`
 
 ### Response Format
 All API responses use standardized helpers from `apps/api/lib/response.ts`:
 ```typescript
 import { successResponse, errorResponse, ErrorCode } from '../lib/response'
-return successResponse('Product created', product)
+return successResponse('Analysis complete', analysisResult)
 return errorResponse('Not found', ErrorCode.NOT_FOUND)
 ```
-
-### Authentication Pattern
-JWT-based auth with cookie storage. Use `jwtPlugin` and `authDerive` from `apps/api/lib/auth-helper.ts`:
-```typescript
-import { jwtPlugin, authDerive, isSeller, isAdmin } from '../lib/auth-helper'
-
-export const routes = new Elysia()
-  .use(jwtPlugin)
-  .derive(authDerive)
-  .post('/protected', ({ user }) => { /* user is AuthUser | null */ })
-```
-Roles: `CUSTOMER`, `SELLER`, `ADMIN` (hierarchical - ADMIN has SELLER access)
 
 ### Database
 - **Prisma with MariaDB** via `@prisma/adapter-mariadb`

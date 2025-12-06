@@ -1,18 +1,7 @@
 // Re-export all API modules for convenient access
 export * from './client'
-export * from './services'
+export * from './price-analysis'
 
-// Re-export specific services for direct import
-export {
-  authService,
-  productService,
-  categoryService,
-  storeService,
-  cartService,
-  orderService,
-  reviewService,
-  profileService,
-  priceAnalysisService,
-} from './services'
-
+// Re-export client utilities
 export { apiClient, buildQueryString, handleApiError, isApiError } from './client'
+

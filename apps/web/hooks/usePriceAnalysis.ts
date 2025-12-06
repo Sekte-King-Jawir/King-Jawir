@@ -6,12 +6,15 @@ import {
   type WebSocketMessage,
 } from '@/lib/api'
 
-interface StreamMessage extends WebSocketMessage {
-  type: string
-  step?: string | undefined
-  data?: PriceAnalysisResult | undefined
-  error?: string | undefined
+interface StreamMessage {
+  type: 'progress' | 'complete' | 'error'
+  step?: string
+  message?: string
+  progress?: number
+  data?: PriceAnalysisResult
+  error?: string
 }
+
 
 interface UsePriceAnalysisReturn {
   loading: boolean
@@ -68,7 +71,8 @@ export function usePriceAnalysis(): UsePriceAnalysisReturn {
       wsRef.current.close()
     }
 
-    const ws = priceAnalysisService.createStreamConnection(
+    const ws = priceAnalysisService.connectStream(
+      data,
       (message: WebSocketMessage) => {
         const streamMsg = message as StreamMessage
         if (streamMsg.type === 'progress') {
@@ -84,27 +88,15 @@ export function usePriceAnalysis(): UsePriceAnalysisReturn {
           setLoading(false)
         }
       },
-      err => {
+      (err: Error) => {
         setError(err.message)
-        setLoading(false)
-      },
-      () => {
         setLoading(false)
       }
     )
 
     wsRef.current = ws
-
-    // Send analysis request when connection opens
-    ws.onopen = () => {
-      ws.send(
-        JSON.stringify({
-          type: 'start-analysis',
-          ...data,
-        })
-      )
-    }
   }, [])
+
 
   const cancelStream = useCallback(() => {
     if (wsRef.current !== null) {

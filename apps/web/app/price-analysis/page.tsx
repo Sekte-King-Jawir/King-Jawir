@@ -214,7 +214,7 @@ export default function SupportPage(): React.JSX.Element {
                 <div className="bg-background/50 rounded-lg p-4 text-center">
                   <div className="text-sm text-muted-foreground mb-1">Average</div>
                   <div className="text-xl font-bold text-foreground">
-                    {formatRupiah(result.statistics.average)}
+                    {formatRupiah(result.statistics.mean)}
                   </div>
                 </div>
                 <div className="bg-background/50 rounded-lg p-4 text-center">
@@ -248,15 +248,13 @@ export default function SupportPage(): React.JSX.Element {
                   </p>
                 </div>
 
-                {typeof result.analysis.suggestedPrice === 'number' &&
-                result.analysis.suggestedPrice > 0 ? (
-                  <div className="bg-primary/10 border border-primary/20 rounded-lg p-4">
-                    <h3 className="text-lg font-semibold text-foreground mb-2">Suggested Price:</h3>
-                    <p className="text-2xl font-bold text-primary">
-                      {formatRupiah(result.analysis.suggestedPrice)}
-                    </p>
-                  </div>
-                ) : null}
+                <div className="bg-primary/10 border border-primary/20 rounded-lg p-4">
+                  <h3 className="text-lg font-semibold text-foreground mb-2">Price Range:</h3>
+                  <p className="text-foreground leading-relaxed">
+                    Median: {formatRupiah(result.statistics.median)} | Q1-Q3: {formatRupiah(result.statistics.q1)} - {formatRupiah(result.statistics.q3)}
+                  </p>
+                </div>
+
 
                 <div className="bg-background/50 rounded-lg p-4">
                   <h3 className="text-lg font-semibold text-foreground mb-3">Key Insights:</h3>
@@ -282,9 +280,9 @@ export default function SupportPage(): React.JSX.Element {
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {result.products.map((product, idx) => {
-                  const productUrl = product.product_url ?? product.url ?? ''
-                  const imageUrl = product.image_url ?? product.url ?? '/placeholder.png'
-                  const location = product.shop_location ?? product.location ?? ''
+                  const productUrl = product.url ?? ''
+                  const imageUrl = product.imageUrl ?? '/placeholder.png'
+                  const location = product.location ?? ''
 
                   return (
                     <div
