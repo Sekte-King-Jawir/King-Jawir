@@ -33,60 +33,172 @@ impl TokopediaRepository {
 
         tab.navigate_to(url).context("Failed to navigate to URL")?;
 
-        // Wait for network idle - simpler approach: wait for main content to load
-        println!("⏳ Waiting for page to load...");
-        thread::sleep(std::time::Duration::from_secs(2)); // Reduced from 3 seconds
+        // Wait for initial page structure to load
+        println!("⏳ Waiting for page structure...");
+        thread::sleep(std::time::Duration::from_secs(3));
 
-        // Check if main content container exists (network idle indicator)
-        let container_check_script = r#"
-            !!document.querySelector('div[data-testid="divSRPContentProducts"]') ||
-            !!document.querySelector('div[class*="css-"]') ||
-            document.readyState === 'complete'
+        // Wait for product cards using EXACT SAME script as scrolling detection
+        println!("🔍 Waiting for product cards to load...");
+        let mut products_found = false;
+        let max_attempts = 20; // 10 seconds max (20 * 500ms)
+        
+        // Use IDENTICAL script as get_product_count_script
+        let product_check_script = r#"
+            (function() {
+                const container = document.querySelector('div[data-testid="divSRPContentProducts"]');
+                if (!container) return 0;
+                
+                const productLinks = container.querySelectorAll('a[href*="tokopedia.com"]');
+                let validProducts = 0;
+                const seenUrls = new Set();
+                
+                for (const link of productLinks) {
+                    const href = link.getAttribute('href') || '';
+                    
+                    // Make full URL if relative
+                    let fullUrl = href;
+                    if (!href.startsWith('http')) {
+                        if (href.startsWith('/')) {
+                            fullUrl = 'https://www.tokopedia.com' + href;
+                        }
+                    }
+                    
+                    // Basic validation - exclude search/discovery/promo pages
+                    if (!fullUrl || 
+                        fullUrl.includes('/search') || 
+                        fullUrl.includes('/discovery/') || 
+                        fullUrl.includes('/top-ads/') || 
+                        fullUrl.includes('/promo/') ||
+                        seenUrls.has(fullUrl)) {
+                        continue;
+                    }
+                    
+                    seenUrls.add(fullUrl);
+                    
+                    // Simplified check: just verify link has some text content
+                    const textContent = link.textContent.trim();
+                    if (textContent.length > 10) {
+                        validProducts++;
+                    }
+                }
+                
+                return validProducts;
+            })();
         "#;
-
-        let container_result = tab.evaluate(container_check_script, false);
-        let container_exists = match container_result {
-            Ok(obj) => obj.value.unwrap_or(false.into()).as_bool().unwrap_or(false),
-            Err(_) => false,
-        };
-
-        if !container_exists {
-            println!("⚠️  Container not found, waiting a bit more...");
-            thread::sleep(std::time::Duration::from_millis(500)); // Reduced from 2 seconds
+        
+        for attempt in 1..=max_attempts {
+            let result = tab.evaluate(product_check_script, false);
+            if let Ok(obj) = result {
+                if let Some(value) = obj.value {
+                    let count = value.as_i64().unwrap_or(0);
+                    
+                    if count >= 1 {
+                        println!("✅ {} product cards ready after {:.1}s", count, attempt as f32 * 0.5);
+                        products_found = true;
+                        break;
+                    } else if attempt % 4 == 0 {
+                        println!("   ⏳ Still loading... {} products found so far", count);
+                    }
+                }
+            }
+            
+            thread::sleep(std::time::Duration::from_millis(500));
+        }
+        
+        if !products_found {
+            println!("⚠️  Timeout waiting for products, proceeding with what we have...");
         }
 
-        // let hide_images_css = r#"
-        //     var style = document.createElement('style');
-        //     style.innerHTML = 'img, picture, svg, canvas { display: none !important; visibility: hidden !important; }';
-        //     document.head.appendChild(style);
-        // "#;
-        // let _ = tab.evaluate(hide_images_css, false);
-
-        println!("✅ Page loaded, proceeding with scrolling");
-
-        // Wait for initial page load (reduced from 8 seconds to 1 second)
-        thread::sleep(get_page_render_wait());
-
-        // Aggressive scrolling to trigger lazy loading of all products
-        println!("🔄 Scrolling to load all products...");
-
-        // Faster scrolling: scroll to bottom in larger steps with shorter delays
-        for i in 1..=3 {
-            let scroll_script = format!("window.scrollTo(0, document.body.scrollHeight * {i} / 3);");
-            let _ = tab.evaluate(&scroll_script, false);
-            thread::sleep(std::time::Duration::from_millis(300));
+        // Dynamic scrolling: continue until no new products appear
+        // Using SAME validation logic as initial wait
+        println!("🔄 Starting dynamic scroll to load all products...");
+        
+        let get_product_count_script = r#"
+            (function() {
+                const container = document.querySelector('div[data-testid="divSRPContentProducts"]');
+                if (!container) return 0;
+                
+                const productLinks = container.querySelectorAll('a[href*="tokopedia.com"]');
+                let validProducts = 0;
+                const seenUrls = new Set();
+                
+                for (const link of productLinks) {
+                    const href = link.getAttribute('href') || '';
+                    
+                    // Make full URL if relative
+                    let fullUrl = href;
+                    if (!href.startsWith('http')) {
+                        if (href.startsWith('/')) {
+                            fullUrl = 'https://www.tokopedia.com' + href;
+                        }
+                    }
+                    
+                    // Basic validation - exclude search/discovery/promo pages
+                    if (!fullUrl || 
+                        fullUrl.includes('/search') || 
+                        fullUrl.includes('/discovery/') || 
+                        fullUrl.includes('/top-ads/') || 
+                        fullUrl.includes('/promo/') ||
+                        seenUrls.has(fullUrl)) {
+                        continue;
+                    }
+                    
+                    seenUrls.add(fullUrl);
+                    
+                    // Simplified check: just verify link has some text content
+                    const textContent = link.textContent.trim();
+                    if (textContent.length > 10) {
+                        validProducts++;
+                    }
+                }
+                
+                return validProducts;
+            })();
+        "#;
+        
+        let mut previous_count = 0;
+        let mut stable_count = 0;
+        let max_scroll_attempts = 8;
+        
+        for scroll_attempt in 1..=max_scroll_attempts {
+            // Scroll to bottom
+            let _ = tab.evaluate("window.scrollTo(0, document.body.scrollHeight);", false);
+            
+            // Wait for content to load after scroll
+            thread::sleep(std::time::Duration::from_millis(800));
+            
+            // Get current product count
+            let current_count = match tab.evaluate(get_product_count_script, false) {
+                Ok(obj) => obj.value.and_then(|v| v.as_i64()).unwrap_or(0) as usize,
+                Err(_) => 0,
+            };
+            
+            println!("  Scroll {}/{}: {} products detected", scroll_attempt, max_scroll_attempts, current_count);
+            
+            // If product count hasn't changed, increment stable counter
+            if current_count == previous_count && current_count > 0 {
+                stable_count += 1;
+                // If stable for 2 consecutive checks, we're done
+                if stable_count >= 2 {
+                    println!("✅ Product count stable at {}, stopping scroll", current_count);
+                    break;
+                }
+            } else {
+                stable_count = 0;
+                previous_count = current_count;
+            }
+            
+            // Additional wait if this is not the last attempt
+            if scroll_attempt < max_scroll_attempts {
+                thread::sleep(std::time::Duration::from_millis(400));
+            }
         }
-
-        // Final scroll to very bottom
-        let _ = tab.evaluate("window.scrollTo(0, document.body.scrollHeight);", false);
-        thread::sleep(std::time::Duration::from_millis(500));
-
-        // Quick scroll back to top to ensure all elements are rendered
+        
+        // Scroll back to top to ensure all elements are in DOM
         let _ = tab.evaluate("window.scrollTo(0, 0);", false);
-        thread::sleep(std::time::Duration::from_millis(200));
-
-        // Wait for final rendering (reduced from 500ms to 200ms)
-        thread::sleep(get_additional_wait());
+        thread::sleep(std::time::Duration::from_millis(500));
+        
+        println!("✅ Scrolling complete, extracting products...");
 
         let html_content = tab.get_content().context("Failed to get page content")?;
         Ok(html_content)
