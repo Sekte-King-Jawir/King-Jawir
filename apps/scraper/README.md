@@ -1,15 +1,16 @@
-# Tokopedia Scraper API 🛒
+# E-commerce Scraper API 🛒
 
-Fast and reliable Tokopedia product scraper built with Rust, Axum, and headless Chrome.
+Fast and reliable product scraper for Indonesian e-commerce platforms (Tokopedia & Blibli) built with Rust, Axum, and headless Chrome.
 
 ## 🚀 Features
 
 - ⚡ **Fast**: Built with Rust for maximum performance
 - 🎯 **Accurate**: Extracts product data from both JSON and DOM
 - 🔄 **Automatic Fallback**: JSON parsing → DOM parsing
-- 🌐 **REST API**: Simple HTTP GET endpoint
+- 🌐 **REST API**: Simple HTTP GET endpoints
 - 🛡️ **CORS Enabled**: Ready for web applications
 - 📦 **Clean Architecture**: Modular, maintainable code structure
+- 🛍️ **Multi-Platform**: Supports Tokopedia and Blibli
 
 ## 📋 Requirements
 
@@ -39,12 +40,28 @@ cargo run --release
 cargo run --release
 ```
 
+### Example Usage
+
+#### Blibli
+
+```
+GET http://localhost:4103/api/scraper/blibli?query=laptop&limit=10
+```
+
 Server will start on `http://0.0.0.0:4103`
 
-### API Endpoint
+### API Endpoints
+
+#### Tokopedia
 
 ```
 GET /api/scraper/tokopedia?query={search_term}&limit={number}
+```
+
+#### Blibli
+
+```
+GET /api/scraper/blibli?query={search_term}&limit={number}
 ```
 
 **Parameters:**
@@ -53,6 +70,8 @@ GET /api/scraper/tokopedia?query={search_term}&limit={number}
 - `limit` (optional): Number of products to return (default: 10)
 
 ### Examples
+
+#### Tokopedia
 
 ```bash
 # Search for laptops (limit 5)
@@ -63,6 +82,19 @@ curl "http://localhost:4103/api/scraper/tokopedia?query=samsung"
 
 # Use default search (iphone)
 curl "http://localhost:4103/api/scraper/tokopedia"
+```
+
+#### Blibli
+
+```bash
+# Search for laptops (limit 5)
+curl "http://localhost:4103/api/scraper/blibli?query=laptop&limit=5"
+
+# Search for phones (default limit 10)
+curl "http://localhost:4103/api/scraper/blibli?query=samsung"
+
+# Use default search (iphone)
+curl "http://localhost:4103/api/scraper/blibli"
 ```
 
 ### Response Format
@@ -78,6 +110,10 @@ curl "http://localhost:4103/api/scraper/tokopedia"
       "image_url": "https://images.tokopedia.net/...",
       "product_url": "https://www.tokopedia.com/...",
       "shop_location": "Jakarta Pusat"
+    }
+  ],
+  "count": 10
+}
     }
   ],
   "count": 10

@@ -45,7 +45,10 @@ CTA: Pesan sekarang di link bio!`
   return prompt
 }
 
-export function parseMarketingContentResponse(rawText: string, platform: string): MarketingContentResult {
+export function parseMarketingContentResponse(
+  rawText: string,
+  platform: string
+): MarketingContentResult {
   const result: MarketingContentResult = {
     platform,
     content: '',
@@ -54,12 +57,19 @@ export function parseMarketingContentResponse(rawText: string, platform: string)
   }
 
   try {
-    const lines = rawText.split('\n').map(line => line.trim()).filter(line => line.length > 0)
+    const lines = rawText
+      .split('\n')
+      .map(line => line.trim())
+      .filter(line => line.length > 0)
 
     let currentSection = ''
     for (const line of lines) {
       const upperLine = line.toUpperCase()
-      if (upperLine.includes('CONTENT') && !upperLine.includes('HASHTAGS') && !upperLine.includes('CTA')) {
+      if (
+        upperLine.includes('CONTENT') &&
+        !upperLine.includes('HASHTAGS') &&
+        !upperLine.includes('CTA')
+      ) {
         currentSection = 'content'
         const contentStart = line.toUpperCase().indexOf('CONTENT') + 'CONTENT'.length
         result.content = line.substring(contentStart).trim()
@@ -111,7 +121,8 @@ export function getFallbackMarketingContent(platform: string): MarketingContentR
       callToAction: 'Pesan sekarang!',
     },
     facebook: {
-      content: 'Temukan produk unggulan ini untuk bisnis Anda! Kualitas terjamin dan harga bersaing.',
+      content:
+        'Temukan produk unggulan ini untuk bisnis Anda! Kualitas terjamin dan harga bersaing.',
       hashtags: ['#ProdukUnggulan', '#BisnisSME'],
       callToAction: 'Klik untuk detail!',
     },
@@ -121,12 +132,14 @@ export function getFallbackMarketingContent(platform: string): MarketingContentR
       callToAction: 'RT dan follow!',
     },
     linkedin: {
-      content: 'Produk profesional untuk meningkatkan efisiensi bisnis Anda. Solusi terbaik untuk SMEs.',
+      content:
+        'Produk profesional untuk meningkatkan efisiensi bisnis Anda. Solusi terbaik untuk SMEs.',
       hashtags: ['#BisnisProfesional', '#SMESolutions'],
       callToAction: 'Hubungi kami!',
     },
     email: {
-      content: 'Subjek: Produk Terbaru untuk Bisnis Anda\n\nHalo,\n\nKami punya produk menarik yang cocok untuk usaha kecil Anda.',
+      content:
+        'Subjek: Produk Terbaru untuk Bisnis Anda\n\nHalo,\n\nKami punya produk menarik yang cocok untuk usaha kecil Anda.',
       hashtags: ['#ProdukBisnis', '#SME'],
       callToAction: 'Klik di sini untuk detail!',
     },
@@ -139,6 +152,6 @@ export function getFallbackMarketingContent(platform: string): MarketingContentR
 
   return {
     platform,
-    ...fallbacks[platform as keyof typeof fallbacks] || fallbacks.instagram,
+    ...(fallbacks[platform as keyof typeof fallbacks] || fallbacks.instagram),
   }
 }

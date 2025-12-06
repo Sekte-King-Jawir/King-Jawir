@@ -14,7 +14,11 @@ export const marketingRepository = {
       productDescription.short.trim() === '' ||
       !validPlatforms.includes(platform.toLowerCase())
     ) {
-      logger.warn({ msg: 'Invalid marketing input', platform, hasShort: !!productDescription?.short })
+      logger.warn({
+        msg: 'Invalid marketing input',
+        platform,
+        hasShort: !!productDescription?.short,
+      })
       return false
     }
     return true

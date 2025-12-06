@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 
 #[derive(Debug, Serialize, Deserialize, Clone, ToSchema)]
-pub struct Product {
+pub struct BlibliProduct {
     /// Product name
     pub name: String,
     /// Product price as string

@@ -5,7 +5,9 @@ import { marketingRepository } from '../marketing/marketing_repository'
 describe('marketing service', () => {
   it('throws error for invalid input', async () => {
     const invalidDesc = { short: '', long: '', bullets: [], seoKeywords: [] } as any
-    await expect(marketingService.generateContent(invalidDesc, 'invalid')).rejects.toThrow('Invalid marketing input')
+    await expect(marketingService.generateContent(invalidDesc, 'invalid')).rejects.toThrow(
+      'Invalid marketing input'
+    )
   })
 })
 
