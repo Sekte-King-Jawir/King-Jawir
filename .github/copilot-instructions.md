@@ -1,334 +1,222 @@
-# King Jawir - AI Coding Guidelines
+# King Jawir - AI Coding Agent Instructions
 
 ## Project Overview
 
-**AI-powered price analysis and product description generator platform** for Indonesian SMEs. Monorepo using Turborepo with:
-- `apps/api` - Elysia.js REST API on Bun runtime (port 4101)
-- `apps/web` - Next.js 16 frontend (port 4102)  
-- `apps/scraper` - Rust Tokopedia scraper service (port 4103)
-- `packages/ui` - Shared React component library with theming
-- `packages/eslint-config`, `packages/typescript-config` - Shared configs
+King Jawir is an AI-powered price analysis platform for Indonesian SMEs, built as a Turborepo monorepo with three main applications communicating via REST APIs.
 
-## Architecture Patterns
+**Architecture Pattern**: Microservices with REST communication
+- `apps/api` (port 4101): Elysia.js backend with Bun runtime
+- `apps/web` (port 4102): Next.js 15 frontend with React 19
+- `apps/scraper` (port 4103): Rust-based Tokopedia scraper with headless Chrome
 
-### API Layer Structure (`apps/api`)
-Each domain follows **Controller → Service → Repository** pattern:
+**Key Dependencies**: Bun (runtime), Prisma + MariaDB (database), OpenAI-compatible LLM APIs, TailwindCSS v4
+
+## Critical Conventions
+
+### 1. Database & Schema Generation
+
+**Prisma with PrismaBox**: The project uses `prismabox` generator alongside standard Prisma client for automatic TypeBox schema generation integrated with Elysia.js validation.
+
+```typescript
+// Schema location: apps/api/prisma/schema.prisma
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+generator prismabox {
+  provider                     = "prismabox"
+  typeboxImportDependencyName  = "elysia"
+  typeboxImportVariableName    = "t"
+  inputModel                   = true
+  output                       = "../generated/prismabox"
+}
 ```
-{domain}/
-├── index.ts           # Route definitions with Elysia plugins
-├── {domain}_controller.ts  # Thin layer, delegates to service
-├── {domain}_service.ts     # Business logic, returns ApiResponse
-├── {domain}_repository.ts  # Prisma queries only
-```
-Core domains: `auth/`, `profile/`, `price-analysis/`
 
-### Response Format
-All API responses use standardized helpers from `apps/api/lib/response.ts`:
+**After modifying schema**: Run `bunx prisma generate --schema=apps/api/prisma/schema.prisma` to regenerate both clients. Generated code lives in `apps/api/generated/` and is git-tracked.
+
+### 2. API Response Pattern
+
+All API endpoints follow standardized response wrapper from `apps/api/lib/response.ts`:
+
 ```typescript
 import { successResponse, errorResponse, ErrorCode } from '../lib/response'
-return successResponse('Analysis complete', analysisResult)
-return errorResponse('Not found', ErrorCode.NOT_FOUND)
+
+// Success
+return successResponse('Operation completed', { data: result })
+
+// Error with standard code
+return errorResponse('User not found', ErrorCode.USER_NOT_FOUND)
 ```
 
-### Database
-- **Prisma with MariaDB** via `@prisma/adapter-mariadb`
-- Schema at `apps/api/prisma/schema.prisma`
-- Generated client in `apps/api/generated/prisma/`
-- Prismabox generates Elysia TypeBox validators in `apps/api/generated/prismabox/`
-- Always use `prisma` instance from `apps/api/lib/db.ts`
+**Never** return raw objects or throw unhandled exceptions. Always use `successResponse()` or `errorResponse()` with predefined `ErrorCode` constants.
 
-## Key Commands
+### 3. Logging with Pino
 
-```bash
-# Development (uses bun as package manager)
-bun install                    # Install dependencies
-bun run copyenv                # Copy root .env to all apps
-bun run dev                    # Start all apps in dev mode
-bun run api:dev                # API only
-bun run web:dev                # Web only
+Use structured logging via `apps/api/lib/logger.ts`:
 
-# Database
-bunx prisma generate --schema=apps/api/prisma/schema.prisma
-bunx prisma db push --schema=apps/api/prisma/schema.prisma
-bun run apps/api/prisma/seed.ts
-
-# Testing (apps/api uses Bun test runner)
-cd apps/api && bun test        # Run all tests
-bun test test/product/         # Run specific module tests
-bun test --watch               # Watch mode
-
-# Quality
-bun run lint                   # ESLint across workspace
-bun run format                 # Prettier formatting
-bun run check-types            # TypeScript type checking
-bun run knip                   # Detect unused exports/dependencies
-```
-
-## Code Conventions
-
-### ⚠️ File Size & Separation Rule
-**NEVER create files >500 lines mixing UI, Logic, and Query.** Follow separation of concerns:
-- **UI/Routes** (`index.ts`) - Route definitions only, delegate to controller
-- **Logic** (`*_service.ts`) - Business logic, validation, orchestration
-- **Query** (`*_repository.ts`) - Database queries only (Prisma)
-
-If a file grows large, split by domain or feature.
-
-### ⛔ No Dummy/Placeholder Data
-**NEVER add fake, dummy, or placeholder data** in code. All data must come from:
-- Database via Prisma queries
-- External APIs (scraper, AI services)
-- User input through forms
-
-Do not hardcode sample products, users, or mock responses outside of test files.
-
-### Elysia Route Definitions
-Routes use TypeBox (`t`) for validation with Swagger documentation:
 ```typescript
-.post('/endpoint', handler, {
-  body: t.Object({ name: t.String(), price: t.Number() }),
-  detail: { tags: ['Products'], summary: 'Create product' }
-})
+import { logger } from './lib/logger'
+
+logger.info({ msg: 'User login', userId, email })
+logger.error({ msg: 'Database error', error: err.message, query })
 ```
 
-### AI Integration
-OpenAI-compatible client in `apps/api/lib/ai.ts` supports custom endpoints:
+**Convention**: Pass objects with `msg` property first, followed by context fields. Never use `console.log()` in API code.
+
+### 4. AI/LLM Integration
+
+The project supports OpenAI-compatible APIs (OpenAI, NVIDIA, GLM) via `apps/api/lib/ai.ts`:
+
 ```typescript
-import { generateCompletion, generateStreamingCompletion } from '../lib/ai'
-```
-Configured via `OPENAI_API_KEY`, `OPENAI_API_BASE`, `OPENAI_MODEL` env vars.
+import { generateChatCompletion, streamChatCompletion } from '../lib/ai'
 
-### Frontend
-- Next.js App Router in `apps/web/app/`
-- **Always use shared components from `@repo/ui` package first** (`packages/ui/src/`)
-  - Existing: `button.tsx`, `card.tsx`, `code.tsx`, `theme/`, `layout/`
-  - If component doesn't exist, add it to `packages/ui/src/` for reuse
-- TailwindCSS v4 for styling
-- `ThemeProvider` for dark/light mode
+// Non-streaming
+const result = await generateChatCompletion(messages, { temperature: 0.7 })
 
-## Testing Patterns
-Tests use mocking pattern with `bun:test`:
-```typescript
-import { describe, it, expect, mock, beforeEach } from 'bun:test'
-mock.module('../../product/product_repository', () => ({
-  productRepository: { findAll: mock(), /* ... */ }
-}))
-```
-
-## Scraper Integration (Rust Service)
-The `apps/scraper` is a Rust/Axum service with headless Chrome for Tokopedia scraping:
-```
-API (4101) → Scraper (4103) → Tokopedia
-         ↓
-   priceAnalysisRepository.fetchTokopediaPrices(query, limit)
-```
-
-**Scraper endpoint:** `GET /api/scraper/tokopedia?query={term}&limit={n}`
-
-Response format:
-```json
-{ "success": true, "data": [{ "name": "...", "price": "Rp1.234.567", "rating": "4.9", ... }], "count": 10 }
-```
-
-Configure via `SCRAPER_URL` env var (default: `http://localhost:4103`).
-
-## WebSocket Streaming Pattern
-Real-time price analysis uses WebSocket at `/api/price-analysis/stream`:
-```typescript
-// Client sends:
-{ "type": "start-analysis", "query": "laptop", "limit": 10, "userPrice": 5000000 }
-
-// Server streams progress updates:
-{ "type": "progress", "step": "fetching", "message": "...", "progress": 15 }
-{ "type": "progress", "step": "calculating", ... }
-{ "type": "complete", "data": { products, statistics, analysis } }
-```
-See `apps/api/price-analysis/websocket.ts` for implementation.
-
-## Deployment
-
-### Docker
-```bash
-docker-compose up -d           # Start web + api containers
-```
-Ports: api→4101, web→4102
-
-### PM2 (Production)
-Each app has `ecosystem.config.cjs`:
-```bash
-cd apps/api && pm2 start ecosystem.config.cjs --env production
-cd apps/web && pm2 start ecosystem.config.cjs --env production
-```
-Requires Bun installed at `/home/asephs/.bun/bin/bun` (update path in config).
-
-### Build Commands
-```bash
-bun run build                  # Build all apps
-bun run api:build              # Build API only (outputs to dist/)
-bun run web:build              # Build Next.js (outputs to .next/)
-```
-
-## Environment Setup
-Required `.env` variables (see `apps/api/README.md`):
-- `DATABASE_URL` - MySQL/MariaDB connection string
-- `JWT_SECRET` - Minimum 32 characters
-- `API_PORT` - Default 4101
-- `SCRAPER_URL` - Rust scraper service (default: `http://localhost:4103`)
-- `SMTP_*` - Email configuration for verification
-- `OPENAI_*` - AI features (optional)
-
-## Validators & Schema Generation
-
-### Custom Validators (`apps/api/lib/validators.ts`)
-Use `v.*` helpers for consistent validation with Indonesian error messages:
-```typescript
-import { v } from '../lib/validators'
-
-body: t.Object({
-  email: v.email(),           // Email format validation
-  password: v.password(),     // Min 6 chars
-  name: v.name(),             // Min 2, max 100 chars
-  slug: v.slug(),             // Lowercase, numbers, dash only
-  phone: v.phoneID(),         // Indonesian phone format (08xxx)
-})
-```
-
-### Prismabox Generated Schemas
-TypeBox validators auto-generated from Prisma schema in `apps/api/generated/prismabox/`:
-```typescript
-import { User, Product, Order } from '../generated/prismabox/barrel'
-```
-
-## Auth Module Structure
-Auth uses sub-folder pattern for each flow:
-```
-auth/
-├── index.ts              # Combines all routes
-├── shared/               # Shared auth utilities
-├── register/             # POST /auth/register
-├── login/                # POST /auth/login
-├── logout/               # POST /auth/logout
-├── refresh/              # POST /auth/refresh
-├── me/                   # GET /auth/me
-├── verify-email/         # GET /auth/verify-email
-├── resend-verification/  # POST /auth/resend-verification
-├── forgot-password/      # POST /auth/forgot-password
-├── change-password/      # POST /auth/change-password
-└── google/               # Google OAuth flow
-```
-
-## Utility Libraries
-
-### Password Hashing (`apps/api/lib/hash.ts`)
-```typescript
-import { hashPassword, verifyPassword } from '../lib/hash'
-const hashed = await hashPassword(password)
-const isValid = await verifyPassword(input, hashed)
-```
-
-### Email Service (`apps/api/lib/mail.ts`)
-```typescript
-import { sendVerificationEmail, sendResetPasswordEmail } from '../lib/mail'
-await sendVerificationEmail(email, verificationUrl)
-await sendResetPasswordEmail(email, resetUrl)
-```
-Requires `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `SMTP_FROM` env vars.
-
-## HTTP Status Code Conventions
-```typescript
-// In route handlers, set status before returning error response:
-if (!result.success) {
-  set.status = 400  // Bad request / validation error
-}
-if (!user) {
-  set.status = 401  // Unauthorized
-  return errorResponse('Please login', ErrorCode.UNAUTHORIZED)
-}
-if (!isSeller(user)) {
-  set.status = 403  // Forbidden
-  return errorResponse('Seller only', ErrorCode.FORBIDDEN)
-}
-if (!found) {
-  set.status = 404  // Not found
-  return errorResponse('Not found', ErrorCode.NOT_FOUND)
+// Streaming
+for await (const chunk of streamChatCompletion(messages)) {
+  // Handle stream
 }
 ```
 
----
+**Configuration**: Set `OPENAI_API_KEY`, `OPENAI_API_BASE`, and `OPENAI_MODEL` in `.env`. The system defaults to GLM 4.6 if not specified.
 
-## Hackathon Scoring Rubric (Product & Pitch Focus)
+### 5. Price Analysis Flow (Core Feature)
 
-**Total Base Score: 200 Points** (may increase with Bonus or decrease with Penalties)
+The price analysis follows this multi-step pipeline:
 
-### Score Composition
-| Category | Weight | Points |
-|----------|--------|--------|
-| Code Quality | 5% | 10 |
-| Architecture | 10% | 20 |
-| Innovation | 20% | 40 |
-| Functionality | 25% | 50 |
-| Documentation & Video Demo | 40% | 80 |
-| **Subtotal** | **100%** | **200** |
-| Technical Bonus | - | +20 max |
+1. **Query Optimization**: AI optimizes user query for better Tokopedia search
+2. **Scraping**: Rust scraper fetches products via `GET /api/scraper/tokopedia`
+3. **Statistical Analysis**: Calculate min/max/avg/median/quartiles
+4. **AI Analysis**: LLM generates pricing recommendations and insights
+5. **Streaming**: Progress updates sent via WebSocket to frontend
 
-### 1. Code Quality (5%) - 10 Points
-**Focus:** Basic code hygiene
+**Key files**:
+- `apps/api/price-analysis/price_analysis_service.ts` - Business logic
+- `apps/api/price-analysis/price_analysis_repository.ts` - Scraper integration
+- `apps/api/price-analysis/websocket.ts` - Real-time progress updates
+- `apps/web/hooks/usePriceAnalysis.ts` - Frontend React hook
 
-| Criteria | Checklist | Points |
-|----------|-----------|--------|
-| Basic Cleanliness | Clear variable names (not `x`, `a`), no dead code/console.log spam, proper indentation | 0-5 |
-| Best Practices | No hardcoded credentials (API keys), organized file structure (not all in root) | 0-5 |
+### 6. Monorepo Workflow
 
-### 2. Architecture (10%) - 20 Points
-**Focus:** System structure and technology choices
+**Package Manager**: Bun (not npm/yarn/pnpm)
 
-| Criteria | Checklist | Points |
-|----------|-----------|--------|
-| System Design | Logical separation (UI vs business logic), clear data flow | 0-10 |
-| Tech Stack | Appropriate technology choices (not overkill or obsolete), effective library usage | 0-10 |
+```bash
+# Development (excludes scraper by default)
+bun run dev
 
-### 3. Innovation (20%) - 40 Points
-**Focus:** Novelty and technical difficulty
+# Development with all services including Rust scraper
+bun run dev:all
 
-| Criteria | Checklist | Points |
-|----------|-----------|--------|
-| Idea Novelty | Unique solution (not just a clone), creative approach to hackathon theme | 0-20 |
-| Technical Complexity | Implements difficult features (AI, Real-time, Blockchain, complex algorithms), not just simple CRUD | 0-20 |
+# Single service
+bun run api:dev    # or web:dev, scraper:dev
 
-### 4. Functionality (25%) - 50 Points
-**Focus:** Does the app work and provide value?
+# Building
+bun run build      # Builds all via Turbo
+bun run api:build  # Single app
+```
 
-| Criteria | Checklist | Points |
-|----------|-----------|--------|
-| Core Features | Promised features work well, happy path completes end-to-end | 0-30 |
-| Stability & UX | Minimal bugs during demo, responsive and comfortable user experience | 0-20 |
+**Environment Setup**: Run `bun run copyenv` after creating root `.env` to distribute to all apps.
 
-### 5. Documentation & Video Demo (40%) - 80 Points
-**Focus:** Ability to "sell" the idea and clarity of instructions
+### 7. Shared UI Components
 
-| Criteria | Checklist | Points |
-|----------|-----------|--------|
-| Video: Storytelling | Problem & Solution explained clearly, engaging narrative, clear audio, supportive visuals | 0-30 |
-| Video: Product Demo | Shows real running app (not just mockup/Figma), key features demonstrated within time limit | 0-25 |
-| Technical Docs (README) | **Required:** Step-by-step installation instructions for judges, feature explanations, screenshots in README | 0-25 |
+Located in `packages/ui/` and exported via `@repo/ui`:
 
-### 6. Technical Bonus - Up to +20 Points
+```typescript
+import { Button, Card, ThemeProvider, LoadingSpinner } from '@repo/ui'
+```
 
-| Bonus Item | Criteria | Points |
-|------------|----------|--------|
-| Advanced Tech | Successful AI/ML, IoT, or bleeding-edge technology integration | +10 |
-| Deployment | App is live and publicly accessible via URL | +10 |
+**Convention**: All UI components use TailwindCSS v4 with CSS custom properties for theming. Dark mode managed via `ThemeProvider` context.
 
-### 7. Penalties & Red Flags
+### 8. Type Safety & Validation
 
-| Violation | Description | Penalty |
-|-----------|-------------|---------|
-| Broken Demo/Link | Video won't play or repo is private/dead | **Disqualification** |
-| Security Leak (Fatal) | Committed secrets (API Key, .env) to public repo | -20 |
-| Repository Bloat | Uploaded node_modules, vendor, etc. | -10 |
-| No README | No instructions on how to run the app | -20 |
-| Spaghetti Code | Single file >500 lines mixing UI, Logic, and Query | -10 |
+- **Backend**: Elysia.js with TypeBox schemas (auto-generated from PrismaBox)
+- **Frontend**: TypeScript strict mode, React 19 with Next.js App Router
+- **Rust**: Strongly typed with serde serialization
 
-**Penalty Exceptions:** Judges must NOT penalize for:
-- Popular Beta/RC libraries (e.g., @pinia/colada, TanStack Start)
-- Stable/Legacy libraries (e.g., moment.js, jquery)
+**When adding API endpoints**: Define validation schema inline with Elysia route definition using `t` (TypeBox) from the framework.
+
+## Development Commands
+
+| Task | Command |
+|------|---------|
+| Start all services | `bun run dev` |
+| Type checking | `bun run check-types` |
+| Linting | `bun run lint` |
+| Unused code detection | `bun run knip` |
+| Prisma generate | `bunx prisma generate --schema=apps/api/prisma/schema.prisma` |
+| Prisma push schema | `bunx prisma db push --schema=apps/api/prisma/schema.prisma` |
+| Database seed | `cd apps/api && bun run seed` |
+| API tests | `cd apps/api && bun test` |
+
+## Deployment Notes
+
+**PM2 Configuration**: Each app has `ecosystem.config.cjs` for production deployment with Bun interpreter.
+
+**Docker**: Use `docker-compose.yml` for containerized deployment. Services communicate via `king-jawir-network` bridge network.
+
+**Environment Variables** (`.env` at root):
+- `DATABASE_URL` - MariaDB connection string (required)
+- `SCRAPER_URL` - Rust scraper endpoint (default: http://localhost:4103)
+- `OPENAI_API_KEY` - AI model API key (required for price analysis)
+- `OPENAI_API_BASE` - Custom LLM endpoint URL (optional)
+- `OPENAI_MODEL` - Model name (optional, defaults to "GLM 4.6")
+
+## Integration Points
+
+### API → Scraper Communication
+```typescript
+// apps/api/price-analysis/price_analysis_repository.ts
+const scraperUrl = process.env.SCRAPER_URL || 'http://localhost:4103'
+const response = await fetch(`${scraperUrl}/api/scraper/tokopedia?query=${query}&limit=${limit}`)
+```
+
+### Frontend → API Communication
+```typescript
+// apps/web/lib/api/price-analysis.ts
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4101'
+```
+
+### WebSocket Streaming
+```typescript
+// Frontend connects to ws://localhost:4101/api/price-analysis/stream
+// Server sends JSON messages: { type: 'progress' | 'complete' | 'error', ... }
+```
+
+## Common Patterns
+
+### Repository-Service-Controller Pattern
+Each feature follows this structure (see `price-analysis/`):
+- `*_repository.ts` - External service calls, data fetching
+- `*_service.ts` - Business logic, orchestration
+- `*_controller.ts` - Request handling, validation
+- `index.ts` - Route definitions
+
+### Error Handling in Async Operations
+```typescript
+try {
+  const result = await operation()
+  return successResponse('Success', result)
+} catch (error) {
+  logger.error({ msg: 'Operation failed', error: error instanceof Error ? error.message : 'Unknown' })
+  return errorResponse('Operation failed', ErrorCode.INTERNAL_ERROR)
+}
+```
+
+## Testing
+
+Currently implemented for API only (`apps/api/`):
+- Test files: `*.test.ts` (Bun test runner)
+- Config: `bunfig.toml`
+- Run: `bun test` or `bun test --watch`
+
+## Architecture Decisions
+
+**Why Rust for scraper?** Performance and memory efficiency for concurrent headless Chrome operations.
+
+**Why Elysia.js?** Bun-native framework with excellent TypeScript support and minimal overhead.
+
+**Why PrismaBox?** Eliminates manual schema duplication between Prisma models and Elysia validation schemas.
+
+**Why No Auth?** Platform is intentionally public and free for Indonesian SMEs - no authentication layer required.
