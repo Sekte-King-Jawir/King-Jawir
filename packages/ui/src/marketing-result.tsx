@@ -93,10 +93,10 @@ export function MarketingResult({
             {PLATFORM_ICONS[data.platform as keyof typeof PLATFORM_ICONS]}
           </span>
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+            <h3 className="text-lg font-semibold text-foreground">
               Konten {PLATFORM_LABELS[data.platform as keyof typeof PLATFORM_LABELS]}
             </h3>
-            <p className="text-sm text-gray-600 dark:text-gray-400">
+            <p className="text-sm text-muted-foreground">
               Konten pemasaran yang dioptimalkan untuk platform ini
             </p>
           </div>
@@ -107,11 +107,11 @@ export function MarketingResult({
       <Card className="p-6">
         <div className="flex items-start justify-between">
           <div className="flex-1">
-            <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2">
+            <h4 className="text-sm font-medium text-muted-foreground uppercase tracking-wide mb-2">
               Konten Pemasaran
             </h4>
-            <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
-              <p className="text-gray-900 dark:text-white whitespace-pre-wrap leading-relaxed">
+            <div className="bg-muted rounded-lg p-4">
+              <p className="text-foreground whitespace-pre-wrap leading-relaxed">
                 {data.content}
               </p>
             </div>
@@ -132,7 +132,7 @@ export function MarketingResult({
         <Card className="p-6">
           <div className="flex items-start justify-between">
             <div className="flex-1">
-              <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3">
+              <h4 className="text-sm font-medium text-muted-foreground uppercase tracking-wide mb-3">
                 Hashtags
               </h4>
               <div className="flex flex-wrap gap-2">
@@ -159,7 +159,7 @@ export function MarketingResult({
       <Card className="p-6">
         <div className="flex items-start justify-between">
           <div className="flex-1">
-            <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2">
+            <h4 className="text-sm font-medium text-muted-foreground uppercase tracking-wide mb-2">
               Call to Action
             </h4>
             <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">

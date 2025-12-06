@@ -82,10 +82,10 @@ export function MarketingForm({
     <Card className={`p-6 ${className}`}>
       <div className="space-y-4">
         <div>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+          <h3 className="text-lg font-semibold text-foreground">
             Generate Konten Pemasaran
           </h3>
-          <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+          <p className="text-sm text-muted-foreground mt-1">
             Hasilkan konten pemasaran yang menarik untuk berbagai platform media sosial dan email
           </p>
         </div>
@@ -126,7 +126,7 @@ export function MarketingForm({
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+            <label className="block text-sm font-medium text-foreground mb-3">
               Pilih Platform Tujuan
             </label>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
@@ -138,7 +138,7 @@ export function MarketingForm({
                   className={`p-3 border rounded-lg text-left transition-all ${
                     selectedPlatform === platform.value
                       ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300'
-                      : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
+                      : 'border-input hover:border-accent'
                   } ${isDisabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
                   disabled={isDisabled}
                 >
@@ -152,7 +152,7 @@ export function MarketingForm({
           </div>
 
           {error !== '' ? (
-            <div id="error-message" className="text-sm text-red-600 dark:text-red-400" role="alert">
+            <div id="error-message" className="text-sm text-destructive" role="alert">
               {error}
             </div>
           ) : null}

@@ -28,9 +28,9 @@ export function Modal({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className={`bg-white rounded-lg p-8 ${widthClasses[maxWidth]} w-full mx-4`}>
+      <div className={`bg-background rounded-lg p-8 ${widthClasses[maxWidth]} w-full mx-4`}>
         <div className="flex justify-between items-center mb-4">
-          <h3 className="text-xl font-bold text-gray-900">{title}</h3>
+          <h3 className="text-xl font-bold text-foreground">{title}</h3>
           <button onClick={onClose} className="text-gray-400 hover:text-gray-600 text-2xl">
             ×
           </button>
@@ -70,12 +70,12 @@ export function ConfirmModal({
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={title}>
-      <p className="text-gray-600 mb-6">{message}</p>
+      <p className="text-muted-foreground mb-6">{message}</p>
       <div className="flex gap-3 justify-end">
         <button
           onClick={onClose}
           disabled={loading}
-          className="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50"
+          className="px-6 py-2 border border-input rounded-lg hover:bg-accent disabled:opacity-50"
         >
           Cancel
         </button>
