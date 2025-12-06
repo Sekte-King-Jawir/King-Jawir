@@ -42,6 +42,7 @@ const MINIO_AVATAR_PREFIX = process.env['MINIO_AVATAR_PREFIX'] || 'avatars'
  *
  * @example
  * parseEndpoint('http://localhost:9000') // { host: 'localhost', port: 9000 }
+ * parseEndpoint('https://cdn.example.com') // { host: 'cdn.example.com', port: undefined (uses 443) }
  * parseEndpoint('minio.example.com') // { host: 'minio.example.com' }
  */
 const parseEndpoint = (endpoint: string): { host: string; port?: number } => {
@@ -51,22 +52,32 @@ const parseEndpoint = (endpoint: string): { host: string; port?: number } => {
   if (match && match[2]) {
     const host = match[2]
     const port = match[4] ? parseInt(match[4], 10) : undefined
-    return port !== undefined ? { host, port } : { host }
+    return { host, port }
   }
 
-  return { host: endpoint }
+  return { host: endpoint, port: undefined }
 }
 
 const { host: minioHost, port: minioPort } = parseEndpoint(MINIO_ENDPOINT)
 
-export const minioClient = new Minio.Client({
+// For HTTPS connections without explicit port, don't set port (will use 443)
+// For HTTP connections without explicit port, use MINIO_PORT (default 9000)
+const clientConfig: Minio.ClientOptions = {
   endPoint: minioHost,
-  port: minioPort || MINIO_PORT,
   useSSL: MINIO_USE_SSL,
   accessKey: MINIO_ACCESS_KEY,
   secretKey: MINIO_SECRET_KEY,
   region: MINIO_REGION,
-})
+}
+
+// Only add port if explicitly specified or if using HTTP without explicit port
+if (minioPort !== undefined) {
+  clientConfig.port = minioPort
+} else if (!MINIO_USE_SSL) {
+  clientConfig.port = MINIO_PORT
+}
+
+export const minioClient = new Minio.Client(clientConfig)
 
 /**
  * Initializes MinIO bucket with public read policy
