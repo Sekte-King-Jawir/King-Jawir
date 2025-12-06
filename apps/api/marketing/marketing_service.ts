@@ -33,7 +33,8 @@ export const marketingService = {
       const messages: Array<{ role: 'system' | 'user' | 'assistant'; content: string }> = [
         {
           role: 'system',
-          content: 'Anda adalah AI yang membantu SMEs Indonesia membuat konten pemasaran yang menarik dan efektif.',
+          content:
+            'Anda adalah AI yang membantu SMEs Indonesia membuat konten pemasaran yang menarik dan efektif.',
         },
         {
           role: 'user',
@@ -53,7 +54,10 @@ export const marketingService = {
       logger.info({ msg: 'Marketing content generated successfully' })
       return parsed
     } catch (error) {
-      logger.error({ msg: 'Failed to generate marketing content', error: error instanceof Error ? error.message : 'Unknown' })
+      logger.error({
+        msg: 'Failed to generate marketing content',
+        error: error instanceof Error ? error.message : 'Unknown',
+      })
       // Return fallback content
       return getFallbackMarketingContent(platform)
     }
