@@ -40,13 +40,15 @@ export interface PriceAnalysisRequest {
   userPrice?: number
 }
 
-export interface TokopediaProduct {
+export interface UnifiedProduct {
   name: string
   price: string
   rating?: string
   image_url?: string
   product_url: string
   shop_location?: string
+  sold?: string
+  source: 'tokopedia' | 'blibli'
 }
 
 export interface PriceStatistics {
@@ -86,7 +88,7 @@ export interface AIAnalysis {
 export interface PriceAnalysisResult {
   query: string
   optimizedQuery?: string
-  products: TokopediaProduct[]
+  products: UnifiedProduct[]
   statistics: PriceStatistics
   analysis: AIAnalysis
 }

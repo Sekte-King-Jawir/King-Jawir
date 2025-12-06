@@ -10,7 +10,7 @@ import type { PriceAnalysisRequest } from '@/lib/api'
 
 const analysisSteps = [
   '🔍 Initializing price analysis...',
-  '📊 Scanning Tokopedia marketplace...',
+  '📊 Scanning Tokopedia and Blibli marketplaces...',
   '📈 Calculating market statistics...',
   '🤖 Running AI price analysis...',
   '💡 Generating market insights...',
@@ -53,7 +53,7 @@ export default function SupportPage(): React.JSX.Element {
             PriceScope AI
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Discover market insights with AI-powered Tokopedia price analysis
+            Discover market insights with AI-powered price analysis across multiple marketplaces
           </p>
         </div>
         {/* Form */}
@@ -239,6 +239,17 @@ export default function SupportPage(): React.JSX.Element {
               </div>
               <p className="text-center text-sm text-muted-foreground mt-4">
                 Analyzed {result.statistics.totalProducts} products
+                {(() => {
+                  const tokopediaCount = result.products.filter(p => p.source === 'tokopedia').length
+                  const blibliCount = result.products.filter(p => p.source === 'blibli').length
+                  return tokopediaCount > 0 && blibliCount > 0
+                    ? ` (${tokopediaCount} from Tokopedia, ${blibliCount} from Blibli)`
+                    : tokopediaCount > 0
+                    ? ' from Tokopedia'
+                    : blibliCount > 0
+                    ? ' from Blibli'
+                    : ''
+                })()}
               </p>
             </section>
 
@@ -317,9 +328,18 @@ export default function SupportPage(): React.JSX.Element {
                         />
                       ) : null}
                       <div className="p-4 space-y-2">
-                        <h4 className="font-semibold text-foreground line-clamp-2 leading-tight">
-                          {product.name}
-                        </h4>
+                        <div className="flex items-start justify-between gap-2">
+                          <h4 className="font-semibold text-foreground line-clamp-2 leading-tight flex-1">
+                            {product.name}
+                          </h4>
+                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${
+                            product.source === 'tokopedia'
+                              ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+                              : 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
+                          }`}>
+                            {product.source === 'tokopedia' ? 'Tokopedia' : 'Blibli'}
+                          </span>
+                        </div>
                         <p className="text-lg font-bold text-primary">{product.price}</p>
                         {product.rating !== null &&
                         product.rating !== undefined &&
@@ -333,6 +353,11 @@ export default function SupportPage(): React.JSX.Element {
                             📍 {location}
                           </p>
                         ) : null}
+                        {product.sold && product.sold !== '' ? (
+                          <p className="text-sm text-muted-foreground flex items-center gap-1">
+                            🛒 {product.sold} sold
+                          </p>
+                        ) : null}
                         {productUrl !== '' ? (
                           <a
                             href={productUrl}
@@ -340,7 +365,7 @@ export default function SupportPage(): React.JSX.Element {
                             rel="noopener noreferrer"
                             className="inline-flex items-center text-sm text-primary hover:text-primary/80 transition-colors"
                           >
-                            View on Tokopedia →
+                            View on {product.source === 'tokopedia' ? 'Tokopedia' : 'Blibli'} →
                           </a>
                         ) : null}
                       </div>
@@ -355,7 +380,7 @@ export default function SupportPage(): React.JSX.Element {
 
       {/* Footer */}
       <footer className="mt-12 text-center">
-        <p className="text-sm text-muted-foreground">Powered by Tokopedia Scraper + AI Analysis</p>
+        <p className="text-sm text-muted-foreground">Powered by Multi-Source Scrapers + AI Analysis</p>
       </footer>
     </div>
   )
