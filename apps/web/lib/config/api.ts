@@ -13,4 +13,3 @@ export const API_ENDPOINTS = {
     STREAM: '/api/price-analysis/stream',
   },
 } as const
-

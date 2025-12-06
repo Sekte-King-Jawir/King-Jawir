@@ -105,7 +105,7 @@ export const priceAnalysisService = {
       )
     }
 
-    ws.onmessage = (event) => {
+    ws.onmessage = event => {
       try {
         const message = JSON.parse(event.data) as WebSocketMessage
         onMessage(message)

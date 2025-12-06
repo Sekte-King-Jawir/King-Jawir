@@ -79,7 +79,6 @@ export class ApiClient {
     } catch (error) {
       clearTimeout(timeoutId)
 
-
       if (error instanceof ApiClientError) {
         throw error
       }

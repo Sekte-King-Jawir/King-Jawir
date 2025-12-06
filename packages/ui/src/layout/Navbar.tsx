@@ -16,7 +16,9 @@ export default function Navbar(): React.ReactElement {
   return (
     <header
       className={`sticky top-0 z-50 w-full transition-all duration-300 ${
-        isScrolled ? 'bg-white/95 dark:bg-slate-900/95 backdrop-blur-lg shadow-lg shadow-black/5' : 'bg-white dark:bg-slate-900'
+        isScrolled
+          ? 'bg-white/95 dark:bg-slate-900/95 backdrop-blur-lg shadow-lg shadow-black/5'
+          : 'bg-white dark:bg-slate-900'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

@@ -85,11 +85,15 @@ const app = new Elysia()
         info: {
           title: 'King Jawir - AI Price Analysis & Product Description Generator',
           version: '1.0.0',
-          description: 'API untuk analisis harga produk dari Tokopedia dan generator deskripsi produk dengan AI',
+          description:
+            'API untuk analisis harga produk dari Tokopedia dan generator deskripsi produk dengan AI',
         },
         tags: [
           { name: 'Price Analysis', description: 'AI-powered price analysis from Tokopedia' },
-          { name: 'AI Tools', description: 'Product description generator and other AI-powered tools' },
+          {
+            name: 'AI Tools',
+            description: 'Product description generator and other AI-powered tools',
+          },
         ],
         components: {
           securitySchemes: {},
@@ -102,13 +106,17 @@ const app = new Elysia()
   )
   .use(priceAnalysisRoutes)
   .use(priceAnalysisWebSocket)
-  .get('/api', () => ({ message: 'King Jawir - AI Price Analysis & Product Description Generator API' }), {
-    detail: {
-      tags: ['General'],
-      summary: 'Health check',
-      description: 'Check if API is running',
-    },
-  })
+  .get(
+    '/api',
+    () => ({ message: 'King Jawir - AI Price Analysis & Product Description Generator API' }),
+    {
+      detail: {
+        tags: ['General'],
+        summary: 'Health check',
+        description: 'Check if API is running',
+      },
+    }
+  )
   .listen(process.env['API_PORT'] || 4101)
 
 const port = process.env['API_PORT'] || 4101
