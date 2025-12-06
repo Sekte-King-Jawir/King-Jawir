@@ -27,10 +27,6 @@ export default function SupportPage(): React.JSX.Element {
   const limit = 60
   const currentAnalysisStep = Math.floor((streamProgress / 100) * (analysisSteps.length - 1))
 
-  const formatRupiah = (num: number): string => {
-    return formatPrice(num)
-  }
-
   const handleSubmit = (e: React.FormEvent): void => {
     e.preventDefault()
     const params: PriceAnalysisRequest = {
@@ -208,25 +204,25 @@ export default function SupportPage(): React.JSX.Element {
                 <div className="bg-background/50 rounded-lg p-4 text-center">
                   <div className="text-sm text-muted-foreground mb-1">Minimum</div>
                   <div className="text-xl font-bold text-foreground">
-                    {formatRupiah(result.statistics.min)}
+                    {formatPrice(result.statistics.min)}
                   </div>
                 </div>
                 <div className="bg-background/50 rounded-lg p-4 text-center">
                   <div className="text-sm text-muted-foreground mb-1">Average</div>
                   <div className="text-xl font-bold text-foreground">
-                    {formatRupiah(result.statistics.mean)}
+                    {formatPrice(result.statistics.mean)}
                   </div>
                 </div>
                 <div className="bg-background/50 rounded-lg p-4 text-center">
                   <div className="text-sm text-muted-foreground mb-1">Median</div>
                   <div className="text-xl font-bold text-foreground">
-                    {formatRupiah(result.statistics.median)}
+                    {formatPrice(result.statistics.median)}
                   </div>
                 </div>
                 <div className="bg-background/50 rounded-lg p-4 text-center">
                   <div className="text-sm text-muted-foreground mb-1">Maximum</div>
                   <div className="text-xl font-bold text-foreground">
-                    {formatRupiah(result.statistics.max)}
+                    {formatPrice(result.statistics.max)}
                   </div>
                 </div>
               </div>
@@ -251,7 +247,7 @@ export default function SupportPage(): React.JSX.Element {
                 <div className="bg-primary/10 border border-primary/20 rounded-lg p-4">
                   <h3 className="text-lg font-semibold text-foreground mb-2">Price Range:</h3>
                   <p className="text-foreground leading-relaxed">
-                    Median: {formatRupiah(result.statistics.median)} | Q1-Q3: {formatRupiah(result.statistics.q1)} - {formatRupiah(result.statistics.q3)}
+                    Median: {formatPrice(result.statistics.median)} | Q1-Q3: {formatPrice(result.statistics.q1)} - {formatPrice(result.statistics.q3)}
                   </p>
                 </div>
 
