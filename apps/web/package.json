@@ -13,10 +13,10 @@
   "dependencies": {
     "@next/swc-win32-x64-msvc": "^16.0.7",
     "@repo/ui": "*",
-    "lucide-react": "^0.555.0",
+    "lucide-react": "^0.556.0",
     "next": "^16.0.7",
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0",
+    "react": "^19.2.1",
+    "react-dom": "^19.2.1",
     "recharts": "^3.5.1"
   },
   "devDependencies": {
@@ -25,13 +25,13 @@
     "@tailwindcss/postcss": "^4.1.17",
     "@tailwindcss/typography": "^0.5.19",
     "@types/bun": "latest",
-    "@types/react": "19.2.2",
-    "@types/react-dom": "19.2.2",
+    "@types/react": "19.2.7",
+    "@types/react-dom": "19.2.3",
     "autoprefixer": "^10.4.22",
     "eslint": "^9.39.1",
     "postcss": "^8.5.6",
     "shadcn": "^3.5.1",
     "tailwindcss": "^4.1.17",
-    "typescript": "5.9.2"
+    "typescript": "5.9.3"
   }
 }

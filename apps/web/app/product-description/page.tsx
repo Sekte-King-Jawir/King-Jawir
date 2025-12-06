@@ -113,7 +113,7 @@ export default function ProductDescriptionPage(): React.JSX.Element {
                 </div>
               </div>
             </div>
-          ) : null}
+          : null}
 
           {/* Loading State */}
           {loading ? (
@@ -200,7 +200,7 @@ export default function ProductDescriptionPage(): React.JSX.Element {
                       </div>
                     </div>
                   </div>
-                ) : null}
+                : null}
 
                 {/* Marketing Loading */}
                 {marketingLoading ? (
@@ -227,7 +227,7 @@ export default function ProductDescriptionPage(): React.JSX.Element {
                       onRegenerate={handleRegenerateMarketing}
                     />
                   </div>
-                ) : null}
+                : null}
               </div>
 
               {/* Copy Success Message */}
