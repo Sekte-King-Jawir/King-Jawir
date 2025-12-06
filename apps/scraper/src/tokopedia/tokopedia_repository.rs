@@ -345,6 +345,16 @@ impl TokopediaRepository {
                 })
                 .last(); // Usually the last matching span is the location
 
+            // Extract sold count - look for text containing "terjual"
+            let sold = link_elem
+                .select(&span_selector)
+                .map(|span| span.text().collect::<String>().trim().to_string())
+                .filter(|text| {
+                    text.to_lowercase().contains("terjual") ||
+                    text.to_lowercase().contains("rb terjual")
+                })
+                .next();
+
             products.push(Product {
                 name,
                 price,
@@ -352,6 +362,7 @@ impl TokopediaRepository {
                 image_url,
                 product_url: full_url.clone(),
                 shop_location,
+                sold,
             });
             
             println!("  ✓ Found: {} - {}", products.last().unwrap().name, products.last().unwrap().price);
@@ -472,6 +483,15 @@ impl TokopediaRepository {
                 .and_then(|l| l.as_str())
                 .map(String::from);
 
+            let sold = obj.get("sold")
+                .or_else(|| obj.get("soldCount"))
+                .or_else(|| obj.get("totalSold"))
+                .and_then(|v| {
+                    if let Some(s) = v.as_str() {
+                        Some(s.to_string())
+                    } else { v.as_i64().map(|n| format!("{n}")) }
+                });
+
             Some(Product {
                 name: name_str,
                 price: price_str,
@@ -479,6 +499,7 @@ impl TokopediaRepository {
                 image_url,
                 product_url,
                 shop_location,
+                sold,
             })
         }
 
