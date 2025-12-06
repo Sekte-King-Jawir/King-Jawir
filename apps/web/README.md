@@ -55,7 +55,11 @@ Frontend: http://localhost:4102
 ### Environment Setup
 
 ```env
+# Development
 NEXT_PUBLIC_API_URL=http://localhost:4101
+
+# Production
+NEXT_PUBLIC_API_URL=https://kjg.asepharyana.tech
 ```
 
 ## 📡 API Integration
@@ -204,6 +208,9 @@ bun run lint        # Linting
 ```bash
 # Check API status
 curl http://localhost:4101
+
+# For production
+curl https://kjg.asepharyana.tech
 
 # Verify environment
 echo $NEXT_PUBLIC_API_URL
