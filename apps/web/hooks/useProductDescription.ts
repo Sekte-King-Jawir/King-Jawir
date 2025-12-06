@@ -90,10 +90,10 @@ export function useProductDescription(): UseProductDescriptionReturn {
     try {
       const response = await productDescriptionService.generate(data)
 
-      if (response.success && response.data) {
+      if (response.success && response.data !== null && response.data !== undefined) {
         setResult(response.data)
       } else {
-        setError(response.message || 'Failed to generate description')
+        setError(response.message ?? 'Failed to generate description')
       }
 
       return response

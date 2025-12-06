@@ -170,8 +170,9 @@ export function usePriceAnalysis(): UsePriceAnalysisReturn {
           setLoading(false)
         }
       },
-      (err: Error) => {
-        setError(err.message)
+      (err: Error | string) => {
+        const message = typeof err === 'string' ? err : err.message
+        setError(message)
         setLoading(false)
       }
     )

@@ -125,7 +125,7 @@ export const priceAnalysisService = {
    *   console.log(result.data?.statistics.mean)
    * }
    */
-  async analyze(
+  analyze(
     data: PriceAnalysisRequest
   ): Promise<{ success: boolean; message: string; data?: PriceAnalysisResult }> {
     return apiClient.post(API_ENDPOINTS.PRICE_ANALYSIS.ANALYZE, data)
@@ -155,16 +155,18 @@ export const priceAnalysisService = {
   connectStream(
     data: PriceAnalysisRequest,
     onMessage: (message: WebSocketMessage) => void,
-    onError: (error: Error) => void
+    onError: (error: Error | string) => void
   ): WebSocket {
-    const wsUrl = `${process.env.NEXT_PUBLIC_WS_URL || 'ws://localhost:4101'}${API_ENDPOINTS.PRICE_ANALYSIS.STREAM}`
+    const wsUrl = `${process.env.NEXT_PUBLIC_WS_URL ?? 'ws://localhost:4101'}${API_ENDPOINTS.PRICE_ANALYSIS.STREAM}`
     const ws = new WebSocket(wsUrl)
 
     ws.onopen = () => {
       ws.send(
         JSON.stringify({
           type: 'start-analysis',
-          ...data,
+          query: data.query,
+          limit: data.limit,
+          userPrice: data.userPrice,
         })
       )
     }
@@ -173,7 +175,7 @@ export const priceAnalysisService = {
       try {
         const message = JSON.parse(event.data) as WebSocketMessage
         onMessage(message)
-      } catch (err) {
+      } catch (_err) {
         onError(new Error('Failed to parse WebSocket message'))
       }
     }

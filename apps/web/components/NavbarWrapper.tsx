@@ -2,6 +2,6 @@
 
 import { Navbar } from '@repo/ui'
 
-export function NavbarWrapper() {
+export function NavbarWrapper(): React.JSX.Element {
   return <Navbar />
 }

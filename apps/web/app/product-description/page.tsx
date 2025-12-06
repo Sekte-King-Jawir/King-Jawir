@@ -32,7 +32,7 @@ export default function ProductDescriptionPage(): React.JSX.Element {
   }
 
   const handleGenerateMarketing = async (platform: string): Promise<void> => {
-    if (!result) return
+    if (result === null || result === undefined) return
 
     const request: MarketingContentRequest = {
       productDescription: result,
@@ -78,12 +78,12 @@ export default function ProductDescriptionPage(): React.JSX.Element {
         <div className="space-y-8">
           {/* Form Section */}
           <ProductDescriptionForm
-            onSubmit={handleGenerate}
+            onSubmit={(input) => { void handleGenerate(input) }}
             loading={loading}
           />
 
           {/* Error Display */}
-          {error ? <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
+          {error !== null && error !== '' ? <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
               <div className="flex">
                 <div className="shrink-0">
                   <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
@@ -117,7 +117,7 @@ export default function ProductDescriptionPage(): React.JSX.Element {
             </div> : null}
 
           {/* Results Section */}
-          {result && !loading ? <div className="space-y-6">
+          {result !== null && result !== undefined && !loading ? <div className="space-y-6">
               <div className="text-center">
                 <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-green-100 dark:bg-green-900/20 mb-4">
                   <Sparkles className="h-6 w-6 text-green-600 dark:text-green-400" />
@@ -132,7 +132,7 @@ export default function ProductDescriptionPage(): React.JSX.Element {
 
               <ProductDescriptionResult
                 data={result}
-                onCopy={handleCopy}
+                onCopy={(text) => { void handleCopy(text) }}
                 onRegenerate={handleRegenerate}
               />
 
@@ -152,12 +152,12 @@ export default function ProductDescriptionPage(): React.JSX.Element {
 
                 <MarketingForm
                   productDescription={result}
-                  onSubmit={handleGenerateMarketing}
+                  onSubmit={(platform) => { void handleGenerateMarketing(platform) }}
                   loading={marketingLoading}
                 />
 
                 {/* Marketing Error */}
-                {marketingError ? <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 mt-4">
+                {marketingError !== null && marketingError !== '' ? <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 mt-4">
                     <div className="flex">
                       <div className="shrink-0">
                         <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
@@ -191,17 +191,17 @@ export default function ProductDescriptionPage(): React.JSX.Element {
                   </div> : null}
 
                 {/* Marketing Results */}
-                {marketingResult && !marketingLoading ? <div className="mt-6">
+                {marketingResult !== null && marketingResult !== undefined && !marketingLoading ? <div className="mt-6">
                     <MarketingResult
                       data={marketingResult}
-                      onCopy={handleCopyMarketing}
+                      onCopy={(text) => { void handleCopyMarketing(text) }}
                       onRegenerate={handleRegenerateMarketing}
                     />
                   </div> : null}
               </div>
 
               {/* Copy Success Message */}
-              {copiedText ? <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4">
+              {copiedText !== null && copiedText !== '' ? <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4">
                   <div className="flex items-center">
                     <Copy className="h-5 w-5 text-green-600 dark:text-green-400 mr-3" />
                     <span className="text-sm text-green-800 dark:text-green-200">
@@ -210,7 +210,7 @@ export default function ProductDescriptionPage(): React.JSX.Element {
                   </div>
                 </div> : null}
             </div> : null}
-          {!result && !loading && !error && (
+          {(result === null || result === undefined) && !loading && (error === null || error === '') && (
             <div className="text-center py-12">
               <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gray-100 dark:bg-gray-800 mb-4">
                 <Sparkles className="h-8 w-8 text-gray-400" />

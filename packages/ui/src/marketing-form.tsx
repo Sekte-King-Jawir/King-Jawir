@@ -90,10 +90,10 @@ export function MarketingForm({
           </p>
         </div>
 
-        {!productDescription ? (
+        {productDescription === null ? (
           <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4">
             <div className="flex">
-              <div className="flex-shrink-0">
+              <div className="shrink-0">
                 <span className="text-yellow-400">⚠️</span>
               </div>
               <div className="ml-3">
@@ -109,7 +109,7 @@ export function MarketingForm({
         ) : (
           <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4">
             <div className="flex">
-              <div className="flex-shrink-0">
+              <div className="shrink-0">
                 <span className="text-green-400">✅</span>
               </div>
               <div className="ml-3">

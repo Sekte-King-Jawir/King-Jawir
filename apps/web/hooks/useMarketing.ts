@@ -96,16 +96,20 @@ export function useMarketing(): UseMarketingReturn {
     try {
       const response = await marketingService.generate(data)
 
-      if (response.success && response.data) {
-        setResult(response.data)
+      if (response.success && response.data !== null) {
+        setResult(response.data ?? null)
       } else {
-        setError(response.message || 'Failed to generate marketing content')
+        setError(response.message ?? 'Failed to generate marketing content')
       }
 
       return response
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred'
-      setError(errorMessage)
+      if (errorMessage === '') {
+        setError('Unknown error occurred')
+      } else {
+        setError(errorMessage)
+      }
       return {
         success: false,
         message: errorMessage,

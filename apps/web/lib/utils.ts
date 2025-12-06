@@ -115,7 +115,7 @@ export function debounce<T extends (...args: unknown[]) => unknown>(
   let timeoutId: ReturnType<typeof setTimeout> | null = null
 
   return (...args: Parameters<T>) => {
-    if (timeoutId) clearTimeout(timeoutId)
+    if (timeoutId !== null) clearTimeout(timeoutId)
     timeoutId = setTimeout(() => func(...args), wait)
   }
 }
@@ -126,8 +126,8 @@ export function debounce<T extends (...args: unknown[]) => unknown>(
  * @param obj - Object to check
  * @returns True if object has no keys
  */
-export function isEmpty(obj: object): boolean {
-  return Object.keys(obj).length === 0
+export function isEmpty(obj: Record<string, unknown> | null | undefined): boolean {
+  return obj === null || obj === undefined || Object.keys(obj).length === 0
 }
 
 /**
@@ -140,7 +140,7 @@ export function isEmpty(obj: object): boolean {
  * @warning Does not preserve functions, undefined, or circular references
  */
 export function deepClone<T>(obj: T): T {
-  return JSON.parse(JSON.stringify(obj))
+  return JSON.parse(JSON.stringify(obj)) as T
 }
 
 /**
@@ -167,7 +167,9 @@ export function shuffleArray<T>(array: T[]): T[] {
   for (let i = newArray.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))
     const temp = newArray[i]
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     newArray[i] = newArray[j]!
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     newArray[j] = temp!
   }
   return newArray
@@ -187,7 +189,7 @@ export function formatDate(date: string | Date, options?: Intl.DateTimeFormatOpt
   const dateObj = typeof date === 'string' ? new Date(date) : date
   return new Intl.DateTimeFormat(
     'id-ID',
-    options || {
+    options ?? {
       year: 'numeric',
       month: 'long',
       day: 'numeric',

@@ -16,7 +16,6 @@
     "**/*.tsx",
     "next-env.d.ts",
     "next.config.js",
-    ".next/types/**/*.ts",
     "types/**/*.d.ts",
     "data/**/*.ts",
     "hooks/**/*.ts",

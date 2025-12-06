@@ -21,9 +21,9 @@
  * @property {string} WS_URL - WebSocket URL (http replaced with ws)
  */
 export const API_CONFIG = {
-  BASE_URL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4101',
+  BASE_URL: process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4101',
   TIMEOUT: 30000,
-  WS_URL: (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4101').replace('http', 'ws'),
+  WS_URL: (process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4101').replace('http', 'ws'),
 } as const
 
 /**
