@@ -8,8 +8,17 @@
  */
 
 import pino from 'pino'
+import pretty from 'pino-pretty'
 
 const isDevelopment = process.env['NODE_ENV'] !== 'production'
+
+const prettyStream = pretty({
+  colorize: true,
+  translateTime: 'HH:MM:ss',
+  ignore: 'pid,hostname',
+  singleLine: false,
+  messageFormat: '{msg}',
+})
 
 /**
  * Configured Pino logger instance
@@ -19,19 +28,12 @@ const isDevelopment = process.env['NODE_ENV'] !== 'production'
  * - Production: Structured JSON logs for aggregation
  */
 export const logger = isDevelopment
-  ? pino({
-      level: process.env['LOG_LEVEL'] || 'debug',
-      transport: {
-        target: 'pino-pretty',
-        options: {
-          colorize: true,
-          translateTime: 'HH:MM:ss',
-          ignore: 'pid,hostname',
-          singleLine: false,
-          messageFormat: '{msg}',
-        },
+  ? pino(
+      {
+        level: process.env['LOG_LEVEL'] || 'debug',
       },
-    })
+      prettyStream
+    )
   : pino({
       level: process.env['LOG_LEVEL'] || 'info',
     })
