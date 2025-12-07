@@ -103,7 +103,7 @@ export function ParticleBackground(): React.JSX.Element {
           const particle1 = particles[i]
           const particle2 = particles[j]
 
-          if (particle1 !== null && particle2 !== null) {
+          if (particle1 && particle2) {
             const dx = particle1.x - particle2.x
             const dy = particle1.y - particle2.y
             const distance = Math.sqrt(dx * dx + dy * dy)
