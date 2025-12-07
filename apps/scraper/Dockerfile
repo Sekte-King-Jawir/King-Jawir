@@ -1,6 +1,11 @@
 # Use Rust base image
 FROM rust:1.85-slim AS builder
 
+# Install build dependencies
+RUN apt-get update && apt-get install -y \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
 # Set working directory
 WORKDIR /app
 
