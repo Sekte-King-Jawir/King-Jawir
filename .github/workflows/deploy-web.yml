@@ -1,4 +1,4 @@
-name: Deploy Web Store to VPS
+name: Deploy Web Store to VPS 
 
 on:
   workflow_dispatch:

@@ -1,4 +1,4 @@
-name: Deploy API Store to VPS
+name: Deploy API Store to VPS 
 
 on:
   workflow_dispatch:

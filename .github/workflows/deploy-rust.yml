@@ -1,8 +1,7 @@
-name: Deploy Rust Store to VPS
-
+name: Deploy Rust Store to VPS 
 on:
-  workflow_dispatch:
-  push:
+  workflow_dispatch: 
+  push: 
     branches:
       - main
     paths:
