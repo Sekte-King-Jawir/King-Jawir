@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 
-type FloatingElement = {
+interface FloatingElement {
   id: number
   top: number
   left: number
@@ -24,7 +24,7 @@ export function FloatingElements(): React.JSX.Element {
         top: (i * 7) % 100,
         left: (i * 5) % 100,
         size: ((i * 4 + 20) % 60) + 20,
-        color: colors[colorIndex],
+        color: colors[colorIndex] ?? 'blue',
         duration: ((i * 2 + 10) % 20) + 10,
       } as FloatingElement
     }),
@@ -36,7 +36,7 @@ export function FloatingElements(): React.JSX.Element {
     for (let i = 0; i < 15; i++) {
       const colors: ('blue' | 'indigo' | 'purple')[] = ['blue', 'indigo', 'purple']
       const randomIndex = Math.floor(Math.random() * 3)
-      const randomColor = colors[randomIndex] || 'blue' // Fallback to 'blue' if undefined
+      const randomColor = colors[randomIndex] ?? 'blue'
 
       newElements.push({
         id: i,

@@ -48,8 +48,8 @@ export function AnimatedHero(): React.JSX.Element {
 
       {/* Animated grid background */}
       <div className="absolute inset-0 z-[-2]">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(99,102,241,0.1)_0%,transparent_70%)]"></div>
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(99,102,241,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(99,102,241,0.05)_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(99,102,241,0.1)_0%,transparent_70%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(99,102,241,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(99,102,241,0.05)_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
       </div>
 
       <motion.section
@@ -143,16 +143,22 @@ export function AnimatedHero(): React.JSX.Element {
       </motion.section>
 
       {/* Floating elements */}
-      {[...Array(5)].map((_, i) => (
-        <motion.div
-          key={i}
-          className="absolute rounded-full bg-blue-500/10 blur-xl"
-          style={{
-            width: `${((i * 20 + 50) % 100) + 50}px`,
-            height: `${((i * 15 + 50) % 100) + 50}px`,
-            top: `${(i * 30) % 100}%`,
-            left: `${(i * 25) % 100}%`,
-          }}
+      {[...Array(5)].map((_, i) => {
+        const width = ((i * 20 + 50) % 100) + 50
+        const height = ((i * 15 + 50) % 100) + 50
+        const top = (i * 30) % 100
+        const left = (i * 25) % 100
+        
+        return (
+          <motion.div
+            key={`hero-floating-${i}`}
+            className="absolute rounded-full bg-blue-500/10 blur-xl"
+            style={{
+              width: `${width}px`,
+              height: `${height}px`,
+              top: `${top}%`,
+              left: `${left}%`,
+            }}
           animate={{
             y: [0, ((i * 10) % 100) - 50],
             x: [0, ((i * 15) % 100) - 50],
@@ -164,7 +170,8 @@ export function AnimatedHero(): React.JSX.Element {
             repeatType: 'reverse',
           }}
         />
-      ))}
+        )
+      })}
     </div>
   )
 }

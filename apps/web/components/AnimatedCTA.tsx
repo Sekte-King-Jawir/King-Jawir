@@ -8,9 +8,9 @@ export function AnimatedCTA(): React.JSX.Element {
     <section className="py-20 px-4 relative overflow-hidden">
       {/* Animated background */}
       <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-slate-900 dark:to-slate-800"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_40%,rgba(99,102,241,0.1)_0%,transparent_40%)]"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_60%,rgba(129,140,248,0.1)_0%,transparent_40%)]"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-slate-900 dark:to-slate-800" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_40%,rgba(99,102,241,0.1)_0%,transparent_40%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_60%,rgba(129,140,248,0.1)_0%,transparent_40%)]" />
       </div>
 
       <div className="max-w-4xl mx-auto text-center relative z-10">
@@ -73,16 +73,22 @@ export function AnimatedCTA(): React.JSX.Element {
       </div>
 
       {/* Floating elements */}
-      {[...Array(8)].map((_, i) => (
-        <motion.div
-          key={i}
-          className="absolute rounded-full bg-blue-500/10 blur-xl"
-          style={{
-            width: `${((i * 10 + 20) % 60) + 20}px`,
-            height: `${((i * 8 + 20) % 60) + 20}px`,
-            top: `${(i * 15) % 100}%`,
-            left: `${(i * 12) % 100}%`,
-          }}
+      {[...Array(8)].map((_, i) => {
+        const width = ((i * 10 + 20) % 60) + 20
+        const height = ((i * 8 + 20) % 60) + 20
+        const top = (i * 15) % 100
+        const left = (i * 12) % 100
+        
+        return (
+          <motion.div
+            key={`floating-element-${i}`}
+            className="absolute rounded-full bg-blue-500/10 blur-xl"
+            style={{
+              width: `${width}px`,
+              height: `${height}px`,
+              top: `${top}%`,
+              left: `${left}%`,
+            }}
           animate={{
             y: [0, ((i * 10) % 100) - 50],
             x: [0, ((i * 12) % 100) - 50],
@@ -94,7 +100,8 @@ export function AnimatedCTA(): React.JSX.Element {
             repeatType: 'reverse' as const,
           }}
         />
-      ))}
+        )
+      })}
     </section>
   )
 }

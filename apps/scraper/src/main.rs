@@ -23,7 +23,7 @@ async fn logging_middleware(req: Request, next: Next) -> Response {
     let response = next.run(req).await;
     
     let elapsed = start.elapsed();
-    println!("⏱️  API Response: {} {} - {:?}", method, uri, elapsed);
+    println!("⏱️  API Response: {method} {uri} - {elapsed:?}");
     
     response
 }

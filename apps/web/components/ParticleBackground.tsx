@@ -7,10 +7,10 @@ export function ParticleBackground(): React.JSX.Element {
 
   useEffect(() => {
     const canvas = canvasRef.current
-    if (!canvas) return
+    if (canvas === null) return
 
     const ctx = canvas.getContext('2d')
-    if (!ctx) return
+    if (ctx === null) return
 
     // Set canvas size
     const resizeCanvas = (): void => {
@@ -82,7 +82,7 @@ export function ParticleBackground(): React.JSX.Element {
     let animationFrameId: number
 
     const animate = (): void => {
-      if (!ctx) return
+      if (ctx === null) return
 
       // Clear with a semi-transparent fill for trail effect
       ctx.fillStyle = 'rgba(255, 255, 255, 0.05)'
@@ -103,7 +103,7 @@ export function ParticleBackground(): React.JSX.Element {
           const particle1 = particles[i]
           const particle2 = particles[j]
 
-          if (particle1 && particle2) {
+          if (particle1 !== null && particle2 !== null) {
             const dx = particle1.x - particle2.x
             const dy = particle1.y - particle2.y
             const distance = Math.sqrt(dx * dx + dy * dy)

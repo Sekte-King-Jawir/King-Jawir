@@ -174,7 +174,7 @@ export const priceAnalysisService = {
 
     ws.onmessage = event => {
       try {
-        const message = JSON.parse(event.data) as WebSocketMessage
+        const message = JSON.parse(event.data as string) as WebSocketMessage
         onMessage(message)
       } catch (_err) {
         onError(new Error('Failed to parse WebSocket message'))

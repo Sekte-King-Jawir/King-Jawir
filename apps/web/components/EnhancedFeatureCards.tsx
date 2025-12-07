@@ -30,16 +30,22 @@ export function EnhancedFeatureCards(): React.JSX.Element {
     <section className="py-16 px-4 bg-gradient-to-br from-blue-600 to-indigo-700 dark:from-blue-800 dark:to-indigo-900 relative overflow-hidden">
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
-        {[...Array(20)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute rounded-full bg-white/5"
-            style={{
-              width: `${((i * 8 + 20) % 100) + 20}px`,
-              height: `${((i * 6 + 20) % 100) + 20}px`,
-              top: `${(i * 7) % 100}%`,
-              left: `${(i * 5) % 100}%`,
-            }}
+        {[...Array(20)].map((_, i) => {
+          const width = ((i * 8 + 20) % 100) + 20
+          const height = ((i * 6 + 20) % 100) + 20
+          const top = (i * 7) % 100
+          const left = (i * 5) % 100
+          
+          return (
+            <motion.div
+              key={`feature-bg-${i}`}
+              className="absolute rounded-full bg-white/5"
+              style={{
+                width: `${width}px`,
+                height: `${height}px`,
+                top: `${top}%`,
+                left: `${left}%`,
+              }}
             animate={{
               y: [0, ((i * 10) % 100) - 50],
               x: [0, ((i * 12) % 100) - 50],
@@ -51,7 +57,8 @@ export function EnhancedFeatureCards(): React.JSX.Element {
               repeatType: 'reverse' as const,
             }}
           />
-        ))}
+          )
+        })}
       </div>
 
       <div className="max-w-6xl mx-auto relative z-10">
@@ -68,7 +75,7 @@ export function EnhancedFeatureCards(): React.JSX.Element {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {features.map((feature, index) => (
             <motion.div
-              key={index}
+              key={`feature-${index}`}
               className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 h-full"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}

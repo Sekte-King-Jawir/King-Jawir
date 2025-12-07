@@ -20,18 +20,20 @@ export function useSmoothScroll(): void {
       const body = document.body
 
       // Store the original scroll position
-      let scrollTop = window.pageYOffset || html.scrollTop || body.scrollTop
-      let scrollLeft = window.pageXOffset || html.scrollLeft || body.scrollLeft
+      let scrollTop = window.pageYOffset || html.scrollTop || body.scrollTop || 0
+      let scrollLeft = window.pageXOffset || html.scrollLeft || body.scrollLeft || 0
 
       // Set up the animation loop
       const update = (): void => {
         // Calculate the difference between current and target scroll positions
-        const currentY = html.scrollTop || body.scrollTop
-        const currentX = html.scrollLeft || body.scrollLeft
+        const currentY = html.scrollTop ?? body.scrollTop ?? 0
+        const currentX = html.scrollLeft ?? body.scrollLeft ?? 0
 
         // Apply easing to smooth the scroll
-        scrollTop += (currentY - scrollTop) * 0.1
-        scrollLeft += (currentX - scrollLeft) * 0.1
+        if (currentY !== 0 && currentX !== 0) {
+          scrollTop += (currentY - scrollTop) * 0.1
+          scrollLeft += (currentX - scrollLeft) * 0.1
+        }
 
         // Apply the smoothed scroll position
         window.scrollTo(scrollLeft, scrollTop)

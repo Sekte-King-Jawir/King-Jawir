@@ -14,7 +14,7 @@ export function PageTransition({ children }: { children: React.ReactNode }): Rea
 
     // Simple direction logic based on pathname length
     // In a real app, you might want more sophisticated logic
-    return pathname.length > (previousPathname.current?.length || 0) ? 1 : -1
+    return pathname.length > (previousPathname.current?.length ?? 0) ? 1 : -1
   }
 
   useEffect(() => {

@@ -16,9 +16,9 @@ impl BlibliService {
         let port = std::env::var("REDIS_PORT").unwrap_or_else(|_| "6379".to_string());
         let password = std::env::var("REDIS_PASSWORD").unwrap_or_default();
         let redis_url = if password.is_empty() {
-            format!("redis://{}:{}/", host, port)
+            format!("redis://{host}:{port}/")
         } else {
-            format!("redis://:{}@{}:{}/", password, host, port)
+            format!("redis://:{password}@{host}:{port}/")
         };
         let redis_client = redis::Client::open(redis_url)?;
         Ok(Self { repository, redis_client })
@@ -30,7 +30,7 @@ impl BlibliService {
 
         println!("🔍 Searching for '{query}' on Blibli (scraping all rendered products)...");
 
-        let cache_key = format!("blibli:{}", query);
+        let cache_key = format!("blibli:{query}");
 
         let conn_start = Instant::now();
         // Try to connect to Redis, but don't fail if it's not available
@@ -40,7 +40,7 @@ impl BlibliService {
                 Some(conn)
             },
             Err(e) => {
-                println!("⚠️  Redis connection failed: {}. Continuing without cache.", e);
+                println!("⚠️  Redis connection failed: {e}. Continuing without cache.");
                 None
             }
         };
@@ -64,7 +64,7 @@ impl BlibliService {
             }
         }
 
-        println!("🔍 Searching Blibli for: '{}' (limit: {})", query, limit);
+        println!("🔍 Searching Blibli for: '{query}' (limit: {limit})");
         let products = self.repository.scrape(query, limit)?;
 
         if products.is_empty() {
@@ -86,7 +86,7 @@ impl BlibliService {
                 if let Ok(products_json) = serde_json::to_string(&products) {
                     match conn.set_ex::<_, _, ()>(&cache_key, products_json, 86400).await {
                         Ok(_) => println!("🗄️  Cached {} products for query: {query} (TTL: 1 day)", products.len()),
-                        Err(e) => println!("⚠️  Failed to cache result: {}", e),
+                        Err(e) => println!("⚠️  Failed to cache result: {e}"),
                     }
                 }
             }

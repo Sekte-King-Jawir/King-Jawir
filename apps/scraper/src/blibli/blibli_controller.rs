@@ -28,24 +28,24 @@ pub async fn blibli_handler(
     println!("📥 Received Blibli request: query='{}', limit={}", params.query, params.limit);
 
     let service = BlibliService::new().map_err(|e| {
-        eprintln!("❌ Failed to initialize BlibliService: {}", e);
+        eprintln!("❌ Failed to initialize BlibliService: {e}");
         (
             StatusCode::INTERNAL_SERVER_ERROR,
-            Json(ApiResponse::error(format!("Service initialization failed: {}", e))),
+            Json(ApiResponse::error(format!("Service initialization failed: {e}"))),
         )
     })?;
 
     match service.search_products(&params.query, params.limit).await {
         Ok(products) => {
             let count = products.len();
-            println!("✅ Successfully scraped {} Blibli products", count);
+            println!("✅ Successfully scraped {count} Blibli products");
             Ok((StatusCode::OK, Json(ApiResponse::success(products, count))))
         }
         Err(e) => {
-            eprintln!("❌ Blibli scraping error: {}", e);
+            eprintln!("❌ Blibli scraping error: {e}");
             Err((
                 StatusCode::INTERNAL_SERVER_ERROR,
-                Json(ApiResponse::error(format!("Scraping failed: {}", e))),
+                Json(ApiResponse::error(format!("Scraping failed: {e}"))),
             ))
         }
     }

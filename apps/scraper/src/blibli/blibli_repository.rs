@@ -23,7 +23,7 @@ impl BlibliRepository {
 
         // Navigate directly to Blibli search page
         let search_url = format!("https://www.blibli.com/cari/{}", query.replace(" ", "%20"));
-        println!("🌐 Navigating directly to Blibli search page: {}", search_url);
+        println!("🌐 Navigating directly to Blibli search page: {search_url}");
         tab.navigate_to(&search_url).context("Failed to navigate to Blibli search page")?;
 
         // Wait for search results page to load
@@ -49,7 +49,7 @@ impl BlibliRepository {
                         products_found = true;
                         break;
                     } else if attempt % 4 == 0 {
-                        println!("   ⏳ Still loading... {} products found so far", count);
+                        println!("   ⏳ Still loading... {count} products found so far");
                     }
                 }
             }
@@ -76,11 +76,11 @@ impl BlibliRepository {
                 Ok(obj) => obj.value.and_then(|v| v.as_i64()).unwrap_or(0) as usize,
                 Err(_) => 0,
             };
-            println!("  Scroll {}/{}: {} products detected", scroll_attempt, max_scroll_attempts, current_count);
+            println!("  Scroll {scroll_attempt}/{max_scroll_attempts}: {current_count} products detected");
             if current_count == previous_count && current_count > 0 {
                 stable_count += 1;
                 if stable_count >= 2 {
-                    println!("✅ Product count stable at {}, stopping scroll", current_count);
+                    println!("✅ Product count stable at {current_count}, stopping scroll");
                     break;
                 }
             } else {
@@ -120,10 +120,10 @@ impl BlibliRepository {
         let all_texts: Vec<String> = card.text().map(|s| s.to_string()).collect();
         for text in all_texts {
             let trimmed = text.trim();
-            if trimmed.starts_with("Rp") {
+            if let Some(remaining) = trimmed.strip_prefix("Rp") {
                 // Extract the price part by finding valid Rupiah format: Rp followed by digits and dots
                 // Valid format: RpXX.XXX or RpXXX.XXX.XXX etc., but stop if pattern breaks
-                let remaining = &trimmed[2..]; // Remove "Rp"
+                // Remove "Rp"
                 let mut price_part = String::new();
                 let mut dot_count = 0;
                 let mut digits_after_last_dot = 0;
@@ -175,7 +175,7 @@ impl BlibliRepository {
             result.push(ch);
         }
 
-        format!("Rp{}", result)
+        format!("Rp{result}")
     }
 
     /// Parse Blibli products from HTML using DOM selectors
@@ -195,9 +195,9 @@ impl BlibliRepository {
                 if href.starts_with("http") {
                     href.to_string()
                 } else if href.starts_with('/') {
-                    format!("https://www.blibli.com{}", href)
+                    format!("https://www.blibli.com{href}")
                 } else {
-                    format!("https://www.blibli.com/{}", href)
+                    format!("https://www.blibli.com/{href}")
                 }
             }).unwrap_or_default();
             if product_url.is_empty() || seen_urls.contains(&product_url) {
@@ -232,7 +232,7 @@ impl BlibliRepository {
 
     /// Main scraping method
     pub fn scrape(&self, query: &str, limit: usize) -> Result<Vec<BlibliProduct>> {
-        println!("🛒 Starting Blibli scraping for: '{}'", query);
+        println!("🛒 Starting Blibli scraping for: '{query}'");
         let html = self.fetch_search_page(query)?;
         println!("✅ Got page content ({} bytes)", html.len());
         let products = self.parse_products_from_dom(&html, limit);

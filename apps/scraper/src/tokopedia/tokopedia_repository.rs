@@ -97,7 +97,7 @@ impl TokopediaRepository {
                         products_found = true;
                         break;
                     } else if attempt % 4 == 0 {
-                        println!("   ⏳ Still loading... {} products found so far", count);
+                        println!("   ⏳ Still loading... {count} products found so far");
                     }
                 }
             }
@@ -173,14 +173,14 @@ impl TokopediaRepository {
                 Err(_) => 0,
             };
             
-            println!("  Scroll {}/{}: {} products detected", scroll_attempt, max_scroll_attempts, current_count);
+            println!("  Scroll {scroll_attempt}/{max_scroll_attempts}: {current_count} products detected");
             
             // If product count hasn't changed, increment stable counter
             if current_count == previous_count && current_count > 0 {
                 stable_count += 1;
                 // If stable for 2 consecutive checks, we're done
                 if stable_count >= 2 {
-                    println!("✅ Product count stable at {}, stopping scroll", current_count);
+                    println!("✅ Product count stable at {current_count}, stopping scroll");
                     break;
                 }
             } else {
@@ -349,11 +349,10 @@ impl TokopediaRepository {
             let sold = link_elem
                 .select(&span_selector)
                 .map(|span| span.text().collect::<String>().trim().to_string())
-                .filter(|text| {
+                .find(|text| {
                     text.to_lowercase().contains("terjual") ||
                     text.to_lowercase().contains("rb terjual")
-                })
-                .next();
+                });
 
             products.push(Product {
                 name,

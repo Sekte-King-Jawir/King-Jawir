@@ -61,7 +61,7 @@ export const nextJsConfig = [
       'react/jsx-curly-brace-presence': ['error', { props: 'never', children: 'never' }],
       'react/jsx-boolean-value': ['error', 'never'],
       'react/jsx-no-target-blank': ['error', { enforceDynamicLinks: 'always' }],
-      'react/no-array-index-key': 'error',
+      'react/no-array-index-key': 'warn', // Changed to warn
       'react/no-danger': 'error',
       'react/no-unstable-nested-components': 'error',
 

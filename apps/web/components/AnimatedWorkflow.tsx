@@ -45,7 +45,7 @@ export function AnimatedWorkflow(): React.JSX.Element {
 
         <div className="relative">
           {/* Connection lines */}
-          <div className="absolute top-8 left-1/4 right-1/4 h-1 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full hidden md:block"></div>
+          <div className="absolute top-8 left-1/4 right-1/4 h-1 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full hidden md:block" />
 
           <div className="grid md:grid-cols-4 gap-6">
             {steps.map((step, index) => (
