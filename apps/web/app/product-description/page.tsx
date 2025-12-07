@@ -68,13 +68,13 @@ export default function ProductDescriptionPage(): React.JSX.Element {
   }
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex flex-col items-center justify-center px-4 py-12 relative">
+    <div className="min-h-screen bg-linear-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex flex-col items-center justify-center px-4 py-12 relative overflow-hidden">
       {/* Add floating elements for consistency with homepage */}
-      <div className="absolute inset-0 overflow-hidden -z-10 pointer-events-none">
+      <div className="absolute inset-0 overflow-hidden">
         {Array.from({ length: 10 }, (_, i) => (
           <div
             key={`floating-${i}`}
-            className="absolute rounded-full bg-blue-500/5 pointer-events-none"
+            className="absolute rounded-full bg-blue-500/5"
             style={{
               width: `${((i * 8 + 20) % 80) + 20}px`,
               height: `${((i * 6 + 20) % 80) + 20}px`,
@@ -92,10 +92,10 @@ export default function ProductDescriptionPage(): React.JSX.Element {
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-blue-100 dark:bg-blue-900/50 mb-6">
             <Sparkles className="h-8 w-8 text-blue-600 dark:text-blue-400" />
           </div>
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+          <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-4">
             AI Product & Marketing Generator
           </h1>
-          <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Hasilkan deskripsi produk yang menarik dan konten pemasaran yang optimal untuk
             marketplace Indonesia dengan bantuan kecerdasan buatan. Cocok untuk Tokopedia, Shopee,
             Instagram, Facebook, dan platform lainnya.
@@ -135,7 +135,7 @@ export default function ProductDescriptionPage(): React.JSX.Element {
 
           {/* Loading State */}
           {loading ? (
-            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6">
+            <div className="bg-white dark:bg-slate-800/50 backdrop-blur-sm border border-slate-200 dark:border-slate-700 rounded-xl p-8 mb-8 shadow-lg">
               <div className="flex items-center">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mr-4" />
                 <div>
@@ -301,8 +301,10 @@ export default function ProductDescriptionPage(): React.JSX.Element {
         </div>
 
         {/* Footer */}
-        <footer className="mt-16 text-center text-sm text-gray-500 dark:text-gray-400 relative z-10">
-          <p>Powered by AI • Optimized for Indonesian Marketplaces</p>
+        <footer className="mt-12 text-center relative z-10">
+          <p className="text-sm text-muted-foreground">
+            Powered by AI • Optimized for Indonesian Marketplaces
+          </p>
         </footer>
       </main>
     </div>

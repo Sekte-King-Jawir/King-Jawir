@@ -10,13 +10,10 @@
  */
 
 import React, { useState } from 'react'
-import { Button } from './button'
-import { Card } from './card'
 
 interface ProductDescriptionFormProps {
   onSubmit: (productInput: string) => void
   loading?: boolean
-  disabled?: boolean
   className?: string
 }
 
@@ -35,7 +32,6 @@ interface ProductDescriptionFormProps {
 export function ProductDescriptionForm({
   onSubmit,
   loading = false,
-  disabled = false,
   className = '',
 }: ProductDescriptionFormProps): React.JSX.Element {
   const [productInput, setProductInput] = useState('')
@@ -44,7 +40,7 @@ export function ProductDescriptionForm({
   const handleSubmit = (e: React.FormEvent): void => {
     e.preventDefault()
 
-    if (!productInput.trim()) {
+    if (productInput.trim() === '') {
       setError('Deskripsi produk tidak boleh kosong')
       return
     }
@@ -68,12 +64,12 @@ export function ProductDescriptionForm({
     if (error !== '') setError('')
   }
 
-  const isDisabled = disabled || loading
+  const isDisabled = false // disabled || loading
   const charCount = productInput.length
   const isOverLimit = charCount > 500
 
   return (
-    <Card className={`p-6 ${className}`}>
+    <div className={`bg-card/50 backdrop-blur-sm border border-border rounded-xl p-6 mb-8 shadow-lg ${className}`}>
       <div className="space-y-4">
         <div>
           <h3 className="text-lg font-semibold text-foreground">Generate Deskripsi Produk</h3>
@@ -95,8 +91,8 @@ export function ProductDescriptionForm({
               value={productInput}
               onChange={handleInputChange}
               placeholder="Contoh: Kamera aksi 4K waterproof dengan stabilizer, cocok untuk vlogging dan olahraga air"
-              className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-background text-foreground resize-none ${
-                error !== '' ? 'border-red-500' : 'border-input'
+              className={`flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 resize-none pointer-events-auto ${
+                error !== '' ? 'border-red-500' : ''
               }`}
               rows={4}
               disabled={isDisabled}
@@ -116,10 +112,10 @@ export function ProductDescriptionForm({
             </div>
           ) : null}
 
-          <Button
+          <button
             type="submit"
-            disabled={isDisabled || isOverLimit || !productInput.trim()}
-            className="w-full"
+            disabled={isDisabled}
+            className="w-full inline-flex items-center justify-center rounded-xl text-sm font-medium transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-linear-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white h-12 px-6 gap-2 shadow-lg shadow-blue-600/30"
           >
             {loading ? (
               <>
@@ -129,9 +125,9 @@ export function ProductDescriptionForm({
             ) : (
               'Generate Deskripsi'
             )}
-          </Button>
+          </button>
         </form>
       </div>
-    </Card>
+    </div>
   )
 }

@@ -10,9 +10,8 @@
  */
 
 import React, { useState } from 'react'
-import { Button } from './button'
-import { Card } from './card'
 import type { ProductDescriptionResult } from '../../../apps/web/types/product-description'
+import { Button } from './button'
 
 interface MarketingFormProps {
   productDescription: ProductDescriptionResult | null
@@ -57,12 +56,12 @@ export function MarketingForm({
   const handleSubmit = (e: React.FormEvent): void => {
     e.preventDefault()
 
-    if (!productDescription) {
+    if (productDescription === null) {
       setError('Deskripsi produk diperlukan. Generate deskripsi produk terlebih dahulu.')
       return
     }
 
-    if (!selectedPlatform) {
+    if (selectedPlatform === '') {
       setError('Pilih platform tujuan untuk konten pemasaran')
       return
     }
@@ -76,10 +75,10 @@ export function MarketingForm({
     if (error !== '') setError('')
   }
 
-  const isDisabled = disabled || loading || !productDescription
+  const isDisabled = disabled || loading || productDescription === null
 
   return (
-    <Card className={`p-6 ${className}`}>
+    <div className={`bg-card/50 backdrop-blur-sm border border-border rounded-xl p-6 mb-8 shadow-lg ${className}`}>
       <div className="space-y-4">
         <div>
           <h3 className="text-lg font-semibold text-foreground">Generate Konten Pemasaran</h3>
@@ -155,7 +154,7 @@ export function MarketingForm({
             </div>
           ) : null}
 
-          <Button type="submit" disabled={isDisabled || !selectedPlatform} className="w-full">
+          <Button type="submit" disabled={isDisabled || selectedPlatform === ''} className="w-full">
             {loading ? (
               <>
                 <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
@@ -167,6 +166,6 @@ export function MarketingForm({
           </Button>
         </form>
       </div>
-    </Card>
+    </div>
   )
 }
