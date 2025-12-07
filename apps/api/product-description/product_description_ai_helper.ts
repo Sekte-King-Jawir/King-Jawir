@@ -23,7 +23,7 @@ PRODUCT INPUT: ${productInput}
 INSTRUCTIONS:
 1) Output four labeled sections exactly as below (use the labels on their own lines):
 SHORT_DESCRIPTION: (one sentence, max 150 characters, catchy and persuasive)
-LONG_DESCRIPTION: (detailed product description, minimal 300 kata, emphasize benefits and features)
+LONG_DESCRIPTION: (detailed product description, minimal 301 kata, emphasize benefits and features)
 BULLETS: (provide 3-6 bullet points; each bullet on its own line prefixed with '- ')
 SEO_KEYWORDS: (provide 6-10 comma-separated keywords relevant to the product)
 
