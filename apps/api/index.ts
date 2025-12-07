@@ -9,11 +9,12 @@ import { marketingRoutes } from './marketing'
 import { logger } from './lib/logger'
 import { initMinIO } from './lib/minio'
 
-await initMinIO().catch(error => {
-  logger.warn('⚠️ MinIO initialization failed, continuing without it:', error)
-})
-
 const app = new Elysia()
+  .onStart(async () => {
+    await initMinIO().catch(error => {
+      logger.warn('⚠️ MinIO initialization failed, continuing without it:', error)
+    })
+  })
   .onRequest(({ request }) => {
     const startTime = Date.now()
     ;(request as any).__startTime = startTime
