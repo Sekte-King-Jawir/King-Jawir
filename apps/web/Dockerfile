@@ -1,5 +1,5 @@
 # Use Bun base image
-FROM oven/bun:1.3.3-alpine AS base
+FROM oven/bun:1.2.18-alpine AS base
 
 # Install dependencies only when needed
 FROM base AS deps
