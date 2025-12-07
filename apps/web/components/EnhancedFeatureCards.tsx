@@ -30,15 +30,17 @@ export function EnhancedFeatureCards(): React.JSX.Element {
     <section className="py-16 px-4 bg-gradient-to-br from-blue-600 to-indigo-700 dark:from-blue-800 dark:to-indigo-900 relative overflow-hidden">
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
-        {[...Array(20)].map((_, i) => {
+        {Array.from({ length: 20 }, (_, i) => {
           const width = ((i * 8 + 20) % 100) + 20
           const height = ((i * 6 + 20) % 100) + 20
           const top = (i * 7) % 100
           const left = (i * 5) % 100
+          // Generate a unique key based on the element properties
+          const uniqueKey = `feature-bg-${width}-${height}-${top}-${left}`;
 
           return (
             <motion.div
-              key={`feature-bg-${i}`}
+              key={uniqueKey}
               className="absolute rounded-full bg-white/5"
               style={{
                 width: `${width}px`,
@@ -73,14 +75,14 @@ export function EnhancedFeatureCards(): React.JSX.Element {
         </motion.h3>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {features.map((feature, index) => (
+          {features.map((feature) => (
             <motion.div
-              key={`feature-${index}`}
+              key={`feature-${feature.title}`}
               className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 h-full"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
               whileHover={{
                 y: -10,
                 rotateX: 10,
@@ -102,7 +104,7 @@ export function EnhancedFeatureCards(): React.JSX.Element {
                   duration: 3,
                   repeat: Infinity,
                   repeatType: 'reverse' as const,
-                  delay: index * 0.5,
+                  delay: 0.5,
                 }}
               >
                 {feature.icon}
@@ -121,7 +123,7 @@ export function EnhancedFeatureCards(): React.JSX.Element {
                   duration: 2,
                   repeat: Infinity,
                   repeatType: 'reverse' as const,
-                  delay: index * 0.5,
+                  delay: 0.5,
                 }}
               >
                 {feature.title}

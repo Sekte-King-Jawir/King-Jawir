@@ -73,15 +73,17 @@ export function AnimatedCTA(): React.JSX.Element {
       </div>
 
       {/* Floating elements */}
-      {[...Array(8)].map((_, i) => {
+      {Array.from({ length: 8 }, (_, i) => {
         const width = ((i * 10 + 20) % 60) + 20
         const height = ((i * 8 + 20) % 60) + 20
         const top = (i * 15) % 100
         const left = (i * 12) % 100
+        // Generate a unique key based on the element properties
+        const uniqueKey = `floating-element-${width}-${height}-${top}-${left}`;
 
         return (
           <motion.div
-            key={`floating-element-${i}`}
+            key={uniqueKey}
             className="absolute rounded-full bg-blue-500/10 blur-xl"
             style={{
               width: `${width}px`,

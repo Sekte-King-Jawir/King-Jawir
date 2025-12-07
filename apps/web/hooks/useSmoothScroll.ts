@@ -30,7 +30,10 @@ export function useSmoothScroll(): void {
         const currentX = html.scrollLeft ?? body.scrollLeft ?? 0
 
         // Apply easing to smooth the scroll
-        if (currentY !== 0 && currentX !== 0) {
+        const isValidCurrentY = typeof currentY === 'number' && !isNaN(currentY) && isFinite(currentY);
+        const isValidCurrentX = typeof currentX === 'number' && !isNaN(currentX) && isFinite(currentX);
+        
+        if (isValidCurrentY && isValidCurrentX && currentY !== 0 && currentX !== 0) {
           scrollTop += (currentY - scrollTop) * 0.1
           scrollLeft += (currentX - scrollLeft) * 0.1
         }

@@ -28,7 +28,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Set environment variable for chromium
-ENV CHROMIUM_BIN=/usr/bin/chromium
+ENV CHROME_BIN=/usr/bin/chromium
 
 # Copy the binary from builder
 COPY --from=builder /app/target/release/scraper /usr/local/bin/scraper

@@ -143,15 +143,17 @@ export function AnimatedHero(): React.JSX.Element {
       </motion.section>
 
       {/* Floating elements */}
-      {[...Array(5)].map((_, i) => {
+      {Array.from({ length: 5 }, (_, i) => {
         const width = ((i * 20 + 50) % 100) + 50
         const height = ((i * 15 + 50) % 100) + 50
         const top = (i * 30) % 100
         const left = (i * 25) % 100
+        // Generate a unique key based on the element properties
+        const uniqueKey = `hero-floating-${width}-${height}-${top}-${left}`;
 
         return (
           <motion.div
-            key={`hero-floating-${i}`}
+            key={uniqueKey}
             className="absolute rounded-full bg-blue-500/10 blur-xl"
             style={{
               width: `${width}px`,
