@@ -43,8 +43,9 @@ export default function SupportPage(): React.JSX.Element {
     <div className="min-h-screen bg-linear-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex flex-col items-center justify-center px-4 py-12 relative overflow-hidden">
       {/* Add floating elements for consistency with homepage */}
       <div className="absolute inset-0 overflow-hidden">
-        {[...Array(10)].map((_, i) => (
+        {Array.from({ length: 10 }).map((_, i) => (
           <div
+            // eslint-disable-next-line react/no-array-index-key
             key={i}
             className="absolute rounded-full bg-blue-500/5"
             style={{
