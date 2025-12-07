@@ -213,6 +213,7 @@ Halo para pemilik usaha kecil di Indonesia! Apakah Anda kesulitan membuat konten
 }
 
 export function getFallbackMarketingContent(platform: string): MarketingContentResult {
+  const fallbacks = {
     instagram: {
       content: '🚀 Temukan kamera aksi 4K ultra HD waterproof yang siap menemani petualangan Anda! Dengan resolusi tinggi, stabilizer canggih, dan ketahanan air hingga kedalaman tertentu, kamera ini cocok untuk vlogger SME yang ingin menghasilkan konten profesional. Fitur WiFi dan Bluetooth memudahkan transfer file, sementara baterai tahan lama mendukung rekaman panjang. Jangan lewatkan kesempatan memiliki alat rekaman terbaik untuk bisnis kreatif Anda! 📹✨',
       hashtags: ['#KameraAksi', '#4KVideo', '#Waterproof', '#SMEVlogger', '#OutdoorAdventure', '#ContentCreator'],
