@@ -17,7 +17,7 @@ export default function HomePage(): React.JSX.Element {
 
       {/* Animated AI Technology Section */}
       <section className="py-20 px-4 bg-white/50 dark:bg-slate-800/50 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(99,102,241,0.05)_0%,transparent_70%)]"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(99,102,241,0.05)_0%,transparent_70%)]" />
         <div className="max-w-6xl mx-auto relative z-10">
           <h2 className="text-3xl font-bold text-center text-slate-900 dark:text-white mb-4">
             Teknologi AI yang Kami Gunakan
@@ -84,7 +84,7 @@ export default function HomePage(): React.JSX.Element {
 
       {/* Enhanced Footer */}
       <footer className="py-8 px-4 border-t border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 relative">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(99,102,241,0.05)_0%,transparent_70%)]"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(99,102,241,0.05)_0%,transparent_70%)]" />
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 relative z-10">
           <div className="flex items-center gap-2">
             <motion.span

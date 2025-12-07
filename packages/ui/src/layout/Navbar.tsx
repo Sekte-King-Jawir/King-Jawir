@@ -1,5 +1,6 @@
 'use client'
 import Link from 'next/link'
+import Image from 'next/image'
 import { useState, useEffect } from 'react'
 
 export default function Navbar(): React.ReactElement {
@@ -25,9 +26,7 @@ export default function Navbar(): React.ReactElement {
         <div className="flex h-16 lg:h-20 items-center justify-between gap-4">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 shrink-0">
-            <div className="w-10 h-10 bg-linear-to-br from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/30">
-              <span className="text-white font-bold text-lg">🤖</span>
-            </div>
+            <Image src="/iconkjg.png" alt="King Jawir AI Logo" width={40} height={40} className="rounded-xl shadow-lg shadow-blue-500/30" />
             <span className="text-xl font-bold bg-linear-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent hidden sm:block">
               King Jawir AI
             </span>

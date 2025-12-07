@@ -68,13 +68,13 @@ export default function ProductDescriptionPage(): React.JSX.Element {
   }
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex flex-col items-center justify-center px-4 py-12 relative overflow-hidden">
+    <div className="min-h-screen bg-linear-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex flex-col items-center justify-center px-4 py-12 relative">
       {/* Add floating elements for consistency with homepage */}
-      <div className="absolute inset-0 overflow-hidden">
-        {[...Array(10)].map((_, i) => (
+      <div className="absolute inset-0 overflow-hidden -z-10 pointer-events-none">
+        {Array.from({ length: 10 }, (_, i) => (
           <div
-            key={i}
-            className="absolute rounded-full bg-blue-500/5"
+            key={`floating-${i}`}
+            className="absolute rounded-full bg-blue-500/5 pointer-events-none"
             style={{
               width: `${((i * 8 + 20) % 80) + 20}px`,
               height: `${((i * 6 + 20) % 80) + 20}px`,
@@ -113,9 +113,7 @@ export default function ProductDescriptionPage(): React.JSX.Element {
           />
 
           {/* Error Display */}
-          {error !== null && error !== '' ? (
-            <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
-          {error !== null && error !== '' ? (
+          {error !== null && error !== '' && (
             <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
               <div className="flex">
                 <div className="shrink-0">
@@ -133,7 +131,7 @@ export default function ProductDescriptionPage(): React.JSX.Element {
                 </div>
               </div>
             </div>
-          ) : null}
+          )}
 
           {/* Loading State */}
           {loading ? (
@@ -153,9 +151,7 @@ export default function ProductDescriptionPage(): React.JSX.Element {
           ) : null}
 
           {/* Results Section */}
-          {result !== null && result !== undefined && !loading ? (
-            <div className="space-y-6">
-          {result !== null && !loading ? (
+          {result !== null && result !== undefined && !loading && (
             <div className="space-y-6">
               <div className="text-center">
                 <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-green-100 dark:bg-green-900/20 mb-4">
@@ -202,9 +198,7 @@ export default function ProductDescriptionPage(): React.JSX.Element {
                 />
 
                 {/* Marketing Error */}
-                {marketingError !== null && marketingError !== '' ? (
-                  <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 mt-4">
-                {marketingError !== null && marketingError !== '' ? (
+                {marketingError !== null && marketingError !== '' && (
                   <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 mt-4">
                     <div className="flex">
                       <div className="shrink-0">
@@ -230,11 +224,10 @@ export default function ProductDescriptionPage(): React.JSX.Element {
                       </div>
                     </div>
                   </div>
-                ) : null}
+                )}
 
                 {/* Marketing Loading */}
-                {marketingLoading ? (
-                  <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6 mt-4">
+                {marketingLoading ? <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6 mt-4">
                     <div className="flex items-center">
                       <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mr-4" />
                       <div>
@@ -246,13 +239,10 @@ export default function ProductDescriptionPage(): React.JSX.Element {
                         </p>
                       </div>
                     </div>
-                  </div>
-                ) : null}
+                  </div> : null}
 
                 {/* Marketing Results */}
-                {marketingResult !== null && marketingResult !== undefined && !marketingLoading ? (
-                  <div className="mt-6">
-                {marketingResult !== null && !marketingLoading ? (
+                {marketingResult !== null && marketingResult !== undefined && !marketingLoading && (
                   <div className="mt-6">
                     <MarketingResult
                       data={marketingResult}
@@ -262,13 +252,11 @@ export default function ProductDescriptionPage(): React.JSX.Element {
                       onRegenerate={handleRegenerateMarketing}
                     />
                   </div>
-                ) : null}
+                )}
               </div>
 
               {/* Copy Success Message */}
-              {copiedText !== null && copiedText !== '' ? (
-                <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4">
-              {copiedText !== null && copiedText !== '' ? (
+              {copiedText !== null && copiedText !== '' && (
                 <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4">
                   <div className="flex items-center">
                     <Copy className="h-5 w-5 text-green-600 dark:text-green-400 mr-3" />
@@ -277,9 +265,9 @@ export default function ProductDescriptionPage(): React.JSX.Element {
                     </span>
                   </div>
                 </div>
-              ) : null}
+              )}
             </div>
-          ) : null}
+          )}
           {(result === null || result === undefined) &&
             !loading &&
             (error === null || error === '') && (
@@ -293,11 +281,10 @@ export default function ProductDescriptionPage(): React.JSX.Element {
                 <p className="text-gray-600 dark:text-gray-400">
                   Masukkan detail produk di atas untuk mulai menghasilkan deskripsi dengan AI.
                 </p>
-              </div>
-            )}
-                </div>
-              ) : null}
-            </div> ) : null}
+            </div>
+          )}
+
+          {/* Empty State */}
           {result === null && !loading && error === null && (
             <div className="text-center py-12">
               <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gray-100 dark:bg-gray-800 mb-4">
