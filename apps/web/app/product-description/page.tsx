@@ -285,7 +285,6 @@ export default function ProductDescriptionPage(): React.JSX.Element {
                 </p>
               </div>
             )}
-
         </div>
 
         {/* Footer */}
