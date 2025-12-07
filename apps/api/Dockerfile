@@ -28,9 +28,6 @@ COPY apps/api ./apps/api
 COPY turbo.json ./
 COPY package.json ./
 
-# Generate Prisma client
-RUN bunx prisma generate --schema=apps/api/prisma/schema.prisma
-
 # Build the application
 RUN bun run api:build
 
