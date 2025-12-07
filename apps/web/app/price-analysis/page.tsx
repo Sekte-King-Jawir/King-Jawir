@@ -154,7 +154,9 @@ export default function SupportPage(): React.JSX.Element {
                 <h3 className="text-2xl font-semibold text-foreground mb-2">
                   Menganalisis Data Pasar
                 </h3>
-                <p className="text-muted-foreground">Ini mungkin memakan waktu hingga 30 detik...</p>
+                <p className="text-muted-foreground">
+                  Ini mungkin memakan waktu hingga 30 detik...
+                </p>
               </div>
 
               <div className="space-y-3">
@@ -191,8 +193,8 @@ export default function SupportPage(): React.JSX.Element {
                   <div className="text-sm text-left">
                     <strong className="text-foreground">Tahukah Anda?</strong>
                     <span className="text-muted-foreground ml-1">
-                      AI kami menganalisis pola harga, tren pasar, dan data kompetitor untuk memberikan
-                      rekomendasi harga yang paling akurat.
+                      AI kami menganalisis pola harga, tren pasar, dan data kompetitor untuk
+                      memberikan rekomendasi harga yang paling akurat.
                     </span>
                   </div>
                 </div>
@@ -410,7 +412,7 @@ export default function SupportPage(): React.JSX.Element {
       {/* Footer */}
       <footer className="mt-12 text-center relative z-10">
         <p className="text-sm text-muted-foreground">
-         Powered by AI • Optimized for Indonesian Marketplaces
+          Powered by AI • Optimized for Indonesian Marketplaces
         </p>
       </footer>
     </div>
