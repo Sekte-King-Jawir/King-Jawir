@@ -13,7 +13,7 @@ COPY apps/api/package.json ./apps/api/
 COPY packages/ ./packages/
 
 # Install dependencies
-RUN bun install --frozen-lockfile
+RUN bun install
 
 # Build stage
 FROM base AS builder

@@ -11,7 +11,7 @@ COPY apps/web/package.json ./apps/web/
 COPY packages/ ./packages/
 COPY turbo.json ./
 
-RUN bun install --frozen-lockfile
+RUN bun install
 
 # Build stage
 FROM base AS builder
