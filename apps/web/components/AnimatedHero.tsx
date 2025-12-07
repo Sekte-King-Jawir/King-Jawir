@@ -149,7 +149,7 @@ export function AnimatedHero(): React.JSX.Element {
         const top = (i * 30) % 100
         const left = (i * 25) % 100
         // Generate a unique key based on the element properties
-        const uniqueKey = `hero-floating-${width}-${height}-${top}-${left}`;
+        const uniqueKey = `hero-floating-${width}-${height}-${top}-${left}`
 
         return (
           <motion.div

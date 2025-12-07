@@ -79,7 +79,7 @@ export function AnimatedCTA(): React.JSX.Element {
         const top = (i * 15) % 100
         const left = (i * 12) % 100
         // Generate a unique key based on the element properties
-        const uniqueKey = `floating-element-${width}-${height}-${top}-${left}`;
+        const uniqueKey = `floating-element-${width}-${height}-${top}-${left}`
 
         return (
           <motion.div

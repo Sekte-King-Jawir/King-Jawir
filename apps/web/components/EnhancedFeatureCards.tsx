@@ -36,7 +36,7 @@ export function EnhancedFeatureCards(): React.JSX.Element {
           const top = (i * 7) % 100
           const left = (i * 5) % 100
           // Generate a unique key based on the element properties
-          const uniqueKey = `feature-bg-${width}-${height}-${top}-${left}`;
+          const uniqueKey = `feature-bg-${width}-${height}-${top}-${left}`
 
           return (
             <motion.div
@@ -75,7 +75,7 @@ export function EnhancedFeatureCards(): React.JSX.Element {
         </motion.h3>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {features.map((feature) => (
+          {features.map(feature => (
             <motion.div
               key={`feature-${feature.title}`}
               className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 h-full"
