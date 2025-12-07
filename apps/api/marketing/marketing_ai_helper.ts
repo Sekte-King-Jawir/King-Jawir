@@ -136,15 +136,18 @@ export function buildMarketingContentPartPrompt(
   const parts = {
     1: {
       focus: 'pengantar dan hook menarik',
-      instruction: 'Buat pengantar yang menarik perhatian, jelaskan masalah yang diselesaikan produk, dan buat hook yang membuat audiens tertarik.',
+      instruction:
+        'Buat pengantar yang menarik perhatian, jelaskan masalah yang diselesaikan produk, dan buat hook yang membuat audiens tertarik.',
     },
     2: {
       focus: 'fitur dan manfaat utama',
-      instruction: 'Jelaskan fitur-fitur utama produk dan manfaat spesifik yang didapat pelanggan, fokus pada nilai untuk bisnis mereka.',
+      instruction:
+        'Jelaskan fitur-fitur utama produk dan manfaat spesifik yang didapat pelanggan, fokus pada nilai untuk bisnis mereka.',
     },
     3: {
       focus: 'kesimpulan dan call-to-action',
-      instruction: 'Berikan kesimpulan yang persuasif, testimonial singkat, dan ajakan kuat untuk melakukan aksi (beli, hubungi, dll).',
+      instruction:
+        'Berikan kesimpulan yang persuasif, testimonial singkat, dan ajakan kuat untuk melakukan aksi (beli, hubungi, dll).',
     },
   }
 
@@ -181,15 +184,18 @@ export function buildMarketingContentPartPrompt(
   const parts = {
     1: {
       focus: 'pengantar dan hook menarik',
-      instruction: 'Buat pengantar yang menarik perhatian, jelaskan masalah yang diselesaikan produk, dan buat hook yang membuat audiens tertarik.',
+      instruction:
+        'Buat pengantar yang menarik perhatian, jelaskan masalah yang diselesaikan produk, dan buat hook yang membuat audiens tertarik.',
     },
     2: {
       focus: 'fitur dan manfaat utama',
-      instruction: 'Jelaskan fitur-fitur utama produk dan manfaat spesifik yang didapat pelanggan, fokus pada nilai untuk bisnis mereka.',
+      instruction:
+        'Jelaskan fitur-fitur utama produk dan manfaat spesifik yang didapat pelanggan, fokus pada nilai untuk bisnis mereka.',
     },
     3: {
       focus: 'kesimpulan dan call-to-action',
-      instruction: 'Berikan kesimpulan yang persuasif, testimonial singkat, dan ajakan kuat untuk melakukan aksi (beli, hubungi, dll).',
+      instruction:
+        'Berikan kesimpulan yang persuasif, testimonial singkat, dan ajakan kuat untuk melakukan aksi (beli, hubungi, dll).',
     },
   }
 
@@ -215,23 +221,54 @@ Halo para pemilik usaha kecil di Indonesia! Apakah Anda kesulitan membuat konten
 export function getFallbackMarketingContent(platform: string): MarketingContentResult {
   const fallbacks = {
     instagram: {
-      content: '🚀 Temukan kamera aksi 4K ultra HD waterproof yang siap menemani petualangan Anda! Dengan resolusi tinggi, stabilizer canggih, dan ketahanan air hingga kedalaman tertentu, kamera ini cocok untuk vlogger SME yang ingin menghasilkan konten profesional. Fitur WiFi dan Bluetooth memudahkan transfer file, sementara baterai tahan lama mendukung rekaman panjang. Jangan lewatkan kesempatan memiliki alat rekaman terbaik untuk bisnis kreatif Anda! 📹✨',
-      hashtags: ['#KameraAksi', '#4KVideo', '#Waterproof', '#SMEVlogger', '#OutdoorAdventure', '#ContentCreator'],
+      content:
+        '🚀 Temukan kamera aksi 4K ultra HD waterproof yang siap menemani petualangan Anda! Dengan resolusi tinggi, stabilizer canggih, dan ketahanan air hingga kedalaman tertentu, kamera ini cocok untuk vlogger SME yang ingin menghasilkan konten profesional. Fitur WiFi dan Bluetooth memudahkan transfer file, sementara baterai tahan lama mendukung rekaman panjang. Jangan lewatkan kesempatan memiliki alat rekaman terbaik untuk bisnis kreatif Anda! 📹✨',
+      hashtags: [
+        '#KameraAksi',
+        '#4KVideo',
+        '#Waterproof',
+        '#SMEVlogger',
+        '#OutdoorAdventure',
+        '#ContentCreator',
+      ],
       callToAction: 'Pesan sekarang di link bio dan dapatkan diskon spesial!',
     },
     facebook: {
-      content: 'Halo teman-teman SME Indonesia! 🎉 Kami punya produk menarik untuk Anda: kamera aksi 4K ultra HD waterproof yang dirancang khusus untuk para content creator dan adventurer. Bayangkan bisa merekam video berkualitas sinematik di berbagai kondisi cuaca, mulai dari pantai hingga gunung. Dengan fitur stabilizer elektronik, konektivitas nirkabel, dan desain ergonomis, kamera ini memudahkan Anda menghasilkan konten yang menarik untuk marketplace seperti Tokopedia atau Shopee. Baterai awet dan aplikasi pendamping membuat pengalaman rekaman semakin smooth. Cocok untuk bisnis vlogging, fotografi outdoor, atau dokumentasi acara. Investasi cerdas untuk mengembangkan usaha kreatif Anda! 💪📸',
-      hashtags: ['#KameraProfesional', '#BisnisSME', '#ContentCreator', '#OutdoorPhotography', '#VideoMarketing'],
+      content:
+        'Halo teman-teman SME Indonesia! 🎉 Kami punya produk menarik untuk Anda: kamera aksi 4K ultra HD waterproof yang dirancang khusus untuk para content creator dan adventurer. Bayangkan bisa merekam video berkualitas sinematik di berbagai kondisi cuaca, mulai dari pantai hingga gunung. Dengan fitur stabilizer elektronik, konektivitas nirkabel, dan desain ergonomis, kamera ini memudahkan Anda menghasilkan konten yang menarik untuk marketplace seperti Tokopedia atau Shopee. Baterai awet dan aplikasi pendamping membuat pengalaman rekaman semakin smooth. Cocok untuk bisnis vlogging, fotografi outdoor, atau dokumentasi acara. Investasi cerdas untuk mengembangkan usaha kreatif Anda! 💪📸',
+      hashtags: [
+        '#KameraProfesional',
+        '#BisnisSME',
+        '#ContentCreator',
+        '#OutdoorPhotography',
+        '#VideoMarketing',
+      ],
       callToAction: 'Klik "Pesan Sekarang" untuk detail produk dan harga spesial!',
     },
     twitter: {
-      content: 'Revolusi rekaman dengan kamera aksi 4K waterproof! 🎬 Stabilizer canggih, WiFi built-in, baterai tahan lama. Cocok untuk SME vlogger & content creator. Tingkatkan kualitas konten bisnis Anda sekarang! #KameraAksi #SME #ContentCreator 🚀',
-      hashtags: ['#KameraAksi', '#4KVideo', '#Waterproof', '#SME', '#ContentCreator', '#VideoMarketing'],
+      content:
+        'Revolusi rekaman dengan kamera aksi 4K waterproof! 🎬 Stabilizer canggih, WiFi built-in, baterai tahan lama. Cocok untuk SME vlogger & content creator. Tingkatkan kualitas konten bisnis Anda sekarang! #KameraAksi #SME #ContentCreator 🚀',
+      hashtags: [
+        '#KameraAksi',
+        '#4KVideo',
+        '#Waterproof',
+        '#SME',
+        '#ContentCreator',
+        '#VideoMarketing',
+      ],
       callToAction: 'DM untuk info & promo spesial! 📩',
     },
     linkedin: {
-      content: 'Sebagai pemilik usaha kecil di Indonesia, Anda tahu betapa pentingnya memiliki alat yang tepat untuk memasarkan produk dan layanan. Kami hadir dengan solusi inovatif: kamera aksi 4K ultra HD waterproof yang dirancang khusus untuk kebutuhan content creation SMEs. Dengan teknologi terkini seperti stabilizer gambar elektronik, konektivitas nirkabel, dan ketahanan air yang handal, kamera ini memungkinkan Anda menghasilkan konten visual berkualitas tinggi untuk platform digital. Baik untuk vlogging bisnis, dokumentasi produk, atau konten edukasi, alat ini membantu meningkatkan engagement dan konversi penjualan. Didukung aplikasi mobile yang user-friendly dan baterai tahan lama, kamera ini adalah investasi strategis untuk mengembangkan brand Anda di era digital. Mari bersama-sama tingkatkan standar content marketing untuk UMKM Indonesia! 🌟📈',
-      hashtags: ['#DigitalMarketing', '#SME', '#ContentCreation', '#BusinessTools', '#IndonesiaUMKM', '#VideoContent'],
+      content:
+        'Sebagai pemilik usaha kecil di Indonesia, Anda tahu betapa pentingnya memiliki alat yang tepat untuk memasarkan produk dan layanan. Kami hadir dengan solusi inovatif: kamera aksi 4K ultra HD waterproof yang dirancang khusus untuk kebutuhan content creation SMEs. Dengan teknologi terkini seperti stabilizer gambar elektronik, konektivitas nirkabel, dan ketahanan air yang handal, kamera ini memungkinkan Anda menghasilkan konten visual berkualitas tinggi untuk platform digital. Baik untuk vlogging bisnis, dokumentasi produk, atau konten edukasi, alat ini membantu meningkatkan engagement dan konversi penjualan. Didukung aplikasi mobile yang user-friendly dan baterai tahan lama, kamera ini adalah investasi strategis untuk mengembangkan brand Anda di era digital. Mari bersama-sama tingkatkan standar content marketing untuk UMKM Indonesia! 🌟📈',
+      hashtags: [
+        '#DigitalMarketing',
+        '#SME',
+        '#ContentCreation',
+        '#BusinessTools',
+        '#IndonesiaUMKM',
+        '#VideoContent',
+      ],
       callToAction: 'Hubungi kami untuk konsultasi gratis dan demo produk!',
     },
     email: {
@@ -269,8 +306,18 @@ Platform AI untuk SMEs Indonesia`,
       callToAction: 'Klik link di atas untuk memesan sekarang!',
     },
     tiktok: {
-      content: '🎥 BOOM! Kamera aksi 4K waterproof yang bikin konten kamu JUARA! Video 4K tajam, stabilizer gila, tahan air sampe 30m! Cocok banget buat SME creator yang mau go viral! 💦📸 WiFi, Bluetooth, baterai awet - semua ada! Siap adventure atau vlog bisnis? Swipe up sekarang! 🚀 #KameraAksi #SME #ContentCreator #ViralContent',
-      hashtags: ['#KameraAksi', '#4KVideo', '#Waterproof', '#SME', '#ContentCreator', '#Viral', '#VideoContent', '#BusinessTools'],
+      content:
+        '🎥 BOOM! Kamera aksi 4K waterproof yang bikin konten kamu JUARA! Video 4K tajam, stabilizer gila, tahan air sampe 30m! Cocok banget buat SME creator yang mau go viral! 💦📸 WiFi, Bluetooth, baterai awet - semua ada! Siap adventure atau vlog bisnis? Swipe up sekarang! 🚀 #KameraAksi #SME #ContentCreator #ViralContent',
+      hashtags: [
+        '#KameraAksi',
+        '#4KVideo',
+        '#Waterproof',
+        '#SME',
+        '#ContentCreator',
+        '#Viral',
+        '#VideoContent',
+        '#BusinessTools',
+      ],
       callToAction: 'Swipe up untuk link produk dan mulai create konten epic!',
     },
   }
