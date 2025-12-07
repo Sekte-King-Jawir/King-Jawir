@@ -148,7 +148,7 @@ export function AnimatedHero(): React.JSX.Element {
         const height = ((i * 15 + 50) % 100) + 50
         const top = (i * 30) % 100
         const left = (i * 25) % 100
-        
+
         return (
           <motion.div
             key={`hero-floating-${i}`}
@@ -159,17 +159,17 @@ export function AnimatedHero(): React.JSX.Element {
               top: `${top}%`,
               left: `${left}%`,
             }}
-          animate={{
-            y: [0, ((i * 10) % 100) - 50],
-            x: [0, ((i * 15) % 100) - 50],
-            opacity: [0.1, 0.3, 0.1],
-          }}
-          transition={{
-            duration: ((i * 2 + 10) % 10) + 10,
-            repeat: Infinity,
-            repeatType: 'reverse',
-          }}
-        />
+            animate={{
+              y: [0, ((i * 10) % 100) - 50],
+              x: [0, ((i * 15) % 100) - 50],
+              opacity: [0.1, 0.3, 0.1],
+            }}
+            transition={{
+              duration: ((i * 2 + 10) % 10) + 10,
+              repeat: Infinity,
+              repeatType: 'reverse',
+            }}
+          />
         )
       })}
     </div>

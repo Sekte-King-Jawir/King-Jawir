@@ -78,7 +78,7 @@ export function AnimatedCTA(): React.JSX.Element {
         const height = ((i * 8 + 20) % 60) + 20
         const top = (i * 15) % 100
         const left = (i * 12) % 100
-        
+
         return (
           <motion.div
             key={`floating-element-${i}`}
@@ -89,17 +89,17 @@ export function AnimatedCTA(): React.JSX.Element {
               top: `${top}%`,
               left: `${left}%`,
             }}
-          animate={{
-            y: [0, ((i * 10) % 100) - 50],
-            x: [0, ((i * 12) % 100) - 50],
-            opacity: [0.05, 0.15, 0.05],
-          }}
-          transition={{
-            duration: ((i * 2 + 10) % 20) + 10,
-            repeat: Infinity,
-            repeatType: 'reverse' as const,
-          }}
-        />
+            animate={{
+              y: [0, ((i * 10) % 100) - 50],
+              x: [0, ((i * 12) % 100) - 50],
+              opacity: [0.05, 0.15, 0.05],
+            }}
+            transition={{
+              duration: ((i * 2 + 10) % 20) + 10,
+              repeat: Infinity,
+              repeatType: 'reverse' as const,
+            }}
+          />
         )
       })}
     </section>
