@@ -1,17 +1,17 @@
-# Use Node.js base image
-FROM node:18-alpine AS base
+# Use Bun base image
+FROM oven/bun:1.2.18-alpine AS base
 
 # Install dependencies only when needed
 FROM base AS deps
 WORKDIR /app
 
-# Install dependencies based on the preferred package manager
-COPY package.json package-lock.json* yarn.lock* pnpm-lock.yaml* bun.lock* ./
+# Copy root package files and lockfile
+COPY package.json bun.lock ./
 COPY apps/web/package.json ./apps/web/
-COPY packages ./packages
+COPY packages/ ./packages/
 COPY turbo.json ./
 
-RUN npm ci
+RUN bun install --frozen-lockfile
 
 # Build stage
 FROM base AS builder
@@ -28,7 +28,7 @@ COPY turbo.json ./
 COPY package.json ./
 
 # Build the application
-RUN npm run web:build
+RUN bun run web:build
 
 # Production stage
 FROM base AS runner
