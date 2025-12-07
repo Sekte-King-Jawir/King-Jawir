@@ -227,7 +227,8 @@ export default function ProductDescriptionPage(): React.JSX.Element {
                 )}
 
                 {/* Marketing Loading */}
-                {marketingLoading ? <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6 mt-4">
+                {marketingLoading ? (
+                  <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6 mt-4">
                     <div className="flex items-center">
                       <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mr-4" />
                       <div>
@@ -239,7 +240,8 @@ export default function ProductDescriptionPage(): React.JSX.Element {
                         </p>
                       </div>
                     </div>
-                  </div> : null}
+                  </div>
+                ) : null}
 
                 {/* Marketing Results */}
                 {marketingResult !== null && marketingResult !== undefined && !marketingLoading && (
@@ -281,8 +283,8 @@ export default function ProductDescriptionPage(): React.JSX.Element {
                 <p className="text-gray-600 dark:text-gray-400">
                   Masukkan detail produk di atas untuk mulai menghasilkan deskripsi dengan AI.
                 </p>
-            </div>
-          )}
+              </div>
+            )}
 
           {/* Empty State */}
           {result === null && !loading && error === null && (
