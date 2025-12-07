@@ -1,7 +1,7 @@
 name: Deploy Web Store to VPS
 
 on:
-  workflow_dispatch: # Manual triggeraaaaaa
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -107,7 +107,7 @@ jobs:
           echo "$SSH_KEY" > /tmp/deploy_key && chmod 600 /tmp/deploy_key
           ssh -o StrictHostKeyChecking=no -i /tmp/deploy_key ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} '
             # Ensure bun and node global bin are available for PM2
-            export PATH=$PATH:/home/asephs/.bun/bin:/home/asephs/.nvm/versions/node/v22.17.1/bin
+            export PATH=$PATH:/root/.bun/bin:/usr/bin
             cd ${{ secrets.VPS_TARGET_DIR }}/
 
             # Install dependencies

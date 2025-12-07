@@ -2,7 +2,7 @@ module.exports = {
   apps: [
     {
       name: 'web_store',
-      script: 'bun',
+      script: '/root/.bun/bin/bun',
       args: 'run start',
       instances: 1,
       exec_mode: 'fork',
