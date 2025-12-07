@@ -83,7 +83,7 @@ Menggunakan web scraping dari Tokopedia + statistical analysis + LLM untuk membe
 
 **Endpoint:** `POST /api/price-analysis/analyze`
 
-**WebSocket:** `ws://localhost:4101/api/price-analysis/stream`
+**WebSocket:** `wss://kjg.asepharyana.tech/api/price-analysis/stream` (production) or `ws://localhost:4101/api/price-analysis/stream` (development)
 
 ### Product Description Generator
 

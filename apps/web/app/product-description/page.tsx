@@ -68,14 +68,29 @@ export default function ProductDescriptionPage(): React.JSX.Element {
   }
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-purple-50 via-pink-50 to-indigo-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 flex flex-col items-center justify-center px-4 py-12">
+    <div className="min-h-screen bg-linear-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex flex-col items-center justify-center px-4 py-12 relative overflow-hidden">
+      {/* Add floating elements for consistency with homepage */}
+      <div className="absolute inset-0 overflow-hidden">
+        {[...Array(10)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute rounded-full bg-blue-500/5"
+            style={{
+              width: `${((i * 8 + 20) % 80) + 20}px`,
+              height: `${((i * 6 + 20) % 80) + 20}px`,
+              top: `${(i * 10) % 100}%`,
+              left: `${(i * 15) % 100}%`,
+            }}
+          />
+        ))}
+      </div>
       <ThemeToggle />
 
       <main className="w-full max-w-4xl mx-auto">
         {/* Hero Section */}
-        <div className="text-center mb-10">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-primary/10 mb-6">
-            <Sparkles className="h-8 w-8 text-primary" />
+        <div className="text-center mb-10 relative z-10">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-blue-100 dark:bg-blue-900/50 mb-6">
+            <Sparkles className="h-8 w-8 text-blue-600 dark:text-blue-400" />
           </div>
           <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
             AI Product & Marketing Generator
@@ -91,11 +106,15 @@ export default function ProductDescriptionPage(): React.JSX.Element {
         <div className="space-y-8">
           {/* Form Section */}
           <ProductDescriptionForm
-            onSubmit={(input) => { void handleGenerate(input) }}
+            onSubmit={input => {
+              void handleGenerate(input)
+            }}
             loading={loading}
           />
 
           {/* Error Display */}
+          {error !== null && error !== '' ? (
+            <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
           {error !== null && error !== '' ? (
             <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
               <div className="flex">
@@ -134,6 +153,8 @@ export default function ProductDescriptionPage(): React.JSX.Element {
           ) : null}
 
           {/* Results Section */}
+          {result !== null && result !== undefined && !loading ? (
+            <div className="space-y-6">
           {result !== null && !loading ? (
             <div className="space-y-6">
               <div className="text-center">
@@ -151,15 +172,17 @@ export default function ProductDescriptionPage(): React.JSX.Element {
 
               <ProductDescriptionResult
                 data={result}
-                onCopy={(text) => { void handleCopy(text) }}
+                onCopy={text => {
+                  void handleCopy(text)
+                }}
                 onRegenerate={handleRegenerate}
               />
 
               {/* Marketing Section */}
               <div className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
                 <div className="text-center mb-6">
-                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-purple-100 dark:bg-purple-900/20 mb-4">
-                    <Megaphone className="h-6 w-6 text-purple-600 dark:text-purple-400" />
+                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-blue-100 dark:bg-blue-900/20 mb-4">
+                    <Megaphone className="h-6 w-6 text-blue-600 dark:text-blue-400" />
                   </div>
                   <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
                     Generate Konten Pemasaran
@@ -172,11 +195,15 @@ export default function ProductDescriptionPage(): React.JSX.Element {
 
                 <MarketingForm
                   productDescription={result}
-                  onSubmit={(platform) => { void handleGenerateMarketing(platform) }}
+                  onSubmit={platform => {
+                    void handleGenerateMarketing(platform)
+                  }}
                   loading={marketingLoading}
                 />
 
                 {/* Marketing Error */}
+                {marketingError !== null && marketingError !== '' ? (
+                  <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 mt-4">
                 {marketingError !== null && marketingError !== '' ? (
                   <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 mt-4">
                     <div className="flex">
@@ -223,11 +250,15 @@ export default function ProductDescriptionPage(): React.JSX.Element {
                 ) : null}
 
                 {/* Marketing Results */}
+                {marketingResult !== null && marketingResult !== undefined && !marketingLoading ? (
+                  <div className="mt-6">
                 {marketingResult !== null && !marketingLoading ? (
                   <div className="mt-6">
                     <MarketingResult
                       data={marketingResult}
-                      onCopy={(text) => { void handleCopyMarketing(text) }}
+                      onCopy={text => {
+                        void handleCopyMarketing(text)
+                      }}
                       onRegenerate={handleRegenerateMarketing}
                     />
                   </div>
@@ -237,12 +268,33 @@ export default function ProductDescriptionPage(): React.JSX.Element {
               {/* Copy Success Message */}
               {copiedText !== null && copiedText !== '' ? (
                 <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4">
+              {copiedText !== null && copiedText !== '' ? (
+                <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4">
                   <div className="flex items-center">
                     <Copy className="h-5 w-5 text-green-600 dark:text-green-400 mr-3" />
                     <span className="text-sm text-green-800 dark:text-green-200">
                       Teks berhasil disalin ke clipboard!
                     </span>
                   </div>
+                </div>
+              ) : null}
+            </div>
+          ) : null}
+          {(result === null || result === undefined) &&
+            !loading &&
+            (error === null || error === '') && (
+              <div className="text-center py-12">
+                <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gray-100 dark:bg-gray-800 mb-4">
+                  <Sparkles className="h-8 w-8 text-gray-400" />
+                </div>
+                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                  Belum Ada Deskripsi
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  Masukkan detail produk di atas untuk mulai menghasilkan deskripsi dengan AI.
+                </p>
+              </div>
+            )}
                 </div>
               ) : null}
             </div> ) : null}
@@ -262,7 +314,7 @@ export default function ProductDescriptionPage(): React.JSX.Element {
         </div>
 
         {/* Footer */}
-        <footer className="mt-16 text-center text-sm text-gray-500 dark:text-gray-400">
+        <footer className="mt-16 text-center text-sm text-gray-500 dark:text-gray-400 relative z-10">
           <p>Powered by AI • Optimized for Indonesian Marketplaces</p>
         </footer>
       </main>

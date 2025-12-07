@@ -10,6 +10,9 @@
  * import { API_CONFIG, API_ENDPOINTS } from '@/lib/config/api'
  *
  * fetch(`${API_CONFIG.BASE_URL}${API_ENDPOINTS.PRICE_ANALYSIS.ANALYZE}`)
+ *
+ * // WebSocket connection
+ * const ws = new WebSocket(`${API_CONFIG.WS_URL}${API_ENDPOINTS.PRICE_ANALYSIS.STREAM}`)
  */
 
 /**
@@ -18,12 +21,14 @@
  * @constant {Object} API_CONFIG
  * @property {string} BASE_URL - API base URL (from NEXT_PUBLIC_API_URL env)
  * @property {number} TIMEOUT - Request timeout in milliseconds
- * @property {string} WS_URL - WebSocket URL (http replaced with ws)
+ * @property {string} WS_URL - WebSocket URL (http/https replaced with ws/wss)
  */
 export const API_CONFIG = {
   BASE_URL: process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4101',
   TIMEOUT: 30000,
-  WS_URL: (process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4101').replace('http', 'ws'),
+  WS_URL: (process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4101')
+    .replace(/^https:\/\//, 'wss://')
+    .replace(/^http:\/\//, 'ws://'),
 } as const
 
 /**

@@ -76,10 +76,8 @@ export function ProductDescriptionForm({
     <Card className={`p-6 ${className}`}>
       <div className="space-y-4">
         <div>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-            Generate Deskripsi Produk
-          </h3>
-          <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+          <h3 className="text-lg font-semibold text-foreground">Generate Deskripsi Produk</h3>
+          <p className="text-sm text-muted-foreground mt-1">
             Masukkan detail produk untuk menghasilkan deskripsi yang menarik dengan bantuan AI
           </p>
         </div>
@@ -88,7 +86,7 @@ export function ProductDescriptionForm({
           <div>
             <label
               htmlFor="product-input"
-              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+              className="block text-sm font-medium text-foreground mb-2"
             >
               Deskripsi Produk
             </label>
@@ -97,25 +95,23 @@ export function ProductDescriptionForm({
               value={productInput}
               onChange={handleInputChange}
               placeholder="Contoh: Kamera aksi 4K waterproof dengan stabilizer, cocok untuk vlogging dan olahraga air"
-              className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white resize-none ${
-                error !== '' ? 'border-red-500' : 'border-gray-300'
+              className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-background text-foreground resize-none ${
+                error !== '' ? 'border-red-500' : 'border-input'
               }`}
               rows={4}
               disabled={isDisabled}
               aria-describedby={error !== '' ? 'error-message' : undefined}
             />
             <div className="flex justify-between items-center mt-1">
-              <div className="text-xs text-gray-500 dark:text-gray-400">
-                {charCount}/500 karakter
-              </div>
+              <div className="text-xs text-muted-foreground">{charCount}/500 karakter</div>
               {isOverLimit ? (
-                <div className="text-xs text-red-500">Melebihi batas karakter</div>
+                <div className="text-xs text-destructive">Melebihi batas karakter</div>
               ) : null}
             </div>
           </div>
 
           {error !== '' ? (
-            <div id="error-message" className="text-sm text-red-600 dark:text-red-400" role="alert">
+            <div id="error-message" className="text-sm text-destructive" role="alert">
               {error}
             </div>
           ) : null}

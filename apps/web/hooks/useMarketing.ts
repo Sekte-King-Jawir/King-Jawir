@@ -104,7 +104,11 @@ export function useMarketing(): UseMarketingReturn {
         return response
       } catch (err) {
         const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred'
-        setError(errorMessage)
+        if (errorMessage === '') {
+          setError('Unknown error occurred')
+        } else {
+          setError(errorMessage)
+        }
         return {
           success: false,
           message: errorMessage,
@@ -112,7 +116,9 @@ export function useMarketing(): UseMarketingReturn {
       } finally {
         setLoading(false)
       }
-  }, [])
+    },
+    []
+  )
 
   /**
    * Resets the hook state to initial values

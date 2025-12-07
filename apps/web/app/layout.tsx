@@ -3,6 +3,7 @@ import localFont from 'next/font/local'
 import { ThemeProvider, ThemeToggle } from '@repo/ui'
 import { NavbarWrapper } from '@/components/NavbarWrapper'
 import './globals.css'
+import { PageTransition } from '@/components/PageTransition'
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -30,7 +31,7 @@ export default function RootLayout({
       >
         <ThemeProvider defaultTheme="system" storageKey="king-jawir-theme">
           <NavbarWrapper />
-          {children}
+          <PageTransition>{children}</PageTransition>
           <ThemeToggle />
         </ThemeProvider>
       </body>

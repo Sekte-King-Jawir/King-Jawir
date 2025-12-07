@@ -71,10 +71,10 @@ export function ProductDescriptionResult({
       <Card className="p-6">
         <div className="flex items-start justify-between">
           <div className="flex-1">
-            <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2">
+            <h4 className="text-sm font-medium text-muted-foreground uppercase tracking-wide mb-2">
               Deskripsi Singkat
             </h4>
-            <p className="text-lg font-semibold text-gray-900 dark:text-white">{data.short}</p>
+            <p className="text-lg font-semibold text-foreground">{data.short}</p>
           </div>
           <Button
             variant="secondary"
@@ -91,10 +91,10 @@ export function ProductDescriptionResult({
       <Card className="p-6">
         <div className="flex items-start justify-between">
           <div className="flex-1">
-            <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2">
+            <h4 className="text-sm font-medium text-muted-foreground uppercase tracking-wide mb-2">
               Deskripsi Lengkap
             </h4>
-            <p className="text-gray-700 dark:text-gray-300 leading-relaxed">{data.long}</p>
+            <p className="text-foreground leading-relaxed">{data.long}</p>
           </div>
           <Button
             variant="secondary"
@@ -111,14 +111,14 @@ export function ProductDescriptionResult({
       <Card className="p-6">
         <div className="flex items-start justify-between">
           <div className="flex-1">
-            <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3">
+            <h4 className="text-sm font-medium text-muted-foreground uppercase tracking-wide mb-3">
               Fitur Utama
             </h4>
             <ul className="space-y-2">
               {data.bullets.map((bullet: string) => (
                 <li key={bullet} className="flex items-start">
                   <span className="text-blue-500 mr-2 mt-1">•</span>
-                  <span className="text-gray-700 dark:text-gray-300">{bullet}</span>
+                  <span className="text-foreground">{bullet}</span>
                 </li>
               ))}
             </ul>
@@ -138,7 +138,7 @@ export function ProductDescriptionResult({
       <Card className="p-6">
         <div className="flex items-start justify-between">
           <div className="flex-1">
-            <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3">
+            <h4 className="text-sm font-medium text-muted-foreground uppercase tracking-wide mb-3">
               Kata Kunci SEO
             </h4>
             <div className="flex flex-wrap gap-2">

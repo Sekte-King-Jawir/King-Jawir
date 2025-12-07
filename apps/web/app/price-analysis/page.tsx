@@ -40,14 +40,29 @@ export default function SupportPage(): React.JSX.Element {
   }
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 flex flex-col items-center justify-center px-4 py-12">
+    <div className="min-h-screen bg-linear-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex flex-col items-center justify-center px-4 py-12 relative overflow-hidden">
+      {/* Add floating elements for consistency with homepage */}
+      <div className="absolute inset-0 overflow-hidden">
+        {[...Array(10)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute rounded-full bg-blue-500/5"
+            style={{
+              width: `${((i * 8 + 20) % 80) + 20}px`,
+              height: `${((i * 6 + 20) % 80) + 20}px`,
+              top: `${(i * 10) % 100}%`,
+              left: `${(i * 15) % 100}%`,
+            }}
+          />
+        ))}
+      </div>
       <ThemeToggle />
 
       <main className="w-full max-w-4xl mx-auto">
         {/* Hero Section */}
-        <div className="text-center mb-10">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-primary/10 mb-6">
-            <BarChart3 className="h-8 w-8 text-primary" />
+        <div className="text-center mb-10 relative z-10">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-blue-100 dark:bg-blue-900/50 mb-6">
+            <BarChart3 className="h-8 w-8 text-blue-600 dark:text-blue-400" />
           </div>
           <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-4">
             PriceScope AI
@@ -67,7 +82,7 @@ export default function SupportPage(): React.JSX.Element {
                 htmlFor="query"
                 className="text-sm font-medium text-foreground flex items-center gap-2"
               >
-                <Search size={16} />
+                <Search size={16} className="text-blue-500 dark:text-blue-400" />
                 Product Query
               </label>
               <input
@@ -86,7 +101,7 @@ export default function SupportPage(): React.JSX.Element {
                 htmlFor="userPrice"
                 className="text-sm font-medium text-foreground flex items-center gap-2"
               >
-                <ShoppingBag size={16} />
+                <ShoppingBag size={16} className="text-blue-500 dark:text-blue-400" />
                 Your Budget (Optional)
               </label>
               <input
@@ -105,7 +120,7 @@ export default function SupportPage(): React.JSX.Element {
             <button
               type="submit"
               disabled={loading}
-              className="w-full inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-12 px-6 gap-2"
+              className="w-full inline-flex items-center justify-center rounded-xl text-sm font-medium transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-linear-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white h-12 px-6 gap-2 shadow-lg shadow-blue-600/30"
             >
               {loading ? (
                 <>
@@ -124,7 +139,7 @@ export default function SupportPage(): React.JSX.Element {
 
         {/* Loading State */}
         {loading ? (
-          <div className="bg-card/50 backdrop-blur-sm border border-border rounded-xl p-8 mb-8 shadow-lg">
+          <div className="bg-white dark:bg-slate-800/50 backdrop-blur-sm border border-slate-200 dark:border-slate-700 rounded-xl p-8 mb-8 shadow-lg">
             <div className="text-center space-y-6">
               <div className="relative inline-flex items-center justify-center">
                 <div className="absolute inset-0 rounded-full animate-ping bg-primary/20" />
@@ -142,9 +157,9 @@ export default function SupportPage(): React.JSX.Element {
               </div>
 
               <div className="space-y-3">
-                <div className="w-full bg-secondary rounded-full h-3 overflow-hidden">
+                <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-3 overflow-hidden">
                   <div
-                    className="h-full bg-primary transition-all duration-500 ease-out"
+                    className="h-full bg-linear-to-r from-blue-500 to-indigo-500 transition-all duration-500 ease-out"
                     style={{ width: `${streamProgress}%` }}
                   />
                 </div>
@@ -169,7 +184,7 @@ export default function SupportPage(): React.JSX.Element {
                 </div>
               </div>
 
-              <div className="bg-muted/50 rounded-lg p-4 max-w-md mx-auto">
+              <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 max-w-md mx-auto border border-blue-200 dark:border-blue-800">
                 <div className="flex items-start gap-3">
                   <div className="text-2xl">💡</div>
                   <div className="text-sm text-left">
@@ -187,7 +202,7 @@ export default function SupportPage(): React.JSX.Element {
 
         {/* Error State */}
         {error !== null && error.length > 0 ? (
-          <div className="bg-destructive/10 border border-destructive/20 text-destructive rounded-lg p-4 mb-8">
+          <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-800 dark:text-red-200 rounded-lg p-4 mb-8">
             <strong>❌ Error:</strong> {error}
           </div>
         ) : null}
@@ -196,8 +211,11 @@ export default function SupportPage(): React.JSX.Element {
         {result !== null ? (
           <div className="space-y-8">
             {/* Query Info */}
-            {result.optimizedQuery !== null && result.optimizedQuery !== undefined && result.optimizedQuery !== '' && result.optimizedQuery !== result.query ? (
-              <div className="bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+            {result.optimizedQuery !== null &&
+            result.optimizedQuery !== undefined &&
+            result.optimizedQuery !== '' &&
+            result.optimizedQuery !== result.query ? (
+              <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
                 <p className="text-sm text-foreground">
                   <span className="font-semibold">🔍 Optimized Query:</span>{' '}
                   <span className="text-blue-600 dark:text-blue-400">{result.optimizedQuery}</span>
@@ -207,7 +225,7 @@ export default function SupportPage(): React.JSX.Element {
             ) : null}
 
             {/* Statistics */}
-            <section className="bg-card/50 backdrop-blur-sm border border-border rounded-xl p-6 shadow-lg">
+            <section className="bg-white dark:bg-slate-800/50 backdrop-blur-sm border border-slate-200 dark:border-slate-700 rounded-xl p-6 shadow-lg">
               <h2 className="text-2xl font-semibold text-foreground mb-6 flex items-center gap-2">
                 📊 Market Statistics
               </h2>
@@ -256,34 +274,42 @@ export default function SupportPage(): React.JSX.Element {
             </section>
 
             {/* AI Analysis */}
-            <section className="bg-card/50 backdrop-blur-sm border border-border rounded-xl p-6 shadow-lg">
+            <section className="bg-white dark:bg-slate-800/50 backdrop-blur-sm border border-slate-200 dark:border-slate-700 rounded-xl p-6 shadow-lg">
               <h2 className="text-2xl font-semibold text-foreground mb-6 flex items-center gap-2">
                 🤖 AI Analysis
               </h2>
               <div className="space-y-6">
-                <div className="bg-background/50 rounded-lg p-4">
+                <div className="bg-white dark:bg-slate-700/50 rounded-lg p-4">
                   <h3 className="text-lg font-semibold text-foreground mb-2">Recommendation:</h3>
                   <p className="text-foreground leading-relaxed">
                     {result.analysis.recommendation}
                   </p>
                 </div>
 
-                <div className="bg-primary/10 border border-primary/20 rounded-lg p-4">
+                <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
                   <h3 className="text-lg font-semibold text-foreground mb-2">Price Range:</h3>
                   <p className="text-foreground leading-relaxed">
                     Median: {formatPrice(result.statistics.median)}
-                    {result.statistics.q1 !== null && result.statistics.q1 !== undefined && result.statistics.q3 !== null && result.statistics.q3 !== undefined ? <span>
+                    {result.statistics.q1 !== null &&
+                    result.statistics.q1 !== undefined &&
+                    result.statistics.q3 !== null &&
+                    result.statistics.q3 !== undefined ? (
+                      <span>
                         {' | Q1-Q3: '}
                         {formatPrice(result.statistics.q1)} - {formatPrice(result.statistics.q3)}
-                      </span> : null}
+                      </span>
+                    ) : null}
                   </p>
-                  {result.analysis.suggestedPrice !== null && result.analysis.suggestedPrice !== undefined ? <p className="text-foreground leading-relaxed mt-2">
+                  {result.analysis.suggestedPrice !== null &&
+                  result.analysis.suggestedPrice !== undefined ? (
+                    <p className="text-foreground leading-relaxed mt-2">
                       <strong>💡 Suggested Price:</strong>{' '}
                       {formatPrice(result.analysis.suggestedPrice)}
-                    </p> : null}
+                    </p>
+                  ) : null}
                 </div>
 
-                <div className="bg-background/50 rounded-lg p-4">
+                <div className="bg-white dark:bg-slate-700/50 rounded-lg p-4">
                   <h3 className="text-lg font-semibold text-foreground mb-3">Key Insights:</h3>
                   <ul className="space-y-2">
                     {result.analysis.insights.map(insight => (
@@ -291,7 +317,7 @@ export default function SupportPage(): React.JSX.Element {
                         key={insight.slice(0, 50)}
                         className="flex items-start gap-2 text-foreground"
                       >
-                        <span className="text-primary mt-1 text-sm">•</span>
+                        <span className="text-blue-500 dark:text-blue-400 mt-1 text-sm">•</span>
                         {insight}
                       </li>
                     ))}
@@ -301,7 +327,7 @@ export default function SupportPage(): React.JSX.Element {
             </section>
 
             {/* Products */}
-            <section className="bg-card/50 backdrop-blur-sm border border-border rounded-xl p-6 shadow-lg">
+            <section className="bg-white dark:bg-slate-800/50 backdrop-blur-sm border border-slate-200 dark:border-slate-700 rounded-xl p-6 shadow-lg">
               <h2 className="text-2xl font-semibold text-foreground mb-6 flex items-center gap-2">
                 🛍️ Product List
               </h2>
@@ -314,7 +340,7 @@ export default function SupportPage(): React.JSX.Element {
                   return (
                     <div
                       key={productUrl !== '' ? productUrl : `product-${idx}`}
-                      className="bg-background/50 rounded-lg overflow-hidden border border-border hover:shadow-lg transition-shadow duration-300"
+                      className="bg-white dark:bg-slate-800 rounded-lg overflow-hidden border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-shadow duration-300"
                     >
                       {imageUrl !== '' ? (
                         <Image
@@ -353,7 +379,9 @@ export default function SupportPage(): React.JSX.Element {
                             📍 {location}
                           </p>
                         ) : null}
-                        {product.sold !== null && product.sold !== undefined && product.sold !== '' ? (
+                        {product.sold !== null &&
+                        product.sold !== undefined &&
+                        product.sold !== '' ? (
                           <p className="text-sm text-muted-foreground flex items-center gap-1">
                             🛒 {product.sold} sold
                           </p>
@@ -379,7 +407,7 @@ export default function SupportPage(): React.JSX.Element {
       </main>
 
       {/* Footer */}
-      <footer className="mt-12 text-center">
+      <footer className="mt-12 text-center relative z-10">
         <p className="text-sm text-muted-foreground">
           Powered by Multi-Source Scrapers + AI Analysis
         </p>
