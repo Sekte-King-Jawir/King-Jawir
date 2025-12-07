@@ -9,12 +9,12 @@ import { formatPrice } from '@/lib/utils'
 import type { PriceAnalysisRequest } from '@/lib/api'
 
 const analysisSteps = [
-  '🔍 Initializing price analysis...',
-  '📊 Scanning Tokopedia and Blibli marketplaces...',
-  '📈 Calculating market statistics...',
-  '🤖 Running AI price analysis...',
-  '💡 Generating market insights...',
-  '✨ Finalizing recommendations...',
+  '🔍 Memulai analisis harga...',
+  '📊 Memindai marketplace Tokopedia dan Blibli...',
+  '📈 Menghitung statistik pasar...',
+  '🤖 Menjalankan analisis harga AI...',
+  '💡 Menghasilkan wawasan pasar...',
+  '✨ Menyelesaikan rekomendasi...',
 ]
 
 export default function SupportPage(): React.JSX.Element {
@@ -68,7 +68,7 @@ export default function SupportPage(): React.JSX.Element {
             PriceScope AI
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Discover market insights with AI-powered price analysis across multiple marketplaces
+            Temukan wawasan pasar dengan analisis harga bertenaga AI di berbagai marketplace
           </p>
         </div>
         {/* Form */}
@@ -83,14 +83,14 @@ export default function SupportPage(): React.JSX.Element {
                 className="text-sm font-medium text-foreground flex items-center gap-2"
               >
                 <Search size={16} className="text-blue-500 dark:text-blue-400" />
-                Product Query
+                Kueri Produk
               </label>
               <input
                 id="query"
                 type="text"
                 value={query}
                 onChange={e => setQuery(e.target.value)}
-                placeholder="Search for products, e.g., iPhone 15 Pro"
+                placeholder="Cari produk, misalnya, iPhone 15 Pro"
                 required
                 className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
               />
@@ -102,7 +102,7 @@ export default function SupportPage(): React.JSX.Element {
                 className="text-sm font-medium text-foreground flex items-center gap-2"
               >
                 <ShoppingBag size={16} className="text-blue-500 dark:text-blue-400" />
-                Your Budget (Optional)
+                Anggaran Anda (Opsional)
               </label>
               <input
                 id="userPrice"
@@ -111,7 +111,7 @@ export default function SupportPage(): React.JSX.Element {
                 onChange={e =>
                   setUserPrice(e.target.value.length > 0 ? parseInt(e.target.value) : undefined)
                 }
-                placeholder="Enter your budget in Rupiah"
+                placeholder="Masukkan anggaran Anda dalam Rupiah"
                 min="0"
                 className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
               />
@@ -130,7 +130,7 @@ export default function SupportPage(): React.JSX.Element {
               ) : (
                 <>
                   <Search size={20} />
-                  Analyze Market Prices
+                  Analisis Harga Pasar
                 </>
               )}
             </button>
@@ -151,9 +151,9 @@ export default function SupportPage(): React.JSX.Element {
 
               <div>
                 <h3 className="text-2xl font-semibold text-foreground mb-2">
-                  Analyzing Market Data
+                  Menganalisis Data Pasar
                 </h3>
-                <p className="text-muted-foreground">This may take up to 30 seconds...</p>
+                <p className="text-muted-foreground">Ini mungkin memakan waktu hingga 30 detik...</p>
               </div>
 
               <div className="space-y-3">
@@ -164,7 +164,7 @@ export default function SupportPage(): React.JSX.Element {
                   />
                 </div>
                 <div className="text-sm font-medium text-foreground">
-                  {Math.round(streamProgress)}% Complete
+                  {Math.round(streamProgress)}% Selesai
                 </div>
               </div>
 
@@ -188,10 +188,10 @@ export default function SupportPage(): React.JSX.Element {
                 <div className="flex items-start gap-3">
                   <div className="text-2xl">💡</div>
                   <div className="text-sm text-left">
-                    <strong className="text-foreground">Did you know?</strong>
+                    <strong className="text-foreground">Tahukah Anda?</strong>
                     <span className="text-muted-foreground ml-1">
-                      Our AI analyzes pricing patterns, market trends, and competitor data to give
-                      you the most accurate price recommendations.
+                      AI kami menganalisis pola harga, tren pasar, dan data kompetitor untuk memberikan
+                      rekomendasi harga yang paling akurat.
                     </span>
                   </div>
                 </div>
@@ -203,7 +203,7 @@ export default function SupportPage(): React.JSX.Element {
         {/* Error State */}
         {error !== null && error.length > 0 ? (
           <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-800 dark:text-red-200 rounded-lg p-4 mb-8">
-            <strong>❌ Error:</strong> {error}
+            <strong>❌ Kesalahan:</strong> {error}
           </div>
         ) : null}
 
@@ -217,7 +217,7 @@ export default function SupportPage(): React.JSX.Element {
             result.optimizedQuery !== result.query ? (
               <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
                 <p className="text-sm text-foreground">
-                  <span className="font-semibold">🔍 Optimized Query:</span>{' '}
+                  <span className="font-semibold">🔍 Kueri Dioptimalkan:</span>{' '}
                   <span className="text-blue-600 dark:text-blue-400">{result.optimizedQuery}</span>
                   <span className="text-muted-foreground ml-2">(from: {result.query})</span>
                 </p>
@@ -227,7 +227,7 @@ export default function SupportPage(): React.JSX.Element {
             {/* Statistics */}
             <section className="bg-white dark:bg-slate-800/50 backdrop-blur-sm border border-slate-200 dark:border-slate-700 rounded-xl p-6 shadow-lg">
               <h2 className="text-2xl font-semibold text-foreground mb-6 flex items-center gap-2">
-                📊 Market Statistics
+                📊 Statistik Pasar
               </h2>
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                 <div className="bg-background/50 rounded-lg p-4 text-center">
@@ -237,7 +237,7 @@ export default function SupportPage(): React.JSX.Element {
                   </div>
                 </div>
                 <div className="bg-background/50 rounded-lg p-4 text-center">
-                  <div className="text-sm text-muted-foreground mb-1">Average</div>
+                  <div className="text-sm text-muted-foreground mb-1">Rata-rata</div>
                   <div className="text-xl font-bold text-foreground">
                     {formatPrice(result.statistics.average)}
                   </div>
@@ -249,14 +249,14 @@ export default function SupportPage(): React.JSX.Element {
                   </div>
                 </div>
                 <div className="bg-background/50 rounded-lg p-4 text-center">
-                  <div className="text-sm text-muted-foreground mb-1">Maximum</div>
+                  <div className="text-sm text-muted-foreground mb-1">Maksimum</div>
                   <div className="text-xl font-bold text-foreground">
                     {formatPrice(result.statistics.max)}
                   </div>
                 </div>
               </div>
               <p className="text-center text-sm text-muted-foreground mt-4">
-                Analyzed {result.statistics.totalProducts} products
+                Menganalisis {result.statistics.totalProducts} produk
                 {(() => {
                   const tokopediaCount = result.products.filter(
                     p => p.source === 'tokopedia'
@@ -276,18 +276,18 @@ export default function SupportPage(): React.JSX.Element {
             {/* AI Analysis */}
             <section className="bg-white dark:bg-slate-800/50 backdrop-blur-sm border border-slate-200 dark:border-slate-700 rounded-xl p-6 shadow-lg">
               <h2 className="text-2xl font-semibold text-foreground mb-6 flex items-center gap-2">
-                🤖 AI Analysis
+                🤖 Analisis AI
               </h2>
               <div className="space-y-6">
                 <div className="bg-white dark:bg-slate-700/50 rounded-lg p-4">
-                  <h3 className="text-lg font-semibold text-foreground mb-2">Recommendation:</h3>
+                  <h3 className="text-lg font-semibold text-foreground mb-2">Rekomendasi:</h3>
                   <p className="text-foreground leading-relaxed">
                     {result.analysis.recommendation}
                   </p>
                 </div>
 
                 <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
-                  <h3 className="text-lg font-semibold text-foreground mb-2">Price Range:</h3>
+                  <h3 className="text-lg font-semibold text-foreground mb-2">Rentang Harga:</h3>
                   <p className="text-foreground leading-relaxed">
                     Median: {formatPrice(result.statistics.median)}
                     {result.statistics.q1 !== null &&
@@ -303,14 +303,14 @@ export default function SupportPage(): React.JSX.Element {
                   {result.analysis.suggestedPrice !== null &&
                   result.analysis.suggestedPrice !== undefined ? (
                     <p className="text-foreground leading-relaxed mt-2">
-                      <strong>💡 Suggested Price:</strong>{' '}
+                      <strong>💡 Harga yang Disarankan:</strong>{' '}
                       {formatPrice(result.analysis.suggestedPrice)}
                     </p>
                   ) : null}
                 </div>
 
                 <div className="bg-white dark:bg-slate-700/50 rounded-lg p-4">
-                  <h3 className="text-lg font-semibold text-foreground mb-3">Key Insights:</h3>
+                  <h3 className="text-lg font-semibold text-foreground mb-3">Wawasan Utama:</h3>
                   <ul className="space-y-2">
                     {result.analysis.insights.map(insight => (
                       <li
@@ -329,7 +329,7 @@ export default function SupportPage(): React.JSX.Element {
             {/* Products */}
             <section className="bg-white dark:bg-slate-800/50 backdrop-blur-sm border border-slate-200 dark:border-slate-700 rounded-xl p-6 shadow-lg">
               <h2 className="text-2xl font-semibold text-foreground mb-6 flex items-center gap-2">
-                🛍️ Product List
+                🛍️ Daftar Produk
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {result.products.map((product, idx) => {
@@ -393,7 +393,7 @@ export default function SupportPage(): React.JSX.Element {
                             rel="noopener noreferrer"
                             className="inline-flex items-center text-sm text-primary hover:text-primary/80 transition-colors"
                           >
-                            View on {product.source === 'tokopedia' ? 'Tokopedia' : 'Blibli'} →
+                            Lihat di {product.source === 'tokopedia' ? 'Tokopedia' : 'Blibli'} →
                           </a>
                         ) : null}
                       </div>
@@ -409,7 +409,7 @@ export default function SupportPage(): React.JSX.Element {
       {/* Footer */}
       <footer className="mt-12 text-center relative z-10">
         <p className="text-sm text-muted-foreground">
-          Powered by Multi-Source Scrapers + AI Analysis
+         Powered by AI • Optimized for Indonesian Marketplaces
         </p>
       </footer>
     </div>
