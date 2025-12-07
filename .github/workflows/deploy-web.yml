@@ -1,7 +1,7 @@
 name: Deploy Web Store to VPS
 
 on:
-  workflow_dispatch: # Manual triggeraaaaa
+  workflow_dispatch: # Manual triggeraaaaaa
   push:
     branches:
       - main
