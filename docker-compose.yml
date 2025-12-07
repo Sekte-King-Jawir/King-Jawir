@@ -1,16 +1,29 @@
 version: '3.8'
 
 services:
+  nginx:
+    build:
+      context: .
+      dockerfile: ./apps/nginx/Dockerfile
+    container_name: king-jawir-nginx
+    ports:
+      - '4104:80'
+    networks:
+      - king-jawir-network
+    depends_on:
+      - web
+      - api
+      - scraper
+    restart: unless-stopped
+
   web:
     build:
       context: .
       dockerfile: ./apps/web/Dockerfile
     container_name: king-jawir-web
-    ports:
-      - '4102:4102'
     environment:
       - NODE_ENV=production
-      - API_URL=http://api:4101
+      - NEXT_PUBLIC_API_URL=/api
     networks:
       - king-jawir-network
     depends_on:
@@ -22,10 +35,20 @@ services:
       context: .
       dockerfile: ./apps/api/Dockerfile
     container_name: king-jawir-api
-    ports:
-      - '4101:4101'
     environment:
       - NODE_ENV=production
+      - SCRAPER_URL=http://scraper:4103
+    networks:
+      - king-jawir-network
+    depends_on:
+      - scraper
+    restart: unless-stopped
+
+  scraper:
+    build:
+      context: .
+      dockerfile: ./apps/scraper/Dockerfile
+    container_name: king-jawir-scraper
     networks:
       - king-jawir-network
     restart: unless-stopped
