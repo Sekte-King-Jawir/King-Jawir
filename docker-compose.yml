@@ -3,8 +3,8 @@ version: '3.8'
 services:
   nginx:
     build:
-      context: .
-      dockerfile: ./apps/nginx/Dockerfile
+      context: ./apps/nginx
+      dockerfile: Dockerfile
     container_name: king-jawir-nginx
     ports:
       - '4104:80'
@@ -35,6 +35,8 @@ services:
       context: .
       dockerfile: ./apps/api/Dockerfile
     container_name: king-jawir-api
+    env_file:
+      - .env
     environment:
       - NODE_ENV=production
       - SCRAPER_URL=http://scraper:4103
@@ -46,9 +48,11 @@ services:
 
   scraper:
     build:
-      context: .
-      dockerfile: ./apps/scraper/Dockerfile
+      context: ./apps/scraper
+      dockerfile: Dockerfile
     container_name: king-jawir-scraper
+    env_file:
+      - .env
     networks:
       - king-jawir-network
     restart: unless-stopped
