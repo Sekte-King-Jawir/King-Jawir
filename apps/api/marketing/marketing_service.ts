@@ -36,7 +36,8 @@ export const marketingService = {
         const part1Messages: Array<{ role: 'system' | 'user' | 'assistant'; content: string }> = [
           {
             role: 'system',
-            content: 'Anda adalah AI yang membantu SMEs Indonesia membuat konten pemasaran yang menarik dan efektif.',
+            content:
+              'Anda adalah AI yang membantu SMEs Indonesia membuat konten pemasaran yang menarik dan efektif.',
           },
           {
             role: 'user',
@@ -46,7 +47,8 @@ export const marketingService = {
         const part2Messages: Array<{ role: 'system' | 'user' | 'assistant'; content: string }> = [
           {
             role: 'system',
-            content: 'Anda adalah AI yang membantu SMEs Indonesia membuat konten pemasaran yang menarik dan efektif.',
+            content:
+              'Anda adalah AI yang membantu SMEs Indonesia membuat konten pemasaran yang menarik dan efektif.',
           },
           {
             role: 'user',
@@ -56,7 +58,8 @@ export const marketingService = {
         const part3Messages: Array<{ role: 'system' | 'user' | 'assistant'; content: string }> = [
           {
             role: 'system',
-            content: 'Anda adalah AI yang membantu SMEs Indonesia membuat konten pemasaran yang menarik dan efektif.',
+            content:
+              'Anda adalah AI yang membantu SMEs Indonesia membuat konten pemasaran yang menarik dan efektif.',
           },
           {
             role: 'user',
@@ -77,14 +80,30 @@ export const marketingService = {
           part3Result.text || '',
         ].join(' ')
 
-        logger.info({ msg: 'AI returned marketing content parts', contentLength: combinedContent.length })
+        logger.info({
+          msg: 'AI returned marketing content parts',
+          contentLength: combinedContent.length,
+        })
 
         // Create result with combined content
         const result: MarketingContentResult = {
           platform,
           content: combinedContent,
-          hashtags: platform === 'email' ? ['#KameraAksi', '#BisnisSME', '#ContentMarketing', '#VideoProduction'] : ['#DigitalMarketing', '#SME', '#ContentCreation', '#BusinessTools', '#IndonesiaUMKM', '#VideoContent'],
-          callToAction: platform === 'email' ? 'Klik link di atas untuk memesan sekarang!' : 'Hubungi kami untuk konsultasi gratis dan demo produk!',
+          hashtags:
+            platform === 'email'
+              ? ['#KameraAksi', '#BisnisSME', '#ContentMarketing', '#VideoProduction']
+              : [
+                  '#DigitalMarketing',
+                  '#SME',
+                  '#ContentCreation',
+                  '#BusinessTools',
+                  '#IndonesiaUMKM',
+                  '#VideoContent',
+                ],
+          callToAction:
+            platform === 'email'
+              ? 'Klik link di atas untuk memesan sekarang!'
+              : 'Hubungi kami untuk konsultasi gratis dan demo produk!',
         }
 
         logger.info({ msg: 'Marketing content generated successfully' })
@@ -95,7 +114,8 @@ export const marketingService = {
         const messages: Array<{ role: 'system' | 'user' | 'assistant'; content: string }> = [
           {
             role: 'system',
-            content: 'Anda adalah AI yang membantu SMEs Indonesia membuat konten pemasaran yang menarik dan efektif.',
+            content:
+              'Anda adalah AI yang membantu SMEs Indonesia membuat konten pemasaran yang menarik dan efektif.',
           },
           {
             role: 'user',
