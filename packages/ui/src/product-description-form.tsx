@@ -69,7 +69,9 @@ export function ProductDescriptionForm({
   const isOverLimit = charCount > 500
 
   return (
-    <div className={`bg-card/50 backdrop-blur-sm border border-border rounded-xl p-6 mb-8 shadow-lg ${className}`}>
+    <div
+      className={`bg-card/50 backdrop-blur-sm border border-border rounded-xl p-6 mb-8 shadow-lg ${className}`}
+    >
       <div className="space-y-4">
         <div>
           <h3 className="text-lg font-semibold text-foreground">Generate Deskripsi Produk</h3>

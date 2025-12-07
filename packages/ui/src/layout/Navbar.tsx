@@ -26,7 +26,13 @@ export default function Navbar(): React.ReactElement {
         <div className="flex h-16 lg:h-20 items-center justify-between gap-4">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 shrink-0">
-            <Image src="/iconkjg.png" alt="King Jawir AI Logo" width={40} height={40} className="rounded-xl shadow-lg shadow-blue-500/30" />
+            <Image
+              src="/iconkjg.png"
+              alt="King Jawir AI Logo"
+              width={40}
+              height={40}
+              className="rounded-xl shadow-lg shadow-blue-500/30"
+            />
             <span className="text-xl font-bold bg-linear-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent hidden sm:block">
               King Jawir AI
             </span>
