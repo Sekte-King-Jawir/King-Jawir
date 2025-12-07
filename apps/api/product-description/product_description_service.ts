@@ -43,7 +43,8 @@ export const productDescriptionService = {
       const part1Messages: Array<{ role: 'system' | 'user' | 'assistant'; content: string }> = [
         {
           role: 'system',
-          content: 'Anda adalah AI yang membantu SMEs Indonesia membuat deskripsi produk yang menarik dan persuasif untuk marketplace.',
+          content:
+            'Anda adalah AI yang membantu SMEs Indonesia membuat deskripsi produk yang menarik dan persuasif untuk marketplace.',
         },
         {
           role: 'user',
@@ -53,7 +54,8 @@ export const productDescriptionService = {
       const part2Messages: Array<{ role: 'system' | 'user' | 'assistant'; content: string }> = [
         {
           role: 'system',
-          content: 'Anda adalah AI yang membantu SMEs Indonesia membuat deskripsi produk yang menarik dan persuasif untuk marketplace.',
+          content:
+            'Anda adalah AI yang membantu SMEs Indonesia membuat deskripsi produk yang menarik dan persuasif untuk marketplace.',
         },
         {
           role: 'user',
@@ -63,7 +65,8 @@ export const productDescriptionService = {
       const part3Messages: Array<{ role: 'system' | 'user' | 'assistant'; content: string }> = [
         {
           role: 'system',
-          content: 'Anda adalah AI yang membantu SMEs Indonesia membuat deskripsi produk yang menarik dan persuasif untuk marketplace.',
+          content:
+            'Anda adalah AI yang membantu SMEs Indonesia membuat deskripsi produk yang menarik dan persuasif untuk marketplace.',
         },
         {
           role: 'user',
@@ -86,7 +89,11 @@ export const productDescriptionService = {
         part3Result.text || '',
       ].join(' ')
 
-      logger.info({ msg: 'AI returned product description parts', mainLength: mainRawText.length, longLength: longDescription.length })
+      logger.info({
+        msg: 'AI returned product description parts',
+        mainLength: mainRawText.length,
+        longLength: longDescription.length,
+      })
 
       // Parse the main response for short, bullets, seo
       const parsed = parseProductDescriptionResponse(mainRawText)

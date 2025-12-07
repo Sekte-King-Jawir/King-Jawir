@@ -98,15 +98,18 @@ export function buildProductDescriptionPartPrompt(part: number, productInput: st
   const parts = {
     1: {
       focus: 'pengenalan produk dan fitur utama',
-      instruction: 'Deskripsikan pengenalan produk, fitur utama, dan spesifikasi teknis yang tersedia.',
+      instruction:
+        'Deskripsikan pengenalan produk, fitur utama, dan spesifikasi teknis yang tersedia.',
     },
     2: {
       focus: 'manfaat dan keunggulan',
-      instruction: 'Jelaskan manfaat penggunaan produk, keunggulan dibanding kompetitor, dan nilai tambah untuk pelanggan.',
+      instruction:
+        'Jelaskan manfaat penggunaan produk, keunggulan dibanding kompetitor, dan nilai tambah untuk pelanggan.',
     },
     3: {
       focus: 'kesimpulan dan call-to-action',
-      instruction: 'Berikan kesimpulan yang persuasif, saran penggunaan, dan ajakan untuk membeli atau menghubungi.',
+      instruction:
+        'Berikan kesimpulan yang persuasif, saran penggunaan, dan ajakan untuk membeli atau menghubungi.',
     },
   }
 
@@ -157,6 +160,17 @@ Dengan harga yang terjangkau dan kualitas yang terjamin, ${title} adalah pilihan
       '- Baterai tahan lama untuk rekaman panjang',
       '- Antarmuka sentuh intuitif',
     ],
-    seoKeywords: ['kamera', '4K', 'ultra HD', 'waterproof', 'fotografi', 'videografi', 'stabilizer', 'WiFi', 'Bluetooth', 'indonesia'],
+    seoKeywords: [
+      'kamera',
+      '4K',
+      'ultra HD',
+      'waterproof',
+      'fotografi',
+      'videografi',
+      'stabilizer',
+      'WiFi',
+      'Bluetooth',
+      'indonesia',
+    ],
   }
 }
