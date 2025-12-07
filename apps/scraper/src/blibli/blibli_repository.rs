@@ -18,16 +18,40 @@ impl BlibliRepository {
 
     /// Fetch HTML content from Blibli search page
     pub fn fetch_search_page(&self, query: &str) -> Result<String> {
+        println!("🌐 Creating new browser tab for Blibli...");
         let tab = self.browser.new_tab()?;
+        println!("✅ Blibli browser tab created successfully");
+        
         tab.set_default_timeout(get_page_load_timeout());
 
         // Navigate directly to Blibli search page
         let search_url = format!("https://www.blibli.com/cari/{}", query.replace(" ", "%20"));
-        println!("🌐 Navigating directly to Blibli search page: {search_url}");
+        println!("🚀 Navigating to Blibli: {search_url}");
         tab.navigate_to(&search_url).context("Failed to navigate to Blibli search page")?;
+        println!("✅ Blibli navigation initiated");
+
+        // Check if page loaded
+        println!("🔍 Checking if Blibli page loaded...");
+        match tab.evaluate("document.title", false) {
+            Ok(obj) => {
+                let title = match obj.value {
+                    Some(v) => v.as_str().map(|s| s.to_string()),
+                    None => None,
+                };
+                if let Some(title) = title {
+                    println!("📄 Blibli page title: {}", title);
+                } else {
+                    println!("⚠️  Could not get Blibli page title");
+                }
+            }
+            Err(e) => {
+                println!("❌ Failed to evaluate Blibli page title: {}", e);
+                return Err(anyhow::anyhow!("Blibli page failed to load: {}", e));
+            }
+        }
 
         // Wait for search results page to load
-        println!("⏳ Waiting for search results to load...");
+        println!("⏳ Waiting for Blibli search results to load...");
         thread::sleep(std::time::Duration::from_secs(4));
         // Wait for product cards using selector check
         println!("🔍 Waiting for Blibli product cards to load...");

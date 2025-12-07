@@ -9,10 +9,14 @@ pub struct BrowserClient {
 
 impl BrowserClient {
     pub fn new() -> Result<Self> {
+        println!("🚀 Initializing browser client...");
         let launch_options = Self::create_launch_options();
+        println!("⚙️  Browser launch options configured");
+        
         let browser = Browser::new(launch_options)
             .context("Failed to launch browser")?;
         
+        println!("✅ Browser launched successfully");
         Ok(Self { browser })
     }
 
@@ -35,6 +39,12 @@ impl BrowserClient {
                     OsStr::new("--disable-gpu"),
                     OsStr::new("--no-sandbox"),
                     OsStr::new("--disable-images"),
+                    OsStr::new("--disable-dev-shm-usage"),
+                    OsStr::new("--disable-software-rasterizer"),
+                    OsStr::new("--disable-background-timer-throttling"),
+                    OsStr::new("--disable-backgrounding-occluded-windows"),
+                    OsStr::new("--disable-renderer-backgrounding"),
+                    OsStr::new("--disable-features=VizDisplayCompositor"),
                 ])
                 .build()
                 .expect("Failed to build launch options")
@@ -50,6 +60,12 @@ impl BrowserClient {
                     OsStr::new("--disable-gpu"),
                     OsStr::new("--no-sandbox"),
                     OsStr::new("--disable-images"),
+                    OsStr::new("--disable-dev-shm-usage"),
+                    OsStr::new("--disable-software-rasterizer"),
+                    OsStr::new("--disable-background-timer-throttling"),
+                    OsStr::new("--disable-backgrounding-occluded-windows"),
+                    OsStr::new("--disable-renderer-backgrounding"),
+                    OsStr::new("--disable-features=VizDisplayCompositor"),
                 ])
                 .build()
                 .expect("Failed to build launch options")

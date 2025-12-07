@@ -28,10 +28,36 @@ impl TokopediaRepository {
 
     /// Fetch HTML content from Tokopedia search page
     pub fn fetch_search_page(&self, url: &str) -> Result<String> {
+        println!("🌐 Creating new browser tab...");
         let tab = self.browser.new_tab()?;
+        println!("✅ Browser tab created successfully");
+        
         tab.set_default_timeout(get_page_load_timeout());
+        println!("⏱️  Set page load timeout to {} seconds", PAGE_LOAD_TIMEOUT_SECS);
 
+        println!("🚀 Navigating to: {}", url);
         tab.navigate_to(url).context("Failed to navigate to URL")?;
+        println!("✅ Navigation initiated");
+
+        // Check if page loaded by getting title
+        println!("🔍 Checking if page loaded...");
+        match tab.evaluate("document.title", false) {
+            Ok(obj) => {
+                let title = match obj.value {
+                    Some(v) => v.as_str().map(|s| s.to_string()),
+                    None => None,
+                };
+                if let Some(title) = title {
+                    println!("📄 Page title: {}", title);
+                } else {
+                    println!("⚠️  Could not get page title");
+                }
+            }
+            Err(e) => {
+                println!("❌ Failed to evaluate page title: {}", e);
+                return Err(anyhow::anyhow!("Page failed to load: {}", e));
+            }
+        }
 
         // Wait for initial page structure to load
         println!("⏳ Waiting for page structure...");
