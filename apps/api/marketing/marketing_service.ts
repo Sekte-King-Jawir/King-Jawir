@@ -3,6 +3,7 @@ import { logger } from '../lib/logger'
 import { marketingRepository } from './marketing_repository'
 import {
   buildMarketingContentPrompt,
+  buildMarketingContentPartPrompt,
   parseMarketingContentResponse,
   getFallbackMarketingContent,
   type MarketingContentResult,
@@ -28,31 +29,89 @@ export const marketingService = {
     try {
       logger.info({ msg: 'Generating marketing content', platform })
 
-      // Build AI prompt
-      const prompt = buildMarketingContentPrompt(productDescription, platform)
-      const messages: Array<{ role: 'system' | 'user' | 'assistant'; content: string }> = [
-        {
-          role: 'system',
-          content:
-            'Anda adalah AI yang membantu SMEs Indonesia membuat konten pemasaran yang menarik dan efektif.',
-        },
-        {
-          role: 'user',
-          content: prompt,
-        },
-      ]
+      // For platforms that need longer content, use parallel generation
+      const longContentPlatforms = ['email', 'linkedin']
+      if (longContentPlatforms.includes(platform.toLowerCase())) {
+        // Generate content parts in parallel
+        const part1Messages: Array<{ role: 'system' | 'user' | 'assistant'; content: string }> = [
+          {
+            role: 'system',
+            content: 'Anda adalah AI yang membantu SMEs Indonesia membuat konten pemasaran yang menarik dan efektif.',
+          },
+          {
+            role: 'user',
+            content: buildMarketingContentPartPrompt(productDescription, platform, 1),
+          },
+        ]
+        const part2Messages: Array<{ role: 'system' | 'user' | 'assistant'; content: string }> = [
+          {
+            role: 'system',
+            content: 'Anda adalah AI yang membantu SMEs Indonesia membuat konten pemasaran yang menarik dan efektif.',
+          },
+          {
+            role: 'user',
+            content: buildMarketingContentPartPrompt(productDescription, platform, 2),
+          },
+        ]
+        const part3Messages: Array<{ role: 'system' | 'user' | 'assistant'; content: string }> = [
+          {
+            role: 'system',
+            content: 'Anda adalah AI yang membantu SMEs Indonesia membuat konten pemasaran yang menarik dan efektif.',
+          },
+          {
+            role: 'user',
+            content: buildMarketingContentPartPrompt(productDescription, platform, 3),
+          },
+        ]
 
-      // Use AI completion
-      const result = await generateChatCompletion(messages, { temperature: 0.7 })
+        // Generate all parts in parallel
+        const [part1Result, part2Result, part3Result] = await Promise.all([
+          generateChatCompletion(part1Messages, { temperature: 0.7 }),
+          generateChatCompletion(part2Messages, { temperature: 0.7 }),
+          generateChatCompletion(part3Messages, { temperature: 0.7 }),
+        ])
 
-      const rawText = result.text || ''
-      logger.info({ msg: 'AI returned marketing content', length: rawText.length })
+        const combinedContent = [
+          part1Result.text || '',
+          part2Result.text || '',
+          part3Result.text || '',
+        ].join(' ')
 
-      // Parse the AI response
-      const parsed = parseMarketingContentResponse(rawText, platform)
+        logger.info({ msg: 'AI returned marketing content parts', contentLength: combinedContent.length })
 
-      logger.info({ msg: 'Marketing content generated successfully' })
-      return parsed
+        // Create result with combined content
+        const result: MarketingContentResult = {
+          platform,
+          content: combinedContent,
+          hashtags: platform === 'email' ? ['#KameraAksi', '#BisnisSME', '#ContentMarketing', '#VideoProduction'] : ['#DigitalMarketing', '#SME', '#ContentCreation', '#BusinessTools', '#IndonesiaUMKM', '#VideoContent'],
+          callToAction: platform === 'email' ? 'Klik link di atas untuk memesan sekarang!' : 'Hubungi kami untuk konsultasi gratis dan demo produk!',
+        }
+
+        logger.info({ msg: 'Marketing content generated successfully' })
+        return result
+      } else {
+        // For short-form platforms, use single generation
+        const prompt = buildMarketingContentPrompt(productDescription, platform)
+        const messages: Array<{ role: 'system' | 'user' | 'assistant'; content: string }> = [
+          {
+            role: 'system',
+            content: 'Anda adalah AI yang membantu SMEs Indonesia membuat konten pemasaran yang menarik dan efektif.',
+          },
+          {
+            role: 'user',
+            content: prompt,
+          },
+        ]
+
+        const result = await generateChatCompletion(messages, { temperature: 0.7 })
+        const rawText = result.text || ''
+        logger.info({ msg: 'AI returned marketing content', length: rawText.length })
+
+        const parsed = parseMarketingContentResponse(rawText, platform)
+
+        logger.info({ msg: 'Marketing content generated successfully' })
+        return parsed
+      }
     } catch (error) {
       logger.error({
         msg: 'Failed to generate marketing content',
