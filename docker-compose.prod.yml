@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  nginx:
+    image: ghcr.io/sekte-king-jawir/king-jawir/nginx:latest
+    container_name: king-jawir-nginx
+    ports:
+      - '80:80'
+      - '443:443'
+    networks:
+      - king-jawir-network
+    depends_on:
+      - web
+      - api
+      - scraper
+    restart: unless-stopped
+
+  web:
+    image: ghcr.io/sekte-king-jawir/king-jawir/web:latest
+    container_name: king-jawir-web
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_API_URL=/api
+    networks:
+      - king-jawir-network
+    depends_on:
+      - api
+    restart: unless-stopped
+
+  api:
+    image: ghcr.io/sekte-king-jawir/king-jawir/api:latest
+    container_name: king-jawir-api
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=production
+      - SCRAPER_URL=http://scraper:4103
+    networks:
+      - king-jawir-network
+    depends_on:
+      - scraper
+    restart: unless-stopped
+
+  scraper:
+    image: ghcr.io/sekte-king-jawir/king-jawir/scraper:latest
+    container_name: king-jawir-scraper
+    env_file:
+      - .env
+    networks:
+      - king-jawir-network
+    restart: unless-stopped
+
+networks:
+  king-jawir-network:
+    driver: bridge

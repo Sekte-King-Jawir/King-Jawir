@@ -1,7 +1,7 @@
 name: Deploy API Store to VPS
 
 on:
-  workflow_dispatch: # Manual triggeraaaa
+  workflow_dispatch: # Manual triggeraaaaa
   push:
     branches:
       - main
