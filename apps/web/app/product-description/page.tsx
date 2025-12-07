@@ -284,24 +284,10 @@ export default function ProductDescriptionPage(): React.JSX.Element {
             </div>
           )}
 
-          {/* Empty State */}
-          {result === null && !loading && error === null && (
-            <div className="text-center py-12">
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gray-100 dark:bg-gray-800 mb-4">
-                <Sparkles className="h-8 w-8 text-gray-400" />
-              </div>
-              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
-                Belum Ada Deskripsi
-              </h3>
-              <p className="text-gray-600 dark:text-gray-400">
-                Masukkan detail produk di atas untuk mulai menghasilkan deskripsi dengan AI.
-              </p>
-            </div>
-          )}
         </div>
 
         {/* Footer */}
-        <footer className="mt-12 text-center relative z-10">
+        <footer className="mt-4s text-center relative z-10">
           <p className="text-sm text-muted-foreground">
             Powered by AI • Optimized for Indonesian Marketplaces
           </p>
