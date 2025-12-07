@@ -31,16 +31,17 @@ king-jawir/
 
 ## 🚀 Services
 
-| Service | Port | Description |
-|---------|------|-------------|
-| Web | 4102 | Next.js frontend application |
-| API | 4101 | Main backend API |
-| Scraper | 4103 | Rust scraping service |
-| Nginx | 4104 | Reverse proxy (public access) |
+| Service | Port | Description                   |
+| ------- | ---- | ----------------------------- |
+| Web     | 4102 | Next.js frontend application  |
+| API     | 4101 | Main backend API              |
+| Scraper | 4103 | Rust scraping service         |
+| Nginx   | 4104 | Reverse proxy (public access) |
 
 ## 🛠️ Technologies
 
 ### Frontend (`web`)
+
 - [Next.js 16](https://nextjs.org/) - React framework
 - [React 19](https://react.dev/) - UI library
 - [Tailwind CSS v4](https://tailwindcss.com/) - Utility-first CSS framework
@@ -48,16 +49,19 @@ king-jawir/
 - [GSAP](https://greensock.com/gsap/) - Professional animation library
 
 ### Backend (`api`)
+
 - [Bun](https://bun.sh/) - JavaScript runtime
 - [Elysia.js](https://elysiajs.com/) - Fast TypeScript web framework
 - [Prisma](https://www.prisma.io/) - Database ORM
 - [MariaDB](https://mariadb.org/) - Database adapter
 
 ### Scraper (`scraper`)
+
 - [Rust](https://www.rust-lang.org/) - Systems programming language
 - [Cargo](https://doc.rust-lang.org/cargo/) - Rust package manager
 
 ### Infrastructure
+
 - [Docker](https://www.docker.com/) - Containerization
 - [Nginx](https://nginx.org/) - Reverse proxy and load balancer
 - [GitHub Actions](https://github.com/features/actions) - CI/CD
@@ -65,11 +69,13 @@ king-jawir/
 ## ▶️ Getting Started
 
 ### Prerequisites
+
 - [Bun](https://bun.sh/) (v1.3.3)
 - [Docker](https://www.docker.com/)
 - [Docker Compose](https://docs.docker.com/compose/)
 
 ### Environment Setup
+
 1. Copy the example environment file:
    ```bash
    cp .env.example .env
@@ -84,11 +90,13 @@ king-jawir/
 ### Development
 
 Start all services in development mode:
+
 ```bash
 bun run dev
 ```
 
 Or start individual services:
+
 ```bash
 # Web application
 bun run web:dev
@@ -103,6 +111,7 @@ bun run scraper:dev
 ### Production Deployment
 
 Using Docker Compose:
+
 ```bash
 docker-compose up -d
 ```
@@ -112,11 +121,13 @@ Access the application at http://localhost:4104
 ## 🧪 Testing
 
 Run tests for all services:
+
 ```bash
 bun run test
 ```
 
 Run tests for specific services:
+
 ```bash
 # API tests
 bun run api:test
@@ -128,11 +139,13 @@ bun run scraper:test
 ## 📦 Building
 
 Build all services:
+
 ```bash
 bun run build
 ```
 
 Build specific services:
+
 ```bash
 # Web application
 bun run web:build
@@ -147,16 +160,19 @@ bun run scraper:build
 ## 🔍 Code Quality
 
 ### Linting
+
 ```bash
 bun run lint
 ```
 
 ### Type Checking
+
 ```bash
 bun run check-types
 ```
 
 ### Formatting
+
 ```bash
 # Check formatting
 bun run format:check
